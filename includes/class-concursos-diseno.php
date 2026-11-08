@@ -219,17 +219,6 @@ class Concursos_Diseno {
 	}
 
 	/**
-	 * Variable CSS con la proporción de una imagen, para las rejillas justificadas.
-	 *
-	 * @param int $ancho Ancho.
-	 * @param int $alto  Alto.
-	 * @return string
-	 */
-	public static function proporcion( $ancho, $alto ) {
-		return sprintf( '--r:%.4F;', $alto > 0 ? $ancho / $alto : 1.5 );
-	}
-
-	/**
 	 * Carga la hoja de estilos pública.
 	 *
 	 * @param array $s Configuración del reto.

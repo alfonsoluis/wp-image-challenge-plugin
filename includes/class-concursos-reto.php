@@ -65,6 +65,10 @@ class Concursos_Reto {
 			'max_fotos'         => 1,
 			'premios'           => array( '', '', '' ),
 			'reglas'            => '',
+			'privado_participantes' => 0,
+			'emails_participantes'  => '',
+			'privado_votantes'      => 0,
+			'emails_votantes'       => '',
 			'paleta'            => Concursos_Diseno::TEMA,
 			'tamano'            => Concursos_Diseno::NORMAL,
 		);
@@ -152,6 +156,11 @@ class Concursos_Reto {
 
 		$s['reglas'] = isset( $raw['reglas'] ) ? sanitize_textarea_field( $raw['reglas'] ) : '';
 
+		foreach ( array( 'participantes', 'votantes' ) as $grupo ) {
+			$s[ 'privado_' . $grupo ] = empty( $raw[ 'privado_' . $grupo ] ) ? 0 : 1;
+			$s[ 'emails_' . $grupo ]  = implode( ', ', self::emails_validos( isset( $raw[ 'emails_' . $grupo ] ) ? (string) $raw[ 'emails_' . $grupo ] : '' ) );
+		}
+
 		return array_merge( $s, Concursos_Diseno::sanitize( $raw ) );
 	}
 
@@ -171,6 +180,12 @@ class Concursos_Reto {
 				$errors[] = sprintf( __( 'Missing date: %s.', 'concursos' ), $labels[ $key ] );
 			}
 		}
+		if ( ! empty( $s['privado_participantes'] ) && '' === $s['emails_participantes'] ) {
+			$errors[] = __( 'Participation is private but the list of emails is empty: nobody will be able to register.', 'concursos' );
+		}
+		if ( ! empty( $s['privado_votantes'] ) && '' === $s['emails_votantes'] ) {
+			$errors[] = __( 'Voting is private but the list of emails is empty: nobody will be able to vote.', 'concursos' );
+		}
 		if ( $errors ) {
 			return $errors;
 		}
@@ -185,6 +200,64 @@ class Concursos_Reto {
 		}
 
 		return $errors;
+	}
+
+	/**
+	 * Separa una lista de emails escrita a mano.
+	 *
+	 * @param string $texto Emails separados por comas (también valen espacios, punto y coma o saltos de línea).
+	 * @return string[]
+	 */
+	private static function partir_emails( $texto ) {
+		return array_values( array_unique( array_filter( array_map( 'strtolower', preg_split( '/[\s,;]+/', trim( $texto ) ) ) ) ) );
+	}
+
+	/**
+	 * Direcciones válidas de una lista.
+	 *
+	 * @param string $texto Lista.
+	 * @return string[]
+	 */
+	public static function emails_validos( $texto ) {
+		return array_values( array_filter( array_map( 'sanitize_email', self::partir_emails( $texto ) ), 'is_email' ) );
+	}
+
+	/**
+	 * Direcciones no válidas de una lista, para avisar al guardar.
+	 *
+	 * @param string $texto Lista.
+	 * @return string[]
+	 */
+	public static function emails_invalidos( $texto ) {
+		return array_values(
+			array_filter(
+				self::partir_emails( $texto ),
+				function ( $email ) {
+					return ! is_email( sanitize_email( $email ) );
+				}
+			)
+		);
+	}
+
+	/**
+	 * ¿Puede este email participar (o votar) en el reto?
+	 *
+	 * @param array  $s     Configuración.
+	 * @param string $grupo participantes|votantes.
+	 * @param string $email Email.
+	 * @return bool
+	 */
+	public static function permite_email( array $s, $grupo, $email ) {
+		return empty( $s[ 'privado_' . $grupo ] ) || in_array( strtolower( $email ), self::emails_validos( $s[ 'emails_' . $grupo ] ), true );
+	}
+
+	/**
+	 * Mensaje para quien no está en la lista de un reto privado.
+	 *
+	 * @return string
+	 */
+	public static function mensaje_privado() {
+		return __( 'This challenge is private. Contact the organizers for more information.', 'concursos' );
 	}
 
 	/**

@@ -4,7 +4,7 @@ Tags: contest, photo contest, voting, gallery, challenges
 Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.9.0
+Stable tag: 0.10.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,6 +22,7 @@ Concursos lets associations, schools and organizations run art challenges on the
 * Email-confirmed voters, 1 to 3 votes per challenge, and optional notifications about new challenges.
 * Public challenges page, challenge pages with results, and participant profiles.
 * Per-challenge design: theme colors or 10 color palettes, and 3 text sizes. Typography always comes from your theme.
+* Private challenges: restrict participants and voters to a list of email addresses.
 * Available in English and Spanish.
 
 == Installation ==
@@ -34,6 +35,10 @@ Concursos lets associations, schools and organizations run art challenges on the
 
 == Changelog ==
 
+= 0.10.0 =
+* Private challenges: restrict participants and, optionally, voters to a list of email addresses.
+* Equal-width photo cards; photos fill their frames without distortion.
+
 = 0.9.0 =
 * Plugin text is now in English, with a complete Spanish translation.
 * New Archived status: archived challenges are hidden from the site and send no notifications.
@@ -42,7 +47,6 @@ Concursos lets associations, schools and organizations run art challenges on the
 = 0.8.0 =
 * Ten palettes from coolors.co.
 * The plugin creates a Challenges page so it can be added to the site menu.
-* Images keep their proportions in justified grids, without cropping.
 * Registration button on the challenges page and on challenges open for registration.
 
 = 0.7.0 =

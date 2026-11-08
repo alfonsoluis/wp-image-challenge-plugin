@@ -262,7 +262,7 @@ class Concursos_Perfil {
 				<?php if ( $fila['mias'] ) : ?>
 					<ul class="concursos-galeria__rejilla">
 						<?php foreach ( $fila['mias'] as $entrada ) : ?>
-							<li style="<?php echo esc_attr( Concursos_Entrada::proporcion( $entrada ) ); ?>">
+							<li>
 								<figure>
 									<?php echo get_the_post_thumbnail( $entrada, 'medium_large', array( 'loading' => 'lazy' ) ); ?>
 									<figcaption><strong><?php echo esc_html( get_the_title( $entrada ) ); ?></strong></figcaption>

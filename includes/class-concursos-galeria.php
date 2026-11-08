@@ -51,7 +51,7 @@ class Concursos_Galeria {
 			$titulo,
 			esc_html( self::frase_estado( $status, $s ) ),
 			$extra,
-			$imagen ? '<img class="concursos-cabecera__imagen" src="' . esc_url( $imagen['url'] ) . '" width="' . esc_attr( $imagen['ancho'] ) . '" height="' . esc_attr( $imagen['alto'] ) . '" alt="">' : ''
+			$imagen ? '<div class="concursos-cabecera__media"><img class="concursos-cabecera__imagen" src="' . esc_url( $imagen['url'] ) . '" alt=""></div>' : ''
 		);
 	}
 
@@ -199,8 +199,7 @@ class Concursos_Galeria {
 		$autor = Concursos_Entrada::owner( $entrada->ID );
 
 		return sprintf(
-			'<li style="%s"><figure>%s<figcaption><strong>%s</strong><span>%s</span>%s</figcaption></figure></li>',
-			esc_attr( Concursos_Entrada::proporcion( $entrada ) ),
+			'<li><figure>%s<figcaption><strong>%s</strong><span>%s</span>%s</figcaption></figure></li>',
 			get_the_post_thumbnail( $entrada, 'medium_large', array( 'loading' => 'lazy' ) ),
 			esc_html( get_the_title( $entrada ) ),
 			$autor ? sprintf( '<a href="%s">%s</a>', esc_url( Concursos_Perfil::url( $autor ) ), esc_html( get_the_title( $autor ) ) ) : '',
@@ -246,6 +245,9 @@ class Concursos_Galeria {
 		}
 
 		$votante = 'votacion' === $status ? Concursos_Votantes::actual() : null;
+		if ( $votante && ! Concursos_Reto::permite_email( $s, 'votantes', $votante->email ) ) {
+			$votante = null;
+		}
 		$mios    = $votante ? Concursos_Votos::de_votante( (int) $votante->id, $reto_id ) : array();
 		$puede   = count( $mios ) < (int) $s['votos_por_votante'];
 

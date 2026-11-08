@@ -67,6 +67,10 @@ class Concursos_Envio {
 			self::render_message( 403, __( 'Registration not active', 'concursos' ), __( 'Your registration is not active. If you think this is a mistake, contact us.', 'concursos' ) );
 		}
 
+		if ( ! Concursos_Reto::permite_email( Concursos_Reto::get_settings( $p['reto'] ), 'participantes', $p['email'] ) ) {
+			self::render_message( 403, __( 'Private challenge', 'concursos' ), Concursos_Reto::mensaje_privado() );
+		}
+
 		if ( 'POST' === ( isset( $_SERVER['REQUEST_METHOD'] ) ? $_SERVER['REQUEST_METHOD'] : '' ) ) {
 			$code = self::handle_post( $p );
 			wp_safe_redirect( add_query_arg( self::RESULT_PARAM, $code, Concursos_Inscripcion::personal_link( $token ) ) );
@@ -198,7 +202,7 @@ class Concursos_Envio {
 		<?php if ( $enviadas ) : ?>
 			<ul class="concursos-mis-fotos">
 				<?php foreach ( $enviadas as $entrada ) : ?>
-					<li style="<?php echo esc_attr( Concursos_Entrada::proporcion( $entrada ) ); ?>">
+					<li>
 						<?php echo get_the_post_thumbnail( $entrada, 'medium' ); ?>
 						<span><?php echo esc_html( get_the_title( $entrada ) ); ?></span>
 						<?php if ( $abierto ) : ?>

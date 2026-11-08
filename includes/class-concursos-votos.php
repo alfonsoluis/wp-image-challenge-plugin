@@ -161,6 +161,10 @@ class Concursos_Votos {
 			Concursos_Votantes::volver( $reto, 'cerrado' );
 		}
 
+		if ( ! Concursos_Reto::permite_email( $s, 'votantes', $votante->email ) ) {
+			Concursos_Votantes::volver( $reto, 'privado' );
+		}
+
 		$valida = Concursos_Entrada::POST_TYPE === get_post_type( $entrada )
 			&& 'publish' === get_post_status( $entrada )
 			&& (int) get_post_meta( $entrada, Concursos_Entrada::META . 'reto', true ) === $reto

@@ -133,6 +133,7 @@ class Concursos_Votantes {
 			'salida'      => array( 'success', __( 'You have signed out as a voter in this browser.', 'concursos' ) ),
 			'email'       => array( 'error', __( 'Enter a valid email address.', 'concursos' ) ),
 			'limite'      => array( 'error', __( 'You have used all your votes in this challenge. Remove one to vote for another photo.', 'concursos' ) ),
+			'privado'     => array( 'error', Concursos_Reto::mensaje_privado() ),
 			'cerrado'     => array( 'error', __( 'Voting for this challenge is not open.', 'concursos' ) ),
 			'identificate' => array( 'error', __( 'Confirm your email to be able to vote.', 'concursos' ) ),
 			'error'       => array( 'error', __( 'We could not complete the action. Please try again.', 'concursos' ) ),
@@ -175,6 +176,10 @@ class Concursos_Votantes {
 		$email = isset( $_POST['email'] ) ? strtolower( sanitize_email( wp_unslash( $_POST['email'] ) ) ) : '';
 		if ( ! is_email( $email ) || strlen( $email ) > 190 ) {
 			self::volver( $reto, 'email' );
+		}
+
+		if ( ! Concursos_Reto::permite_email( Concursos_Reto::get_settings( $reto ), 'votantes', $email ) ) {
+			self::volver( $reto, 'privado' );
 		}
 
 		global $wpdb;
@@ -493,6 +498,7 @@ class Concursos_Votantes {
 			</form>
 			<?php
 		} else {
+			$permitido = Concursos_Reto::permite_email( $s, 'votantes', $votante->email );
 			$usados = count( Concursos_Votos::de_votante( (int) $votante->id, $reto_id ) );
 			$total  = (int) $s['votos_por_votante'];
 			$quedan = max( 0, $total - $usados );
@@ -505,8 +511,12 @@ class Concursos_Votantes {
 					?>
 				</strong><br>
 				<?php
-				/* translators: 1: votes left, 2: total votes. */
-				echo esc_html( sprintf( __( 'You have %1$d of %2$d votes left.', 'concursos' ), $quedan, $total ) );
+				echo esc_html(
+					$permitido
+						/* translators: 1: votes left, 2: total votes. */
+						? sprintf( __( 'You have %1$d of %2$d votes left.', 'concursos' ), $quedan, $total )
+						: Concursos_Reto::mensaje_privado()
+				);
 				?>
 			</p>
 			<div class="concursos-panel-voto__acciones">

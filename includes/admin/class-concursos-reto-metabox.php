@@ -148,6 +148,29 @@ class Concursos_Reto_Metabox {
 					<?php endforeach; ?>
 				</td>
 			</tr>
+			<?php
+			$accesos = array(
+				'participantes' => array( __( 'Who can participate', 'concursos' ), __( 'Private: only the emails on this list can register', 'concursos' ) ),
+				'votantes'      => array( __( 'Who can vote', 'concursos' ), __( 'Private: only the emails on this list can vote', 'concursos' ) ),
+			);
+			foreach ( $accesos as $grupo => $textos ) :
+				// En un reto nuevo la participación es privada por defecto; votar, no.
+				$privado = 'auto-draft' === $post->post_status ? 'participantes' === $grupo : ! empty( $s[ 'privado_' . $grupo ] );
+				?>
+				<tr>
+					<th scope="row"><?php echo esc_html( $textos[0] ); ?></th>
+					<td>
+						<label class="concursos-radio--block">
+							<input type="checkbox" class="concursos-privado" data-grupo="<?php echo esc_attr( $grupo ); ?>" name="concursos[privado_<?php echo esc_attr( $grupo ); ?>]" value="1" <?php checked( $privado ); ?>>
+							<?php echo esc_html( $textos[1] ); ?>
+						</label>
+						<div class="concursos-if-privado-<?php echo esc_attr( $grupo ); ?>">
+							<textarea name="concursos[emails_<?php echo esc_attr( $grupo ); ?>]" rows="3" class="large-text" aria-label="<?php echo esc_attr( $textos[0] ); ?>"><?php echo esc_textarea( $s[ 'emails_' . $grupo ] ); ?></textarea>
+							<p class="description"><?php esc_html_e( 'Email addresses separated by commas.', 'concursos' ); ?></p>
+						</div>
+					</td>
+				</tr>
+			<?php endforeach; ?>
 			<tr>
 				<th scope="row"><label for="concursos-max-fotos"><?php esc_html_e( 'Photos per participant', 'concursos' ); ?></label></th>
 				<td><input type="number" id="concursos-max-fotos" name="concursos[max_fotos]" min="1" max="20" value="<?php echo esc_attr( $s['max_fotos'] ); ?>" class="small-text"></td>
@@ -264,6 +287,13 @@ class Concursos_Reto_Metabox {
 		Concursos_Reto::save_settings( $post_id, $settings );
 
 		$errors = Concursos_Reto::validate( $settings );
+		foreach ( array( 'participantes', 'votantes' ) as $grupo ) {
+			$invalidos = Concursos_Reto::emails_invalidos( isset( $raw[ 'emails_' . $grupo ] ) ? (string) $raw[ 'emails_' . $grupo ] : '' );
+			if ( $invalidos ) {
+				/* translators: %s: list of invalid email addresses. */
+				$errors[] = sprintf( __( 'These addresses are not valid and were ignored: %s', 'concursos' ), implode( ', ', $invalidos ) );
+			}
+		}
 		if ( $errors && 'auto-draft' !== $post->post_status ) {
 			set_transient( 'concursos_errores_' . get_current_user_id(), $errors, 60 );
 		}

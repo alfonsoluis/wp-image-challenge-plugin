@@ -15,10 +15,13 @@
 
 	function update() {
 		toggle( '.concursos-if-tres-lugares', checked( 'lugares' ) === '3' );
+		document.querySelectorAll( '.concursos-privado' ).forEach( function ( box ) {
+			toggle( '.concursos-if-privado-' + box.dataset.grupo, box.checked );
+		} );
 	}
 
 	document.addEventListener( 'change', function ( event ) {
-		if ( event.target.name === 'concursos[lugares]' ) {
+		if ( event.target.name === 'concursos[lugares]' || event.target.classList.contains( 'concursos-privado' ) ) {
 			update();
 		}
 	} );

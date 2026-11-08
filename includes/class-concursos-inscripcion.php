@@ -92,6 +92,7 @@ class Concursos_Inscripcion {
 			'duplicado' => array( 'error', __( 'That email is already registered for that challenge.', 'concursos' ) ),
 			'foto'      => array( 'error', __( 'The photo must be a JPG, PNG or WebP of up to 5 MB.', 'concursos' ) ),
 			'privacidad' => array( 'error', __( 'You must accept the use of your data to register.', 'concursos' ) ),
+			'privado'    => array( 'error', Concursos_Reto::mensaje_privado() ),
 			'error'     => array( 'error', __( 'We could not save your registration. Please try again.', 'concursos' ) ),
 		);
 	}
@@ -214,6 +215,9 @@ class Concursos_Inscripcion {
 		}
 		if ( ! in_array( $reto_id, wp_list_pluck( wp_list_pluck( self::retos_abiertos(), 'post' ), 'ID' ), true ) ) {
 			$done( 'reto' );
+		}
+		if ( ! Concursos_Reto::permite_email( Concursos_Reto::get_settings( $reto_id ), 'participantes', $email ) ) {
+			$done( 'privado' );
 		}
 		if ( empty( $_POST['privacidad'] ) ) {
 			$done( 'privacidad' );

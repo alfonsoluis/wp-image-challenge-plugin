@@ -200,7 +200,7 @@ class Concursos_Portada {
 		foreach ( $retos as $reto ) {
 			$imagen = self::imagen( $reto, 'medium_large' );
 			?>
-			<li class="concursos-disenado" style="<?php echo esc_attr( Concursos_Diseno::estilo( $reto['settings'] ) . ( $imagen ? Concursos_Diseno::proporcion( $imagen['ancho'], $imagen['alto'] ) : '' ) ); ?>">
+			<li class="concursos-disenado" style="<?php echo esc_attr( Concursos_Diseno::estilo( $reto['settings'] ) ); ?>">
 				<a href="<?php echo esc_url( get_permalink( $reto['post'] ) ); ?>">
 					<?php if ( $imagen ) : ?>
 						<img src="<?php echo esc_url( $imagen['url'] ); ?>" width="<?php echo esc_attr( $imagen['ancho'] ); ?>" height="<?php echo esc_attr( $imagen['alto'] ); ?>" alt="" loading="lazy">
