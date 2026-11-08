@@ -18,7 +18,7 @@ require_once ABSPATH . 'wp-admin/includes/image.php';
 $fase   = getenv( 'CONCURSOS_FASE' ) ? getenv( 'CONCURSOS_FASE' ) : 'envios';
 $fechas = array(
 	'envios'     => array( '-2 days', '+5 days', '+8 days', '+10 days' ),
-	'votacion'   => array( '-12 days', '-7 days', '+5 days', '+8 days' ),
+	'votacion'   => array( '-4 days', '-1 hour', '+5 days', '+8 days' ),
 	'finalizado' => array( '-20 days', '-14 days', '-7 days', '-2 days' ),
 );
 if ( ! isset( $fechas[ $fase ] ) ) {
@@ -97,71 +97,80 @@ $tabla_votos    = Concursos_DB::votos();
 $wpdb->query( "DELETE v FROM {$tabla_votos} v JOIN {$tabla_votantes} t ON t.id = v.votante_id WHERE t.email LIKE 'votante-demo-%'" );
 $wpdb->query( "DELETE FROM {$tabla_votantes} WHERE email LIKE 'votante-demo-%'" );
 
-// 2. El reto.
-$f    = array_map( 'strtotime', $fechas[ $fase ] );
-$reto = wp_insert_post(
-	array(
-		'post_type'    => Concursos_Post_Types::RETO,
-		'post_status'  => 'publish',
-		'post_title'   => 'Reto de prueba: luz y sombra',
-		'post_content' => "Un reto para practicar el contraste entre luz y sombra. Puede ser una escena urbana, un retrato o un objeto cotidiano.\n\nEs un reto de demostración del entorno de desarrollo.",
-	),
-	true
-);
-if ( is_wp_error( $reto ) ) {
-	WP_CLI::error( $reto->get_error_message() );
-}
-Concursos_Reto::save_settings(
-	$reto,
-	array_merge(
-		Concursos_Reto::defaults(),
+/**
+ * Crea un reto de demostración.
+ *
+ * @param string $titulo    Título.
+ * @param string $contenido Descripción.
+ * @param int[]  $f         Las cuatro fechas.
+ * @param array  $extra     Configuración adicional.
+ * @return int
+ */
+function concursos_demo_reto( $titulo, $contenido, array $f, array $extra ) {
+	$reto = wp_insert_post(
 		array(
-			'tipo'              => 'unico',
-			'modo'              => 'abierto',
-			'inicio'            => $f[0],
-			'fin_envios'        => $f[1],
-			'fin_votacion'      => $f[2],
-			'cierre'            => $f[3],
-			'votos_por_votante' => 3,
-			'lugares'           => 3,
-			'max_fotos'         => 2,
-			'premios'           => array( 'Un cuadro de 50 € para la foto ganadora', 'Un vale de 25 €', 'Un libro de fotografía' ),
-			'reglas'            => "Foto propia, sin marcas de agua ni firmas.\nFormato libre: horizontal o vertical.\nSe admiten retoques básicos de luz y color.",
+			'post_type'    => Concursos_Post_Types::RETO,
+			'post_status'  => 'publish',
+			'post_title'   => $titulo,
+			'post_content' => $contenido,
+		),
+		true
+	);
+	if ( is_wp_error( $reto ) ) {
+		WP_CLI::error( $reto->get_error_message() );
+	}
+	Concursos_Reto::save_settings(
+		$reto,
+		array_merge(
+			Concursos_Reto::defaults(),
+			array(
+				'tipo'         => 'unico',
+				'modo'         => 'abierto',
+				'inicio'       => $f[0],
+				'fin_envios'   => $f[1],
+				'fin_votacion' => $f[2],
+				'cierre'       => $f[3],
+			),
+			$extra
 		)
-	)
-);
-update_post_meta( $reto, '_concursos_demo', '1' );
+	);
+	update_post_meta( $reto, '_concursos_demo', '1' );
 
-// 3. Participantes activos, con sus fotos.
-$personas = array(
-	array( 'Marta López', '@martalopez.foto', 2 ),
-	array( 'Javier Ruiz', '', 1 ),
-	array( 'Lucía Fernández', 'lucia.fotos', 2 ),
-	array( 'Pablo Sánchez', '', 1 ),
-	array( 'Carmen Díaz', '@carmen.d', 2 ),
-	array( 'Diego Moreno', '', 1 ),
-);
-$titulos  = array(
-	'Callejón al atardecer', 'Reflejo en el charco', 'Sombras de la plaza', 'Ventana con luz',
-	'Árbol contra la niebla', 'Mercado de mañana', 'Puerta azul', 'Bicicleta bajo la lluvia',
-	'Escalera de hierro', 'Retrato junto a la ventana', 'Muelle al amanecer', 'Calle sin nadie',
-);
-$cuenta   = 0;
-$fotos    = array();
-foreach ( $personas as $n => $persona ) {
+	return $reto;
+}
+
+/**
+ * Inscribe a una persona en un reto, activa, con sus fotos.
+ *
+ * @param int    $reto    Reto.
+ * @param int    $n       Número de la persona (fija su email, y por tanto su perfil).
+ * @param string $nombre  Nombre.
+ * @param string $red     Instagram.
+ * @param int    $cuantas Fotos.
+ * @return int[] Fotos creadas.
+ */
+function concursos_demo_participante( $reto, $n, $nombre, $red, $cuantas ) {
+	static $cuenta = 0;
+	$titulos = array(
+		'Callejón al atardecer', 'Reflejo en el charco', 'Sombras de la plaza', 'Ventana con luz',
+		'Árbol contra la niebla', 'Mercado de mañana', 'Puerta azul', 'Bicicleta bajo la lluvia',
+		'Escalera de hierro', 'Retrato junto a la ventana', 'Muelle al amanecer', 'Calle sin nadie',
+	);
+
 	$id = Concursos_Participante::create(
 		array(
-			'nombre'    => $persona[0],
+			'nombre'    => $nombre,
 			'email'     => 'participante' . ( $n + 1 ) . '@example.com',
 			'reto'      => $reto,
-			'instagram' => $persona[1],
+			'instagram' => Concursos_Inscripcion::handle_name( $red ),
 			'facebook'  => '',
 		)
 	);
 	update_post_meta( $id, '_concursos_demo', '1' );
 	Concursos_Participante::set_estado( $id, Concursos_Participante::ACTIVO );
 
-	for ( $k = 0; $k < $persona[2]; $k++ ) {
+	$fotos = array();
+	for ( $k = 0; $k < $cuantas; $k++ ) {
 		$titulo  = $titulos[ $cuenta % count( $titulos ) ];
 		$adjunto = concursos_demo_adjunto( concursos_demo_imagen( $cuenta + 7 ), $titulo );
 		$entrada = Concursos_Entrada::create( Concursos_Participante::get( $id ), $titulo, $adjunto );
@@ -169,30 +178,42 @@ foreach ( $personas as $n => $persona ) {
 		$fotos[] = $entrada;
 		++$cuenta;
 	}
+
+	return $fotos;
 }
 
-// 4. En la fase de resultados: votos con empates en el primer y en el tercer lugar.
-if ( 'finalizado' === $fase ) {
-	$reparto = array( 6, 6, 4, 3, 3, 2, 1, 0, 0 );
-	$ids     = array();
-	for ( $v = 1; $v <= 12; $v++ ) {
-		$wpdb->insert(
-			$tabla_votantes,
-			array(
-				'email'  => 'votante-demo-' . $v . '@example.com',
-				'estado' => Concursos_Votantes::CONFIRMADO,
-				'creado' => time(),
-			)
-		);
-		$ids[] = (int) $wpdb->insert_id;
-	}
+// 2. Votantes de ejemplo, para los retos con resultados.
+$votantes = array();
+for ( $v = 1; $v <= 12; $v++ ) {
+	$wpdb->insert(
+		$tabla_votantes,
+		array(
+			'email'  => 'votante-demo-' . $v . '@example.com',
+			'estado' => Concursos_Votantes::CONFIRMADO,
+			'creado' => time(),
+		)
+	);
+	$votantes[] = (int) $wpdb->insert_id;
+}
+
+/**
+ * Reparte votos entre fotos.
+ *
+ * @param int   $reto     Reto.
+ * @param int[] $fotos    Fotos.
+ * @param int[] $reparto  Votos de cada foto.
+ * @param int[] $votantes Votantes.
+ */
+function concursos_demo_votos( $reto, array $fotos, array $reparto, array $votantes ) {
+	global $wpdb;
+
 	$turno = 0;
 	foreach ( $fotos as $i => $entrada ) {
 		for ( $n = 0; $n < $reparto[ $i ]; $n++ ) {
 			$wpdb->insert(
-				$tabla_votos,
+				Concursos_DB::votos(),
 				array(
-					'votante_id' => $ids[ $turno++ % count( $ids ) ],
+					'votante_id' => $votantes[ $turno++ % count( $votantes ) ],
 					'reto_id'    => $reto,
 					'entrada_id' => $entrada,
 					'creado'     => time(),
@@ -202,4 +223,58 @@ if ( 'finalizado' === $fase ) {
 	}
 }
 
-WP_CLI::success( sprintf( 'Reto #%d listo en fase "%s" con %d participantes y %d fotos: %s', $reto, $fase, count( $personas ), $cuenta, get_permalink( $reto ) ) );
+// 3. El reto principal, con participantes activos y sus fotos.
+$reto     = concursos_demo_reto(
+	'Reto de prueba: luz y sombra',
+	"Un reto para practicar el contraste entre luz y sombra. Puede ser una escena urbana, un retrato o un objeto cotidiano.\n\nEs un reto de demostración del entorno de desarrollo.",
+	array_map( 'strtotime', $fechas[ $fase ] ),
+	array(
+		'votos_por_votante' => 3,
+		'lugares'           => 3,
+		'max_fotos'         => 2,
+		'premios'           => array( 'Un cuadro de 50 € para la foto ganadora', 'Un vale de 25 €', 'Un libro de fotografía' ),
+		'reglas'            => "Foto propia, sin marcas de agua ni firmas.\nFormato libre: horizontal o vertical.\nSe admiten retoques básicos de luz y color.",
+	)
+);
+$personas = array(
+	array( 'Marta López', '@martalopez.foto', 2 ),
+	array( 'Javier Ruiz', '', 1 ),
+	array( 'Lucía Fernández', 'lucia.fotos', 2 ),
+	array( 'Pablo Sánchez', '', 1 ),
+	array( 'Carmen Díaz', '@carmen.d', 2 ),
+	array( 'Diego Moreno', '', 1 ),
+);
+$fotos    = array();
+foreach ( $personas as $n => $persona ) {
+	$fotos = array_merge( $fotos, concursos_demo_participante( $reto, $n, $persona[0], $persona[1], $persona[2] ) );
+}
+
+// En la fase de resultados: votos con empates en el primer y en el tercer lugar.
+if ( 'finalizado' === $fase ) {
+	concursos_demo_votos( $reto, $fotos, array( 6, 6, 4, 3, 3, 2, 1, 0, 0 ), $votantes );
+}
+
+// 4. Retos anteriores, para la portada y los perfiles.
+$anteriores = array(
+	array( 'Reto anterior: reflejos', array( '-60 days', '-50 days', '-45 days', '-40 days' ), 3, array( 'Una suscripción de fotografía', 'Un trípode', 'Un libro de fotografía' ), array( 0, 1, 2, 3 ), array( 5, 3, 3, 1 ) ),
+	array( 'Reto anterior: calles vacías', array( '-100 days', '-90 days', '-85 days', '-80 days' ), 1, array( 'Una mochila para cámara', '', '' ), array( 0, 4, 5 ), array( 2, 4, 0 ) ),
+);
+foreach ( $anteriores as $datos ) {
+	$pasado = concursos_demo_reto(
+		$datos[0],
+		'Un reto ya terminado, de demostración.',
+		array_map( 'strtotime', $datos[1] ),
+		array(
+			'votos_por_votante' => 3,
+			'lugares'           => $datos[2],
+			'premios'           => $datos[3],
+		)
+	);
+	$suyas  = array();
+	foreach ( $datos[4] as $n ) {
+		$suyas = array_merge( $suyas, concursos_demo_participante( $pasado, $n, $personas[ $n ][0], $personas[ $n ][1], 1 ) );
+	}
+	concursos_demo_votos( $pasado, $suyas, $datos[5], $votantes );
+}
+
+WP_CLI::success( sprintf( 'Reto #%d listo en fase "%s" con %d participantes y %d fotos: %s', $reto, $fase, count( $personas ), count( $fotos ), get_permalink( $reto ) ) );
