@@ -32,8 +32,8 @@ class Concursos_Admin {
 	public static function menu() {
 		add_submenu_page(
 			'edit.php?post_type=' . Concursos_Post_Types::RETO,
-			__( 'Panel de retos', 'concursos' ),
-			__( 'Panel', 'concursos' ),
+			__( 'Challenges dashboard', 'concursos' ),
+			__( 'Dashboard', 'concursos' ),
 			'edit_posts',
 			self::PANEL,
 			array( __CLASS__, 'render_panel' ),
@@ -72,17 +72,17 @@ class Concursos_Admin {
 		$new_url  = admin_url( 'post-new.php?post_type=' . Concursos_Post_Types::RETO );
 
 		$stats = array(
-			array( __( 'Retos', 'concursos' ), count( $retos ) ),
-			array( __( 'En curso', 'concursos' ), $en_curso ),
-			array( __( 'Recibiendo fotos', 'concursos' ), $counts['envios'] ),
-			array( __( 'En votación', 'concursos' ), $counts['votacion'] ),
-			array( __( 'Próximos', 'concursos' ), $counts['proximo'] ),
-			array( __( 'Finalizados', 'concursos' ), $counts['finalizado'] ),
+			array( __( 'Challenges', 'concursos' ), count( $retos ) ),
+			array( __( 'In progress', 'concursos' ), $en_curso ),
+			array( __( 'Accepting photos', 'concursos' ), $counts['envios'] ),
+			array( __( 'Voting', 'concursos' ), $counts['votacion'] ),
+			array( __( 'Upcoming challenges', 'concursos' ), $counts['proximo'] ),
+			array( __( 'Finished challenges', 'concursos' ), $counts['finalizado'] ),
 		);
 		?>
 		<div class="wrap concursos-panel">
-			<h1 class="wp-heading-inline"><?php esc_html_e( 'Panel de retos', 'concursos' ); ?></h1>
-			<a href="<?php echo esc_url( $new_url ); ?>" class="page-title-action"><?php esc_html_e( 'Nuevo reto', 'concursos' ); ?></a>
+			<h1 class="wp-heading-inline"><?php esc_html_e( 'Challenges dashboard', 'concursos' ); ?></h1>
+			<a href="<?php echo esc_url( $new_url ); ?>" class="page-title-action"><?php esc_html_e( 'New challenge', 'concursos' ); ?></a>
 			<hr class="wp-header-end">
 
 			<div class="concursos-stats">
@@ -96,20 +96,20 @@ class Concursos_Admin {
 
 			<?php if ( ! $retos ) : ?>
 				<div class="concursos-empty">
-					<p><?php esc_html_e( 'Todavía no hay retos.', 'concursos' ); ?></p>
-					<a href="<?php echo esc_url( $new_url ); ?>" class="button button-primary button-hero"><?php esc_html_e( 'Crear el primer reto', 'concursos' ); ?></a>
+					<p><?php esc_html_e( 'There are no challenges yet.', 'concursos' ); ?></p>
+					<a href="<?php echo esc_url( $new_url ); ?>" class="button button-primary button-hero"><?php esc_html_e( 'Create the first challenge', 'concursos' ); ?></a>
 				</div>
 			<?php else : ?>
 				<table class="wp-list-table widefat fixed striped">
 					<thead>
 						<tr>
-							<th scope="col" class="column-primary"><?php esc_html_e( 'Reto', 'concursos' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Estado', 'concursos' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Envíos hasta', 'concursos' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Votación hasta', 'concursos' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Resultados', 'concursos' ); ?></th>
-							<th scope="col" title="<?php esc_attr_e( 'Activos / inscritos', 'concursos' ); ?>"><?php esc_html_e( 'Participantes', 'concursos' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Fotos', 'concursos' ); ?></th>
+							<th scope="col" class="column-primary"><?php esc_html_e( 'Challenge', 'concursos' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Status', 'concursos' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Submissions until', 'concursos' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Voting until', 'concursos' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Results', 'concursos' ); ?></th>
+							<th scope="col" title="<?php esc_attr_e( 'Active / registered', 'concursos' ); ?>"><?php esc_html_e( 'Participants', 'concursos' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Photos', 'concursos' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -120,7 +120,7 @@ class Concursos_Admin {
 									<?php if ( 'publish' !== $reto['post']->post_status ) : ?>
 										— <span class="post-state"><?php echo esc_html( get_post_status_object( $reto['post']->post_status )->label ); ?></span>
 									<?php endif; ?>
-									<div class="row-actions"><a href="<?php echo esc_url( Concursos_Duplicar::url( $reto['post']->ID ) ); ?>"><?php esc_html_e( 'Duplicar', 'concursos' ); ?></a></div>
+									<div class="row-actions"><a href="<?php echo esc_url( Concursos_Duplicar::url( $reto['post']->ID ) ); ?>"><?php esc_html_e( 'Duplicate', 'concursos' ); ?></a></div>
 								</td>
 								<td><?php self::status_badge( $reto['status'] ); ?></td>
 								<td><?php echo esc_html( Concursos_Reto::format_date( $reto['settings']['fin_envios'] ) ); ?></td>
@@ -155,8 +155,8 @@ class Concursos_Admin {
 		$date = $columns['date'] ?? null;
 		unset( $columns['date'] );
 
-		$columns['concursos_estado']     = __( 'Estado', 'concursos' );
-		$columns['concursos_fin_envios'] = __( 'Envíos hasta', 'concursos' );
+		$columns['concursos_estado']     = __( 'Status', 'concursos' );
+		$columns['concursos_fin_envios'] = __( 'Submissions until', 'concursos' );
 		if ( $date ) {
 			$columns['date'] = $date;
 		}

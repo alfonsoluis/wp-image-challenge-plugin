@@ -63,18 +63,18 @@ class Concursos_Participante {
 			self::POST_TYPE,
 			array(
 				'labels'              => array(
-					'name'                  => __( 'Participantes', 'concursos' ),
-					'singular_name'         => __( 'Participante', 'concursos' ),
-					'menu_name'             => __( 'Participantes', 'concursos' ),
-					'all_items'             => __( 'Participantes', 'concursos' ),
-					'edit_item'             => __( 'Editar participante', 'concursos' ),
-					'search_items'          => __( 'Buscar participantes', 'concursos' ),
-					'not_found'             => __( 'No hay participantes.', 'concursos' ),
-					'not_found_in_trash'    => __( 'No hay participantes en la papelera.', 'concursos' ),
-					'featured_image'        => __( 'Foto de perfil', 'concursos' ),
-					'set_featured_image'    => __( 'Elegir foto de perfil', 'concursos' ),
-					'remove_featured_image' => __( 'Quitar foto de perfil', 'concursos' ),
-					'use_featured_image'    => __( 'Usar como foto de perfil', 'concursos' ),
+					'name'                  => __( 'Participants', 'concursos' ),
+					'singular_name'         => __( 'Participant', 'concursos' ),
+					'menu_name'             => __( 'Participants', 'concursos' ),
+					'all_items'             => __( 'Participants', 'concursos' ),
+					'edit_item'             => __( 'Edit participant', 'concursos' ),
+					'search_items'          => __( 'Search participants', 'concursos' ),
+					'not_found'             => __( 'No participants.', 'concursos' ),
+					'not_found_in_trash'    => __( 'No participants in the trash.', 'concursos' ),
+					'featured_image'        => __( 'Profile photo', 'concursos' ),
+					'set_featured_image'    => __( 'Choose profile photo', 'concursos' ),
+					'remove_featured_image' => __( 'Remove profile photo', 'concursos' ),
+					'use_featured_image'    => __( 'Use as profile photo', 'concursos' ),
 				),
 				'public'              => false,
 				'show_ui'             => true,
@@ -96,9 +96,9 @@ class Concursos_Participante {
 	 */
 	public static function estado_labels() {
 		return array(
-			self::PENDIENTE => __( 'Pendiente', 'concursos' ),
-			self::ACTIVO    => __( 'Activo', 'concursos' ),
-			self::INACTIVO  => __( 'Inactivo', 'concursos' ),
+			self::PENDIENTE => __( 'Pending', 'concursos' ),
+			self::ACTIVO    => __( 'Active', 'concursos' ),
+			self::INACTIVO  => __( 'Inactive', 'concursos' ),
 		);
 	}
 

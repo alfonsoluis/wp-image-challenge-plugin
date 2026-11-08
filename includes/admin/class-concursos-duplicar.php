@@ -53,7 +53,7 @@ class Concursos_Duplicar {
 	 */
 	public static function row_action( $actions, $post ) {
 		if ( Concursos_Post_Types::RETO === $post->post_type && current_user_can( 'edit_post', $post->ID ) ) {
-			$actions['concursos_duplicar'] = sprintf( '<a href="%s">%s</a>', esc_url( self::url( $post->ID ) ), esc_html__( 'Duplicar', 'concursos' ) );
+			$actions['concursos_duplicar'] = sprintf( '<a href="%s">%s</a>', esc_url( self::url( $post->ID ) ), esc_html__( 'Duplicate', 'concursos' ) );
 		}
 
 		return $actions;
@@ -63,7 +63,7 @@ class Concursos_Duplicar {
 	 * Registra la pantalla, fuera del menú: se llega desde cada reto.
 	 */
 	public static function menu() {
-		add_submenu_page( 'options.php', __( 'Duplicar reto', 'concursos' ), __( 'Duplicar reto', 'concursos' ), 'edit_posts', self::PAGE, array( __CLASS__, 'render' ) );
+		add_submenu_page( 'options.php', __( 'Duplicate challenge', 'concursos' ), __( 'Duplicate challenge', 'concursos' ), 'edit_posts', self::PAGE, array( __CLASS__, 'render' ) );
 	}
 
 	/**
@@ -112,19 +112,19 @@ class Concursos_Duplicar {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- solo elige qué reto mostrar.
 		$id = isset( $_GET['reto'] ) ? absint( $_GET['reto'] ) : 0;
 		if ( ! self::puede( $id ) ) {
-			wp_die( esc_html__( 'No puedes duplicar este reto.', 'concursos' ) );
+			wp_die( esc_html__( 'You cannot duplicate this challenge.', 'concursos' ) );
 		}
 		$activos = count( self::activos( $id ) );
 		?>
 		<div class="wrap">
 			<h1>
 				<?php
-				/* translators: %s: nombre del reto. */
-				echo esc_html( sprintf( __( 'Duplicar «%s»', 'concursos' ), get_the_title( $id ) ) );
+				/* translators: %s: challenge name. */
+				echo esc_html( sprintf( __( 'Duplicate “%s”', 'concursos' ), get_the_title( $id ) ) );
 				?>
 			</h1>
-			<p><?php esc_html_e( 'Se crea un borrador con la misma descripción, imagen, reglas, premios, configuración y diseño. Las fechas quedan vacías para que elijas las nuevas. Las fotos y los votos no se copian.', 'concursos' ); ?></p>
-			<p><?php esc_html_e( 'Los votantes confirmados pueden votar en el reto nuevo sin hacer nada.', 'concursos' ); ?></p>
+			<p><?php esc_html_e( 'This creates a draft with the same description, image, rules, prizes, settings and design. The dates are left empty so you can choose new ones. Photos and votes are not copied.', 'concursos' ); ?></p>
+			<p><?php esc_html_e( 'Confirmed voters can vote in the new challenge without doing anything.', 'concursos' ); ?></p>
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<input type="hidden" name="action" value="<?php echo esc_attr( self::ACTION ); ?>">
 				<input type="hidden" name="reto" value="<?php echo esc_attr( $id ); ?>">
@@ -133,13 +133,13 @@ class Concursos_Duplicar {
 					<label>
 						<input type="checkbox" name="participantes" value="1" <?php disabled( 0, $activos ); ?>>
 						<?php
-						/* translators: %d: número de participantes activos. */
-						echo esc_html( sprintf( _n( 'Copiar también su %d participante activo', 'Copiar también sus %d participantes activos', $activos, 'concursos' ), $activos ) );
+						/* translators: %d: number of active participants. */
+						echo esc_html( sprintf( _n( 'Also copy its %d active participant', 'Also copy its %d active participants', $activos, 'concursos' ), $activos ) );
 						?>
 					</label>
 				</p>
-				<p class="description"><?php esc_html_e( 'Quedarán activos en el reto nuevo y recibirán su enlace personal por email cuando lo publiques, no antes.', 'concursos' ); ?></p>
-				<?php submit_button( __( 'Crear la copia', 'concursos' ) ); ?>
+				<p class="description"><?php esc_html_e( 'They will be active in the new challenge and will receive their personal link by email when you publish it, not before.', 'concursos' ); ?></p>
+				<?php submit_button( __( 'Create the copy', 'concursos' ) ); ?>
 			</form>
 		</div>
 		<?php
@@ -152,7 +152,7 @@ class Concursos_Duplicar {
 		$id = isset( $_POST['reto'] ) ? absint( $_POST['reto'] ) : 0;
 		check_admin_referer( self::ACTION . '_' . $id );
 		if ( ! self::puede( $id ) ) {
-			wp_die( esc_html__( 'No puedes duplicar este reto.', 'concursos' ) );
+			wp_die( esc_html__( 'You cannot duplicate this challenge.', 'concursos' ) );
 		}
 
 		$original = get_post( $id );
@@ -160,8 +160,8 @@ class Concursos_Duplicar {
 			array(
 				'post_type'    => Concursos_Post_Types::RETO,
 				'post_status'  => 'draft',
-				/* translators: %s: nombre del reto. */
-				'post_title'   => sprintf( __( '%s (copia)', 'concursos' ), $original->post_title ),
+				/* translators: %s: challenge name. */
+				'post_title'   => sprintf( __( '%s (copy)', 'concursos' ), $original->post_title ),
 				'post_content' => $original->post_content,
 			),
 			true
@@ -247,9 +247,9 @@ class Concursos_Duplicar {
 			'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
 			esc_html(
 				$n
-					/* translators: %d: número de participantes copiados. */
-					? sprintf( _n( 'Copia creada con %d participante. Elige las fechas y publícala: entonces recibirá su enlace personal.', 'Copia creada con %d participantes. Elige las fechas y publícala: entonces recibirán su enlace personal.', $n, 'concursos' ), $n )
-					: __( 'Copia creada. Elige las fechas y publícala.', 'concursos' )
+					/* translators: %d: number of copied participants. */
+					? sprintf( _n( 'Copy created with %d participant. Choose the dates and publish it: they will then receive their personal link.', 'Copy created with %d participants. Choose the dates and publish it: they will then receive their personal links.', $n, 'concursos' ), $n )
+					: __( 'Copy created. Choose the dates and publish it.', 'concursos' )
 			)
 		);
 	}

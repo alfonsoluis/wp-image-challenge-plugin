@@ -22,16 +22,58 @@ class Concursos_Reto_Metabox {
 		add_action( 'save_post_' . Concursos_Post_Types::RETO, array( __CLASS__, 'save' ), 10, 2 );
 		add_action( 'admin_notices', array( __CLASS__, 'notices' ) );
 		add_action( 'edit_form_after_title', array( __CLASS__, 'description_heading' ) );
+		add_action( 'post_submitbox_misc_actions', array( __CLASS__, 'accion_archivar' ) );
+		add_filter( 'wp_insert_post_data', array( __CLASS__, 'archivar_al_guardar' ), 10, 2 );
+	}
+
+	/**
+	 * Opción de archivar en la caja de publicación.
+	 *
+	 * @param WP_Post $post Post.
+	 */
+	public static function accion_archivar( $post ) {
+		if ( Concursos_Post_Types::RETO !== $post->post_type ) {
+			return;
+		}
+
+		echo '<div class="misc-pub-section">';
+		if ( Concursos_Post_Types::ARCHIVADO === $post->post_status ) {
+			echo '<input type="hidden" name="concursos_archivar" value="1">';
+			echo '<strong>' . esc_html__( 'Archived:', 'concursos' ) . '</strong> ' . esc_html__( 'this challenge is hidden from the site. Publish it to show it.', 'concursos' );
+		} else {
+			echo '<button type="submit" class="button-link" name="concursos_archivar" value="1">' . esc_html__( 'Archive this challenge', 'concursos' ) . '</button>';
+			echo '<p class="description">' . esc_html__( 'Archived challenges are hidden from the site and send no notifications.', 'concursos' ) . '</p>';
+		}
+		echo '</div>';
+	}
+
+	/**
+	 * Guarda el reto como archivado si se pidió, salvo que se esté publicando.
+	 *
+	 * @param array $data    Datos del post.
+	 * @param array $postarr Datos recibidos.
+	 * @return array
+	 */
+	public static function archivar_al_guardar( $data, $postarr ) {
+		if ( Concursos_Post_Types::RETO !== $data['post_type'] || empty( $_POST['concursos_archivar'] ) || isset( $_POST['publish'] ) ) {
+			return $data;
+		}
+		$nonce = isset( $_POST[ self::NONCE ] ) ? sanitize_key( wp_unslash( $_POST[ self::NONCE ] ) ) : '';
+		if ( wp_verify_nonce( $nonce, 'concursos_save_reto' ) && current_user_can( 'edit_post', (int) $postarr['ID'] ) ) {
+			$data['post_status'] = Concursos_Post_Types::ARCHIVADO;
+		}
+
+		return $data;
 	}
 
 	/**
 	 * Registra las cajas.
 	 */
 	public static function add() {
-		add_meta_box( 'concursos-calendario', __( 'Calendario', 'concursos' ), array( __CLASS__, 'render_calendar' ), null, 'normal', 'high' );
-		add_meta_box( 'concursos-reglas', __( 'Reglas', 'concursos' ), array( __CLASS__, 'render_rules' ), null, 'normal', 'high' );
-		add_meta_box( 'concursos-votacion', __( 'Participación, votación y premios', 'concursos' ), array( __CLASS__, 'render_voting' ), null, 'normal', 'high' );
-		add_meta_box( 'concursos-diseno', __( 'Diseño', 'concursos' ), array( __CLASS__, 'render_design' ), null, 'normal', 'high' );
+		add_meta_box( 'concursos-calendario', __( 'Schedule', 'concursos' ), array( __CLASS__, 'render_calendar' ), null, 'normal', 'high' );
+		add_meta_box( 'concursos-reglas', __( 'Rules', 'concursos' ), array( __CLASS__, 'render_rules' ), null, 'normal', 'high' );
+		add_meta_box( 'concursos-votacion', __( 'Participation, voting and prizes', 'concursos' ), array( __CLASS__, 'render_voting' ), null, 'normal', 'high' );
+		add_meta_box( 'concursos-diseno', __( 'Design', 'concursos' ), array( __CLASS__, 'render_design' ), null, 'normal', 'high' );
 	}
 
 	/**
@@ -41,7 +83,7 @@ class Concursos_Reto_Metabox {
 	 */
 	public static function description_heading( $post ) {
 		if ( Concursos_Post_Types::RETO === $post->post_type ) {
-			echo '<h2 class="concursos-section-title">' . esc_html__( 'Descripción general', 'concursos' ) . '</h2>';
+			echo '<h2 class="concursos-section-title">' . esc_html__( 'General description', 'concursos' ) . '</h2>';
 		}
 	}
 
@@ -67,7 +109,7 @@ class Concursos_Reto_Metabox {
 			<?php endforeach; ?>
 		</table>
 		<p class="description">
-			<?php esc_html_e( 'Envíos: del inicio al fin de los envíos. Votación: del fin de los envíos al fin de la votación. Entre el fin de la votación y la publicación de resultados se revisan los votos.', 'concursos' ); ?>
+			<?php esc_html_e( 'Submissions: from the start until the end of submissions. Voting: from the end of submissions until the end of voting. Votes are reviewed between the end of voting and the publication of results.', 'concursos' ); ?>
 		</p>
 		<?php
 	}
@@ -80,7 +122,7 @@ class Concursos_Reto_Metabox {
 	public static function render_rules( $post ) {
 		$s = Concursos_Reto::get_settings( $post->ID );
 		?>
-		<p><label for="concursos-reglas"><?php esc_html_e( 'Una regla por línea.', 'concursos' ); ?></label></p>
+		<p><label for="concursos-reglas"><?php esc_html_e( 'One rule per line.', 'concursos' ); ?></label></p>
 		<textarea id="concursos-reglas" name="concursos[reglas]" rows="6" class="large-text"><?php echo esc_textarea( $s['reglas'] ); ?></textarea>
 		<?php
 	}
@@ -96,7 +138,7 @@ class Concursos_Reto_Metabox {
 		?>
 		<table class="form-table concursos-form">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Visibilidad de las fotos', 'concursos' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Photo visibility', 'concursos' ); ?></th>
 				<td>
 					<?php foreach ( $choices['modo'] as $value => $label ) : ?>
 						<label class="concursos-radio concursos-radio--block">
@@ -107,18 +149,18 @@ class Concursos_Reto_Metabox {
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="concursos-max-fotos"><?php esc_html_e( 'Fotos por participante', 'concursos' ); ?></label></th>
+				<th scope="row"><label for="concursos-max-fotos"><?php esc_html_e( 'Photos per participant', 'concursos' ); ?></label></th>
 				<td><input type="number" id="concursos-max-fotos" name="concursos[max_fotos]" min="1" max="20" value="<?php echo esc_attr( $s['max_fotos'] ); ?>" class="small-text"></td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="concursos-votos"><?php esc_html_e( 'Votos por votante', 'concursos' ); ?></label></th>
+				<th scope="row"><label for="concursos-votos"><?php esc_html_e( 'Votes per voter', 'concursos' ); ?></label></th>
 				<td>
 					<select id="concursos-votos" name="concursos[votos_por_votante]">
 						<?php for ( $i = 1; $i <= 3; $i++ ) : ?>
 							<option value="<?php echo esc_attr( $i ); ?>" <?php selected( (int) $s['votos_por_votante'], $i ); ?>>
 								<?php
-								/* translators: %d: número de fotos por las que se puede votar. */
-								echo esc_html( sprintf( _n( '%d foto', 'Hasta %d fotos', $i, 'concursos' ), $i ) );
+								/* translators: %d: number of photos a voter can choose. */
+								echo esc_html( sprintf( _n( '%d photo only', 'Up to %d photos', $i, 'concursos' ), $i ) );
 								?>
 							</option>
 						<?php endfor; ?>
@@ -126,7 +168,7 @@ class Concursos_Reto_Metabox {
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Ganadores', 'concursos' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Winners', 'concursos' ); ?></th>
 				<td>
 					<?php foreach ( $choices['lugares'] as $value => $label ) : ?>
 						<label class="concursos-radio">
@@ -138,16 +180,16 @@ class Concursos_Reto_Metabox {
 			</tr>
 			<?php
 			$places = array(
-				__( 'Premio del 1.er lugar', 'concursos' ),
-				__( 'Premio del 2.º lugar', 'concursos' ),
-				__( 'Premio del 3.er lugar', 'concursos' ),
+				__( '1st place prize', 'concursos' ),
+				__( '2nd place prize', 'concursos' ),
+				__( '3rd place prize', 'concursos' ),
 			);
 			foreach ( $places as $i => $label ) :
 				?>
 				<tr class="<?php echo $i > 0 ? 'concursos-if-tres-lugares' : ''; ?>">
 					<th scope="row"><label for="concursos-premio-<?php echo esc_attr( $i ); ?>"><?php echo esc_html( $label ); ?></label></th>
 					<td>
-						<input type="text" id="concursos-premio-<?php echo esc_attr( $i ); ?>" name="concursos[premios][<?php echo esc_attr( $i ); ?>]" value="<?php echo esc_attr( $s['premios'][ $i ] ); ?>" class="regular-text" placeholder="<?php esc_attr_e( 'Opcional', 'concursos' ); ?>">
+						<input type="text" id="concursos-premio-<?php echo esc_attr( $i ); ?>" name="concursos[premios][<?php echo esc_attr( $i ); ?>]" value="<?php echo esc_attr( $s['premios'][ $i ] ); ?>" class="regular-text" placeholder="<?php esc_attr_e( 'Optional', 'concursos' ); ?>">
 					</td>
 				</tr>
 			<?php endforeach; ?>
@@ -165,11 +207,11 @@ class Concursos_Reto_Metabox {
 		?>
 		<table class="form-table concursos-form">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Colores', 'concursos' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Colors', 'concursos' ); ?></th>
 				<td class="concursos-opciones">
 					<label class="concursos-opcion">
 						<input type="radio" name="concursos[paleta]" value="<?php echo esc_attr( Concursos_Diseno::TEMA ); ?>" <?php checked( $s['paleta'], Concursos_Diseno::TEMA ); ?>>
-						<span><?php esc_html_e( 'Los del tema', 'concursos' ); ?></span>
+						<span><?php esc_html_e( 'Theme colors', 'concursos' ); ?></span>
 					</label>
 					<?php foreach ( Concursos_Diseno::paletas() as $clave => $p ) : ?>
 						<label class="concursos-opcion">
@@ -185,7 +227,7 @@ class Concursos_Reto_Metabox {
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Tamaño del texto', 'concursos' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Text size', 'concursos' ); ?></th>
 				<td>
 					<?php foreach ( Concursos_Diseno::tamanos() as $clave => $t ) : ?>
 						<label class="concursos-radio">
@@ -239,7 +281,7 @@ class Concursos_Reto_Metabox {
 		delete_transient( $key );
 		?>
 		<div class="notice notice-warning is-dismissible">
-			<p><strong><?php esc_html_e( 'El reto se guardó, pero revisa su configuración:', 'concursos' ); ?></strong></p>
+			<p><strong><?php esc_html_e( 'The challenge was saved, but check its settings:', 'concursos' ); ?></strong></p>
 			<ul class="ul-disc">
 				<?php foreach ( (array) $errors as $error ) : ?>
 					<li><?php echo esc_html( $error ); ?></li>

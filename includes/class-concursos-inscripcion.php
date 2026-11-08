@@ -85,14 +85,14 @@ class Concursos_Inscripcion {
 	 */
 	private static function messages() {
 		return array(
-			'ok'        => array( 'success', __( '¡Gracias! Recibimos tu inscripción. Te escribiremos cuando la aprobemos.', 'concursos' ) ),
-			'nombre'    => array( 'error', __( 'Escribe tu nombre.', 'concursos' ) ),
-			'email'     => array( 'error', __( 'Escribe un email válido.', 'concursos' ) ),
-			'reto'      => array( 'error', __( 'Elige un reto abierto.', 'concursos' ) ),
-			'duplicado' => array( 'error', __( 'Ya hay una inscripción con ese email en ese reto.', 'concursos' ) ),
-			'foto'      => array( 'error', __( 'La foto debe ser JPG, PNG o WebP de 5 MB como máximo.', 'concursos' ) ),
-			'privacidad' => array( 'error', __( 'Debes aceptar el uso de tus datos para inscribirte.', 'concursos' ) ),
-			'error'     => array( 'error', __( 'No pudimos guardar tu inscripción. Inténtalo de nuevo.', 'concursos' ) ),
+			'ok'        => array( 'success', __( 'Thank you! We received your registration. We will write to you when it is approved.', 'concursos' ) ),
+			'nombre'    => array( 'error', __( 'Enter your name.', 'concursos' ) ),
+			'email'     => array( 'error', __( 'Enter a valid email address.', 'concursos' ) ),
+			'reto'      => array( 'error', __( 'Choose an open challenge.', 'concursos' ) ),
+			'duplicado' => array( 'error', __( 'That email is already registered for that challenge.', 'concursos' ) ),
+			'foto'      => array( 'error', __( 'The photo must be a JPG, PNG or WebP of up to 5 MB.', 'concursos' ) ),
+			'privacidad' => array( 'error', __( 'You must accept the use of your data to register.', 'concursos' ) ),
+			'error'     => array( 'error', __( 'We could not save your registration. Please try again.', 'concursos' ) ),
 		);
 	}
 
@@ -121,18 +121,18 @@ class Concursos_Inscripcion {
 			<?php endif; ?>
 
 			<?php if ( ! $retos ) : ?>
-				<p><?php esc_html_e( 'Ahora mismo no hay retos abiertos a inscripción.', 'concursos' ); ?></p>
+				<p><?php esc_html_e( 'There are no challenges open for registration right now.', 'concursos' ); ?></p>
 			<?php elseif ( 'ok' !== $code ) : ?>
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data" class="concursos-form-publico">
 					<input type="hidden" name="action" value="<?php echo esc_attr( self::ACTION ); ?>">
 					<?php wp_nonce_field( self::ACTION ); ?>
 
 					<p class="concursos-hp" aria-hidden="true">
-						<label><?php esc_html_e( 'No rellenes este campo', 'concursos' ); ?> <input type="text" name="web" tabindex="-1" autocomplete="off"></label>
+						<label><?php esc_html_e( 'Do not fill in this field', 'concursos' ); ?> <input type="text" name="web" tabindex="-1" autocomplete="off"></label>
 					</p>
 
 					<p>
-						<label for="concursos-nombre"><?php esc_html_e( 'Nombre', 'concursos' ); ?> *</label>
+						<label for="concursos-nombre"><?php esc_html_e( 'Name', 'concursos' ); ?> *</label>
 						<input type="text" id="concursos-nombre" name="nombre" required maxlength="100" autocomplete="name">
 					</p>
 					<p>
@@ -140,10 +140,10 @@ class Concursos_Inscripcion {
 						<input type="email" id="concursos-email" name="email" required autocomplete="email">
 					</p>
 					<p>
-						<label for="concursos-reto"><?php esc_html_e( 'Reto', 'concursos' ); ?> *</label>
+						<label for="concursos-reto"><?php esc_html_e( 'Challenge', 'concursos' ); ?> *</label>
 						<select id="concursos-reto" name="reto" required>
 							<?php if ( count( $retos ) > 1 ) : ?>
-								<option value=""><?php esc_html_e( 'Elige un reto', 'concursos' ); ?></option>
+								<option value=""><?php esc_html_e( 'Choose a challenge', 'concursos' ); ?></option>
 							<?php endif; ?>
 							<?php foreach ( $retos as $reto ) : ?>
 								<option value="<?php echo esc_attr( $reto['post']->ID ); ?>" <?php selected( $elegido, $reto['post']->ID ); ?>><?php echo esc_html( get_the_title( $reto['post'] ) ); ?></option>
@@ -151,31 +151,31 @@ class Concursos_Inscripcion {
 						</select>
 					</p>
 					<p>
-						<label for="concursos-foto"><?php esc_html_e( 'Foto de perfil (opcional)', 'concursos' ); ?></label>
+						<label for="concursos-foto"><?php esc_html_e( 'Profile photo (optional)', 'concursos' ); ?></label>
 						<input type="file" id="concursos-foto" name="foto" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
-						<small><?php esc_html_e( 'JPG, PNG o WebP, hasta 5 MB.', 'concursos' ); ?></small>
+						<small><?php esc_html_e( 'JPG, PNG or WebP, up to 5 MB.', 'concursos' ); ?></small>
 					</p>
 					<p>
-						<label for="concursos-instagram"><?php esc_html_e( 'Instagram (opcional)', 'concursos' ); ?></label>
+						<label for="concursos-instagram"><?php esc_html_e( 'Instagram (optional)', 'concursos' ); ?></label>
 						<input type="text" id="concursos-instagram" name="instagram" maxlength="100" placeholder="@usuario">
 					</p>
 					<p>
-						<label for="concursos-facebook"><?php esc_html_e( 'Facebook (opcional)', 'concursos' ); ?></label>
+						<label for="concursos-facebook"><?php esc_html_e( 'Facebook (optional)', 'concursos' ); ?></label>
 						<input type="text" id="concursos-facebook" name="facebook" maxlength="100" placeholder="usuario">
 					</p>
 					<p class="concursos-casilla">
 						<label>
 							<input type="checkbox" name="privacidad" value="1" required>
-							<?php esc_html_e( 'Acepto que se guarden estos datos para gestionar mi participación, y que mi nombre, mi foto y mis redes se muestren junto a mis fotos.', 'concursos' ); ?>
+							<?php esc_html_e( 'I agree that this data is stored to manage my participation, and that my name, photo and social networks are shown next to my photos.', 'concursos' ); ?>
 							<?php
 							$politica = get_privacy_policy_url();
 							if ( $politica ) :
 								?>
-								<a href="<?php echo esc_url( $politica ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Política de privacidad', 'concursos' ); ?></a>
+								<a href="<?php echo esc_url( $politica ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Privacy policy', 'concursos' ); ?></a>
 							<?php endif; ?>
 						</label>
 					</p>
-					<p><button type="submit"><?php esc_html_e( 'Inscribirme', 'concursos' ); ?></button></p>
+					<p><button type="submit"><?php esc_html_e( 'Register', 'concursos' ); ?></button></p>
 				</form>
 			<?php endif; ?>
 		</div>
@@ -370,11 +370,11 @@ class Concursos_Inscripcion {
 
 		return wp_mail(
 			$p['email'],
-			/* translators: %s: nombre del reto. */
-			sprintf( __( 'Recibimos tu inscripción: %s', 'concursos' ), $reto ),
+			/* translators: %s: challenge name. */
+			sprintf( __( 'We received your registration: %s', 'concursos' ), $reto ),
 			sprintf(
-				/* translators: 1: nombre del participante, 2: nombre del reto, 3: nombre del sitio. */
-				__( "Hola %1\$s:\n\nRecibimos tu inscripción en el reto «%2\$s». Te escribiremos cuando la revisemos y la aprobemos.\n\n%3\$s", 'concursos' ),
+				/* translators: 1: participant name, 2: challenge name, 3: site name. */
+				__( "Hello %1\$s,\n\nWe received your registration for the challenge “%2\$s”. We will write to you once we have reviewed and approved it.\n\n%3\$s", 'concursos' ),
 				$p['nombre'],
 				$reto,
 				get_bloginfo( 'name' )
@@ -395,11 +395,11 @@ class Concursos_Inscripcion {
 
 		return wp_mail(
 			$p['email'],
-			/* translators: %s: nombre del reto. */
-			sprintf( __( 'Ya puedes participar en «%s»', 'concursos' ), $reto ),
+			/* translators: %s: challenge name. */
+			sprintf( __( 'You can now take part in “%s”', 'concursos' ), $reto ),
 			sprintf(
-				/* translators: 1: nombre del participante, 2: nombre del reto, 3: enlace personal, 4: nombre del sitio. */
-				__( "Hola %1\$s:\n\nAprobamos tu inscripción en el reto «%2\$s».\n\nEste es tu enlace personal para enviar tus fotos. No lo compartas: quien lo tenga puede enviar fotos en tu nombre.\n\n%3\$s\n\n%4\$s", 'concursos' ),
+				/* translators: 1: participant name, 2: challenge name, 3: personal link, 4: site name. */
+				__( "Hello %1\$s,\n\nWe approved your registration for the challenge “%2\$s”.\n\nThis is your personal link to submit your photos. Do not share it: anyone who has it can submit photos in your name.\n\n%3\$s\n\n%4\$s", 'concursos' ),
 				$p['nombre'],
 				$reto,
 				self::personal_link( $token ),

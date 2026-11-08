@@ -32,12 +32,12 @@ class Concursos_Envio {
 	 */
 	private static function messages() {
 		return array(
-			'subida'    => array( 'success', __( '¡Foto enviada!', 'concursos' ) ),
-			'eliminada' => array( 'success', __( 'Foto eliminada.', 'concursos' ) ),
-			'cerrado'   => array( 'error', __( 'El periodo de envíos no está abierto.', 'concursos' ) ),
-			'limite'    => array( 'error', __( 'Ya enviaste el máximo de fotos de este reto.', 'concursos' ) ),
-			'foto'      => array( 'error', __( 'La foto debe ser JPG, PNG o WebP de 10 MB como máximo.', 'concursos' ) ),
-			'error'     => array( 'error', __( 'No pudimos completar la acción. Inténtalo de nuevo.', 'concursos' ) ),
+			'subida'    => array( 'success', __( 'Photo submitted!', 'concursos' ) ),
+			'eliminada' => array( 'success', __( 'Photo deleted.', 'concursos' ) ),
+			'cerrado'   => array( 'error', __( 'The submission period is not open.', 'concursos' ) ),
+			'limite'    => array( 'error', __( 'You have already submitted the maximum number of photos for this challenge.', 'concursos' ) ),
+			'foto'      => array( 'error', __( 'The photo must be a JPG, PNG or WebP of up to 10 MB.', 'concursos' ) ),
+			'error'     => array( 'error', __( 'We could not complete the action. Please try again.', 'concursos' ) ),
 		);
 	}
 
@@ -59,12 +59,12 @@ class Concursos_Envio {
 		$token = sanitize_text_field( wp_unslash( $_GET[ Concursos_Inscripcion::LINK_PARAM ] ) );
 		$id    = Concursos_Participante::find_by_token( $token );
 		if ( ! $id ) {
-			self::render_message( 404, __( 'Enlace no válido', 'concursos' ), __( 'Este enlace no es válido. Revisa que lo hayas copiado completo.', 'concursos' ) );
+			self::render_message( 404, __( 'Invalid link', 'concursos' ), __( 'This link is not valid. Check that you copied all of it.', 'concursos' ) );
 		}
 
 		$p = Concursos_Participante::get( $id );
 		if ( Concursos_Participante::ACTIVO !== $p['estado'] ) {
-			self::render_message( 403, __( 'Inscripción no activa', 'concursos' ), __( 'Tu inscripción no está activa. Si crees que es un error, escríbenos.', 'concursos' ) );
+			self::render_message( 403, __( 'Registration not active', 'concursos' ), __( 'Your registration is not active. If you think this is a mistake, contact us.', 'concursos' ) );
 		}
 
 		if ( 'POST' === ( isset( $_SERVER['REQUEST_METHOD'] ) ? $_SERVER['REQUEST_METHOD'] : '' ) ) {
@@ -165,8 +165,8 @@ class Concursos_Envio {
 		?>
 		<h1>
 			<?php
-			/* translators: %s: nombre del participante. */
-			echo esc_html( sprintf( __( 'Hola, %s', 'concursos' ), $p['nombre'] ) );
+			/* translators: %s: participant name. */
+			echo esc_html( sprintf( __( 'Hello, %s', 'concursos' ), $p['nombre'] ) );
 			?>
 		</h1>
 		<p class="concursos-reto-nombre"><?php echo esc_html( get_the_title( $p['reto'] ) ); ?></p>
@@ -178,21 +178,21 @@ class Concursos_Envio {
 		<p class="concursos-plazo">
 			<?php
 			if ( $abierto ) {
-				/* translators: %s: fecha de fin de los envíos. */
-				echo esc_html( sprintf( __( 'Puedes enviar fotos hasta el %s.', 'concursos' ), Concursos_Reto::format_date( $reto['fin_envios'] ) ) );
+				/* translators: %s: submission end date. */
+				echo esc_html( sprintf( __( 'You can submit photos until %s.', 'concursos' ), Concursos_Reto::format_date( $reto['fin_envios'] ) ) );
 			} elseif ( 'proximo' === $status ) {
-				/* translators: %s: fecha de inicio del reto. */
-				echo esc_html( sprintf( __( 'El envío de fotos empieza el %s.', 'concursos' ), Concursos_Reto::format_date( $reto['inicio'] ) ) );
+				/* translators: %s: challenge start date. */
+				echo esc_html( sprintf( __( 'Photo submissions start on %s.', 'concursos' ), Concursos_Reto::format_date( $reto['inicio'] ) ) );
 			} else {
-				esc_html_e( 'El periodo de envíos de este reto está cerrado.', 'concursos' );
+				esc_html_e( 'The submission period for this challenge is closed.', 'concursos' );
 			}
 			?>
 		</p>
 
 		<h2>
 			<?php
-			/* translators: 1: fotos enviadas, 2: máximo de fotos. */
-			echo esc_html( sprintf( __( 'Tus fotos (%1$d de %2$d)', 'concursos' ), count( $enviadas ), $max ) );
+			/* translators: 1: photos submitted, 2: maximum photos. */
+			echo esc_html( sprintf( __( 'Your photos (%1$d of %2$d)', 'concursos' ), count( $enviadas ), $max ) );
 			?>
 		</h2>
 		<?php if ( $enviadas ) : ?>
@@ -202,32 +202,32 @@ class Concursos_Envio {
 						<?php echo get_the_post_thumbnail( $entrada, 'medium' ); ?>
 						<span><?php echo esc_html( get_the_title( $entrada ) ); ?></span>
 						<?php if ( $abierto ) : ?>
-							<form method="post" onsubmit="return confirm('<?php echo esc_js( __( '¿Eliminar esta foto?', 'concursos' ) ); ?>');">
+							<form method="post" onsubmit="return confirm('<?php echo esc_js( __( 'Delete this photo?', 'concursos' ) ); ?>');">
 								<input type="hidden" name="_wpnonce" value="<?php echo esc_attr( $nonce ); ?>">
-								<button type="submit" name="eliminar" value="<?php echo esc_attr( $entrada->ID ); ?>" class="concursos-boton-secundario"><?php esc_html_e( 'Eliminar', 'concursos' ); ?></button>
+								<button type="submit" name="eliminar" value="<?php echo esc_attr( $entrada->ID ); ?>" class="concursos-boton-secundario"><?php esc_html_e( 'Delete', 'concursos' ); ?></button>
 							</form>
 						<?php endif; ?>
 					</li>
 				<?php endforeach; ?>
 			</ul>
 		<?php else : ?>
-			<p><?php esc_html_e( 'Todavía no has enviado fotos.', 'concursos' ); ?></p>
+			<p><?php esc_html_e( 'You have not submitted any photos yet.', 'concursos' ); ?></p>
 		<?php endif; ?>
 
 		<?php if ( $abierto && $quedan > 0 ) : ?>
-			<h2><?php esc_html_e( 'Enviar una foto', 'concursos' ); ?></h2>
+			<h2><?php esc_html_e( 'Submit a photo', 'concursos' ); ?></h2>
 			<form method="post" enctype="multipart/form-data" class="concursos-form-publico">
 				<input type="hidden" name="_wpnonce" value="<?php echo esc_attr( $nonce ); ?>">
 				<p>
-					<label for="concursos-foto"><?php esc_html_e( 'Foto', 'concursos' ); ?> *</label>
+					<label for="concursos-foto"><?php esc_html_e( 'Photo', 'concursos' ); ?> *</label>
 					<input type="file" id="concursos-foto" name="foto" required accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
-					<small><?php esc_html_e( 'JPG, PNG o WebP, hasta 10 MB.', 'concursos' ); ?></small>
+					<small><?php esc_html_e( 'JPG, PNG or WebP, up to 10 MB.', 'concursos' ); ?></small>
 				</p>
 				<p>
-					<label for="concursos-titulo"><?php esc_html_e( 'Título (opcional)', 'concursos' ); ?></label>
+					<label for="concursos-titulo"><?php esc_html_e( 'Title (optional)', 'concursos' ); ?></label>
 					<input type="text" id="concursos-titulo" name="titulo" maxlength="100">
 				</p>
-				<p><button type="submit"><?php esc_html_e( 'Enviar foto', 'concursos' ); ?></button></p>
+				<p><button type="submit"><?php esc_html_e( 'Submit photo', 'concursos' ); ?></button></p>
 			</form>
 		<?php endif; ?>
 
@@ -235,16 +235,16 @@ class Concursos_Envio {
 		$rules = Concursos_Reto::rules_list( $reto['reglas'] );
 		if ( $rules ) :
 			?>
-			<h2><?php esc_html_e( 'Reglas', 'concursos' ); ?></h2>
+			<h2><?php esc_html_e( 'Rules', 'concursos' ); ?></h2>
 			<ul>
 				<?php foreach ( $rules as $rule ) : ?>
 					<li><?php echo esc_html( $rule ); ?></li>
 				<?php endforeach; ?>
 			</ul>
 		<?php endif; ?>
-		<p class="concursos-privado"><?php esc_html_e( 'Esta página es personal: no compartas su enlace.', 'concursos' ); ?></p>
+		<p class="concursos-privado"><?php esc_html_e( 'This page is personal: do not share its link.', 'concursos' ); ?></p>
 		<?php
-		self::layout( 200, __( 'Tus fotos', 'concursos' ), ob_get_clean(), $reto );
+		self::layout( 200, __( 'Your photos', 'concursos' ), ob_get_clean(), $reto );
 	}
 
 	/**

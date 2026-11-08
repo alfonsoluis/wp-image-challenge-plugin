@@ -65,7 +65,7 @@ class Concursos_Galeria {
 	private static function boton_inscripcion( $reto_id, $status ) {
 		$url = in_array( $status, array( 'proximo', 'envios' ), true ) ? Concursos_Inscripcion::url( $reto_id ) : '';
 
-		return $url ? '<p><a class="concursos-boton" href="' . esc_url( $url ) . '">' . esc_html__( 'Inscribirme en este reto', 'concursos' ) . '</a></p>' : '';
+		return $url ? '<p><a class="concursos-boton" href="' . esc_url( $url ) . '">' . esc_html__( 'Join this challenge', 'concursos' ) . '</a></p>' : '';
 	}
 
 	/**
@@ -106,7 +106,7 @@ class Concursos_Galeria {
 					<div class="concursos-reto__info">
 						<?php if ( $reglas ) : ?>
 							<section>
-								<h2><?php esc_html_e( 'Reglas', 'concursos' ); ?></h2>
+								<h2><?php esc_html_e( 'Rules', 'concursos' ); ?></h2>
 								<ul>
 									<?php foreach ( $reglas as $regla ) : ?>
 										<li><?php echo esc_html( $regla ); ?></li>
@@ -116,7 +116,7 @@ class Concursos_Galeria {
 						<?php endif; ?>
 						<?php if ( $premios ) : ?>
 							<section>
-								<h2><?php esc_html_e( 'Premios', 'concursos' ); ?></h2>
+								<h2><?php esc_html_e( 'Prizes', 'concursos' ); ?></h2>
 								<ul>
 									<?php foreach ( $premios as $lugar => $premio ) : ?>
 										<li><strong><?php echo esc_html( Concursos_Votos::nombre_lugar( $lugar, false ) ); ?>:</strong> <?php echo esc_html( $premio ); ?></li>
@@ -173,16 +173,16 @@ class Concursos_Galeria {
 	 */
 	public static function frase_estado( $status, array $s ) {
 		$frases = array(
-			/* translators: %s: fecha. */
-			'proximo'    => array( __( 'Empieza el %s.', 'concursos' ), 'inicio' ),
-			/* translators: %s: fecha. */
-			'envios'     => array( __( 'Recibiendo fotos hasta el %s.', 'concursos' ), 'fin_envios' ),
-			/* translators: %s: fecha. */
-			'votacion'   => array( __( 'En votación hasta el %s.', 'concursos' ), 'fin_votacion' ),
-			/* translators: %s: fecha. */
-			'evaluacion' => array( __( 'La votación terminó. Resultados el %s.', 'concursos' ), 'cierre' ),
-			/* translators: %s: fecha. */
-			'finalizado' => array( __( 'Reto finalizado el %s.', 'concursos' ), 'cierre' ),
+			/* translators: %s: date. */
+			'proximo'    => array( __( 'Starts on %s.', 'concursos' ), 'inicio' ),
+			/* translators: %s: date. */
+			'envios'     => array( __( 'Accepting photos until %s.', 'concursos' ), 'fin_envios' ),
+			/* translators: %s: date. */
+			'votacion'   => array( __( 'Voting until %s.', 'concursos' ), 'fin_votacion' ),
+			/* translators: %s: date. */
+			'evaluacion' => array( __( 'Voting has ended. Results on %s.', 'concursos' ), 'cierre' ),
+			/* translators: %s: date. */
+			'finalizado' => array( __( 'Challenge finished on %s.', 'concursos' ), 'cierre' ),
 		);
 
 		return isset( $frases[ $status ] ) ? sprintf( $frases[ $status ][0], Concursos_Reto::format_date( $s[ $frases[ $status ][1] ] ) ) : '';
@@ -217,7 +217,7 @@ class Concursos_Galeria {
 	 * @param WP_Post[] $entradas Fotos.
 	 */
 	private static function fotos( $reto_id, array $s, $status, array $entradas ) {
-		echo '<h2>' . esc_html__( 'Fotos participantes', 'concursos' ) . '</h2>';
+		echo '<h2>' . esc_html__( 'Submitted entries', 'concursos' ) . '</h2>';
 
 		if ( ! Concursos_Reto::photos_visible( $s ) ) {
 			if ( 'envios' === $status ) {
@@ -225,22 +225,22 @@ class Concursos_Galeria {
 					'<p>%s</p>',
 					esc_html(
 						sprintf(
-							/* translators: 1: número de fotos, 2: fecha de fin de los envíos. */
-							_n( 'Ya se ha enviado %1$d foto. Se mostrarán todas cuando terminen los envíos, el %2$s.', 'Ya se han enviado %1$d fotos. Se mostrarán todas cuando terminen los envíos, el %2$s.', count( $entradas ), 'concursos' ),
+							/* translators: 1: number of photos, 2: submission end date. */
+							_n( '%1$d photo has been submitted so far. All of them will be shown when submissions end, on %2$s.', '%1$d photos have been submitted so far. All of them will be shown when submissions end, on %2$s.', count( $entradas ), 'concursos' ),
 							count( $entradas ),
 							Concursos_Reto::format_date( $s['fin_envios'] )
 						)
 					)
 				);
 			} else {
-				echo '<p>' . esc_html__( 'Las fotos se mostrarán cuando empiece el reto.', 'concursos' ) . '</p>';
+				echo '<p>' . esc_html__( 'Photos will be shown when the challenge starts.', 'concursos' ) . '</p>';
 			}
 
 			return;
 		}
 
 		if ( ! $entradas ) {
-			echo '<p>' . esc_html__( 'Todavía no hay fotos.', 'concursos' ) . '</p>';
+			echo '<p>' . esc_html__( 'There are no photos yet.', 'concursos' ) . '</p>';
 
 			return;
 		}
@@ -273,14 +273,14 @@ class Concursos_Galeria {
 		$ranking = Concursos_Votos::rank( $votos, (int) $s['lugares'] );
 
 		$etiqueta_votos = function ( $n ) {
-			/* translators: %d: número de votos. */
-			return '<span class="concursos-votos">' . esc_html( sprintf( _n( '%d voto', '%d votos', $n, 'concursos' ), $n ) ) . '</span>';
+			/* translators: %d: number of votes. */
+			return '<span class="concursos-votos">' . esc_html( sprintf( _n( '%d vote', '%d votes', $n, 'concursos' ), $n ) ) . '</span>';
 		};
 
-		echo '<h2>' . esc_html__( 'Resultados', 'concursos' ) . '</h2>';
+		echo '<h2>' . esc_html__( 'Results', 'concursos' ) . '</h2>';
 
 		if ( ! $ranking['puestos'] ) {
-			echo '<p>' . esc_html__( 'Este reto terminó sin votos.', 'concursos' ) . '</p>';
+			echo '<p>' . esc_html__( 'This challenge ended without votes.', 'concursos' ) . '</p>';
 		}
 
 		foreach ( $ranking['puestos'] as $puesto ) {
@@ -290,8 +290,8 @@ class Concursos_Galeria {
 			printf( '<div class="concursos-puesto concursos-puesto--%d">', (int) $lugar );
 			echo '<h3>' . esc_html( Concursos_Votos::nombre_lugar( $lugar, count( $puesto['entradas'] ) > 1 ) ) . '</h3>';
 			if ( '' !== $premio ) {
-				/* translators: %s: premio. */
-				echo '<p class="concursos-premio">' . esc_html( sprintf( __( 'Premio: %s', 'concursos' ), $premio ) ) . '</p>';
+				/* translators: %s: prize. */
+				echo '<p class="concursos-premio">' . esc_html( sprintf( __( 'Prize: %s', 'concursos' ), $premio ) ) . '</p>';
 			}
 			echo '<ul class="concursos-galeria__rejilla">';
 			foreach ( $puesto['entradas'] as $id ) {
@@ -301,7 +301,7 @@ class Concursos_Galeria {
 		}
 
 		if ( $ranking['resto'] ) {
-			echo '<div class="concursos-resto"><h3>' . esc_html__( 'Resto de participantes', 'concursos' ) . '</h3>';
+			echo '<div class="concursos-resto"><h3>' . esc_html__( 'Other participants', 'concursos' ) . '</h3>';
 			echo '<ul class="concursos-galeria__rejilla">';
 			foreach ( $ranking['resto'] as $id ) {
 				echo self::tarjeta( $por_id[ $id ], $etiqueta_votos( $votos[ $id ] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.

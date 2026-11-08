@@ -219,12 +219,12 @@ class Concursos_Perfil {
 						implode(
 							' · ',
 							array(
-								/* translators: %d: número de retos. */
-								sprintf( _n( '%d reto', '%d retos', count( $filas ), 'concursos' ), count( $filas ) ),
-								/* translators: %d: número de fotos. */
-								sprintf( _n( '%d foto', '%d fotos', $fotos, 'concursos' ), $fotos ),
-								/* translators: %d: número de puestos. */
-								sprintf( _n( '%d puesto', '%d puestos', $puestos, 'concursos' ), $puestos ),
+								/* translators: %d: number of challenges. */
+								sprintf( _n( '%d challenge', '%d challenges', count( $filas ), 'concursos' ), count( $filas ) ),
+								/* translators: %d: number of photos. */
+								sprintf( _n( '%d photo', '%d photos', $fotos, 'concursos' ), $fotos ),
+								/* translators: %d: number of places. */
+								sprintf( _n( '%d place', '%d places', $puestos, 'concursos' ), $puestos ),
 							)
 						)
 					);
@@ -254,8 +254,8 @@ class Concursos_Perfil {
 				<?php if ( $fila['puesto'] && '' !== $fila['puesto']['premio'] ) : ?>
 					<p class="concursos-premio">
 						<?php
-						/* translators: %s: premio. */
-						echo esc_html( sprintf( __( 'Premio: %s', 'concursos' ), $fila['puesto']['premio'] ) );
+						/* translators: %s: prize. */
+						echo esc_html( sprintf( __( 'Prize: %s', 'concursos' ), $fila['puesto']['premio'] ) );
 						?>
 					</p>
 				<?php endif; ?>
@@ -271,7 +271,7 @@ class Concursos_Perfil {
 						<?php endforeach; ?>
 					</ul>
 				<?php else : ?>
-					<p><?php esc_html_e( 'Sus fotos en este reto todavía no se pueden ver.', 'concursos' ); ?></p>
+					<p><?php esc_html_e( 'Their photos in this challenge cannot be shown yet.', 'concursos' ); ?></p>
 				<?php endif; ?>
 			</section>
 		<?php endforeach; ?>

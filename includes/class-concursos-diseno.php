@@ -31,7 +31,7 @@ class Concursos_Diseno {
 		return array(
 			// Sunny Beach Day (coolors.co).
 			'playa' => array(
-				'nombre'       => __( 'Día de playa', 'concursos' ),
+				'nombre'       => __( 'Beach day', 'concursos' ),
 				'color'        => '#264653',
 				'sobre'        => '#FFFFFF',
 				'fondo'        => '#FDF9EF',
@@ -42,7 +42,7 @@ class Concursos_Diseno {
 			),
 			// Summer Ocean Breeze (coolors.co).
 			'brisa' => array(
-				'nombre'       => __( 'Brisa de océano', 'concursos' ),
+				'nombre'       => __( 'Ocean breeze', 'concursos' ),
 				'color'        => '#1D3557',
 				'sobre'        => '#FFFFFF',
 				'fondo'        => '#FAFDF9',
@@ -53,7 +53,7 @@ class Concursos_Diseno {
 			),
 			// Warm Autumn Glow (coolors.co).
 			'otono' => array(
-				'nombre'       => __( 'Otoño cálido', 'concursos' ),
+				'nombre'       => __( 'Warm autumn', 'concursos' ),
 				'color'        => '#D62828',
 				'sobre'        => '#FFFFFF',
 				'fondo'        => '#FDFCF8',
@@ -64,7 +64,7 @@ class Concursos_Diseno {
 			),
 			// Black & Gold Elegance (coolors.co).
 			'oro' => array(
-				'nombre'       => __( 'Negro y oro', 'concursos' ),
+				'nombre'       => __( 'Black and gold', 'concursos' ),
 				'color'        => '#000000',
 				'sobre'        => '#FFFFFF',
 				'fondo'        => '#F5F5F5',
@@ -75,7 +75,7 @@ class Concursos_Diseno {
 			),
 			// Bold Hues (coolors.co).
 			'intensos' => array(
-				'nombre'       => __( 'Tonos intensos', 'concursos' ),
+				'nombre'       => __( 'Bold hues', 'concursos' ),
 				'color'        => '#7209B7',
 				'sobre'        => '#FFFFFF',
 				'fondo'        => '#F3FBFE',
@@ -86,7 +86,7 @@ class Concursos_Diseno {
 			),
 			// Bold Berry (coolors.co).
 			'baya' => array(
-				'nombre'       => __( 'Baya intensa', 'concursos' ),
+				'nombre'       => __( 'Bold berry', 'concursos' ),
 				'color'        => '#A53860',
 				'sobre'        => '#FFFFFF',
 				'fondo'        => '#FDF1E6',
@@ -97,7 +97,7 @@ class Concursos_Diseno {
 			),
 			// Nature Harmony (coolors.co).
 			'naturaleza' => array(
-				'nombre'       => __( 'Naturaleza', 'concursos' ),
+				'nombre'       => __( 'Nature', 'concursos' ),
 				'color'        => '#373D20',
 				'sobre'        => '#FFFFFF',
 				'fondo'        => '#F9FAF8',
@@ -108,7 +108,7 @@ class Concursos_Diseno {
 			),
 			// Sky Blue Freshness (coolors.co).
 			'azul' => array(
-				'nombre'       => __( 'Azul fresco', 'concursos' ),
+				'nombre'       => __( 'Fresh blue', 'concursos' ),
 				'color'        => '#05668D',
 				'sobre'        => '#FFFFFF',
 				'fondo'        => '#F7FAFD',
@@ -119,7 +119,7 @@ class Concursos_Diseno {
 			),
 			// Neutral Earth Tones (coolors.co).
 			'tierra' => array(
-				'nombre'       => __( 'Tierra neutra', 'concursos' ),
+				'nombre'       => __( 'Neutral earth', 'concursos' ),
 				'color'        => '#5E503F',
 				'sobre'        => '#FFFFFF',
 				'fondo'        => '#F7F3EF',
@@ -130,7 +130,7 @@ class Concursos_Diseno {
 			),
 			// Minimalist Elegance (coolors.co).
 			'naranja' => array(
-				'nombre'       => __( 'Elegancia naranja', 'concursos' ),
+				'nombre'       => __( 'Orange elegance', 'concursos' ),
 				'color'        => '#2D3142',
 				'sobre'        => '#FFFFFF',
 				'fondo'        => '#F8F8F8',
@@ -150,15 +150,15 @@ class Concursos_Diseno {
 	public static function tamanos() {
 		return array(
 			'pequeno'    => array(
-				'nombre' => __( 'Más pequeño', 'concursos' ),
+				'nombre' => __( 'Smaller', 'concursos' ),
 				'escala' => 0.9,
 			),
 			self::NORMAL => array(
-				'nombre' => __( 'Estándar del tema', 'concursos' ),
+				'nombre' => __( 'Theme default', 'concursos' ),
 				'escala' => 1,
 			),
 			'grande'     => array(
-				'nombre' => __( 'Más grande', 'concursos' ),
+				'nombre' => __( 'Larger', 'concursos' ),
 				'escala' => 1.125,
 			),
 		);

@@ -2,8 +2,8 @@
 /**
  * Plugin Name:       Concursos
  * Plugin URI:        https://github.com/alfonsoluis/wp-image-challenge-plugin
- * Description:       Retos y concursos (fotografía, dibujo, diseño...) con participantes, envíos, votación y resultados.
- * Version:           0.8.0
+ * Description:       Photo, drawing, design and other art challenges with participants, submissions, voting and results.
+ * Version:           0.9.0
  * Requires at least: 7.0
  * Requires PHP:      7.4
  * Author:            Alfonso Rodriguez
@@ -17,7 +17,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'CONCURSOS_VERSION', '0.8.0' );
+define( 'CONCURSOS_VERSION', '0.9.0' );
 define( 'CONCURSOS_FILE', __FILE__ );
 define( 'CONCURSOS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'CONCURSOS_URL', plugin_dir_url( __FILE__ ) );
@@ -36,6 +36,19 @@ require_once CONCURSOS_PATH . 'includes/class-concursos-galeria.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-plantilla.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-portada.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-perfil.php';
+
+add_action(
+	'init',
+	function () {
+		// Cualquier variante del español (es_MX, es_CO...) usa la traducción incluida.
+		if ( preg_match( '/^es(_|$)/', determine_locale() ) ) {
+			load_textdomain( 'concursos', CONCURSOS_PATH . 'languages/concursos-es_ES.mo' );
+		} else {
+			load_plugin_textdomain( 'concursos', false, dirname( plugin_basename( CONCURSOS_FILE ) ) . '/languages' );
+		}
+	},
+	0
+);
 
 Concursos_DB::init();
 Concursos_Post_Types::init();

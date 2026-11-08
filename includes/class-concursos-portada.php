@@ -38,7 +38,7 @@ class Concursos_Portada {
 			array(
 				'post_type'   => 'page',
 				'post_status' => 'publish',
-				'post_title'  => __( 'Retos', 'concursos' ),
+				'post_title'  => __( 'Challenges', 'concursos' ),
 				'post_name'   => self::SLUG,
 			)
 		);
@@ -56,7 +56,7 @@ class Concursos_Portada {
 	 */
 	public static function estado_pagina( $states, $post ) {
 		if ( (int) get_option( self::OPCION_PAGINA ) === $post->ID ) {
-			$states['concursos_retos'] = __( 'Portada de retos', 'concursos' );
+			$states['concursos_retos'] = __( 'Challenges page', 'concursos' );
 		}
 
 		return $states;
@@ -68,7 +68,7 @@ class Concursos_Portada {
 	public static function route() {
 		$pagina = (int) get_option( self::OPCION_PAGINA );
 		if ( ( is_post_type_archive( Concursos_Post_Types::RETO ) || ( $pagina && is_page( $pagina ) ) ) && ! is_feed() ) {
-			Concursos_Plantilla::pagina( __( 'Retos', 'concursos' ), self::render() );
+			Concursos_Plantilla::pagina( __( 'Challenges', 'concursos' ), self::render() );
 		}
 	}
 
@@ -96,25 +96,25 @@ class Concursos_Portada {
 		$otros     = array_merge( $en_curso, array_reverse( (array) $proximos ) );
 
 		ob_start();
-		echo '<div class="concursos-publico__cabecera"><h1 class="concursos-publico__titulo">' . esc_html__( 'Retos', 'concursos' ) . '</h1>';
+		echo '<div class="concursos-publico__cabecera"><h1 class="concursos-publico__titulo">' . esc_html__( 'Challenges', 'concursos' ) . '</h1>';
 		$inscripcion = Concursos_Inscripcion::url();
 		if ( $inscripcion && Concursos_Inscripcion::retos_abiertos() ) {
-			echo '<a class="concursos-boton" href="' . esc_url( $inscripcion ) . '">' . esc_html__( 'Inscribirme en un reto', 'concursos' ) . '</a>';
+			echo '<a class="concursos-boton" href="' . esc_url( $inscripcion ) . '">' . esc_html__( 'Join a challenge', 'concursos' ) . '</a>';
 		}
 		echo '</div>';
 
 		if ( ! $destacado && ! $pasados ) {
-			echo '<p>' . esc_html__( 'Todavía no hay retos publicados.', 'concursos' ) . '</p>';
+			echo '<p>' . esc_html__( 'No challenges have been published yet.', 'concursos' ) . '</p>';
 		}
 		if ( $destacado ) {
 			self::destacado( $destacado );
 		}
 		if ( $otros ) {
-			echo '<h2>' . esc_html__( 'Otros retos en curso y próximos', 'concursos' ) . '</h2>';
+			echo '<h2>' . esc_html__( 'Other current and upcoming challenges', 'concursos' ) . '</h2>';
 			self::lista( $otros );
 		}
 		if ( $pasados ) {
-			echo '<h2>' . esc_html__( 'Retos anteriores', 'concursos' ) . '</h2>';
+			echo '<h2>' . esc_html__( 'Past challenges', 'concursos' ) . '</h2>';
 			self::lista( $pasados );
 		}
 
@@ -153,14 +153,14 @@ class Concursos_Portada {
 	private static function destacado( array $reto ) {
 		$texto  = wp_trim_words( wp_strip_all_tags( strip_shortcodes( $reto['post']->post_content ) ), 24 );
 		$fotos  = count( Concursos_Entrada::find( array( 'reto' => $reto['post']->ID ) ) );
-		$accion = 'votacion' === $reto['status'] ? __( 'Ver las fotos y votar', 'concursos' ) : __( 'Ver el reto', 'concursos' );
+		$accion = 'votacion' === $reto['status'] ? __( 'See the photos and vote', 'concursos' ) : __( 'See the challenge', 'concursos' );
 		$url    = get_permalink( $reto['post'] );
 
 		Concursos_Diseno::aplicar( $reto['settings'] );
 
 		$extra = ( $texto ? '<p>' . esc_html( $texto ) . '</p>' : '' )
-			/* translators: %d: número de fotos. */
-			. '<p class="concursos-destacado__datos">' . esc_html( sprintf( _n( '%d foto enviada', '%d fotos enviadas', $fotos, 'concursos' ), $fotos ) ) . '</p>'
+			/* translators: %d: number of photos. */
+			. '<p class="concursos-destacado__datos">' . esc_html( sprintf( _n( '%d photo submitted', '%d photos submitted', $fotos, 'concursos' ), $fotos ) ) . '</p>'
 			. '<p><a class="concursos-boton" href="' . esc_url( $url ) . '">' . esc_html( $accion ) . '</a></p>';
 
 		printf(

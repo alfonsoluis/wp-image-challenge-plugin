@@ -123,19 +123,19 @@ class Concursos_Votantes {
 	 */
 	private static function avisos() {
 		return array(
-			'revisa'      => array( 'success', __( 'Te enviamos un email: abre su enlace para confirmar tu dirección y poder votar.', 'concursos' ) ),
-			'espera'      => array( 'success', __( 'Ya te enviamos un enlace a ese email hace unos minutos. Revisa tu bandeja de entrada y la carpeta de spam. Si no llega, vuelve a pedirlo en 5 minutos.', 'concursos' ) ),
-			'confirmado'  => array( 'success', __( '¡Email confirmado! Ya puedes votar.', 'concursos' ) ),
-			'votado'      => array( 'success', __( 'Voto registrado.', 'concursos' ) ),
-			'quitado'     => array( 'success', __( 'Voto retirado.', 'concursos' ) ),
-			'suscrito'    => array( 'success', __( 'Te avisaremos cuando haya un nuevo reto.', 'concursos' ) ),
-			'desuscrito'  => array( 'success', __( 'Ya no recibirás avisos de nuevos retos.', 'concursos' ) ),
-			'salida'      => array( 'success', __( 'Has cerrado tu sesión de votante en este navegador.', 'concursos' ) ),
-			'email'       => array( 'error', __( 'Escribe un email válido.', 'concursos' ) ),
-			'limite'      => array( 'error', __( 'Ya usaste todos tus votos en este reto. Quita uno para votar por otra foto.', 'concursos' ) ),
-			'cerrado'     => array( 'error', __( 'La votación de este reto no está abierta.', 'concursos' ) ),
-			'identificate' => array( 'error', __( 'Confirma tu email para poder votar.', 'concursos' ) ),
-			'error'       => array( 'error', __( 'No pudimos completar la acción. Inténtalo de nuevo.', 'concursos' ) ),
+			'revisa'      => array( 'success', __( 'We sent you an email: open its link to confirm your address and be able to vote.', 'concursos' ) ),
+			'espera'      => array( 'success', __( 'We already sent a link to that email a few minutes ago. Check your inbox and spam folder. If it does not arrive, request it again in 5 minutes.', 'concursos' ) ),
+			'confirmado'  => array( 'success', __( 'Email confirmed! You can now vote.', 'concursos' ) ),
+			'votado'      => array( 'success', __( 'Vote recorded.', 'concursos' ) ),
+			'quitado'     => array( 'success', __( 'Vote removed.', 'concursos' ) ),
+			'suscrito'    => array( 'success', __( 'We will let you know when there is a new challenge.', 'concursos' ) ),
+			'desuscrito'  => array( 'success', __( 'You will no longer receive notifications about new challenges.', 'concursos' ) ),
+			'salida'      => array( 'success', __( 'You have signed out as a voter in this browser.', 'concursos' ) ),
+			'email'       => array( 'error', __( 'Enter a valid email address.', 'concursos' ) ),
+			'limite'      => array( 'error', __( 'You have used all your votes in this challenge. Remove one to vote for another photo.', 'concursos' ) ),
+			'cerrado'     => array( 'error', __( 'Voting for this challenge is not open.', 'concursos' ) ),
+			'identificate' => array( 'error', __( 'Confirm your email to be able to vote.', 'concursos' ) ),
+			'error'       => array( 'error', __( 'We could not complete the action. Please try again.', 'concursos' ) ),
 		);
 	}
 
@@ -239,11 +239,11 @@ class Concursos_Votantes {
 
 		wp_mail(
 			$votante->email,
-			/* translators: %s: nombre del sitio. */
-			sprintf( __( 'Confirma tu email para votar en %s', 'concursos' ), get_bloginfo( 'name' ) ),
+			/* translators: %s: site name. */
+			sprintf( __( 'Confirm your email to vote on %s', 'concursos' ), get_bloginfo( 'name' ) ),
 			sprintf(
-				/* translators: 1: nombre del reto, 2: enlace, 3: nombre del sitio. */
-				__( "Hola:\n\nAbre este enlace para confirmar tu email y votar en «%1\$s»:\n\n%2\$s\n\nEl enlace caduca en 7 días. Si no fuiste tú, ignora este mensaje.\n\n%3\$s", 'concursos' ),
+				/* translators: 1: challenge name, 2: link, 3: site name. */
+				__( "Hello,\n\nOpen this link to confirm your email and vote in “%1\$s”:\n\n%2\$s\n\nThe link expires in 7 days. If this was not you, ignore this message.\n\n%3\$s", 'concursos' ),
 				get_the_title( $reto_id ),
 				add_query_arg( $args, home_url( '/' ) ),
 				get_bloginfo( 'name' )
@@ -291,7 +291,7 @@ class Concursos_Votantes {
 			: null;
 
 		if ( ! $votante || (int) $votante->confirm_expira < time() ) {
-			Concursos_Envio::render_message( 404, __( 'Enlace no válido', 'concursos' ), __( 'Este enlace no es válido o ha caducado. Vuelve a registrarte con tu email para recibir uno nuevo.', 'concursos' ) );
+			Concursos_Envio::render_message( 404, __( 'Invalid link', 'concursos' ), __( 'This link is not valid or has expired. Register your email again to receive a new one.', 'concursos' ) );
 		}
 
 		$datos = array( 'estado' => self::CONFIRMADO );
@@ -385,14 +385,14 @@ class Concursos_Votantes {
 
 		$votante = self::desde_firma( $valor, 'baja' );
 		if ( ! $votante ) {
-			Concursos_Envio::render_message( 404, __( 'Enlace no válido', 'concursos' ), __( 'Este enlace de baja no es válido.', 'concursos' ) );
+			Concursos_Envio::render_message( 404, __( 'Invalid link', 'concursos' ), __( 'This unsubscribe link is not valid.', 'concursos' ) );
 		}
 
-		$titulo = __( 'Avisos de nuevos retos', 'concursos' );
+		$titulo = __( 'New challenge notifications', 'concursos' );
 
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] ) {
 			self::set_suscrito( $votante, false );
-			Concursos_Envio::render_message( 200, $titulo, __( 'Listo: ya no recibirás avisos de nuevos retos.', 'concursos' ) );
+			Concursos_Envio::render_message( 200, $titulo, __( 'Done: you will no longer receive notifications about new challenges.', 'concursos' ) );
 		}
 
 		Concursos_Envio::layout(
@@ -401,9 +401,9 @@ class Concursos_Votantes {
 			sprintf(
 				'<h1>%1$s</h1><p>%2$s</p><form method="post"><button type="submit">%3$s</button></form>',
 				esc_html( $titulo ),
-				/* translators: %s: email del votante. */
-				esc_html( sprintf( __( '¿Dejar de enviar avisos de nuevos retos a %s?', 'concursos' ), $votante->email ) ),
-				esc_html__( 'Darme de baja', 'concursos' )
+				/* translators: %s: voter email. */
+				esc_html( sprintf( __( 'Stop sending new challenge notifications to %s?', 'concursos' ), $votante->email ) ),
+				esc_html__( 'Unsubscribe me', 'concursos' )
 			)
 		);
 	}
@@ -429,6 +429,12 @@ class Concursos_Votantes {
 			return;
 		}
 
+		// Un reto solo se anuncia una vez, aunque se despublique y se publique de nuevo.
+		if ( get_post_meta( $post_id, '_concursos_avisado', true ) ) {
+			return;
+		}
+		update_post_meta( $post_id, '_concursos_avisado', time() );
+
 		global $wpdb;
 		$t         = Concursos_DB::votantes();
 		$suscritos = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$t} WHERE suscrito = 1 AND estado = %s", self::CONFIRMADO ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -437,11 +443,11 @@ class Concursos_Votantes {
 			$baja = self::enlace_baja( $votante );
 			wp_mail(
 				$votante->email,
-				/* translators: %s: nombre del reto. */
-				sprintf( __( 'Nuevo reto: %s', 'concursos' ), get_the_title( $post ) ),
+				/* translators: %s: challenge name. */
+				sprintf( __( 'New challenge: %s', 'concursos' ), get_the_title( $post ) ),
 				sprintf(
-					/* translators: 1: nombre del reto, 2: enlace al reto, 3: enlace de baja, 4: nombre del sitio. */
-					__( "Hola:\n\nHay un nuevo reto: «%1\$s».\n\n%2\$s\n\n%4\$s\n\nPara dejar de recibir estos avisos: %3\$s", 'concursos' ),
+					/* translators: 1: challenge name, 2: challenge link, 3: unsubscribe link, 4: site name. */
+					__( "Hello,\n\nThere is a new challenge: “%1\$s”.\n\n%2\$s\n\n%4\$s\n\nTo stop receiving these notifications: %3\$s", 'concursos' ),
 					get_the_title( $post ),
 					get_permalink( $post ),
 					$baja,
@@ -467,23 +473,23 @@ class Concursos_Votantes {
 
 		if ( ! $votante ) {
 			?>
-			<h3><?php esc_html_e( 'Registra tu email para votar', 'concursos' ); ?></h3>
+			<h3><?php esc_html_e( 'Register your email to vote', 'concursos' ); ?></h3>
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="concursos-form-publico">
 				<input type="hidden" name="action" value="<?php echo esc_attr( self::REGISTRO ); ?>">
 				<input type="hidden" name="reto" value="<?php echo esc_attr( $reto_id ); ?>">
 				<?php wp_nonce_field( self::REGISTRO ); ?>
 				<p class="concursos-hp" aria-hidden="true">
-					<label><?php esc_html_e( 'No rellenes este campo', 'concursos' ); ?> <input type="text" name="web" tabindex="-1" autocomplete="off"></label>
+					<label><?php esc_html_e( 'Do not fill in this field', 'concursos' ); ?> <input type="text" name="web" tabindex="-1" autocomplete="off"></label>
 				</p>
 				<p>
 					<label for="concursos-votante-email"><?php esc_html_e( 'Email', 'concursos' ); ?></label>
 					<input type="email" id="concursos-votante-email" name="email" required autocomplete="email">
 				</p>
 				<p class="concursos-casilla">
-					<label><input type="checkbox" name="suscribir" value="1"> <?php esc_html_e( 'Avisarme por email cuando haya un nuevo reto', 'concursos' ); ?></label>
+					<label><input type="checkbox" name="suscribir" value="1"> <?php esc_html_e( 'Email me when there is a new challenge', 'concursos' ); ?></label>
 				</p>
-				<p><button type="submit"><?php esc_html_e( 'Enviarme el enlace', 'concursos' ); ?></button></p>
-				<p><small><?php esc_html_e( 'Usamos tu email solo para confirmar que eres una persona real y, si lo marcas, para avisarte de nuevos retos. Puedes darte de baja cuando quieras.', 'concursos' ); ?></small></p>
+				<p><button type="submit"><?php esc_html_e( 'Send me the link', 'concursos' ); ?></button></p>
+				<p><small><?php esc_html_e( 'We only use your email to confirm that you are a real person and, if you tick the box, to tell you about new challenges. You can unsubscribe at any time.', 'concursos' ); ?></small></p>
 			</form>
 			<?php
 		} else {
@@ -494,13 +500,13 @@ class Concursos_Votantes {
 			<p>
 				<strong>
 					<?php
-					/* translators: %s: email del votante. */
-					echo esc_html( sprintf( __( 'Votas como %s', 'concursos' ), $votante->email ) );
+					/* translators: %s: voter email. */
+					echo esc_html( sprintf( __( 'Voting as %s', 'concursos' ), $votante->email ) );
 					?>
 				</strong><br>
 				<?php
-				/* translators: 1: votos que quedan, 2: votos en total. */
-				echo esc_html( sprintf( __( 'Te quedan %1$d de %2$d votos.', 'concursos' ), $quedan, $total ) );
+				/* translators: 1: votes left, 2: total votes. */
+				echo esc_html( sprintf( __( 'You have %1$d of %2$d votes left.', 'concursos' ), $quedan, $total ) );
 				?>
 			</p>
 			<div class="concursos-panel-voto__acciones">
@@ -509,13 +515,13 @@ class Concursos_Votantes {
 					<input type="hidden" name="reto" value="<?php echo esc_attr( $reto_id ); ?>">
 					<input type="hidden" name="suscribir" value="<?php echo $votante->suscrito ? '' : '1'; ?>">
 					<?php wp_nonce_field( self::SUSCRIPCION, '_wpnonce', false ); ?>
-					<button type="submit" class="concursos-enlace"><?php echo $votante->suscrito ? esc_html__( 'Dejar de recibir avisos de nuevos retos', 'concursos' ) : esc_html__( 'Avisarme de nuevos retos', 'concursos' ); ?></button>
+					<button type="submit" class="concursos-enlace"><?php echo $votante->suscrito ? esc_html__( 'Stop receiving new challenge notifications', 'concursos' ) : esc_html__( 'Notify me about new challenges', 'concursos' ); ?></button>
 				</form>
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 					<input type="hidden" name="action" value="<?php echo esc_attr( self::SALIR ); ?>">
 					<input type="hidden" name="reto" value="<?php echo esc_attr( $reto_id ); ?>">
 					<?php wp_nonce_field( self::SALIR, '_wpnonce', false ); ?>
-					<button type="submit" class="concursos-enlace"><?php esc_html_e( 'Salir', 'concursos' ); ?></button>
+					<button type="submit" class="concursos-enlace"><?php esc_html_e( 'Sign out', 'concursos' ); ?></button>
 				</form>
 			</div>
 			<?php

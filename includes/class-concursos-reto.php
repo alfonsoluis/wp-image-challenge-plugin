@@ -23,7 +23,7 @@ class Concursos_Reto {
 	 * @param string[] $post_status Estados de publicación a incluir.
 	 * @return array[] Cada uno: post, settings, status.
 	 */
-	public static function all( array $post_status = array( 'publish', 'future', 'draft', 'pending', 'private' ) ) {
+	public static function all( array $post_status = array( 'publish', 'future', 'draft', 'pending', 'private', Concursos_Post_Types::ARCHIVADO ) ) {
 		$posts = get_posts(
 			array(
 				'post_type'      => Concursos_Post_Types::RETO,
@@ -78,12 +78,12 @@ class Concursos_Reto {
 	public static function choices() {
 		return array(
 			'modo'       => array(
-				'abierto' => __( 'Abierto: las fotos se ven al enviarse', 'concursos' ),
-				'cerrado' => __( 'Cerrado: las fotos se ven al terminar los envíos', 'concursos' ),
+				'abierto' => __( 'Open: photos are shown as they are submitted', 'concursos' ),
+				'cerrado' => __( 'Closed: photos are shown when submissions end', 'concursos' ),
 			),
 			'lugares'    => array(
-				1 => __( 'Un solo ganador', 'concursos' ),
-				3 => __( 'Tres lugares', 'concursos' ),
+				1 => __( 'A single winner', 'concursos' ),
+				3 => __( 'Three places', 'concursos' ),
 			),
 		);
 	}
@@ -167,8 +167,8 @@ class Concursos_Reto {
 
 		foreach ( self::FECHAS as $key ) {
 			if ( ! $s[ $key ] ) {
-				/* translators: %s: nombre de la fecha. */
-				$errors[] = sprintf( __( 'Falta la fecha: %s.', 'concursos' ), $labels[ $key ] );
+				/* translators: %s: date name. */
+				$errors[] = sprintf( __( 'Missing date: %s.', 'concursos' ), $labels[ $key ] );
 			}
 		}
 		if ( $errors ) {
@@ -179,8 +179,8 @@ class Concursos_Reto {
 			$prev = self::FECHAS[ $i - 1 ];
 			$curr = self::FECHAS[ $i ];
 			if ( $s[ $curr ] < $s[ $prev ] ) {
-				/* translators: 1: fecha posterior, 2: fecha anterior. */
-				$errors[] = sprintf( __( '«%1$s» no puede ser antes de «%2$s».', 'concursos' ), $labels[ $curr ], $labels[ $prev ] );
+				/* translators: 1: later date, 2: earlier date. */
+				$errors[] = sprintf( __( '“%1$s” cannot be before “%2$s”.', 'concursos' ), $labels[ $curr ], $labels[ $prev ] );
 			}
 		}
 
@@ -242,12 +242,12 @@ class Concursos_Reto {
 	 */
 	public static function status_labels() {
 		return array(
-			'sin_fechas' => __( 'Sin fechas', 'concursos' ),
-			'proximo'    => __( 'Próximo', 'concursos' ),
-			'envios'     => __( 'Recibiendo fotos', 'concursos' ),
-			'votacion'   => __( 'En votación', 'concursos' ),
-			'evaluacion' => __( 'En evaluación', 'concursos' ),
-			'finalizado' => __( 'Finalizado', 'concursos' ),
+			'sin_fechas' => __( 'No dates', 'concursos' ),
+			'proximo'    => __( 'Upcoming', 'concursos' ),
+			'envios'     => __( 'Accepting photos', 'concursos' ),
+			'votacion'   => __( 'Voting', 'concursos' ),
+			'evaluacion' => __( 'Under review', 'concursos' ),
+			'finalizado' => __( 'Finished', 'concursos' ),
 		);
 	}
 
@@ -258,10 +258,10 @@ class Concursos_Reto {
 	 */
 	public static function date_labels() {
 		return array(
-			'inicio'       => __( 'Inicio del reto', 'concursos' ),
-			'fin_envios'   => __( 'Fin de los envíos', 'concursos' ),
-			'fin_votacion' => __( 'Fin de la votación', 'concursos' ),
-			'cierre'       => __( 'Publicación de resultados', 'concursos' ),
+			'inicio'       => __( 'Challenge start', 'concursos' ),
+			'fin_envios'   => __( 'End of submissions', 'concursos' ),
+			'fin_votacion' => __( 'End of voting', 'concursos' ),
+			'cierre'       => __( 'Publication of results', 'concursos' ),
 		);
 	}
 

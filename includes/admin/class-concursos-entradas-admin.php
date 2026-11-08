@@ -48,9 +48,9 @@ class Concursos_Entradas_Admin {
 		}
 		$reto = self::selected_reto();
 		?>
-		<label class="screen-reader-text" for="concursos-filtro-reto"><?php esc_html_e( 'Filtrar por reto', 'concursos' ); ?></label>
+		<label class="screen-reader-text" for="concursos-filtro-reto"><?php esc_html_e( 'Filter by challenge', 'concursos' ); ?></label>
 		<select name="concursos_reto" id="concursos-filtro-reto">
-			<option value=""><?php esc_html_e( 'Todos los retos', 'concursos' ); ?></option>
+			<option value=""><?php esc_html_e( 'All challenges', 'concursos' ); ?></option>
 			<?php foreach ( Concursos_Reto::all() as $r ) : ?>
 				<option value="<?php echo esc_attr( $r['post']->ID ); ?>" <?php selected( $reto, $r['post']->ID ); ?>><?php echo esc_html( get_the_title( $r['post'] ) ); ?></option>
 			<?php endforeach; ?>
@@ -90,12 +90,12 @@ class Concursos_Entradas_Admin {
 	public static function columns( $columns ) {
 		return array(
 			'cb'                     => $columns['cb'],
-			'concursos_foto'         => __( 'Foto', 'concursos' ),
-			'title'                  => __( 'Título', 'concursos' ),
-			'concursos_participante' => __( 'Participante', 'concursos' ),
-			'concursos_reto'         => __( 'Reto', 'concursos' ),
-			'concursos_votos'        => __( 'Votos', 'concursos' ),
-			'date'                   => __( 'Enviada', 'concursos' ),
+			'concursos_foto'         => __( 'Photo', 'concursos' ),
+			'title'                  => __( 'Title', 'concursos' ),
+			'concursos_participante' => __( 'Participant', 'concursos' ),
+			'concursos_reto'         => __( 'Challenge', 'concursos' ),
+			'concursos_votos'        => __( 'Votes', 'concursos' ),
+			'date'                   => __( 'Submitted', 'concursos' ),
 		);
 	}
 

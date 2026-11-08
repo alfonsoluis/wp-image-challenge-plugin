@@ -1,0 +1,1244 @@
+# Copyright (C) 2026 Alfonso Rodriguez
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Concursos 0.9.0\n"
+"Report-Msgid-Bugs-To: https://github.com/alfonsoluis/wp-image-challenge-plugin/issues\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-11-08T23:19:44+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: concursos\n"
+
+#. Plugin Name of the plugin
+#: concursos.php
+msgid "Concursos"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: concursos.php
+msgid "https://github.com/alfonsoluis/wp-image-challenge-plugin"
+msgstr ""
+
+#. Description of the plugin
+#: concursos.php
+msgid "Photo, drawing, design and other art challenges with participants, submissions, voting and results."
+msgstr ""
+
+#. Author of the plugin
+#: concursos.php
+msgid "Alfonso Rodriguez"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:35
+#: includes/admin/class-concursos-admin.php:84
+msgid "Challenges dashboard"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:36
+msgid "Dashboard"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:75
+#: includes/class-concursos-portada.php:41
+#: includes/class-concursos-portada.php:71
+#: includes/class-concursos-portada.php:99
+#: includes/class-concursos-post-types.php:35
+#: includes/class-concursos-post-types.php:37
+msgid "Challenges"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:76
+msgid "In progress"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:77
+#: includes/class-concursos-reto.php:247
+msgid "Accepting photos"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:78
+#: includes/class-concursos-reto.php:248
+msgid "Voting"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:79
+msgid "Upcoming challenges"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:80
+msgid "Finished challenges"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:85
+#: includes/class-concursos-post-types.php:38
+#: includes/class-concursos-post-types.php:41
+msgid "New challenge"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:99
+msgid "There are no challenges yet."
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:100
+msgid "Create the first challenge"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:106
+#: includes/admin/class-concursos-entradas-admin.php:96
+#: includes/admin/class-concursos-participantes-admin.php:116
+#: includes/admin/class-concursos-participantes-admin.php:284
+#: includes/class-concursos-inscripcion.php:143
+#: includes/class-concursos-post-types.php:36
+msgid "Challenge"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:107
+#: includes/admin/class-concursos-admin.php:158
+#: includes/admin/class-concursos-participantes-admin.php:117
+#: includes/admin/class-concursos-participantes-admin.php:285
+#: includes/admin/class-concursos-votantes-admin.php:50
+msgid "Status"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:108
+#: includes/admin/class-concursos-admin.php:159
+msgid "Submissions until"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:109
+msgid "Voting until"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:110
+#: includes/class-concursos-galeria.php:280
+msgid "Results"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:111
+msgid "Active / registered"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:111
+#: includes/class-concursos-participante.php:66
+#: includes/class-concursos-participante.php:68
+#: includes/class-concursos-participante.php:69
+msgid "Participants"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:112
+msgid "Photos"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:123
+#: includes/admin/class-concursos-duplicar.php:56
+msgid "Duplicate"
+msgstr ""
+
+#: includes/admin/class-concursos-duplicar.php:66
+msgid "Duplicate challenge"
+msgstr ""
+
+#: includes/admin/class-concursos-duplicar.php:115
+#: includes/admin/class-concursos-duplicar.php:155
+msgid "You cannot duplicate this challenge."
+msgstr ""
+
+#. translators: %s: challenge name.
+#: includes/admin/class-concursos-duplicar.php:123
+#, php-format
+msgid "Duplicate “%s”"
+msgstr ""
+
+#: includes/admin/class-concursos-duplicar.php:126
+msgid "This creates a draft with the same description, image, rules, prizes, settings and design. The dates are left empty so you can choose new ones. Photos and votes are not copied."
+msgstr ""
+
+#: includes/admin/class-concursos-duplicar.php:127
+msgid "Confirmed voters can vote in the new challenge without doing anything."
+msgstr ""
+
+#. translators: %d: number of active participants.
+#: includes/admin/class-concursos-duplicar.php:137
+#, php-format
+msgid "Also copy its %d active participant"
+msgid_plural "Also copy its %d active participants"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/class-concursos-duplicar.php:141
+msgid "They will be active in the new challenge and will receive their personal link by email when you publish it, not before."
+msgstr ""
+
+#: includes/admin/class-concursos-duplicar.php:142
+msgid "Create the copy"
+msgstr ""
+
+#. translators: %s: challenge name.
+#: includes/admin/class-concursos-duplicar.php:164
+#, php-format
+msgid "%s (copy)"
+msgstr ""
+
+#. translators: %d: number of copied participants.
+#: includes/admin/class-concursos-duplicar.php:251
+#, php-format
+msgid "Copy created with %d participant. Choose the dates and publish it: they will then receive their personal link."
+msgid_plural "Copy created with %d participants. Choose the dates and publish it: they will then receive their personal links."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/class-concursos-duplicar.php:252
+msgid "Copy created. Choose the dates and publish it."
+msgstr ""
+
+#: includes/admin/class-concursos-entradas-admin.php:51
+#: includes/admin/class-concursos-participantes-admin.php:57
+msgid "Filter by challenge"
+msgstr ""
+
+#: includes/admin/class-concursos-entradas-admin.php:53
+#: includes/admin/class-concursos-participantes-admin.php:59
+#: includes/class-concursos-post-types.php:46
+msgid "All challenges"
+msgstr ""
+
+#: includes/admin/class-concursos-entradas-admin.php:93
+#: includes/admin/class-concursos-participantes-admin.php:113
+#: includes/class-concursos-entrada.php:42
+#: includes/class-concursos-envio.php:222
+msgid "Photo"
+msgstr ""
+
+#: includes/admin/class-concursos-entradas-admin.php:94
+msgid "Title"
+msgstr ""
+
+#: includes/admin/class-concursos-entradas-admin.php:95
+#: includes/class-concursos-participante.php:67
+msgid "Participant"
+msgstr ""
+
+#: includes/admin/class-concursos-entradas-admin.php:97
+#: includes/admin/class-concursos-votantes-admin.php:51
+msgid "Votes"
+msgstr ""
+
+#: includes/admin/class-concursos-entradas-admin.php:98
+msgid "Submitted"
+msgstr ""
+
+#: includes/admin/class-concursos-participantes-admin.php:64
+msgid "Filter by status"
+msgstr ""
+
+#: includes/admin/class-concursos-participantes-admin.php:66
+msgid "All statuses"
+msgstr ""
+
+#: includes/admin/class-concursos-participantes-admin.php:114
+#: includes/class-concursos-inscripcion.php:135
+msgid "Name"
+msgstr ""
+
+#: includes/admin/class-concursos-participantes-admin.php:115
+#: includes/admin/class-concursos-participantes-admin.php:283
+#: includes/admin/class-concursos-votantes-admin.php:49
+#: includes/class-concursos-inscripcion.php:139
+#: includes/class-concursos-votantes.php:485
+msgid "Email"
+msgstr ""
+
+#: includes/admin/class-concursos-participantes-admin.php:118
+#: includes/admin/class-concursos-participantes-admin.php:286
+msgid "Social networks"
+msgstr ""
+
+#: includes/admin/class-concursos-participantes-admin.php:119
+msgid "Registration"
+msgstr ""
+
+#: includes/admin/class-concursos-participantes-admin.php:146
+msgid "Link sent"
+msgstr ""
+
+#: includes/admin/class-concursos-participantes-admin.php:178
+msgid "Activate (approve)"
+msgstr ""
+
+#: includes/admin/class-concursos-participantes-admin.php:179
+msgid "Deactivate"
+msgstr ""
+
+#. translators: %d: number of participants.
+#: includes/admin/class-concursos-participantes-admin.php:245
+#, php-format
+msgid "%d participant activated. Anyone without a personal link received it by email."
+msgid_plural "%d participants activated. Anyone without a personal link received it by email."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of participants.
+#: includes/admin/class-concursos-participantes-admin.php:248
+#, php-format
+msgid "%d participant deactivated: their photos are hidden and their votes have been deleted."
+msgid_plural "%d participants deactivated: their photos are hidden and their votes have been deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/class-concursos-participantes-admin.php:270
+msgid "Registration details"
+msgstr ""
+
+#: includes/admin/class-concursos-participantes-admin.php:288
+msgid "Personal link"
+msgstr ""
+
+#. translators: %s: date.
+#: includes/admin/class-concursos-participantes-admin.php:293
+#, php-format
+msgid "Sent on %s"
+msgstr ""
+
+#: includes/admin/class-concursos-participantes-admin.php:294
+msgid "Sent when the participant is activated."
+msgstr ""
+
+#: includes/admin/class-concursos-participantes-admin.php:299
+msgid "The status is changed from the participant list, using the bulk actions."
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:42
+msgid "Archived:"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:42
+msgid "this challenge is hidden from the site. Publish it to show it."
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:44
+msgid "Archive this challenge"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:45
+msgid "Archived challenges are hidden from the site and send no notifications."
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:73
+msgid "Schedule"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:74
+#: includes/class-concursos-envio.php:238
+#: includes/class-concursos-galeria.php:109
+msgid "Rules"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:75
+msgid "Participation, voting and prizes"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:76
+msgid "Design"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:86
+msgid "General description"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:112
+msgid "Submissions: from the start until the end of submissions. Voting: from the end of submissions until the end of voting. Votes are reviewed between the end of voting and the publication of results."
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:125
+msgid "One rule per line."
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:141
+msgid "Photo visibility"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:152
+msgid "Photos per participant"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:156
+msgid "Votes per voter"
+msgstr ""
+
+#. translators: %d: number of photos a voter can choose.
+#: includes/admin/class-concursos-reto-metabox.php:163
+#, php-format
+msgid "%d photo only"
+msgid_plural "Up to %d photos"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/class-concursos-reto-metabox.php:171
+msgid "Winners"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:183
+msgid "1st place prize"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:184
+msgid "2nd place prize"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:185
+msgid "3rd place prize"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:192
+msgid "Optional"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:210
+msgid "Colors"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:214
+msgid "Theme colors"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:230
+msgid "Text size"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:284
+msgid "The challenge was saved, but check its settings:"
+msgstr ""
+
+#: includes/admin/class-concursos-votantes-admin.php:48
+msgid "Registration date"
+msgstr ""
+
+#: includes/admin/class-concursos-votantes-admin.php:52
+msgid "Challenges voted in"
+msgstr ""
+
+#: includes/admin/class-concursos-votantes-admin.php:133
+msgid "There are no voters yet."
+msgstr ""
+
+#: includes/admin/class-concursos-votantes-admin.php:155
+msgid "Confirmed"
+msgstr ""
+
+#: includes/admin/class-concursos-votantes-admin.php:155
+msgid "Unconfirmed"
+msgstr ""
+
+#. translators: %d: votes in a deleted challenge.
+#: includes/admin/class-concursos-votantes-admin.php:183
+#, php-format
+msgid "Deleted challenge (%d)"
+msgstr ""
+
+#: includes/admin/class-concursos-votantes-admin.php:218
+#: includes/admin/class-concursos-votantes-admin.php:219
+#: includes/admin/class-concursos-votantes-admin.php:234
+msgid "Voters"
+msgstr ""
+
+#: includes/admin/class-concursos-votantes-admin.php:239
+msgid "Search by email"
+msgstr ""
+
+#: includes/class-concursos-diseno.php:34
+msgid "Beach day"
+msgstr ""
+
+#: includes/class-concursos-diseno.php:45
+msgid "Ocean breeze"
+msgstr ""
+
+#: includes/class-concursos-diseno.php:56
+msgid "Warm autumn"
+msgstr ""
+
+#: includes/class-concursos-diseno.php:67
+msgid "Black and gold"
+msgstr ""
+
+#: includes/class-concursos-diseno.php:78
+msgid "Bold hues"
+msgstr ""
+
+#: includes/class-concursos-diseno.php:89
+msgid "Bold berry"
+msgstr ""
+
+#: includes/class-concursos-diseno.php:100
+msgid "Nature"
+msgstr ""
+
+#: includes/class-concursos-diseno.php:111
+msgid "Fresh blue"
+msgstr ""
+
+#: includes/class-concursos-diseno.php:122
+msgid "Neutral earth"
+msgstr ""
+
+#: includes/class-concursos-diseno.php:133
+msgid "Orange elegance"
+msgstr ""
+
+#: includes/class-concursos-diseno.php:153
+msgid "Smaller"
+msgstr ""
+
+#: includes/class-concursos-diseno.php:157
+msgid "Theme default"
+msgstr ""
+
+#: includes/class-concursos-diseno.php:161
+msgid "Larger"
+msgstr ""
+
+#: includes/class-concursos-entrada.php:34
+#: includes/class-concursos-entrada.php:36
+#: includes/class-concursos-entrada.php:37
+msgid "Submitted photos"
+msgstr ""
+
+#: includes/class-concursos-entrada.php:35
+msgid "Submitted photo"
+msgstr ""
+
+#: includes/class-concursos-entrada.php:38
+msgid "Edit submitted photo"
+msgstr ""
+
+#: includes/class-concursos-entrada.php:39
+msgid "Search photos"
+msgstr ""
+
+#: includes/class-concursos-entrada.php:40
+msgid "No submitted photos."
+msgstr ""
+
+#: includes/class-concursos-entrada.php:41
+msgid "No photos in the trash."
+msgstr ""
+
+#. translators: %s: participant name.
+#: includes/class-concursos-entrada.php:68
+#, php-format
+msgid "Photo by %s"
+msgstr ""
+
+#: includes/class-concursos-envio.php:35
+msgid "Photo submitted!"
+msgstr ""
+
+#: includes/class-concursos-envio.php:36
+msgid "Photo deleted."
+msgstr ""
+
+#: includes/class-concursos-envio.php:37
+msgid "The submission period is not open."
+msgstr ""
+
+#: includes/class-concursos-envio.php:38
+msgid "You have already submitted the maximum number of photos for this challenge."
+msgstr ""
+
+#: includes/class-concursos-envio.php:39
+msgid "The photo must be a JPG, PNG or WebP of up to 10 MB."
+msgstr ""
+
+#: includes/class-concursos-envio.php:40
+#: includes/class-concursos-votantes.php:138
+msgid "We could not complete the action. Please try again."
+msgstr ""
+
+#: includes/class-concursos-envio.php:62
+#: includes/class-concursos-votantes.php:294
+#: includes/class-concursos-votantes.php:388
+msgid "Invalid link"
+msgstr ""
+
+#: includes/class-concursos-envio.php:62
+msgid "This link is not valid. Check that you copied all of it."
+msgstr ""
+
+#: includes/class-concursos-envio.php:67
+msgid "Registration not active"
+msgstr ""
+
+#: includes/class-concursos-envio.php:67
+msgid "Your registration is not active. If you think this is a mistake, contact us."
+msgstr ""
+
+#. translators: %s: participant name.
+#: includes/class-concursos-envio.php:169
+#, php-format
+msgid "Hello, %s"
+msgstr ""
+
+#. translators: %s: submission end date.
+#: includes/class-concursos-envio.php:182
+#, php-format
+msgid "You can submit photos until %s."
+msgstr ""
+
+#. translators: %s: challenge start date.
+#: includes/class-concursos-envio.php:185
+#, php-format
+msgid "Photo submissions start on %s."
+msgstr ""
+
+#: includes/class-concursos-envio.php:187
+msgid "The submission period for this challenge is closed."
+msgstr ""
+
+#. translators: 1: photos submitted, 2: maximum photos.
+#: includes/class-concursos-envio.php:195
+#, php-format
+msgid "Your photos (%1$d of %2$d)"
+msgstr ""
+
+#: includes/class-concursos-envio.php:205
+msgid "Delete this photo?"
+msgstr ""
+
+#: includes/class-concursos-envio.php:207
+msgid "Delete"
+msgstr ""
+
+#: includes/class-concursos-envio.php:214
+msgid "You have not submitted any photos yet."
+msgstr ""
+
+#: includes/class-concursos-envio.php:218
+msgid "Submit a photo"
+msgstr ""
+
+#: includes/class-concursos-envio.php:224
+msgid "JPG, PNG or WebP, up to 10 MB."
+msgstr ""
+
+#: includes/class-concursos-envio.php:227
+msgid "Title (optional)"
+msgstr ""
+
+#: includes/class-concursos-envio.php:230
+msgid "Submit photo"
+msgstr ""
+
+#: includes/class-concursos-envio.php:245
+msgid "This page is personal: do not share its link."
+msgstr ""
+
+#: includes/class-concursos-envio.php:247
+msgid "Your photos"
+msgstr ""
+
+#: includes/class-concursos-galeria.php:68
+msgid "Join this challenge"
+msgstr ""
+
+#: includes/class-concursos-galeria.php:119
+msgid "Prizes"
+msgstr ""
+
+#. translators: %s: date.
+#: includes/class-concursos-galeria.php:177
+#, php-format
+msgid "Starts on %s."
+msgstr ""
+
+#. translators: %s: date.
+#: includes/class-concursos-galeria.php:179
+#, php-format
+msgid "Accepting photos until %s."
+msgstr ""
+
+#. translators: %s: date.
+#: includes/class-concursos-galeria.php:181
+#, php-format
+msgid "Voting until %s."
+msgstr ""
+
+#. translators: %s: date.
+#: includes/class-concursos-galeria.php:183
+#, php-format
+msgid "Voting has ended. Results on %s."
+msgstr ""
+
+#. translators: %s: date.
+#: includes/class-concursos-galeria.php:185
+#, php-format
+msgid "Challenge finished on %s."
+msgstr ""
+
+#: includes/class-concursos-galeria.php:220
+msgid "Submitted entries"
+msgstr ""
+
+#. translators: 1: number of photos, 2: submission end date.
+#: includes/class-concursos-galeria.php:229
+#, php-format
+msgid "%1$d photo has been submitted so far. All of them will be shown when submissions end, on %2$s."
+msgid_plural "%1$d photos have been submitted so far. All of them will be shown when submissions end, on %2$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-concursos-galeria.php:236
+msgid "Photos will be shown when the challenge starts."
+msgstr ""
+
+#: includes/class-concursos-galeria.php:243
+msgid "There are no photos yet."
+msgstr ""
+
+#. translators: %d: number of votes.
+#: includes/class-concursos-galeria.php:277
+#, php-format
+msgid "%d vote"
+msgid_plural "%d votes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-concursos-galeria.php:283
+msgid "This challenge ended without votes."
+msgstr ""
+
+#. translators: %s: prize.
+#: includes/class-concursos-galeria.php:294
+#: includes/class-concursos-perfil.php:258
+#, php-format
+msgid "Prize: %s"
+msgstr ""
+
+#: includes/class-concursos-galeria.php:304
+msgid "Other participants"
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:88
+msgid "Thank you! We received your registration. We will write to you when it is approved."
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:89
+msgid "Enter your name."
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:90
+#: includes/class-concursos-votantes.php:134
+msgid "Enter a valid email address."
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:91
+msgid "Choose an open challenge."
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:92
+msgid "That email is already registered for that challenge."
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:93
+msgid "The photo must be a JPG, PNG or WebP of up to 5 MB."
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:94
+msgid "You must accept the use of your data to register."
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:95
+msgid "We could not save your registration. Please try again."
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:124
+msgid "There are no challenges open for registration right now."
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:131
+#: includes/class-concursos-votantes.php:482
+msgid "Do not fill in this field"
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:146
+msgid "Choose a challenge"
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:154
+msgid "Profile photo (optional)"
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:156
+msgid "JPG, PNG or WebP, up to 5 MB."
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:159
+msgid "Instagram (optional)"
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:163
+msgid "Facebook (optional)"
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:169
+msgid "I agree that this data is stored to manage my participation, and that my name, photo and social networks are shown next to my photos."
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:174
+msgid "Privacy policy"
+msgstr ""
+
+#: includes/class-concursos-inscripcion.php:178
+msgid "Register"
+msgstr ""
+
+#. translators: %s: challenge name.
+#: includes/class-concursos-inscripcion.php:374
+#, php-format
+msgid "We received your registration: %s"
+msgstr ""
+
+#. translators: 1: participant name, 2: challenge name, 3: site name.
+#: includes/class-concursos-inscripcion.php:377
+#, php-format
+msgid ""
+"Hello %1$s,\n"
+"\n"
+"We received your registration for the challenge “%2$s”. We will write to you once we have reviewed and approved it.\n"
+"\n"
+"%3$s"
+msgstr ""
+
+#. translators: %s: challenge name.
+#: includes/class-concursos-inscripcion.php:399
+#, php-format
+msgid "You can now take part in “%s”"
+msgstr ""
+
+#. translators: 1: participant name, 2: challenge name, 3: personal link, 4: site name.
+#: includes/class-concursos-inscripcion.php:402
+#, php-format
+msgid ""
+"Hello %1$s,\n"
+"\n"
+"We approved your registration for the challenge “%2$s”.\n"
+"\n"
+"This is your personal link to submit your photos. Do not share it: anyone who has it can submit photos in your name.\n"
+"\n"
+"%3$s\n"
+"\n"
+"%4$s"
+msgstr ""
+
+#: includes/class-concursos-participante.php:70
+msgid "Edit participant"
+msgstr ""
+
+#: includes/class-concursos-participante.php:71
+msgid "Search participants"
+msgstr ""
+
+#: includes/class-concursos-participante.php:72
+msgid "No participants."
+msgstr ""
+
+#: includes/class-concursos-participante.php:73
+msgid "No participants in the trash."
+msgstr ""
+
+#: includes/class-concursos-participante.php:74
+msgid "Profile photo"
+msgstr ""
+
+#: includes/class-concursos-participante.php:75
+msgid "Choose profile photo"
+msgstr ""
+
+#: includes/class-concursos-participante.php:76
+msgid "Remove profile photo"
+msgstr ""
+
+#: includes/class-concursos-participante.php:77
+msgid "Use as profile photo"
+msgstr ""
+
+#: includes/class-concursos-participante.php:99
+msgid "Pending"
+msgstr ""
+
+#: includes/class-concursos-participante.php:100
+msgid "Active"
+msgstr ""
+
+#: includes/class-concursos-participante.php:101
+msgid "Inactive"
+msgstr ""
+
+#. translators: %d: number of challenges.
+#: includes/class-concursos-perfil.php:223
+#, php-format
+msgid "%d challenge"
+msgid_plural "%d challenges"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of photos.
+#: includes/class-concursos-perfil.php:225
+#, php-format
+msgid "%d photo"
+msgid_plural "%d photos"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of places.
+#: includes/class-concursos-perfil.php:227
+#, php-format
+msgid "%d place"
+msgid_plural "%d places"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-concursos-perfil.php:274
+msgid "Their photos in this challenge cannot be shown yet."
+msgstr ""
+
+#: includes/class-concursos-portada.php:59
+msgid "Challenges page"
+msgstr ""
+
+#: includes/class-concursos-portada.php:102
+msgid "Join a challenge"
+msgstr ""
+
+#: includes/class-concursos-portada.php:107
+msgid "No challenges have been published yet."
+msgstr ""
+
+#: includes/class-concursos-portada.php:113
+msgid "Other current and upcoming challenges"
+msgstr ""
+
+#: includes/class-concursos-portada.php:117
+msgid "Past challenges"
+msgstr ""
+
+#: includes/class-concursos-portada.php:156
+msgid "See the photos and vote"
+msgstr ""
+
+#: includes/class-concursos-portada.php:156
+msgid "See the challenge"
+msgstr ""
+
+#. translators: %d: number of photos.
+#: includes/class-concursos-portada.php:163
+#, php-format
+msgid "%d photo submitted"
+msgid_plural "%d photos submitted"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-concursos-post-types.php:39
+msgid "Create new challenge"
+msgstr ""
+
+#: includes/class-concursos-post-types.php:40
+msgid "Edit challenge"
+msgstr ""
+
+#: includes/class-concursos-post-types.php:42
+msgid "View challenge"
+msgstr ""
+
+#: includes/class-concursos-post-types.php:43
+msgid "Search challenges"
+msgstr ""
+
+#: includes/class-concursos-post-types.php:44
+msgid "No challenges."
+msgstr ""
+
+#: includes/class-concursos-post-types.php:45
+msgid "No challenges in the trash."
+msgstr ""
+
+#: includes/class-concursos-post-types.php:47
+msgid "Background image"
+msgstr ""
+
+#: includes/class-concursos-post-types.php:48
+msgid "Choose background image"
+msgstr ""
+
+#: includes/class-concursos-post-types.php:49
+msgid "Remove background image"
+msgstr ""
+
+#: includes/class-concursos-post-types.php:50
+msgid "Use as background image"
+msgstr ""
+
+#: includes/class-concursos-post-types.php:78
+#: includes/class-concursos-post-types.php:99
+msgid "Archived"
+msgstr ""
+
+#. translators: %s: number of archived challenges.
+#: includes/class-concursos-post-types.php:85
+#, php-format
+msgid "Archived <span class=\"count\">(%s)</span>"
+msgid_plural "Archived <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-concursos-reto.php:81
+msgid "Open: photos are shown as they are submitted"
+msgstr ""
+
+#: includes/class-concursos-reto.php:82
+msgid "Closed: photos are shown when submissions end"
+msgstr ""
+
+#: includes/class-concursos-reto.php:85
+msgid "A single winner"
+msgstr ""
+
+#: includes/class-concursos-reto.php:86
+msgid "Three places"
+msgstr ""
+
+#. translators: %s: date name.
+#: includes/class-concursos-reto.php:171
+#, php-format
+msgid "Missing date: %s."
+msgstr ""
+
+#. translators: 1: later date, 2: earlier date.
+#: includes/class-concursos-reto.php:183
+#, php-format
+msgid "“%1$s” cannot be before “%2$s”."
+msgstr ""
+
+#: includes/class-concursos-reto.php:245
+msgid "No dates"
+msgstr ""
+
+#: includes/class-concursos-reto.php:246
+msgid "Upcoming"
+msgstr ""
+
+#: includes/class-concursos-reto.php:249
+msgid "Under review"
+msgstr ""
+
+#: includes/class-concursos-reto.php:250
+msgid "Finished"
+msgstr ""
+
+#: includes/class-concursos-reto.php:261
+msgid "Challenge start"
+msgstr ""
+
+#: includes/class-concursos-reto.php:262
+msgid "End of submissions"
+msgstr ""
+
+#: includes/class-concursos-reto.php:263
+msgid "End of voting"
+msgstr ""
+
+#: includes/class-concursos-reto.php:264
+msgid "Publication of results"
+msgstr ""
+
+#: includes/class-concursos-votantes.php:126
+msgid "We sent you an email: open its link to confirm your address and be able to vote."
+msgstr ""
+
+#: includes/class-concursos-votantes.php:127
+msgid "We already sent a link to that email a few minutes ago. Check your inbox and spam folder. If it does not arrive, request it again in 5 minutes."
+msgstr ""
+
+#: includes/class-concursos-votantes.php:128
+msgid "Email confirmed! You can now vote."
+msgstr ""
+
+#: includes/class-concursos-votantes.php:129
+msgid "Vote recorded."
+msgstr ""
+
+#: includes/class-concursos-votantes.php:130
+msgid "Vote removed."
+msgstr ""
+
+#: includes/class-concursos-votantes.php:131
+msgid "We will let you know when there is a new challenge."
+msgstr ""
+
+#: includes/class-concursos-votantes.php:132
+msgid "You will no longer receive notifications about new challenges."
+msgstr ""
+
+#: includes/class-concursos-votantes.php:133
+msgid "You have signed out as a voter in this browser."
+msgstr ""
+
+#: includes/class-concursos-votantes.php:135
+msgid "You have used all your votes in this challenge. Remove one to vote for another photo."
+msgstr ""
+
+#: includes/class-concursos-votantes.php:136
+msgid "Voting for this challenge is not open."
+msgstr ""
+
+#: includes/class-concursos-votantes.php:137
+msgid "Confirm your email to be able to vote."
+msgstr ""
+
+#. translators: %s: site name.
+#: includes/class-concursos-votantes.php:243
+#, php-format
+msgid "Confirm your email to vote on %s"
+msgstr ""
+
+#. translators: 1: challenge name, 2: link, 3: site name.
+#: includes/class-concursos-votantes.php:246
+#, php-format
+msgid ""
+"Hello,\n"
+"\n"
+"Open this link to confirm your email and vote in “%1$s”:\n"
+"\n"
+"%2$s\n"
+"\n"
+"The link expires in 7 days. If this was not you, ignore this message.\n"
+"\n"
+"%3$s"
+msgstr ""
+
+#: includes/class-concursos-votantes.php:294
+msgid "This link is not valid or has expired. Register your email again to receive a new one."
+msgstr ""
+
+#: includes/class-concursos-votantes.php:388
+msgid "This unsubscribe link is not valid."
+msgstr ""
+
+#: includes/class-concursos-votantes.php:391
+msgid "New challenge notifications"
+msgstr ""
+
+#: includes/class-concursos-votantes.php:395
+msgid "Done: you will no longer receive notifications about new challenges."
+msgstr ""
+
+#. translators: %s: voter email.
+#: includes/class-concursos-votantes.php:405
+#, php-format
+msgid "Stop sending new challenge notifications to %s?"
+msgstr ""
+
+#: includes/class-concursos-votantes.php:406
+msgid "Unsubscribe me"
+msgstr ""
+
+#. translators: %s: challenge name.
+#: includes/class-concursos-votantes.php:447
+#, php-format
+msgid "New challenge: %s"
+msgstr ""
+
+#. translators: 1: challenge name, 2: challenge link, 3: unsubscribe link, 4: site name.
+#: includes/class-concursos-votantes.php:450
+#, php-format
+msgid ""
+"Hello,\n"
+"\n"
+"There is a new challenge: “%1$s”.\n"
+"\n"
+"%2$s\n"
+"\n"
+"%4$s\n"
+"\n"
+"To stop receiving these notifications: %3$s"
+msgstr ""
+
+#: includes/class-concursos-votantes.php:476
+msgid "Register your email to vote"
+msgstr ""
+
+#: includes/class-concursos-votantes.php:489
+msgid "Email me when there is a new challenge"
+msgstr ""
+
+#: includes/class-concursos-votantes.php:491
+msgid "Send me the link"
+msgstr ""
+
+#: includes/class-concursos-votantes.php:492
+msgid "We only use your email to confirm that you are a real person and, if you tick the box, to tell you about new challenges. You can unsubscribe at any time."
+msgstr ""
+
+#. translators: %s: voter email.
+#: includes/class-concursos-votantes.php:504
+#, php-format
+msgid "Voting as %s"
+msgstr ""
+
+#. translators: 1: votes left, 2: total votes.
+#: includes/class-concursos-votantes.php:509
+#, php-format
+msgid "You have %1$d of %2$d votes left."
+msgstr ""
+
+#: includes/class-concursos-votantes.php:518
+msgid "Stop receiving new challenge notifications"
+msgstr ""
+
+#: includes/class-concursos-votantes.php:518
+msgid "Notify me about new challenges"
+msgstr ""
+
+#: includes/class-concursos-votantes.php:524
+msgid "Sign out"
+msgstr ""
+
+#: includes/class-concursos-votos.php:136
+msgid "First place"
+msgstr ""
+
+#: includes/class-concursos-votos.php:136
+msgid "Tied for first place"
+msgstr ""
+
+#: includes/class-concursos-votos.php:137
+msgid "Second place"
+msgstr ""
+
+#: includes/class-concursos-votos.php:137
+msgid "Tied for second place"
+msgstr ""
+
+#: includes/class-concursos-votos.php:138
+msgid "Third place"
+msgstr ""
+
+#: includes/class-concursos-votos.php:138
+msgid "Tied for third place"
+msgstr ""
+
+#: includes/class-concursos-votos.php:220
+msgid "No votes left"
+msgstr ""
+
+#: includes/class-concursos-votos.php:232
+msgid "Remove vote"
+msgstr ""
+
+#: includes/class-concursos-votos.php:232
+msgid "Vote"
+msgstr ""

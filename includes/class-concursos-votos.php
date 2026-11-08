@@ -133,9 +133,9 @@ class Concursos_Votos {
 	 */
 	public static function nombre_lugar( $lugar, $empate ) {
 		$nombres = array(
-			1 => array( __( 'Primer lugar', 'concursos' ), __( 'Empate en el primer lugar', 'concursos' ) ),
-			2 => array( __( 'Segundo lugar', 'concursos' ), __( 'Empate en el segundo lugar', 'concursos' ) ),
-			3 => array( __( 'Tercer lugar', 'concursos' ), __( 'Empate en el tercer lugar', 'concursos' ) ),
+			1 => array( __( 'First place', 'concursos' ), __( 'Tied for first place', 'concursos' ) ),
+			2 => array( __( 'Second place', 'concursos' ), __( 'Tied for second place', 'concursos' ) ),
+			3 => array( __( 'Third place', 'concursos' ), __( 'Tied for third place', 'concursos' ) ),
 		);
 
 		return $nombres[ $lugar ][ $empate ? 1 : 0 ];
@@ -217,7 +217,7 @@ class Concursos_Votos {
 	 */
 	public static function boton( $reto_id, $entrada_id, $votada, $puede ) {
 		if ( ! $votada && ! $puede ) {
-			return '<button type="button" class="concursos-voto" disabled>' . esc_html__( 'Sin votos', 'concursos' ) . '</button>';
+			return '<button type="button" class="concursos-voto" disabled>' . esc_html__( 'No votes left', 'concursos' ) . '</button>';
 		}
 
 		return sprintf(
@@ -229,7 +229,7 @@ class Concursos_Votos {
 			(int) $entrada_id,
 			$votada ? 'quitar' : 'votar',
 			$votada ? ' concursos-voto--hecho' : '',
-			$votada ? esc_html__( 'Quitar voto', 'concursos' ) : esc_html__( 'Votar', 'concursos' )
+			$votada ? esc_html__( 'Remove vote', 'concursos' ) : esc_html__( 'Vote', 'concursos' )
 		);
 	}
 

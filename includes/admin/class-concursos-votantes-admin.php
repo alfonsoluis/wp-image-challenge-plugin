@@ -45,11 +45,11 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 	 */
 	public function get_columns() {
 		return array(
-			'creado' => __( 'Fecha de registro', 'concursos' ),
+			'creado' => __( 'Registration date', 'concursos' ),
 			'email'  => __( 'Email', 'concursos' ),
-			'estado' => __( 'Estado', 'concursos' ),
-			'votos'  => __( 'Votos', 'concursos' ),
-			'retos'  => __( 'Retos en los que votó', 'concursos' ),
+			'estado' => __( 'Status', 'concursos' ),
+			'votos'  => __( 'Votes', 'concursos' ),
+			'retos'  => __( 'Challenges voted in', 'concursos' ),
 		);
 	}
 
@@ -130,7 +130,7 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 	 * Mensaje sin resultados.
 	 */
 	public function no_items() {
-		esc_html_e( 'Todavía no hay votantes.', 'concursos' );
+		esc_html_e( 'There are no voters yet.', 'concursos' );
 	}
 
 	/**
@@ -152,7 +152,7 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 				return sprintf(
 					'<span class="concursos-badge concursos-badge--%s">%s</span>',
 					esc_attr( $item->estado ),
-					$confirmado ? esc_html__( 'Confirmado', 'concursos' ) : esc_html__( 'Sin confirmar', 'concursos' )
+					$confirmado ? esc_html__( 'Confirmed', 'concursos' ) : esc_html__( 'Unconfirmed', 'concursos' )
 				);
 			case 'votos':
 				return esc_html( number_format_i18n( (int) $item->votos ) );
@@ -179,8 +179,8 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 			$titulo = get_the_title( $reto );
 			$enlace = get_edit_post_link( $reto );
 			if ( ! $titulo ) {
-				/* translators: %d: votos en un reto ya borrado. */
-				$retos[] = esc_html( sprintf( __( 'Reto borrado (%d)', 'concursos' ), $n ) );
+				/* translators: %d: votes in a deleted challenge. */
+				$retos[] = esc_html( sprintf( __( 'Deleted challenge (%d)', 'concursos' ), $n ) );
 				continue;
 			}
 			$retos[] = sprintf(
@@ -215,8 +215,8 @@ class Concursos_Votantes_Admin {
 	public static function menu() {
 		add_submenu_page(
 			'edit.php?post_type=' . Concursos_Post_Types::RETO,
-			__( 'Votantes', 'concursos' ),
-			__( 'Votantes', 'concursos' ),
+			__( 'Voters', 'concursos' ),
+			__( 'Voters', 'concursos' ),
 			self::CAPABILITY,
 			self::PAGE,
 			array( __CLASS__, 'render' )
@@ -231,12 +231,12 @@ class Concursos_Votantes_Admin {
 		$tabla->prepare_items();
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'Votantes', 'concursos' ); ?></h1>
+			<h1><?php esc_html_e( 'Voters', 'concursos' ); ?></h1>
 			<form method="get">
 				<input type="hidden" name="post_type" value="<?php echo esc_attr( Concursos_Post_Types::RETO ); ?>">
 				<input type="hidden" name="page" value="<?php echo esc_attr( self::PAGE ); ?>">
 				<?php
-				$tabla->search_box( __( 'Buscar por email', 'concursos' ), 'concursos-votantes' );
+				$tabla->search_box( __( 'Search by email', 'concursos' ), 'concursos-votantes' );
 				$tabla->display();
 				?>
 			</form>

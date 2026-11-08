@@ -1,81 +1,67 @@
 === Concursos ===
 Contributors: alfonsoluis
-Tags: concursos, retos, fotografía, votación, galería
+Tags: contest, photo contest, voting, gallery, challenges
 Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.8.0
+Stable tag: 0.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Retos y concursos de fotografía, dibujo, diseño o cualquier arte: participantes, envíos, votación y resultados.
+Photo, drawing, design and other art challenges with participants, submissions, voting and results.
 
 == Description ==
 
-Concursos permite a asociaciones, escuelas y organizaciones crear retos artísticos en su sitio WordPress:
+Concursos lets associations, schools and organizations run art challenges on their WordPress site:
 
-* Retos con calendario de envíos, votación y resultados; cada nueva edición se crea duplicando un reto.
-* Diseño por reto: 10 paletas de color o los colores del tema, y 3 tamaños de texto. La tipografía es siempre la del tema.
-* Retos abiertos (las fotos se ven al enviarse) o cerrados (se ven al terminar los envíos).
-* Uno o tres ganadores, con premio opcional para cada lugar.
-* Inscripción pública de participantes con el shortcode `[concursos_inscripcion]`, con foto de perfil y redes sociales.
-* Aprobación de participantes en bloque desde el panel; cada participante aprobado recibe por email un enlace personal para enviar sus fotos.
-* Galería de fotos en la página de cada reto.
-* Votación con email confirmado y resultados con empates.
-* Avisos por email de nuevos retos, con baja en un clic.
-
-El plugin está en desarrollo.
+* Challenges with a schedule for submissions, voting and results. New editions are created by duplicating a challenge.
+* Open challenges (photos appear as they are submitted) or closed ones (photos appear when submissions end).
+* One winner or three places, with an optional prize for each. Ties are shown with equal prominence.
+* Public registration with the `[concursos_inscripcion]` shortcode, including profile photo and social networks.
+* Bulk approval of participants; each approved participant receives a personal link by email to submit photos.
+* Email-confirmed voters, 1 to 3 votes per challenge, and optional notifications about new challenges.
+* Public challenges page, challenge pages with results, and participant profiles.
+* Per-challenge design: theme colors or 10 color palettes, and 3 text sizes. Typography always comes from your theme.
+* Available in English and Spanish.
 
 == Installation ==
 
-1. Descarga el ZIP del repositorio y súbelo en Plugins → Añadir nuevo → Subir plugin, o copia la carpeta en `wp-content/plugins/`.
-2. Activa el plugin.
-3. Crea un reto en Retos → Nuevo reto.
-4. Crea una página con el shortcode `[concursos_inscripcion]` para que la gente se inscriba.
-5. Añade la página Retos, que crea el plugin, al menú del sitio: en temas de bloques, en Apariencia → Editor → Navegación; en temas clásicos, en Apariencia → Menús.
+1. Download the ZIP and upload it in Plugins > Add New > Upload Plugin, or copy the folder to `wp-content/plugins/`.
+2. Activate the plugin. It creates a page called Challenges (Retos in Spanish).
+3. Create a challenge in Challenges > New challenge.
+4. Create a page with the `[concursos_inscripcion]` shortcode so people can register.
+5. Add the Challenges page to your site menu: Appearance > Editor > Navigation in block themes, or Appearance > Menus in classic themes.
 
 == Changelog ==
 
+= 0.9.0 =
+* Plugin text is now in English, with a complete Spanish translation.
+* New Archived status: archived challenges are hidden from the site and send no notifications.
+* A challenge is announced only once, even if it is unpublished and published again.
+
 = 0.8.0 =
-* Diez paletas nuevas, tomadas de las más populares de coolors.co.
-* El plugin crea la página Retos, para poder añadirla al menú del sitio.
-* Las imágenes conservan su proporción: rejillas justificadas sin recortes ni franjas vacías.
-* Botón para inscribirse en la portada de retos y en cada reto que acepte inscripciones.
+* Ten palettes from coolors.co.
+* The plugin creates a Challenges page so it can be added to the site menu.
+* Images keep their proportions in justified grids, without cropping.
+* Registration button on the challenges page and on challenges open for registration.
 
 = 0.7.0 =
-* Nuevo diseño común para la portada, los retos y los perfiles, que respeta la tipografía del tema.
-* Paletas nuevas: Galería, Océano, Esmeralda, Fucsia y Coral.
-* Se quitan las opciones de tipografía y las fuentes incluidas.
-* Las fotos de la galería se muestran enteras, sin recortar.
+* Shared design for the challenges page, challenge pages and profiles, using the theme typography.
 
 = 0.6.0 =
-* Duplicar un reto como borrador, sin fotos ni votos y con la opción de copiar sus participantes activos, que reciben su enlace al publicarlo.
-* Página de votantes con fecha de registro, email, votos y retos en los que votó.
-* Diseño por reto: paleta de color, tipografía y tamaño de texto.
-* La página de cada reto muestra sus reglas y premios.
-* Se elimina el tipo de reto único o recurrente.
+* Duplicate challenges, voters page and per-challenge design.
 
 = 0.5.0 =
-* Portada pública en /retos/: el reto en curso más reciente destacado y listas de otros retos y de retos anteriores.
-* Perfil público de cada participante con su foto, sus redes, sus retos, sus fotos y sus puestos.
-
-= 0.4.1 =
-* Al desactivar un participante, sus fotos se ocultan y sus votos se borran. Al reactivarlo, las fotos vuelven.
-* Participantes y fotos restaurados de la papelera recuperan su estado anterior.
+* Public challenges page and participant profiles.
 
 = 0.4.0 =
-* Votación: registro de votantes con email confirmado, de 1 a 3 votos por reto y posibilidad de retirar un voto.
-* Resultados en la página del reto: puestos con empates en igualdad de prominencia, premios y resto de fotos.
-* Suscripción a avisos de nuevos retos, con baja desde el email o desde el reto.
-* Casilla obligatoria de consentimiento en la inscripción de participantes.
+* Voting, results with ties and new challenge notifications.
 
 = 0.3.0 =
-* Envío de fotos desde el enlace personal: subir y borrar fotos durante el periodo de envíos, hasta el máximo del reto.
-* Galería en la página de cada reto: en los retos abiertos se ve al momento; en los cerrados, al terminar los envíos.
-* Lista de fotos enviadas en la administración y contadores de participantes y fotos en el panel.
+* Photo submissions through a personal link and challenge galleries.
 
 = 0.2.0 =
-* Inscripción pública de participantes, lista con filtros y acciones en bloque, emails de confirmación y aprobación.
+* Public participant registration and bulk approval.
 
 = 0.1.0 =
-* Retos: tipo de contenido, formulario de configuración y panel con estadísticas.
+* Challenges, settings form and dashboard.

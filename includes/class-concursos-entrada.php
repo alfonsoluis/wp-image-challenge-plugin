@@ -31,15 +31,15 @@ class Concursos_Entrada {
 			self::POST_TYPE,
 			array(
 				'labels'              => array(
-					'name'               => __( 'Fotos enviadas', 'concursos' ),
-					'singular_name'      => __( 'Foto enviada', 'concursos' ),
-					'menu_name'          => __( 'Fotos enviadas', 'concursos' ),
-					'all_items'          => __( 'Fotos enviadas', 'concursos' ),
-					'edit_item'          => __( 'Editar foto enviada', 'concursos' ),
-					'search_items'       => __( 'Buscar fotos', 'concursos' ),
-					'not_found'          => __( 'No hay fotos enviadas.', 'concursos' ),
-					'not_found_in_trash' => __( 'No hay fotos en la papelera.', 'concursos' ),
-					'featured_image'     => __( 'Foto', 'concursos' ),
+					'name'               => __( 'Submitted photos', 'concursos' ),
+					'singular_name'      => __( 'Submitted photo', 'concursos' ),
+					'menu_name'          => __( 'Submitted photos', 'concursos' ),
+					'all_items'          => __( 'Submitted photos', 'concursos' ),
+					'edit_item'          => __( 'Edit submitted photo', 'concursos' ),
+					'search_items'       => __( 'Search photos', 'concursos' ),
+					'not_found'          => __( 'No submitted photos.', 'concursos' ),
+					'not_found_in_trash' => __( 'No photos in the trash.', 'concursos' ),
+					'featured_image'     => __( 'Photo', 'concursos' ),
 				),
 				'public'              => false,
 				'show_ui'             => true,
@@ -64,8 +64,8 @@ class Concursos_Entrada {
 	 */
 	public static function create( array $participante, $titulo, $attachment_id ) {
 		if ( '' === $titulo ) {
-			/* translators: %s: nombre del participante. */
-			$titulo = sprintf( __( 'Foto de %s', 'concursos' ), $participante['nombre'] );
+			/* translators: %s: participant name. */
+			$titulo = sprintf( __( 'Photo by %s', 'concursos' ), $participante['nombre'] );
 		}
 
 		$id = wp_insert_post(
