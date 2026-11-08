@@ -1,0 +1,118 @@
+/* Concursos – administración */
+
+.concursos-section-title {
+	margin: 1.5em 0 0.5em;
+	padding: 0;
+	font-size: 1.1em;
+}
+
+.concursos-radio {
+	display: inline-block;
+	margin-right: 1.5em;
+}
+
+.concursos-radio--block {
+	display: block;
+	margin: 0 0 0.5em;
+}
+
+.concursos-stats {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+	gap: 12px;
+	margin: 16px 0 24px;
+}
+
+.concursos-stat {
+	display: flex;
+	flex-direction: column;
+	padding: 16px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+}
+
+.concursos-stat__value {
+	font-size: 28px;
+	font-weight: 600;
+	line-height: 1.2;
+}
+
+.concursos-stat__label {
+	color: #50575e;
+}
+
+.concursos-empty {
+	padding: 40px;
+	text-align: center;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+}
+
+.concursos-badge {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 10px;
+	font-size: 12px;
+	line-height: 1.6;
+	background: #f0f0f1;
+	color: #3c434a;
+}
+
+.concursos-badge--envios {
+	background: #d1e4dd;
+	color: #0a4b33;
+}
+
+.concursos-badge--votacion {
+	background: #dbe7fb;
+	color: #0a3d8f;
+}
+
+.concursos-badge--evaluacion {
+	background: #fcf0d4;
+	color: #6b4c00;
+}
+
+.concursos-badge--proximo {
+	background: #ece4f7;
+	color: #4b2a7a;
+}
+
+.concursos-badge--sin_fechas {
+	background: #fbe1e1;
+	color: #8a1f1f;
+}
+
+/* Participantes */
+
+.concursos-badge--pendiente {
+	background: #fcf0d4;
+	color: #6b4c00;
+}
+
+.concursos-badge--activo {
+	background: #d1e4dd;
+	color: #0a4b33;
+}
+
+.concursos-badge--inactivo {
+	background: #f0f0f1;
+	color: #646970;
+}
+
+.column-concursos_foto {
+	width: 52px;
+}
+
+.concursos-avatar {
+	display: block;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.concursos-avatar--vacio {
+	background: #dcdcde;
+}

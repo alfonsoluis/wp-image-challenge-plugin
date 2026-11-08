@@ -1,0 +1,48 @@
+/* Concursos – formulario público */
+
+.concursos-form-publico p {
+	margin: 0 0 1em;
+}
+
+.concursos-form-publico label {
+	display: block;
+	margin-bottom: 0.25em;
+	font-weight: 600;
+}
+
+.concursos-form-publico input[type="text"],
+.concursos-form-publico input[type="email"],
+.concursos-form-publico select {
+	width: 100%;
+	max-width: 32em;
+	box-sizing: border-box;
+}
+
+.concursos-form-publico small {
+	display: block;
+	opacity: 0.75;
+}
+
+/* Campo trampa para bots: fuera de la vista, pero no display:none. */
+.concursos-hp {
+	position: absolute !important;
+	left: -9999px !important;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+.concursos-aviso {
+	padding: 0.75em 1em;
+	border-left: 4px solid currentColor;
+}
+
+.concursos-aviso--success {
+	background: #edf7ed;
+	color: #1e4620;
+}
+
+.concursos-aviso--error {
+	background: #fdeded;
+	color: #5f2120;
+}
