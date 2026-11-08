@@ -1,0 +1,9 @@
+# Archivos del entorno de desarrollo: quedan en el repositorio pero fuera del
+# ZIP que descarga la gente (GitHub → Download ZIP y git archive).
+/docker              export-ignore
+/docker-compose.yml  export-ignore
+/Makefile            export-ignore
+/.env.example        export-ignore
+/.gitattributes      export-ignore
+/.gitignore          export-ignore
+/README.md           export-ignore
