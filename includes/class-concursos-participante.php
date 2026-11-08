@@ -140,6 +140,39 @@ class Concursos_Participante {
 	}
 
 	/**
+	 * Cuántos participantes tiene un reto.
+	 *
+	 * @param int    $reto_id Reto.
+	 * @param string $estado  Solo los de este estado ('' = todos).
+	 * @return int
+	 */
+	public static function count_for_reto( $reto_id, $estado = '' ) {
+		$meta = array(
+			array(
+				'key'   => self::META . 'reto',
+				'value' => (int) $reto_id,
+			),
+		);
+		if ( $estado ) {
+			$meta[] = array(
+				'key'   => self::META . 'estado',
+				'value' => $estado,
+			);
+		}
+		$query = new WP_Query(
+			array(
+				'post_type'      => self::POST_TYPE,
+				'post_status'    => 'publish',
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+				'meta_query'     => $meta, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+			)
+		);
+
+		return (int) $query->found_posts;
+	}
+
+	/**
 	 * ¿Ya existe una inscripción con este email en este reto?
 	 *
 	 * @param string $email   Email.

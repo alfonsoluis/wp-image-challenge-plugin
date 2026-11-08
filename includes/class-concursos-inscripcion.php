@@ -26,7 +26,6 @@ class Concursos_Inscripcion {
 		add_shortcode( self::SHORTCODE, array( __CLASS__, 'shortcode' ) );
 		add_action( 'admin_post_nopriv_' . self::ACTION, array( __CLASS__, 'handle' ) );
 		add_action( 'admin_post_' . self::ACTION, array( __CLASS__, 'handle' ) );
-		add_action( 'template_redirect', array( __CLASS__, 'personal_link_page' ) );
 	}
 
 	/**
@@ -174,7 +173,7 @@ class Concursos_Inscripcion {
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- se valida abajo y lo maneja media_handle_upload().
 		$foto     = isset( $_FILES['foto'] ) ? $_FILES['foto'] : null;
 		$has_foto = $foto && ! empty( $foto['name'] );
-		if ( $has_foto && ! self::valid_photo( $foto ) ) {
+		if ( $has_foto && ! self::valid_image( $foto, self::FOTO_MAX ) ) {
 			$done( 'foto' );
 		}
 
@@ -209,16 +208,17 @@ class Concursos_Inscripcion {
 	}
 
 	/**
-	 * Comprueba tipo, tamaño y errores de subida de la foto.
+	 * Comprueba tipo (JPG, PNG o WebP), tamaño y errores de subida de una imagen.
 	 *
-	 * @param array $file Entrada de $_FILES.
+	 * @param array $file      Entrada de $_FILES.
+	 * @param int   $max_bytes Tamaño máximo.
 	 * @return bool
 	 */
-	private static function valid_photo( array $file ) {
+	public static function valid_image( array $file, $max_bytes ) {
 		if ( ! isset( $file['error'], $file['size'], $file['name'], $file['tmp_name'] ) || UPLOAD_ERR_OK !== $file['error'] ) {
 			return false;
 		}
-		if ( $file['size'] > self::FOTO_MAX ) {
+		if ( $file['size'] > $max_bytes ) {
 			return false;
 		}
 		$check = wp_check_filetype_and_ext( $file['tmp_name'], $file['name'] );
@@ -311,48 +311,6 @@ class Concursos_Inscripcion {
 				self::personal_link( $token ),
 				get_bloginfo( 'name' )
 			)
-		);
-	}
-
-	/**
-	 * Página del enlace personal. Por ahora identifica al participante; la subida
-	 * de fotos llega con la fase de envíos.
-	 */
-	public static function personal_link_page() {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- el token es la credencial.
-		if ( ! isset( $_GET[ self::LINK_PARAM ] ) ) {
-			return;
-		}
-
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- el token es la credencial.
-		$id = Concursos_Participante::find_by_token( sanitize_text_field( wp_unslash( $_GET[ self::LINK_PARAM ] ) ) );
-		if ( ! $id ) {
-			wp_die(
-				esc_html__( 'Este enlace no es válido. Revisa que lo hayas copiado completo.', 'concursos' ),
-				esc_html__( 'Enlace no válido', 'concursos' ),
-				array( 'response' => 404 )
-			);
-		}
-
-		$p = Concursos_Participante::get( $id );
-		if ( Concursos_Participante::ACTIVO !== $p['estado'] ) {
-			wp_die(
-				esc_html__( 'Tu inscripción no está activa. Si crees que es un error, escríbenos.', 'concursos' ),
-				esc_html__( 'Inscripción no activa', 'concursos' ),
-				array( 'response' => 403 )
-			);
-		}
-
-		wp_die(
-			sprintf(
-				'<h1>%s</h1><p>%s</p>',
-				/* translators: %s: nombre del participante. */
-				esc_html( sprintf( __( 'Hola, %s', 'concursos' ), $p['nombre'] ) ),
-				/* translators: %s: nombre del reto. */
-				esc_html( sprintf( __( 'Tu inscripción en «%s» está activa. Desde esta página podrás enviar tus fotos muy pronto.', 'concursos' ), get_the_title( $p['reto'] ) ) )
-			),
-			esc_html__( 'Tu espacio de participante', 'concursos' ),
-			array( 'response' => 200 )
 		);
 	}
 }

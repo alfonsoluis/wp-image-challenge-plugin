@@ -116,3 +116,10 @@
 .concursos-avatar--vacio {
 	background: #dcdcde;
 }
+
+.concursos-miniatura {
+	display: block;
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+}

@@ -239,6 +239,23 @@ class Concursos_Reto {
 	}
 
 	/**
+	 * ¿Se muestran ya las fotos al público?
+	 *
+	 * Abierto: desde que empiezan los envíos. Cerrado: desde que terminan.
+	 *
+	 * @param array $s Configuración.
+	 * @return bool
+	 */
+	public static function photos_visible( array $s ) {
+		$visible = array( 'votacion', 'evaluacion', 'finalizado' );
+		if ( 'abierto' === $s['modo'] ) {
+			$visible[] = 'envios';
+		}
+
+		return in_array( self::status( $s ), $visible, true );
+	}
+
+	/**
 	 * Etiquetas de los estados.
 	 *
 	 * @return array

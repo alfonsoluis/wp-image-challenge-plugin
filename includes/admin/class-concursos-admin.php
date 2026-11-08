@@ -48,7 +48,7 @@ class Concursos_Admin {
 	 */
 	public static function assets( $hook ) {
 		$screen = get_current_screen();
-		$types  = array( Concursos_Post_Types::RETO, Concursos_Participante::POST_TYPE );
+		$types  = array( Concursos_Post_Types::RETO, Concursos_Participante::POST_TYPE, Concursos_Entrada::POST_TYPE );
 		$ours   = ( $screen && in_array( $screen->post_type, $types, true ) ) || false !== strpos( $hook, self::PANEL );
 		if ( ! $ours ) {
 			return;
@@ -109,6 +109,8 @@ class Concursos_Admin {
 							<th scope="col"><?php esc_html_e( 'Envíos hasta', 'concursos' ); ?></th>
 							<th scope="col"><?php esc_html_e( 'Votación hasta', 'concursos' ); ?></th>
 							<th scope="col"><?php esc_html_e( 'Resultados', 'concursos' ); ?></th>
+							<th scope="col" title="<?php esc_attr_e( 'Activos / inscritos', 'concursos' ); ?>"><?php esc_html_e( 'Participantes', 'concursos' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Fotos', 'concursos' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -125,6 +127,16 @@ class Concursos_Admin {
 								<td><?php echo esc_html( Concursos_Reto::format_date( $reto['settings']['fin_envios'] ) ); ?></td>
 								<td><?php echo esc_html( Concursos_Reto::format_date( $reto['settings']['fin_votacion'] ) ); ?></td>
 								<td><?php echo esc_html( Concursos_Reto::format_date( $reto['settings']['cierre'] ) ); ?></td>
+								<td>
+									<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . Concursos_Participante::POST_TYPE . '&concursos_reto=' . $reto['post']->ID ) ); ?>">
+										<?php echo esc_html( Concursos_Participante::count_for_reto( $reto['post']->ID, Concursos_Participante::ACTIVO ) . ' / ' . Concursos_Participante::count_for_reto( $reto['post']->ID ) ); ?>
+									</a>
+								</td>
+								<td>
+									<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . Concursos_Entrada::POST_TYPE . '&concursos_reto=' . $reto['post']->ID ) ); ?>">
+										<?php echo esc_html( number_format_i18n( Concursos_Entrada::count_for_reto( $reto['post']->ID ) ) ); ?>
+									</a>
+								</td>
 							</tr>
 						<?php endforeach; ?>
 					</tbody>
