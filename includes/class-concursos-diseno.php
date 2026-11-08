@@ -19,63 +19,125 @@ class Concursos_Diseno {
 	const NORMAL = 'normal';
 
 	/**
-	 * Paletas. El color se concentra en la cabecera, los botones y los acentos;
-	 * el fondo se mantiene casi neutro para no competir con las fotos. Todas las
-	 * parejas de texto y fondo cumplen contraste AA.
+	 * Paletas, tomadas de las más populares de coolors.co. El color principal se
+	 * usa en títulos, enlaces y botones, y el acento solo como relleno, porque
+	 * muchos acentos son demasiado claros para usarlos como texto. Los fondos
+	 * son el tono claro de cada paleta o un tinte suyo. Todas las parejas de
+	 * texto y fondo cumplen contraste AA.
 	 *
 	 * @return array[]
 	 */
 	public static function paletas() {
 		return array(
-			'galeria'   => array(
-				'nombre'       => __( 'Galería', 'concursos' ),
-				'color'        => '#18181B',
+			// Sunny Beach Day (coolors.co).
+			'playa' => array(
+				'nombre'       => __( 'Día de playa', 'concursos' ),
+				'color'        => '#264653',
 				'sobre'        => '#FFFFFF',
-				'fondo'        => '#FAFAFA',
-				'suave'        => '#EDEDEF',
-				'texto'        => '#18181B',
-				'acento'       => '#1D4ED8',
-				'sobre_acento' => '#FFFFFF',
+				'fondo'        => '#FDF9EF',
+				'suave'        => '#F9EED5',
+				'texto'        => '#264653',
+				'acento'       => '#E9C46A',
+				'sobre_acento' => '#264653',
 			),
-			'oceano'    => array(
-				'nombre'       => __( 'Océano', 'concursos' ),
-				'color'        => '#0B5CAD',
+			// Summer Ocean Breeze (coolors.co).
+			'brisa' => array(
+				'nombre'       => __( 'Brisa de océano', 'concursos' ),
+				'color'        => '#1D3557',
+				'sobre'        => '#FFFFFF',
+				'fondo'        => '#FAFDF9',
+				'suave'        => '#F1FAEE',
+				'texto'        => '#1D3557',
+				'acento'       => '#A8DADC',
+				'sobre_acento' => '#1D3557',
+			),
+			// Warm Autumn Glow (coolors.co).
+			'otono' => array(
+				'nombre'       => __( 'Otoño cálido', 'concursos' ),
+				'color'        => '#D62828',
+				'sobre'        => '#FFFFFF',
+				'fondo'        => '#FDFCF8',
+				'suave'        => '#FAF8ED',
+				'texto'        => '#003049',
+				'acento'       => '#FCBF49',
+				'sobre_acento' => '#003049',
+			),
+			// Black & Gold Elegance (coolors.co).
+			'oro' => array(
+				'nombre'       => __( 'Negro y oro', 'concursos' ),
+				'color'        => '#000000',
+				'sobre'        => '#FFFFFF',
+				'fondo'        => '#F5F5F5',
+				'suave'        => '#E5E5E5',
+				'texto'        => '#14213D',
+				'acento'       => '#FCA311',
+				'sobre_acento' => '#14213D',
+			),
+			// Bold Hues (coolors.co).
+			'intensos' => array(
+				'nombre'       => __( 'Tonos intensos', 'concursos' ),
+				'color'        => '#7209B7',
+				'sobre'        => '#FFFFFF',
+				'fondo'        => '#F3FBFE',
+				'suave'        => '#DFF5FC',
+				'texto'        => '#3A0CA3',
+				'acento'       => '#4CC9F0',
+				'sobre_acento' => '#3A0CA3',
+			),
+			// Bold Berry (coolors.co).
+			'baya' => array(
+				'nombre'       => __( 'Baya intensa', 'concursos' ),
+				'color'        => '#A53860',
+				'sobre'        => '#FFFFFF',
+				'fondo'        => '#FDF1E6',
+				'suave'        => '#F9DBBD',
+				'texto'        => '#450920',
+				'acento'       => '#FFA5AB',
+				'sobre_acento' => '#450920',
+			),
+			// Nature Harmony (coolors.co).
+			'naturaleza' => array(
+				'nombre'       => __( 'Naturaleza', 'concursos' ),
+				'color'        => '#373D20',
+				'sobre'        => '#FFFFFF',
+				'fondo'        => '#F9FAF8',
+				'suave'        => '#EFF1ED',
+				'texto'        => '#373D20',
+				'acento'       => '#BCBD8B',
+				'sobre_acento' => '#373D20',
+			),
+			// Sky Blue Freshness (coolors.co).
+			'azul' => array(
+				'nombre'       => __( 'Azul fresco', 'concursos' ),
+				'color'        => '#05668D',
 				'sobre'        => '#FFFFFF',
 				'fondo'        => '#F7FAFD',
-				'suave'        => '#E1ECF8',
-				'texto'        => '#0F2540',
-				'acento'       => '#B93A0A',
-				'sobre_acento' => '#FFFFFF',
+				'suave'        => '#EBF2FA',
+				'texto'        => '#05668D',
+				'acento'       => '#A5BE00',
+				'sobre_acento' => '#12303F',
 			),
-			'esmeralda' => array(
-				'nombre'       => __( 'Esmeralda', 'concursos' ),
-				'color'        => '#04704F',
+			// Neutral Earth Tones (coolors.co).
+			'tierra' => array(
+				'nombre'       => __( 'Tierra neutra', 'concursos' ),
+				'color'        => '#5E503F',
 				'sobre'        => '#FFFFFF',
-				'fondo'        => '#F6FBF9',
-				'suave'        => '#DDF1E8',
-				'texto'        => '#0B2E22',
-				'acento'       => '#A34A06',
-				'sobre_acento' => '#FFFFFF',
+				'fondo'        => '#F7F3EF',
+				'suave'        => '#EAE0D5',
+				'texto'        => '#22333B',
+				'acento'       => '#C6AC8F',
+				'sobre_acento' => '#0A0908',
 			),
-			'fucsia'    => array(
-				'nombre'       => __( 'Fucsia', 'concursos' ),
-				'color'        => '#B0155A',
+			// Minimalist Elegance (coolors.co).
+			'naranja' => array(
+				'nombre'       => __( 'Elegancia naranja', 'concursos' ),
+				'color'        => '#2D3142',
 				'sobre'        => '#FFFFFF',
-				'fondo'        => '#FEF8FB',
-				'suave'        => '#FBE4EE',
-				'texto'        => '#3B0A22',
-				'acento'       => '#4338CA',
-				'sobre_acento' => '#FFFFFF',
-			),
-			'coral'     => array(
-				'nombre'       => __( 'Coral', 'concursos' ),
-				'color'        => '#B23A0A',
-				'sobre'        => '#FFFFFF',
-				'fondo'        => '#FEF9F5',
-				'suave'        => '#FCE8DC',
-				'texto'        => '#3A1A0C',
-				'acento'       => '#0B6B64',
-				'sobre_acento' => '#FFFFFF',
+				'fondo'        => '#F8F8F8',
+				'suave'        => '#EDEDED',
+				'texto'        => '#2D3142',
+				'acento'       => '#EF8354',
+				'sobre_acento' => '#2D3142',
 			),
 		);
 	}
@@ -154,6 +216,17 @@ class Concursos_Diseno {
 		}
 
 		return $css;
+	}
+
+	/**
+	 * Variable CSS con la proporción de una imagen, para las rejillas justificadas.
+	 *
+	 * @param int $ancho Ancho.
+	 * @param int $alto  Alto.
+	 * @return string
+	 */
+	public static function proporcion( $ancho, $alto ) {
+		return sprintf( '--r:%.4F;', $alto > 0 ? $ancho / $alto : 1.5 );
 	}
 
 	/**

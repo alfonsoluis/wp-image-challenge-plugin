@@ -136,6 +136,18 @@ class Concursos_Entrada {
 	}
 
 	/**
+	 * Variable CSS con la proporción real de una foto.
+	 *
+	 * @param WP_Post $foto Foto.
+	 * @return string
+	 */
+	public static function proporcion( $foto ) {
+		$src = wp_get_attachment_image_src( get_post_thumbnail_id( $foto ), 'medium_large' );
+
+		return $src ? Concursos_Diseno::proporcion( (int) $src[1], (int) $src[2] ) : '';
+	}
+
+	/**
 	 * Cuántas fotos tiene un reto.
 	 *
 	 * @param int $reto_id Reto.

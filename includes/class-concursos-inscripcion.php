@@ -46,6 +46,39 @@ class Concursos_Inscripcion {
 	}
 
 	/**
+	 * URL de la página con el formulario de inscripción.
+	 *
+	 * @param int $reto_id Reto que debe aparecer elegido (0 = ninguno).
+	 * @return string Vacío si ninguna página tiene el shortcode.
+	 */
+	public static function url( $reto_id = 0 ) {
+		static $pagina = null;
+
+		if ( null === $pagina ) {
+			$pagina   = 0;
+			$paginas = get_posts(
+				array(
+					'post_type'   => 'page',
+					'post_status' => 'publish',
+					's'           => self::SHORTCODE,
+					'numberposts' => 10,
+				)
+			);
+			foreach ( $paginas as $candidata ) {
+				if ( has_shortcode( $candidata->post_content, self::SHORTCODE ) ) {
+					$pagina = $candidata->ID;
+					break;
+				}
+			}
+		}
+		if ( ! $pagina ) {
+			return '';
+		}
+
+		return $reto_id ? add_query_arg( 'reto', (int) $reto_id, get_permalink( $pagina ) ) : get_permalink( $pagina );
+	}
+
+	/**
 	 * Mensajes tras enviar el formulario.
 	 *
 	 * @return array código => array( tipo, texto ).
@@ -75,6 +108,8 @@ class Concursos_Inscripcion {
 		$messages = self::messages();
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- solo elige qué mensaje mostrar.
 		$code = isset( $_GET[ self::RESULT_PARAM ] ) ? sanitize_key( wp_unslash( $_GET[ self::RESULT_PARAM ] ) ) : '';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- solo preselecciona una opción.
+		$elegido = isset( $_GET['reto'] ) ? absint( $_GET['reto'] ) : 0;
 
 		ob_start();
 		?>
@@ -111,7 +146,7 @@ class Concursos_Inscripcion {
 								<option value=""><?php esc_html_e( 'Elige un reto', 'concursos' ); ?></option>
 							<?php endif; ?>
 							<?php foreach ( $retos as $reto ) : ?>
-								<option value="<?php echo esc_attr( $reto['post']->ID ); ?>"><?php echo esc_html( get_the_title( $reto['post'] ) ); ?></option>
+								<option value="<?php echo esc_attr( $reto['post']->ID ); ?>" <?php selected( $elegido, $reto['post']->ID ); ?>><?php echo esc_html( get_the_title( $reto['post'] ) ); ?></option>
 							<?php endforeach; ?>
 						</select>
 					</p>

@@ -12,18 +12,62 @@ defined( 'ABSPATH' ) || exit;
  */
 class Concursos_Portada {
 
+	const SLUG          = 'retos';
+	const OPCION_PAGINA = 'concursos_pagina_retos';
+
 	/**
 	 * Engancha los hooks.
 	 */
 	public static function init() {
 		add_action( 'template_redirect', array( __CLASS__, 'route' ) );
+		add_action( 'init', array( __CLASS__, 'asegurar_pagina' ), 20 );
+		add_filter( 'display_post_states', array( __CLASS__, 'estado_pagina' ), 10, 2 );
+	}
+
+	/**
+	 * Crea una vez la página "Retos", para poder elegirla en el menú del sitio
+	 * como cualquier otra. Si después se borra, no se vuelve a crear.
+	 */
+	public static function asegurar_pagina() {
+		if ( get_option( self::OPCION_PAGINA ) ) {
+			return;
+		}
+
+		$pagina = get_page_by_path( self::SLUG );
+		$id     = $pagina ? $pagina->ID : wp_insert_post(
+			array(
+				'post_type'   => 'page',
+				'post_status' => 'publish',
+				'post_title'  => __( 'Retos', 'concursos' ),
+				'post_name'   => self::SLUG,
+			)
+		);
+		if ( $id && ! is_wp_error( $id ) ) {
+			update_option( self::OPCION_PAGINA, (int) $id );
+		}
+	}
+
+	/**
+	 * Marca la página en la lista de páginas del panel.
+	 *
+	 * @param string[] $states Estados.
+	 * @param WP_Post  $post   Post.
+	 * @return string[]
+	 */
+	public static function estado_pagina( $states, $post ) {
+		if ( (int) get_option( self::OPCION_PAGINA ) === $post->ID ) {
+			$states['concursos_retos'] = __( 'Portada de retos', 'concursos' );
+		}
+
+		return $states;
 	}
 
 	/**
 	 * Atiende el archivo de retos.
 	 */
 	public static function route() {
-		if ( is_post_type_archive( Concursos_Post_Types::RETO ) && ! is_feed() ) {
+		$pagina = (int) get_option( self::OPCION_PAGINA );
+		if ( ( is_post_type_archive( Concursos_Post_Types::RETO ) || ( $pagina && is_page( $pagina ) ) ) && ! is_feed() ) {
 			Concursos_Plantilla::pagina( __( 'Retos', 'concursos' ), self::render() );
 		}
 	}
@@ -52,7 +96,12 @@ class Concursos_Portada {
 		$otros     = array_merge( $en_curso, array_reverse( (array) $proximos ) );
 
 		ob_start();
-		echo '<h1 class="concursos-publico__titulo">' . esc_html__( 'Retos', 'concursos' ) . '</h1>';
+		echo '<div class="concursos-publico__cabecera"><h1 class="concursos-publico__titulo">' . esc_html__( 'Retos', 'concursos' ) . '</h1>';
+		$inscripcion = Concursos_Inscripcion::url();
+		if ( $inscripcion && Concursos_Inscripcion::retos_abiertos() ) {
+			echo '<a class="concursos-boton" href="' . esc_url( $inscripcion ) . '">' . esc_html__( 'Inscribirme en un reto', 'concursos' ) . '</a>';
+		}
+		echo '</div>';
 
 		if ( ! $destacado && ! $pasados ) {
 			echo '<p>' . esc_html__( 'Todavía no hay retos publicados.', 'concursos' ) . '</p>';
@@ -77,21 +126,23 @@ class Concursos_Portada {
 	 *
 	 * @param array  $reto Reto.
 	 * @param string $size Tamaño.
-	 * @return string URL o vacío.
+	 * @return array|null url, ancho y alto.
 	 */
 	public static function imagen( array $reto, $size ) {
-		$url = get_the_post_thumbnail_url( $reto['post'], $size );
-		if ( $url ) {
-			return $url;
-		}
-		if ( Concursos_Reto::photos_visible( $reto['settings'] ) ) {
+		$id = get_post_thumbnail_id( $reto['post'] );
+		if ( ! $id && Concursos_Reto::photos_visible( $reto['settings'] ) ) {
 			$fotos = Concursos_Entrada::find( array( 'reto' => $reto['post']->ID ) );
-			if ( $fotos ) {
-				return (string) get_the_post_thumbnail_url( $fotos[0], $size );
-			}
+			$id    = $fotos ? get_post_thumbnail_id( $fotos[0] ) : 0;
 		}
+		$src = $id ? wp_get_attachment_image_src( $id, $size ) : false;
 
-		return '';
+		return $src
+			? array(
+				'url'   => $src[0],
+				'ancho' => (int) $src[1],
+				'alto'  => (int) $src[2],
+			)
+			: null;
 	}
 
 	/**
@@ -100,7 +151,7 @@ class Concursos_Portada {
 	 * @param array $reto Reto.
 	 */
 	private static function destacado( array $reto ) {
-		$texto  = wp_trim_words( wp_strip_all_tags( strip_shortcodes( $reto['post']->post_content ) ), 40 );
+		$texto  = wp_trim_words( wp_strip_all_tags( strip_shortcodes( $reto['post']->post_content ) ), 24 );
 		$fotos  = count( Concursos_Entrada::find( array( 'reto' => $reto['post']->ID ) ) );
 		$accion = 'votacion' === $reto['status'] ? __( 'Ver las fotos y votar', 'concursos' ) : __( 'Ver el reto', 'concursos' );
 		$url    = get_permalink( $reto['post'] );
@@ -149,10 +200,10 @@ class Concursos_Portada {
 		foreach ( $retos as $reto ) {
 			$imagen = self::imagen( $reto, 'medium_large' );
 			?>
-			<li class="concursos-disenado" style="<?php echo esc_attr( Concursos_Diseno::estilo( $reto['settings'] ) ); ?>">
+			<li class="concursos-disenado" style="<?php echo esc_attr( Concursos_Diseno::estilo( $reto['settings'] ) . ( $imagen ? Concursos_Diseno::proporcion( $imagen['ancho'], $imagen['alto'] ) : '' ) ); ?>">
 				<a href="<?php echo esc_url( get_permalink( $reto['post'] ) ); ?>">
 					<?php if ( $imagen ) : ?>
-						<img src="<?php echo esc_url( $imagen ); ?>" alt="" loading="lazy">
+						<img src="<?php echo esc_url( $imagen['url'] ); ?>" width="<?php echo esc_attr( $imagen['ancho'] ); ?>" height="<?php echo esc_attr( $imagen['alto'] ); ?>" alt="" loading="lazy">
 					<?php else : ?>
 						<span class="concursos-lista-retos__vacia" aria-hidden="true"></span>
 					<?php endif; ?>

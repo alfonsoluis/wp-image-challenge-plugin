@@ -4,7 +4,7 @@ Tags: concursos, retos, fotografía, votación, galería
 Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.7.0
+Stable tag: 0.8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,7 +15,7 @@ Retos y concursos de fotografía, dibujo, diseño o cualquier arte: participante
 Concursos permite a asociaciones, escuelas y organizaciones crear retos artísticos en su sitio WordPress:
 
 * Retos con calendario de envíos, votación y resultados; cada nueva edición se crea duplicando un reto.
-* Diseño por reto: 5 paletas de color o los colores del tema, y 3 tamaños de texto. La tipografía es siempre la del tema.
+* Diseño por reto: 10 paletas de color o los colores del tema, y 3 tamaños de texto. La tipografía es siempre la del tema.
 * Retos abiertos (las fotos se ven al enviarse) o cerrados (se ven al terminar los envíos).
 * Uno o tres ganadores, con premio opcional para cada lugar.
 * Inscripción pública de participantes con el shortcode `[concursos_inscripcion]`, con foto de perfil y redes sociales.
@@ -32,8 +32,15 @@ El plugin está en desarrollo.
 2. Activa el plugin.
 3. Crea un reto en Retos → Nuevo reto.
 4. Crea una página con el shortcode `[concursos_inscripcion]` para que la gente se inscriba.
+5. Añade la página Retos, que crea el plugin, al menú del sitio: en temas de bloques, en Apariencia → Editor → Navegación; en temas clásicos, en Apariencia → Menús.
 
 == Changelog ==
+
+= 0.8.0 =
+* Diez paletas nuevas, tomadas de las más populares de coolors.co.
+* El plugin crea la página Retos, para poder añadirla al menú del sitio.
+* Las imágenes conservan su proporción: rejillas justificadas sin recortes ni franjas vacías.
+* Botón para inscribirse en la portada de retos y en cada reto que acepte inscripciones.
 
 = 0.7.0 =
 * Nuevo diseño común para la portada, los retos y los perfiles, que respeta la tipografía del tema.

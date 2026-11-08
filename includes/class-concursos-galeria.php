@@ -36,7 +36,7 @@ class Concursos_Galeria {
 	 *
 	 * @param string $status Estado.
 	 * @param array  $s      Configuración.
-	 * @param string $imagen URL de la imagen o vacío.
+	 * @param array  $imagen url, ancho y alto de la imagen, o null.
 	 * @param string $titulo Título, en HTML ya escapado.
 	 * @param string $extra  HTML ya escapado bajo la fase.
 	 * @return string
@@ -51,8 +51,21 @@ class Concursos_Galeria {
 			$titulo,
 			esc_html( self::frase_estado( $status, $s ) ),
 			$extra,
-			$imagen ? '<img class="concursos-cabecera__imagen" src="' . esc_url( $imagen ) . '" alt="">' : ''
+			$imagen ? '<img class="concursos-cabecera__imagen" src="' . esc_url( $imagen['url'] ) . '" width="' . esc_attr( $imagen['ancho'] ) . '" height="' . esc_attr( $imagen['alto'] ) . '" alt="">' : ''
 		);
+	}
+
+	/**
+	 * Enlace para inscribirse en un reto mientras acepta inscripciones.
+	 *
+	 * @param int    $reto_id Reto.
+	 * @param string $status  Estado.
+	 * @return string
+	 */
+	private static function boton_inscripcion( $reto_id, $status ) {
+		$url = in_array( $status, array( 'proximo', 'envios' ), true ) ? Concursos_Inscripcion::url( $reto_id ) : '';
+
+		return $url ? '<p><a class="concursos-boton" href="' . esc_url( $url ) . '">' . esc_html__( 'Inscribirme en este reto', 'concursos' ) . '</a></p>' : '';
 	}
 
 	/**
@@ -85,7 +98,7 @@ class Concursos_Galeria {
 		?>
 		<div class="concursos-reto concursos-disenado" style="<?php echo esc_attr( Concursos_Diseno::estilo( $s ) ); ?>">
 			<div class="concursos-reto__interior">
-				<?php echo self::cabecera( $status, $s, $imagen, '<h1>' . esc_html( get_the_title( $post ) ) . '</h1>' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+				<?php echo self::cabecera( $status, $s, $imagen, '<h1>' . esc_html( get_the_title( $post ) ) . '</h1>', self::boton_inscripcion( $post->ID, $status ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
 				<div class="concursos-reto__descripcion">
 					<?php echo apply_filters( 'the_content', $post->post_content ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound,WordPress.Security.EscapeOutput.OutputNotEscaped -- filtro estándar de WordPress. ?>
 				</div>
@@ -186,7 +199,8 @@ class Concursos_Galeria {
 		$autor = Concursos_Entrada::owner( $entrada->ID );
 
 		return sprintf(
-			'<li><figure>%s<figcaption><strong>%s</strong><span>%s</span>%s</figcaption></figure></li>',
+			'<li style="%s"><figure>%s<figcaption><strong>%s</strong><span>%s</span>%s</figcaption></figure></li>',
+			esc_attr( Concursos_Entrada::proporcion( $entrada ) ),
 			get_the_post_thumbnail( $entrada, 'medium_large', array( 'loading' => 'lazy' ) ),
 			esc_html( get_the_title( $entrada ) ),
 			$autor ? sprintf( '<a href="%s">%s</a>', esc_url( Concursos_Perfil::url( $autor ) ), esc_html( get_the_title( $autor ) ) ) : '',

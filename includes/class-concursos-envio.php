@@ -198,7 +198,7 @@ class Concursos_Envio {
 		<?php if ( $enviadas ) : ?>
 			<ul class="concursos-mis-fotos">
 				<?php foreach ( $enviadas as $entrada ) : ?>
-					<li>
+					<li style="<?php echo esc_attr( Concursos_Entrada::proporcion( $entrada ) ); ?>">
 						<?php echo get_the_post_thumbnail( $entrada, 'medium' ); ?>
 						<span><?php echo esc_html( get_the_title( $entrada ) ); ?></span>
 						<?php if ( $abierto ) : ?>
