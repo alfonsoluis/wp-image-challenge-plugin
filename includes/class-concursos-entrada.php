@@ -110,7 +110,7 @@ class Concursos_Entrada {
 			}
 		}
 
-		return get_posts(
+		$fotos = get_posts(
 			array(
 				'post_type'      => self::POST_TYPE,
 				'post_status'    => 'publish',
@@ -120,6 +120,19 @@ class Concursos_Entrada {
 				'meta_query'     => $meta, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			)
 		);
+
+		// Las fotos de un participante inactivo se ocultan, sin borrarlas.
+		return array_values( array_filter( $fotos, array( __CLASS__, 'se_ve' ) ) );
+	}
+
+	/**
+	 * ¿Se muestra esta foto? Solo si su participante está activo.
+	 *
+	 * @param WP_Post $foto Foto.
+	 * @return bool
+	 */
+	public static function se_ve( $foto ) {
+		return Concursos_Participante::esta_activo( self::owner( $foto->ID ) );
 	}
 
 	/**

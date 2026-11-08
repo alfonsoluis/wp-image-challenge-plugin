@@ -248,7 +248,7 @@ class Concursos_Participantes_Admin {
 			$text = sprintf( _n( '%d participante activado. Quien no tenía enlace personal lo recibió por email.', '%d participantes activados. Quienes no tenían enlace personal lo recibieron por email.', $n, 'concursos' ), $n );
 		} else {
 			/* translators: %d: número de participantes. */
-			$text = sprintf( _n( '%d participante desactivado.', '%d participantes desactivados.', $n, 'concursos' ), $n );
+			$text = sprintf( _n( '%d participante desactivado: sus fotos quedan ocultas y sus votos se han borrado.', '%d participantes desactivados: sus fotos quedan ocultas y sus votos se han borrado.', $n, 'concursos' ), $n );
 		}
 		printf( '<div class="notice notice-success is-dismissible"><p>%s</p></div>', esc_html( $text ) );
 	}

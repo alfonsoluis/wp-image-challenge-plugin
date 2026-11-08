@@ -27,6 +27,32 @@ class Concursos_Participante {
 	 */
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'register' ) );
+		add_action( 'trashed_post', array( __CLASS__, 'quitar_votos_si_participante' ) );
+		add_filter( 'wp_untrash_post_status', array( __CLASS__, 'estado_al_restaurar' ), 10, 3 );
+		add_action( 'before_delete_post', array( __CLASS__, 'quitar_votos_si_participante' ) );
+	}
+
+	/**
+	 * Participantes y fotos vuelven de la papelera como estaban, no como borrador.
+	 *
+	 * @param string $new_status      Estado propuesto por WordPress.
+	 * @param int    $id              Post.
+	 * @param string $previous_status Estado antes de la papelera.
+	 * @return string
+	 */
+	public static function estado_al_restaurar( $new_status, $id, $previous_status ) {
+		return in_array( get_post_type( $id ), array( self::POST_TYPE, Concursos_Entrada::POST_TYPE ), true ) ? $previous_status : $new_status;
+	}
+
+	/**
+	 * Al mandar a la papelera o borrar un participante, se quitan sus votos.
+	 *
+	 * @param int $id Post.
+	 */
+	public static function quitar_votos_si_participante( $id ) {
+		if ( self::POST_TYPE === get_post_type( $id ) ) {
+			self::quitar_votos( $id );
+		}
 	}
 
 	/**
@@ -137,6 +163,48 @@ class Concursos_Participante {
 		if ( isset( self::estado_labels()[ $estado ] ) ) {
 			update_post_meta( $id, self::META . 'estado', $estado );
 		}
+		if ( self::INACTIVO === $estado ) {
+			self::quitar_votos( $id );
+		}
+	}
+
+	/**
+	 * ¿Sus fotos se ven y cuentan? Solo si el participante existe, está publicado y activo.
+	 *
+	 * @param int $id ID del participante.
+	 * @return bool
+	 */
+	public static function esta_activo( $id ) {
+		$post = $id ? get_post( $id ) : null;
+
+		return $post && self::POST_TYPE === $post->post_type && 'publish' === $post->post_status && self::ACTIVO === get_post_meta( $id, self::META . 'estado', true );
+	}
+
+	/**
+	 * Borra los votos a las fotos de un participante. Sus fotos siguen guardadas,
+	 * pero al reactivarlo los votos no vuelven.
+	 *
+	 * @param int $id ID del participante.
+	 */
+	public static function quitar_votos( $id ) {
+		global $wpdb;
+
+		$fotos = get_posts(
+			array(
+				'post_type'      => Concursos_Entrada::POST_TYPE,
+				'post_status'    => 'any',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+				'meta_key'       => Concursos_Entrada::META . 'participante', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+				'meta_value'     => (int) $id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+			)
+		);
+		if ( ! $fotos ) {
+			return;
+		}
+
+		$ids = implode( ',', array_map( 'intval', $fotos ) );
+		$wpdb->query( "DELETE FROM " . Concursos_DB::votos() . " WHERE entrada_id IN ({$ids})" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 
 	/**

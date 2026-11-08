@@ -21,6 +21,7 @@ class Concursos_Votos {
 		add_action( 'admin_post_nopriv_' . self::ACTION, array( __CLASS__, 'handle' ) );
 		add_action( 'admin_post_' . self::ACTION, array( __CLASS__, 'handle' ) );
 		add_action( 'before_delete_post', array( __CLASS__, 'delete_for_entrada' ) );
+		add_action( 'trashed_post', array( __CLASS__, 'delete_for_entrada' ) );
 	}
 
 	/**
@@ -128,7 +129,8 @@ class Concursos_Votos {
 
 		$valida = Concursos_Entrada::POST_TYPE === get_post_type( $entrada )
 			&& 'publish' === get_post_status( $entrada )
-			&& (int) get_post_meta( $entrada, Concursos_Entrada::META . 'reto', true ) === $reto;
+			&& (int) get_post_meta( $entrada, Concursos_Entrada::META . 'reto', true ) === $reto
+			&& Concursos_Entrada::se_ve( get_post( $entrada ) );
 		if ( ! $valida ) {
 			Concursos_Votantes::volver( $reto, 'error' );
 		}
@@ -198,7 +200,7 @@ class Concursos_Votos {
 	}
 
 	/**
-	 * Al borrar una foto se borran sus votos.
+	 * Al borrar una foto o mandarla a la papelera se borran sus votos.
 	 *
 	 * @param int $id Post que se borra.
 	 */

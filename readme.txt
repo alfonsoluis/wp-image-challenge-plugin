@@ -4,7 +4,7 @@ Tags: concursos, retos, fotografía, votación, galería
 Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.4.0
+Stable tag: 0.4.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,6 +33,10 @@ El plugin está en desarrollo: la portada pública de retos, el perfil de partic
 4. Crea una página con el shortcode `[concursos_inscripcion]` para que la gente se inscriba.
 
 == Changelog ==
+
+= 0.4.1 =
+* Al desactivar un participante, sus fotos se ocultan y sus votos se borran. Al reactivarlo, las fotos vuelven.
+* Participantes y fotos restaurados de la papelera recuperan su estado anterior.
 
 = 0.4.0 =
 * Votación: registro de votantes con email confirmado, de 1 a 3 votos por reto y posibilidad de retirar un voto.
