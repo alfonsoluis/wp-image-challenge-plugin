@@ -233,7 +233,6 @@ $reto     = concursos_demo_reto(
 		'max_fotos'         => 2,
 		'premios'           => array( 'Un cuadro de 50 € para la foto ganadora', 'Un vale de 25 €', 'Un libro de fotografía' ),
 		'paleta'            => 'oceano',
-		'tipografia'        => 'editorial',
 		'reglas'            => "Foto propia, sin marcas de agua ni firmas.\nFormato libre: horizontal o vertical.\nSe admiten retoques básicos de luz y color.",
 	)
 );
@@ -257,8 +256,8 @@ if ( 'finalizado' === $fase ) {
 
 // 4. Retos anteriores, para la portada y los perfiles.
 $anteriores = array(
-	array( 'Reto anterior: reflejos', array( '-60 days', '-50 days', '-45 days', '-40 days' ), 3, array( 'Una suscripción de fotografía', 'Un trípode', 'Un libro de fotografía' ), array( 0, 1, 2, 3 ), array( 5, 3, 3, 1 ), 'terracota', 'moderna', 'grande' ),
-	array( 'Reto anterior: calles vacías', array( '-100 days', '-90 days', '-85 days', '-80 days' ), 1, array( 'Una mochila para cámara', '', '' ), array( 0, 4, 5 ), array( 2, 4, 0 ), 'bosque', 'calida', 'pequeno' ),
+	array( 'Reto anterior: reflejos', array( '-60 days', '-50 days', '-45 days', '-40 days' ), 3, array( 'Una suscripción de fotografía', 'Un trípode', 'Un libro de fotografía' ), array( 0, 1, 2, 3 ), array( 5, 3, 3, 1 ), 'coral', 'grande' ),
+	array( 'Reto anterior: calles vacías', array( '-100 days', '-90 days', '-85 days', '-80 days' ), 1, array( 'Una mochila para cámara', '', '' ), array( 0, 4, 5 ), array( 2, 4, 0 ), 'esmeralda', 'pequeno' ),
 );
 foreach ( $anteriores as $datos ) {
 	$pasado = concursos_demo_reto(
@@ -270,8 +269,7 @@ foreach ( $anteriores as $datos ) {
 			'lugares'           => $datos[2],
 			'premios'           => $datos[3],
 			'paleta'            => $datos[6],
-			'tipografia'        => $datos[7],
-			'tamano'            => $datos[8],
+			'tamano'            => $datos[7],
 		)
 	);
 	$suyas  = array();
