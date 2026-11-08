@@ -4,7 +4,7 @@ Tags: concursos, retos, fotografía, votación, galería
 Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.5.0
+Stable tag: 0.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,8 @@ Retos y concursos de fotografía, dibujo, diseño o cualquier arte: participante
 
 Concursos permite a asociaciones, escuelas y organizaciones crear retos artísticos en su sitio WordPress:
 
-* Retos únicos o recurrentes (semanales, mensuales o anuales) con calendario de envíos, votación y resultados.
+* Retos con calendario de envíos, votación y resultados; cada nueva edición se crea duplicando un reto.
+* Diseño por reto: 5 paletas de color o los colores del tema, 3 combinaciones tipográficas o la del tema, y 3 tamaños de texto.
 * Retos abiertos (las fotos se ven al enviarse) o cerrados (se ven al terminar los envíos).
 * Uno o tres ganadores, con premio opcional para cada lugar.
 * Inscripción pública de participantes con el shortcode `[concursos_inscripcion]`, con foto de perfil y redes sociales.
@@ -23,7 +24,9 @@ Concursos permite a asociaciones, escuelas y organizaciones crear retos artísti
 * Votación con email confirmado y resultados con empates.
 * Avisos por email de nuevos retos, con baja en un clic.
 
-El plugin está en desarrollo: la recurrencia automática llegará en próximas versiones.
+El plugin está en desarrollo.
+
+Las fuentes incluidas (Playfair Display, Source Sans 3, Space Grotesk, Inter, Fraunces y Nunito Sans) se distribuyen bajo la licencia SIL Open Font License 1.1: ver `assets/fonts/`.
 
 == Installation ==
 
@@ -33,6 +36,13 @@ El plugin está en desarrollo: la recurrencia automática llegará en próximas 
 4. Crea una página con el shortcode `[concursos_inscripcion]` para que la gente se inscriba.
 
 == Changelog ==
+
+= 0.6.0 =
+* Duplicar un reto como borrador, sin fotos ni votos y con la opción de copiar sus participantes activos, que reciben su enlace al publicarlo.
+* Página de votantes con fecha de registro, email, votos y retos en los que votó.
+* Diseño por reto: paleta de color, tipografía y tamaño de texto.
+* La página de cada reto muestra sus reglas y premios.
+* Se elimina el tipo de reto único o recurrente.
 
 = 0.5.0 =
 * Portada pública en /retos/: el reto en curso más reciente destacado y listas de otros retos y de retos anteriores.

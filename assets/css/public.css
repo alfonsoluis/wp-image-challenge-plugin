@@ -16,6 +16,12 @@
 	width: 100%;
 	max-width: 32em;
 	box-sizing: border-box;
+	padding: 0.55em 0.7em;
+	border: 1px solid rgba(127, 127, 127, 0.6);
+	border-radius: 4px;
+	background: #fff;
+	color: #1d2327;
+	font: inherit;
 }
 
 .concursos-form-publico small {
@@ -215,7 +221,7 @@ button.concursos-voto:disabled {
 }
 
 .concursos-puesto--1 .concursos-galeria__rejilla {
-	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
 }
 
 .concursos-premio {
@@ -410,4 +416,151 @@ button.concursos-voto:disabled {
 
 .concursos-perfil__puesto {
 	margin-left: 0.5em;
+}
+
+/* Diseño por reto. Sin paleta ni tipografía elegidas, todo hereda del tema. */
+
+.concursos-disenado {
+	--c-color: var(--wp--preset--color--contrast, currentColor);
+	--c-sobre: var(--wp--preset--color--base, #fff);
+	--c-suave: color-mix(in srgb, currentColor 7%, transparent);
+	--c-acento: var(--c-color);
+	--c-sobre-acento: var(--c-sobre);
+	--c-fuente-titulos: inherit;
+	--c-fuente-texto: inherit;
+	font-family: var(--c-fuente-texto);
+}
+
+.concursos-disenado :is(h1, h2, h3) {
+	font-family: var(--c-fuente-titulos);
+}
+
+.concursos-publico--reto {
+	max-width: none;
+	margin-block: 0;
+	padding: 0;
+}
+
+.concursos-reto {
+	background: var(--c-fondo, transparent);
+	color: var(--c-texto, inherit);
+	font-size: calc(var(--c-escala, 1) * 1em);
+}
+
+.concursos-reto__interior {
+	box-sizing: border-box;
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 2em 16px;
+}
+
+.concursos-reto h1 {
+	margin: 0.25em 0;
+	font-size: clamp(2em, 6vw, 2.75em);
+	line-height: 1.1;
+}
+
+.concursos-reto h2 {
+	font-size: 1.6em;
+}
+
+.concursos-reto h3 {
+	font-size: 1.25em;
+}
+
+.concursos-reto a {
+	color: var(--c-color);
+}
+
+.concursos-reto__cabecera {
+	position: relative;
+	background-color: var(--c-cabecera, transparent);
+	background-position: center;
+	background-size: cover;
+	color: var(--c-sobre-cabecera, inherit);
+}
+
+.concursos-reto__cabecera--imagen {
+	display: flex;
+	align-items: flex-end;
+	min-height: 22em;
+	color: #fff;
+}
+
+.concursos-reto__cabecera--imagen::before {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.15));
+	content: "";
+}
+
+.concursos-reto__cabecera .concursos-reto__interior {
+	position: relative;
+	width: 100%;
+}
+
+.concursos-reto__info {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	gap: 1em 2em;
+	margin: 1em 0 2em;
+	padding: 0.5em 1.5em 1em;
+	border-radius: 6px;
+	background: var(--c-suave);
+}
+
+.concursos-reto .concursos-panel-voto {
+	border-color: transparent;
+	background: var(--c-suave);
+}
+
+.concursos-reto .concursos-reto__interior .concursos-etiqueta {
+	background: var(--c-suave);
+	color: inherit;
+}
+
+.concursos-reto__cabecera .concursos-etiqueta {
+	background: rgba(255, 255, 255, 0.92) !important;
+	color: #1d2327 !important;
+}
+
+.concursos-reto .concursos-premio,
+.concursos-reto .concursos-puesto h3 {
+	color: var(--c-acento);
+}
+
+.concursos-disenado button[type="submit"]:not(.concursos-enlace):not(.concursos-voto):not(.concursos-boton-secundario) {
+	padding: 0.6em 1.2em;
+	border: 0;
+	border-radius: 4px;
+	background: var(--c-color);
+	color: var(--c-sobre);
+	font: inherit;
+	cursor: pointer;
+}
+
+.concursos-disenado button.concursos-voto {
+	border-color: var(--c-color);
+	color: var(--c-color);
+}
+
+.concursos-disenado button.concursos-voto--hecho {
+	border-color: var(--c-acento);
+	background: var(--c-acento);
+	color: var(--c-sobre-acento);
+}
+
+.concursos-destacado {
+	background-color: var(--c-cabecera, #1d2327);
+}
+
+.concursos-pagina.concursos-disenado {
+	background: var(--c-fondo, #f6f7f7);
+	color: var(--c-texto, #1d2327);
+}
+
+/* Con los colores del tema y sin imagen, la cabecera no tiene fondo propio. */
+.concursos-reto:not([style*="--c-cabecera"]) .concursos-reto__cabecera:not(.concursos-reto__cabecera--imagen) .concursos-etiqueta {
+	background: var(--c-suave) !important;
+	color: inherit !important;
 }

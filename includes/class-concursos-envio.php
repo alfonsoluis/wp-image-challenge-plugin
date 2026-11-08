@@ -244,7 +244,7 @@ class Concursos_Envio {
 		<?php endif; ?>
 		<p class="concursos-privado"><?php esc_html_e( 'Esta página es personal: no compartas su enlace.', 'concursos' ); ?></p>
 		<?php
-		self::layout( 200, __( 'Tus fotos', 'concursos' ), ob_get_clean() );
+		self::layout( 200, __( 'Tus fotos', 'concursos' ), ob_get_clean(), $reto );
 	}
 
 	/**
@@ -264,10 +264,14 @@ class Concursos_Envio {
 	 * @param int    $status Código HTTP.
 	 * @param string $title  Título de la página.
 	 * @param string $body   HTML ya escapado.
+	 * @param array  $s      Configuración del reto, para aplicar su diseño.
 	 */
-	public static function layout( $status, $title, $body ) {
+	public static function layout( $status, $title, $body, $s = null ) {
 		status_header( $status );
 		wp_register_style( 'concursos-public', CONCURSOS_URL . 'assets/css/public.css', array(), CONCURSOS_VERSION );
+		if ( $s ) {
+			Concursos_Diseno::aplicar( $s );
+		}
 		?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -278,7 +282,7 @@ class Concursos_Envio {
 	<title><?php echo esc_html( $title . ' · ' . get_bloginfo( 'name' ) ); ?></title>
 	<?php wp_print_styles( 'concursos-public' ); ?>
 </head>
-<body class="concursos-pagina">
+<body class="concursos-pagina concursos-disenado"<?php echo $s ? ' style="' . esc_attr( Concursos_Diseno::estilo( $s ) ) . '"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escapado. ?>>
 	<main class="concursos-pagina__contenido">
 		<p class="concursos-sitio"><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php bloginfo( 'name' ); ?></a></p>
 		<?php echo $body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado al construirlo. ?>

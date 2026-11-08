@@ -79,7 +79,7 @@ class Concursos_Portada {
 	 * @param string $size Tamaño.
 	 * @return string URL o vacío.
 	 */
-	private static function imagen( array $reto, $size ) {
+	public static function imagen( array $reto, $size ) {
 		$url = get_the_post_thumbnail_url( $reto['post'], $size );
 		if ( $url ) {
 			return $url;
@@ -104,10 +104,11 @@ class Concursos_Portada {
 		$imagen = self::imagen( $reto, 'full' );
 		$texto  = wp_trim_words( wp_strip_all_tags( strip_shortcodes( $reto['post']->post_content ) ), 40 );
 		$fotos  = count( Concursos_Entrada::find( array( 'reto' => $reto['post']->ID ) ) );
-		$estilo = $imagen ? ' style="background-image:url(' . esc_url( $imagen ) . ')"' : '';
 		$accion = 'votacion' === $reto['status'] ? __( 'Ver las fotos y votar', 'concursos' ) : __( 'Ver el reto', 'concursos' );
+		$estilo = ' style="' . esc_attr( Concursos_Diseno::estilo( $reto['settings'] ) ) . ( $imagen ? 'background-image:url(' . esc_url( $imagen ) . ')' : '' ) . '"';
+		Concursos_Diseno::aplicar( $reto['settings'] );
 		?>
-		<section class="concursos-destacado"<?php echo $estilo; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- URL escapada arriba. ?>>
+		<section class="concursos-destacado concursos-disenado"<?php echo $estilo; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- URL escapada arriba. ?>>
 			<div class="concursos-destacado__contenido">
 				<p class="concursos-etiqueta concursos-etiqueta--<?php echo esc_attr( $reto['status'] ); ?>"><?php echo esc_html( $labels[ $reto['status'] ] ); ?></p>
 				<h2><a href="<?php echo esc_url( get_permalink( $reto['post'] ) ); ?>"><?php echo esc_html( get_the_title( $reto['post'] ) ); ?></a></h2>

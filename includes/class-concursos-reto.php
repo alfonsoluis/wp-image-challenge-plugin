@@ -55,8 +55,6 @@ class Concursos_Reto {
 	 */
 	public static function defaults() {
 		return array(
-			'tipo'              => 'unico',
-			'frecuencia'        => 'semanal',
 			'modo'              => 'abierto',
 			'inicio'            => 0,
 			'fin_envios'        => 0,
@@ -67,6 +65,9 @@ class Concursos_Reto {
 			'max_fotos'         => 1,
 			'premios'           => array( '', '', '' ),
 			'reglas'            => '',
+			'paleta'            => Concursos_Diseno::TEMA,
+			'tipografia'        => Concursos_Diseno::TEMA,
+			'tamano'            => Concursos_Diseno::NORMAL,
 		);
 	}
 
@@ -77,15 +78,6 @@ class Concursos_Reto {
 	 */
 	public static function choices() {
 		return array(
-			'tipo'       => array(
-				'unico'      => __( 'Único', 'concursos' ),
-				'recurrente' => __( 'Recurrente', 'concursos' ),
-			),
-			'frecuencia' => array(
-				'semanal' => __( 'Semanal', 'concursos' ),
-				'mensual' => __( 'Mensual', 'concursos' ),
-				'anual'   => __( 'Anual', 'concursos' ),
-			),
 			'modo'       => array(
 				'abierto' => __( 'Abierto: las fotos se ven al enviarse', 'concursos' ),
 				'cerrado' => __( 'Cerrado: las fotos se ven al terminar los envíos', 'concursos' ),
@@ -139,7 +131,7 @@ class Concursos_Reto {
 		$choices = self::choices();
 		$s       = self::defaults();
 
-		foreach ( array( 'tipo', 'frecuencia', 'modo' ) as $key ) {
+		foreach ( array( 'modo' ) as $key ) {
 			$value = isset( $raw[ $key ] ) ? sanitize_key( $raw[ $key ] ) : '';
 			if ( isset( $choices[ $key ][ $value ] ) ) {
 				$s[ $key ] = $value;
@@ -161,7 +153,7 @@ class Concursos_Reto {
 
 		$s['reglas'] = isset( $raw['reglas'] ) ? sanitize_textarea_field( $raw['reglas'] ) : '';
 
-		return $s;
+		return array_merge( $s, Concursos_Diseno::sanitize( $raw ) );
 	}
 
 	/**
@@ -190,17 +182,6 @@ class Concursos_Reto {
 			if ( $s[ $curr ] < $s[ $prev ] ) {
 				/* translators: 1: fecha posterior, 2: fecha anterior. */
 				$errors[] = sprintf( __( '«%1$s» no puede ser antes de «%2$s».', 'concursos' ), $labels[ $curr ], $labels[ $prev ] );
-			}
-		}
-
-		if ( 'recurrente' === $s['tipo'] ) {
-			$limite = self::add_period( $s['inicio'], $s['frecuencia'] );
-			if ( $s['cierre'] > $limite ) {
-				$errors[] = sprintf(
-					/* translators: %s: frecuencia (semanal, mensual, anual). */
-					__( 'Un reto %s debe cerrarse antes de que empiece el siguiente periodo: acorta las fechas.', 'concursos' ),
-					strtolower( self::choices()['frecuencia'][ $s['frecuencia'] ] )
-				);
 			}
 		}
 
@@ -293,24 +274,6 @@ class Concursos_Reto {
 	 */
 	public static function rules_list( $reglas ) {
 		return array_values( array_filter( array_map( 'trim', explode( "\n", (string) $reglas ) ) ) );
-	}
-
-	/**
-	 * Suma un periodo de recurrencia a una fecha.
-	 *
-	 * @param int    $timestamp  Fecha base.
-	 * @param string $frecuencia semanal|mensual|anual.
-	 * @return int
-	 */
-	public static function add_period( $timestamp, $frecuencia ) {
-		$intervals = array(
-			'semanal' => 'P1W',
-			'mensual' => 'P1M',
-			'anual'   => 'P1Y',
-		);
-		$date = ( new DateTimeImmutable( '@' . (int) $timestamp ) )->setTimezone( wp_timezone() );
-
-		return $date->add( new DateInterval( $intervals[ $frecuencia ] ?? 'P1W' ) )->getTimestamp();
 	}
 
 	/**

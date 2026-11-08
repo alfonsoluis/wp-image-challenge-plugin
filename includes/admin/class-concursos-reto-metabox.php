@@ -31,6 +31,7 @@ class Concursos_Reto_Metabox {
 		add_meta_box( 'concursos-calendario', __( 'Calendario', 'concursos' ), array( __CLASS__, 'render_calendar' ), null, 'normal', 'high' );
 		add_meta_box( 'concursos-reglas', __( 'Reglas', 'concursos' ), array( __CLASS__, 'render_rules' ), null, 'normal', 'high' );
 		add_meta_box( 'concursos-votacion', __( 'Participación, votación y premios', 'concursos' ), array( __CLASS__, 'render_voting' ), null, 'normal', 'high' );
+		add_meta_box( 'concursos-diseno', __( 'Diseño', 'concursos' ), array( __CLASS__, 'render_design' ), null, 'normal', 'high' );
 	}
 
 	/**
@@ -50,35 +51,12 @@ class Concursos_Reto_Metabox {
 	 * @param WP_Post $post Reto.
 	 */
 	public static function render_calendar( $post ) {
-		$s       = Concursos_Reto::get_settings( $post->ID );
-		$choices = Concursos_Reto::choices();
-		$labels  = Concursos_Reto::date_labels();
+		$s      = Concursos_Reto::get_settings( $post->ID );
+		$labels = Concursos_Reto::date_labels();
 
 		wp_nonce_field( 'concursos_save_reto', self::NONCE );
 		?>
 		<table class="form-table concursos-form">
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Tipo de reto', 'concursos' ); ?></th>
-				<td>
-					<?php foreach ( $choices['tipo'] as $value => $label ) : ?>
-						<label class="concursos-radio">
-							<input type="radio" name="concursos[tipo]" value="<?php echo esc_attr( $value ); ?>" <?php checked( $s['tipo'], $value ); ?>>
-							<?php echo esc_html( $label ); ?>
-						</label>
-					<?php endforeach; ?>
-				</td>
-			</tr>
-			<tr class="concursos-if-recurrente">
-				<th scope="row"><label for="concursos-frecuencia"><?php esc_html_e( 'Se repite', 'concursos' ); ?></label></th>
-				<td>
-					<select id="concursos-frecuencia" name="concursos[frecuencia]">
-						<?php foreach ( $choices['frecuencia'] as $value => $label ) : ?>
-							<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $s['frecuencia'], $value ); ?>><?php echo esc_html( $label ); ?></option>
-						<?php endforeach; ?>
-					</select>
-					<p class="description"><?php esc_html_e( 'Las fechas de abajo son las de la primera edición; cada periodo empieza una edición nueva con las mismas duraciones.', 'concursos' ); ?></p>
-				</td>
-			</tr>
 			<?php foreach ( Concursos_Reto::FECHAS as $key ) : ?>
 				<tr>
 					<th scope="row"><label for="concursos-<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $labels[ $key ] ); ?></label></th>
@@ -173,6 +151,68 @@ class Concursos_Reto_Metabox {
 					</td>
 				</tr>
 			<?php endforeach; ?>
+		</table>
+		<?php
+	}
+
+	/**
+	 * Caja de diseño: paleta, tipografía y tamaño.
+	 *
+	 * @param WP_Post $post Reto.
+	 */
+	public static function render_design( $post ) {
+		$s = Concursos_Reto::get_settings( $post->ID );
+		?>
+		<table class="form-table concursos-form">
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Colores', 'concursos' ); ?></th>
+				<td class="concursos-opciones">
+					<label class="concursos-opcion">
+						<input type="radio" name="concursos[paleta]" value="<?php echo esc_attr( Concursos_Diseno::TEMA ); ?>" <?php checked( $s['paleta'], Concursos_Diseno::TEMA ); ?>>
+						<span><?php esc_html_e( 'Los del tema', 'concursos' ); ?></span>
+					</label>
+					<?php foreach ( Concursos_Diseno::paletas() as $clave => $p ) : ?>
+						<label class="concursos-opcion">
+							<input type="radio" name="concursos[paleta]" value="<?php echo esc_attr( $clave ); ?>" <?php checked( $s['paleta'], $clave ); ?>>
+							<span class="concursos-muestras" aria-hidden="true">
+								<?php foreach ( array( 'color', 'acento', 'suave', 'fondo' ) as $tono ) : ?>
+									<i style="background:<?php echo esc_attr( $p[ $tono ] ); ?>"></i>
+								<?php endforeach; ?>
+							</span>
+							<span><?php echo esc_html( $p['nombre'] ); ?></span>
+						</label>
+					<?php endforeach; ?>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Tipografía', 'concursos' ); ?></th>
+				<td class="concursos-opciones">
+					<label class="concursos-opcion">
+						<input type="radio" name="concursos[tipografia]" value="<?php echo esc_attr( Concursos_Diseno::TEMA ); ?>" <?php checked( $s['tipografia'], Concursos_Diseno::TEMA ); ?>>
+						<span><?php esc_html_e( 'La del tema', 'concursos' ); ?></span>
+					</label>
+					<?php foreach ( Concursos_Diseno::tipografias() as $clave => $t ) : ?>
+						<label class="concursos-opcion">
+							<input type="radio" name="concursos[tipografia]" value="<?php echo esc_attr( $clave ); ?>" <?php checked( $s['tipografia'], $clave ); ?>>
+							<span class="concursos-tipografia">
+								<strong style="font-family:<?php echo esc_attr( Concursos_Diseno::familia( $t['titulos'] ) ); ?>"><?php echo esc_html( $t['nombre'] ); ?></strong>
+								<small style="font-family:<?php echo esc_attr( Concursos_Diseno::familia( $t['texto'] ) ); ?>"><?php echo esc_html( $t['titulos'][0] . ' / ' . $t['texto'][0] ); ?></small>
+							</span>
+						</label>
+					<?php endforeach; ?>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Tamaño del texto', 'concursos' ); ?></th>
+				<td>
+					<?php foreach ( Concursos_Diseno::tamanos() as $clave => $t ) : ?>
+						<label class="concursos-radio">
+							<input type="radio" name="concursos[tamano]" value="<?php echo esc_attr( $clave ); ?>" <?php checked( $s['tamano'], $clave ); ?>>
+							<?php echo esc_html( $t['nombre'] ); ?>
+						</label>
+					<?php endforeach; ?>
+				</td>
+			</tr>
 		</table>
 		<?php
 	}

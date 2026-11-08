@@ -16,28 +16,89 @@ class Concursos_Galeria {
 	 * Engancha los hooks.
 	 */
 	public static function init() {
-		add_filter( 'the_content', array( __CLASS__, 'append' ), 20 );
+		add_action( 'template_redirect', array( __CLASS__, 'route' ) );
 	}
 
 	/**
-	 * Añade el bloque tras la descripción del reto que se está viendo.
+	 * Atiende la página de un reto.
+	 */
+	public static function route() {
+		if ( is_singular( Concursos_Post_Types::RETO ) && ! is_feed() ) {
+			$post = get_queried_object();
+			Concursos_Plantilla::pagina( get_the_title( $post ), self::pagina( $post ), 'concursos-publico--reto' );
+		}
+	}
+
+	/**
+	 * Página completa de un reto, con su diseño.
 	 *
-	 * @param string $content Contenido.
+	 * @param WP_Post $post Reto.
 	 * @return string
 	 */
-	public static function append( $content ) {
-		static $running = false;
-
-		$id = get_the_ID();
-		if ( $running || ! is_singular( Concursos_Post_Types::RETO ) || ! $id || get_queried_object_id() !== $id ) {
-			return $content;
+	private static function pagina( $post ) {
+		$s      = Concursos_Reto::get_settings( $post->ID );
+		$status = Concursos_Reto::status( $s );
+		$labels = Concursos_Reto::status_labels();
+		$imagen = Concursos_Portada::imagen(
+			array(
+				'post'     => $post,
+				'settings' => $s,
+			),
+			'full'
+		);
+		$reglas = Concursos_Reto::rules_list( $s['reglas'] );
+		$premios = array();
+		for ( $i = 0; $i < (int) $s['lugares']; $i++ ) {
+			if ( '' !== $s['premios'][ $i ] ) {
+				$premios[ $i + 1 ] = $s['premios'][ $i ];
+			}
 		}
 
-		$running = true;
-		$html    = self::render( $id );
-		$running = false;
+		Concursos_Diseno::aplicar( $s );
 
-		return $content . $html;
+		ob_start();
+		?>
+		<div class="concursos-reto concursos-disenado" style="<?php echo esc_attr( Concursos_Diseno::estilo( $s ) ); ?>">
+			<header class="concursos-reto__cabecera<?php echo $imagen ? ' concursos-reto__cabecera--imagen' : ''; ?>"<?php echo $imagen ? ' style="background-image:url(' . esc_url( $imagen ) . ')"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- URL escapada. ?>>
+				<div class="concursos-reto__interior">
+					<p class="concursos-etiqueta concursos-etiqueta--<?php echo esc_attr( $status ); ?>"><?php echo esc_html( isset( $labels[ $status ] ) ? $labels[ $status ] : $status ); ?></p>
+					<h1><?php echo esc_html( get_the_title( $post ) ); ?></h1>
+					<p class="concursos-estado"><?php echo esc_html( self::frase_estado( $status, $s ) ); ?></p>
+				</div>
+			</header>
+			<div class="concursos-reto__interior">
+				<div class="concursos-reto__descripcion">
+					<?php echo apply_filters( 'the_content', $post->post_content ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound,WordPress.Security.EscapeOutput.OutputNotEscaped -- filtro estándar de WordPress. ?>
+				</div>
+				<?php if ( $reglas || $premios ) : ?>
+					<div class="concursos-reto__info">
+						<?php if ( $reglas ) : ?>
+							<section>
+								<h2><?php esc_html_e( 'Reglas', 'concursos' ); ?></h2>
+								<ul>
+									<?php foreach ( $reglas as $regla ) : ?>
+										<li><?php echo esc_html( $regla ); ?></li>
+									<?php endforeach; ?>
+								</ul>
+							</section>
+						<?php endif; ?>
+						<?php if ( $premios ) : ?>
+							<section>
+								<h2><?php esc_html_e( 'Premios', 'concursos' ); ?></h2>
+								<ul>
+									<?php foreach ( $premios as $lugar => $premio ) : ?>
+										<li><strong><?php echo esc_html( Concursos_Votos::nombre_lugar( $lugar, false ) ); ?>:</strong> <?php echo esc_html( $premio ); ?></li>
+									<?php endforeach; ?>
+								</ul>
+							</section>
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
+				<?php echo self::render( $post->ID ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+			</div>
+		</div>
+		<?php
+		return ob_get_clean();
 	}
 
 	/**
@@ -56,7 +117,6 @@ class Concursos_Galeria {
 		ob_start();
 		echo '<section class="concursos-galeria" id="concursos-votacion">';
 		echo Concursos_Votantes::aviso_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
-		self::estado( $status, $s );
 
 		if ( 'finalizado' === $status && $entradas ) {
 			self::resultados( $reto_id, $s, $entradas );
@@ -70,19 +130,6 @@ class Concursos_Galeria {
 		echo '</section>';
 
 		return ob_get_clean();
-	}
-
-	/**
-	 * Pinta la frase con la fase del reto.
-	 *
-	 * @param string $status Estado.
-	 * @param array  $s      Configuración.
-	 */
-	private static function estado( $status, array $s ) {
-		$frase = self::frase_estado( $status, $s );
-		if ( '' !== $frase ) {
-			printf( '<p class="concursos-estado concursos-estado--%s">%s</p>', esc_attr( $status ), esc_html( $frase ) );
-		}
 	}
 
 	/**

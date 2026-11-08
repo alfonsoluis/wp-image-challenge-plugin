@@ -26,6 +26,7 @@ class Concursos_Inscripcion {
 		add_shortcode( self::SHORTCODE, array( __CLASS__, 'shortcode' ) );
 		add_action( 'admin_post_nopriv_' . self::ACTION, array( __CLASS__, 'handle' ) );
 		add_action( 'admin_post_' . self::ACTION, array( __CLASS__, 'handle' ) );
+		add_action( 'wp_after_insert_post', array( __CLASS__, 'enlaces_al_publicar' ), 10, 4 );
 	}
 
 	/**
@@ -269,6 +270,46 @@ class Concursos_Inscripcion {
 		$p = Concursos_Participante::get( $id );
 		if ( ! $p['enlace_enviado'] && self::email_aprobacion( $id ) ) {
 			update_post_meta( $id, Concursos_Participante::META . 'enlace_enviado', time() );
+		}
+	}
+
+	/**
+	 * Al publicar un reto, envía su enlace a los participantes activos que no
+	 * lo tienen: los copiados al duplicarlo. Cada uno lo recibe una sola vez.
+	 *
+	 * @param int          $post_id     Post.
+	 * @param WP_Post      $post        Post.
+	 * @param bool         $update      Si es una actualización.
+	 * @param WP_Post|null $post_before Post antes de guardar.
+	 */
+	public static function enlaces_al_publicar( $post_id, $post, $update, $post_before ) {
+		if ( Concursos_Post_Types::RETO !== $post->post_type || 'publish' !== $post->post_status ) {
+			return;
+		}
+		if ( $post_before && 'publish' === $post_before->post_status ) {
+			return;
+		}
+
+		$participantes = get_posts(
+			array(
+				'post_type'      => Concursos_Participante::POST_TYPE,
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+				'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+					array(
+						'key'   => Concursos_Participante::META . 'reto',
+						'value' => (int) $post_id,
+					),
+					array(
+						'key'   => Concursos_Participante::META . 'estado',
+						'value' => Concursos_Participante::ACTIVO,
+					),
+				),
+			)
+		);
+		foreach ( $participantes as $id ) {
+			self::activar( $id );
 		}
 	}
 

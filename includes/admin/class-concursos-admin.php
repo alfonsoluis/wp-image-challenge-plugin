@@ -49,13 +49,16 @@ class Concursos_Admin {
 	public static function assets( $hook ) {
 		$screen = get_current_screen();
 		$types  = array( Concursos_Post_Types::RETO, Concursos_Participante::POST_TYPE, Concursos_Entrada::POST_TYPE );
-		$ours   = ( $screen && in_array( $screen->post_type, $types, true ) ) || false !== strpos( $hook, self::PANEL );
+		$ours   = ( $screen && in_array( $screen->post_type, $types, true ) ) || false !== strpos( $hook, self::PANEL ) || false !== strpos( $hook, Concursos_Votantes_Admin::PAGE );
 		if ( ! $ours ) {
 			return;
 		}
 
 		wp_enqueue_style( 'concursos-admin', CONCURSOS_URL . 'assets/css/admin.css', array(), CONCURSOS_VERSION );
 		wp_enqueue_script( 'concursos-admin', CONCURSOS_URL . 'assets/js/admin.js', array(), CONCURSOS_VERSION, true );
+		foreach ( array_keys( Concursos_Diseno::tipografias() ) as $tipografia ) {
+			wp_add_inline_style( 'concursos-admin', Concursos_Diseno::css_fuentes( $tipografia ) );
+		}
 	}
 
 	/**
@@ -105,7 +108,6 @@ class Concursos_Admin {
 						<tr>
 							<th scope="col" class="column-primary"><?php esc_html_e( 'Reto', 'concursos' ); ?></th>
 							<th scope="col"><?php esc_html_e( 'Estado', 'concursos' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Tipo', 'concursos' ); ?></th>
 							<th scope="col"><?php esc_html_e( 'Envíos hasta', 'concursos' ); ?></th>
 							<th scope="col"><?php esc_html_e( 'Votación hasta', 'concursos' ); ?></th>
 							<th scope="col"><?php esc_html_e( 'Resultados', 'concursos' ); ?></th>
@@ -121,9 +123,9 @@ class Concursos_Admin {
 									<?php if ( 'publish' !== $reto['post']->post_status ) : ?>
 										— <span class="post-state"><?php echo esc_html( get_post_status_object( $reto['post']->post_status )->label ); ?></span>
 									<?php endif; ?>
+									<div class="row-actions"><a href="<?php echo esc_url( Concursos_Duplicar::url( $reto['post']->ID ) ); ?>"><?php esc_html_e( 'Duplicar', 'concursos' ); ?></a></div>
 								</td>
 								<td><?php self::status_badge( $reto['status'] ); ?></td>
-								<td><?php echo esc_html( self::tipo_label( $reto['settings'] ) ); ?></td>
 								<td><?php echo esc_html( Concursos_Reto::format_date( $reto['settings']['fin_envios'] ) ); ?></td>
 								<td><?php echo esc_html( Concursos_Reto::format_date( $reto['settings']['fin_votacion'] ) ); ?></td>
 								<td><?php echo esc_html( Concursos_Reto::format_date( $reto['settings']['cierre'] ) ); ?></td>
@@ -157,7 +159,6 @@ class Concursos_Admin {
 		unset( $columns['date'] );
 
 		$columns['concursos_estado']     = __( 'Estado', 'concursos' );
-		$columns['concursos_tipo']       = __( 'Tipo', 'concursos' );
 		$columns['concursos_fin_envios'] = __( 'Envíos hasta', 'concursos' );
 		if ( $date ) {
 			$columns['date'] = $date;
@@ -179,28 +180,10 @@ class Concursos_Admin {
 			case 'concursos_estado':
 				self::status_badge( Concursos_Reto::status( $s ) );
 				break;
-			case 'concursos_tipo':
-				echo esc_html( self::tipo_label( $s ) );
-				break;
 			case 'concursos_fin_envios':
 				echo esc_html( Concursos_Reto::format_date( $s['fin_envios'] ) );
 				break;
 		}
-	}
-
-	/**
-	 * "Único" o "Recurrente (mensual)".
-	 *
-	 * @param array $s Configuración.
-	 * @return string
-	 */
-	private static function tipo_label( array $s ) {
-		$choices = Concursos_Reto::choices();
-		if ( 'recurrente' !== $s['tipo'] ) {
-			return $choices['tipo']['unico'];
-		}
-
-		return sprintf( '%s (%s)', $choices['tipo']['recurrente'], strtolower( $choices['frecuencia'][ $s['frecuencia'] ] ) );
 	}
 
 	/**

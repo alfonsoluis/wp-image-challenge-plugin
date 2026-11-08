@@ -3,7 +3,7 @@
  * Plugin Name:       Concursos
  * Plugin URI:        https://github.com/alfonsoluis/wp-image-challenge-plugin
  * Description:       Retos y concursos (fotografía, dibujo, diseño...) con participantes, envíos, votación y resultados.
- * Version:           0.5.0
+ * Version:           0.6.0
  * Requires at least: 7.0
  * Requires PHP:      7.4
  * Author:            Alfonso Rodriguez
@@ -17,12 +17,13 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'CONCURSOS_VERSION', '0.5.0' );
+define( 'CONCURSOS_VERSION', '0.6.0' );
 define( 'CONCURSOS_FILE', __FILE__ );
 define( 'CONCURSOS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'CONCURSOS_URL', plugin_dir_url( __FILE__ ) );
 
 require_once CONCURSOS_PATH . 'includes/class-concursos-db.php';
+require_once CONCURSOS_PATH . 'includes/class-concursos-diseno.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-reto.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-post-types.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-participante.php';
@@ -53,11 +54,15 @@ if ( is_admin() ) {
 	require_once CONCURSOS_PATH . 'includes/admin/class-concursos-admin.php';
 	require_once CONCURSOS_PATH . 'includes/admin/class-concursos-participantes-admin.php';
 	require_once CONCURSOS_PATH . 'includes/admin/class-concursos-entradas-admin.php';
+	require_once CONCURSOS_PATH . 'includes/admin/class-concursos-duplicar.php';
+	require_once CONCURSOS_PATH . 'includes/admin/class-concursos-votantes-admin.php';
 
 	Concursos_Reto_Metabox::init();
 	Concursos_Admin::init();
 	Concursos_Participantes_Admin::init();
 	Concursos_Entradas_Admin::init();
+	Concursos_Duplicar::init();
+	Concursos_Votantes_Admin::init();
 }
 
 register_activation_hook(

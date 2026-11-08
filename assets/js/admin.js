@@ -14,12 +14,11 @@
 	}
 
 	function update() {
-		toggle( '.concursos-if-recurrente', checked( 'tipo' ) === 'recurrente' );
 		toggle( '.concursos-if-tres-lugares', checked( 'lugares' ) === '3' );
 	}
 
 	document.addEventListener( 'change', function ( event ) {
-		if ( event.target.name === 'concursos[tipo]' || event.target.name === 'concursos[lugares]' ) {
+		if ( event.target.name === 'concursos[lugares]' ) {
 			update();
 		}
 	} );

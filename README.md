@@ -6,7 +6,7 @@ votación y resultados.
 
 > En desarrollo. Ya funciona: crear retos, inscribir y aprobar participantes,
 > enviar fotos, votar, ver resultados, portada pública en `/retos/` y perfil de
-> participante. Próximamente: recurrencia automática.
+> participante, duplicar retos y diseño por reto.
 
 **Requisitos:** WordPress 7.0 o posterior, PHP 7.4 o posterior.
 
