@@ -124,6 +124,7 @@ class Concursos_Votantes {
 	private static function avisos() {
 		return array(
 			'revisa'      => array( 'success', __( 'Te enviamos un email: abre su enlace para confirmar tu dirección y poder votar.', 'concursos' ) ),
+			'espera'      => array( 'success', __( 'Ya te enviamos un enlace a ese email hace unos minutos. Revisa tu bandeja de entrada y la carpeta de spam. Si no llega, vuelve a pedirlo en 5 minutos.', 'concursos' ) ),
 			'confirmado'  => array( 'success', __( '¡Email confirmado! Ya puedes votar.', 'concursos' ) ),
 			'votado'      => array( 'success', __( 'Voto registrado.', 'concursos' ) ),
 			'quitado'     => array( 'success', __( 'Voto retirado.', 'concursos' ) ),
@@ -157,7 +158,8 @@ class Concursos_Votantes {
 	/**
 	 * Registro de un votante: crea la cuenta si no existe y envía el enlace de confirmación.
 	 *
-	 * Responde igual exista o no el email, para no revelar quién está registrado.
+	 * Responde igual exista o no el email, para no revelar quién está registrado:
+	 * solo avisa si ese email ya pidió un enlace hace menos de 5 minutos.
 	 * Registrarse nunca da de baja, y la suscripción no se activa hasta confirmar el email.
 	 */
 	public static function handle_registro() {
@@ -194,10 +196,14 @@ class Concursos_Votantes {
 
 		// No reenviar si acaba de pedirse: evita usar el formulario para saturar un buzón.
 		$emitido = $votante ? (int) $votante->confirm_expira - self::CONFIRM_TTL : 0;
-		if ( $votante && time() - $emitido >= self::REENVIO_MIN ) {
-			self::enviar_confirmacion( $votante, $reto, ! empty( $_POST['suscribir'] ) );
+		if ( ! $votante ) {
+			self::volver( $reto, 'error' );
+		}
+		if ( time() - $emitido < self::REENVIO_MIN ) {
+			self::volver( $reto, 'espera' );
 		}
 
+		self::enviar_confirmacion( $votante, $reto, ! empty( $_POST['suscribir'] ) );
 		self::volver( $reto, 'revisa' );
 	}
 
