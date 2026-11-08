@@ -57,6 +57,7 @@ class Concursos_Inscripcion {
 			'reto'      => array( 'error', __( 'Elige un reto abierto.', 'concursos' ) ),
 			'duplicado' => array( 'error', __( 'Ya hay una inscripción con ese email en ese reto.', 'concursos' ) ),
 			'foto'      => array( 'error', __( 'La foto debe ser JPG, PNG o WebP de 5 MB como máximo.', 'concursos' ) ),
+			'privacidad' => array( 'error', __( 'Debes aceptar el uso de tus datos para inscribirte.', 'concursos' ) ),
 			'error'     => array( 'error', __( 'No pudimos guardar tu inscripción. Inténtalo de nuevo.', 'concursos' ) ),
 		);
 	}
@@ -126,6 +127,18 @@ class Concursos_Inscripcion {
 						<label for="concursos-facebook"><?php esc_html_e( 'Facebook (opcional)', 'concursos' ); ?></label>
 						<input type="text" id="concursos-facebook" name="facebook" maxlength="100" placeholder="usuario">
 					</p>
+					<p class="concursos-casilla">
+						<label>
+							<input type="checkbox" name="privacidad" value="1" required>
+							<?php esc_html_e( 'Acepto que se guarden estos datos para gestionar mi participación, y que mi nombre, mi foto y mis redes se muestren junto a mis fotos.', 'concursos' ); ?>
+							<?php
+							$politica = get_privacy_policy_url();
+							if ( $politica ) :
+								?>
+								<a href="<?php echo esc_url( $politica ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Política de privacidad', 'concursos' ); ?></a>
+							<?php endif; ?>
+						</label>
+					</p>
 					<p><button type="submit"><?php esc_html_e( 'Inscribirme', 'concursos' ); ?></button></p>
 				</form>
 			<?php endif; ?>
@@ -166,6 +179,9 @@ class Concursos_Inscripcion {
 		if ( ! in_array( $reto_id, wp_list_pluck( wp_list_pluck( self::retos_abiertos(), 'post' ), 'ID' ), true ) ) {
 			$done( 'reto' );
 		}
+		if ( empty( $_POST['privacidad'] ) ) {
+			$done( 'privacidad' );
+		}
 		if ( Concursos_Participante::exists( $email, $reto_id ) ) {
 			$done( 'duplicado' );
 		}
@@ -189,6 +205,8 @@ class Concursos_Inscripcion {
 		if ( is_wp_error( $id ) ) {
 			$done( 'error' );
 		}
+
+		update_post_meta( $id, Concursos_Participante::META . 'privacidad', time() );
 
 		if ( $has_foto ) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';

@@ -254,7 +254,7 @@ class Concursos_Envio {
 	 * @param string $title   Título.
 	 * @param string $message Mensaje.
 	 */
-	private static function render_message( $status, $title, $message ) {
+	public static function render_message( $status, $title, $message ) {
 		self::layout( $status, $title, '<h1>' . esc_html( $title ) . '</h1><p>' . esc_html( $message ) . '</p>' );
 	}
 
@@ -265,7 +265,7 @@ class Concursos_Envio {
 	 * @param string $title  Título de la página.
 	 * @param string $body   HTML ya escapado.
 	 */
-	private static function layout( $status, $title, $body ) {
+	public static function layout( $status, $title, $body ) {
 		status_header( $status );
 		wp_register_style( 'concursos-public', CONCURSOS_URL . 'assets/css/public.css', array(), CONCURSOS_VERSION );
 		?>

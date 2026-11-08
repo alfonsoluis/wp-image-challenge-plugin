@@ -140,3 +140,97 @@
 	flex-direction: column;
 	margin-top: 0.4em;
 }
+
+/* Votación */
+
+.concursos-estado {
+	font-weight: 600;
+}
+
+.concursos-panel-voto {
+	margin: 1em 0 2em;
+	padding: 1em 1.25em;
+	border: 1px solid rgba(127, 127, 127, 0.35);
+	border-radius: 6px;
+}
+
+.concursos-panel-voto h3 {
+	margin-top: 0;
+}
+
+.concursos-panel-voto__acciones {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1em;
+}
+
+.concursos-form-publico .concursos-casilla label {
+	font-weight: 400;
+}
+
+.concursos-enlace {
+	padding: 0;
+	border: 0;
+	background: none;
+	color: inherit;
+	font: inherit;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.concursos-voto-form {
+	margin-top: 0.5em;
+}
+
+button.concursos-voto {
+	margin-top: 0.5em;
+	padding: 0.4em 1.1em;
+	border: 1px solid currentColor;
+	border-radius: 4px;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	cursor: pointer;
+}
+
+.concursos-voto-form button.concursos-voto {
+	margin-top: 0;
+}
+
+button.concursos-voto--hecho {
+	border-color: #2271b1;
+	background: #2271b1;
+	color: #fff;
+}
+
+button.concursos-voto:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* Resultados */
+
+.concursos-puesto {
+	margin: 2em 0;
+}
+
+.concursos-puesto--1 .concursos-galeria__rejilla {
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.concursos-premio {
+	font-weight: 600;
+}
+
+.concursos-votos {
+	opacity: 0.75;
+}
+
+.concursos-resto .concursos-galeria__rejilla {
+	grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+}
+
+.concursos-resto {
+	font-size: 0.9em;
+	opacity: 0.85;
+}

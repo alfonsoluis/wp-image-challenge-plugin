@@ -3,7 +3,7 @@
  * Plugin Name:       Concursos
  * Plugin URI:        https://github.com/alfonsoluis/wp-image-challenge-plugin
  * Description:       Retos y concursos (fotografía, dibujo, diseño...) con participantes, envíos, votación y resultados.
- * Version:           0.3.0
+ * Version:           0.4.0
  * Requires at least: 7.0
  * Requires PHP:      7.4
  * Author:            Alfonso Rodriguez
@@ -17,24 +17,30 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'CONCURSOS_VERSION', '0.3.0' );
+define( 'CONCURSOS_VERSION', '0.4.0' );
 define( 'CONCURSOS_FILE', __FILE__ );
 define( 'CONCURSOS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'CONCURSOS_URL', plugin_dir_url( __FILE__ ) );
 
+require_once CONCURSOS_PATH . 'includes/class-concursos-db.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-reto.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-post-types.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-participante.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-inscripcion.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-entrada.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-envio.php';
+require_once CONCURSOS_PATH . 'includes/class-concursos-votantes.php';
+require_once CONCURSOS_PATH . 'includes/class-concursos-votos.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-galeria.php';
 
+Concursos_DB::init();
 Concursos_Post_Types::init();
 Concursos_Participante::init();
 Concursos_Inscripcion::init();
 Concursos_Entrada::init();
 Concursos_Envio::init();
+Concursos_Votantes::init();
+Concursos_Votos::init();
 Concursos_Galeria::init();
 
 if ( is_admin() ) {
@@ -55,6 +61,7 @@ register_activation_hook(
 		Concursos_Post_Types::register();
 		Concursos_Participante::register();
 		Concursos_Entrada::register();
+		Concursos_DB::install();
 		flush_rewrite_rules();
 	}
 );

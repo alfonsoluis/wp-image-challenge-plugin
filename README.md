@@ -4,8 +4,9 @@ Retos y concursos de fotografía, dibujo, diseño o cualquier arte para el sitio
 WordPress de una asociación, escuela u organización: participantes, envíos,
 votación y resultados.
 
-> En desarrollo. Ya funciona: crear retos, inscripción pública de participantes
-> y su aprobación. Próximamente: envío de fotos, votación y vista pública de resultados.
+> En desarrollo. Ya funciona: crear retos, inscribir y aprobar participantes,
+> enviar fotos, votar y ver resultados. Próximamente: portada pública de retos,
+> perfil de participante y recurrencia automática.
 
 **Requisitos:** WordPress 7.0 o posterior, PHP 7.4 o posterior.
 
@@ -31,6 +32,8 @@ make down              # detener (conserva datos)
 make reset             # borrar todo (BD y WordPress)
 make wp c="plugin list"   # cualquier comando de wp-cli
 make debug-log            # seguir wp-content/debug.log
+make demo                 # reto de prueba abierto con participantes y fotos
+make demo FASE=votacion   # el mismo reto en votación (o FASE=finalizado, con votos y resultados)
 ```
 
 | Servicio    | URL                                      | Credenciales  |

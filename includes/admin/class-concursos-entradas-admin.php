@@ -94,6 +94,7 @@ class Concursos_Entradas_Admin {
 			'title'                  => __( 'Título', 'concursos' ),
 			'concursos_participante' => __( 'Participante', 'concursos' ),
 			'concursos_reto'         => __( 'Reto', 'concursos' ),
+			'concursos_votos'        => __( 'Votos', 'concursos' ),
 			'date'                   => __( 'Enviada', 'concursos' ),
 		);
 	}
@@ -119,6 +120,9 @@ class Concursos_Entradas_Admin {
 			case 'concursos_reto':
 				$reto = (int) get_post_meta( $id, Concursos_Entrada::META . 'reto', true );
 				echo $reto ? esc_html( get_the_title( $reto ) ) : '—';
+				break;
+			case 'concursos_votos':
+				echo esc_html( number_format_i18n( Concursos_Votos::count_entrada( $id ) ) );
 				break;
 		}
 	}
