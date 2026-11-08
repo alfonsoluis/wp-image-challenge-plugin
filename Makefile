@@ -29,6 +29,7 @@ install: up ## Instala WordPress y activa el plugin (idempotente)
 	@$(WP) post list --post_type=page --name=inscripcion-retos --format=ids | grep -q . || \
 		$(WP) post create --post_type=page --post_status=publish --post_title="Inscripción a retos" \
 		--post_name=inscripcion-retos --post_content='[concursos_inscripcion]'
+	@$(WP) eval-file /var/www/html/wp-content/plugins/concursos/docker/menu.php
 	@echo "Listo: $(WP_URL)/wp-admin  ($(WP_ADMIN_USER) / $(WP_ADMIN_PASSWORD))"
 	@echo "Emails de prueba: http://localhost:$(MAILPIT_PORT)"
 
