@@ -9,7 +9,7 @@ export
 
 WP = docker compose run --rm wpcli
 
-.PHONY: up down install wp logs debug-log reset
+.PHONY: up down install wp logs debug-log reset demo
 
 up: ## Levanta WordPress, MariaDB y phpMyAdmin
 	docker compose up -d
@@ -40,6 +40,9 @@ logs: ## Logs de los contenedores
 
 debug-log: ## Sigue wp-content/debug.log
 	docker compose exec wordpress sh -c 'touch wp-content/debug.log && tail -f wp-content/debug.log'
+
+demo: ## Reto de prueba abierto con participantes y fotos (FASE=envios|votacion|finalizado)
+	docker compose run --rm -q -e CONCURSOS_FASE=$(or $(FASE),envios) wpcli eval-file /var/www/html/wp-content/plugins/concursos/docker/seed.php
 
 reset: ## Borra TODO (contenedores y volúmenes de datos)
 	docker compose down -v
