@@ -32,10 +32,17 @@ if ( ! isset( $fechas[ $fase ] ) ) {
  * @return string JPEG.
  */
 function concursos_demo_imagen( $seed ) {
-	mt_srand( $seed );
 	$medidas = array( array( 1200, 800 ), array( 800, 1200 ), array( 1200, 1200 ), array( 1600, 800 ), array( 1200, 900 ) );
 	$w       = $medidas[ $seed % count( $medidas ) ][0];
 	$h       = $medidas[ $seed % count( $medidas ) ][1];
+
+	// Fotos reales de muestra (licencia Unsplash); sin conexión, un degradado.
+	$respuesta = wp_remote_get( sprintf( 'https://picsum.photos/seed/concursos%d/%d/%d', $seed, $w, $h ), array( 'timeout' => 20 ) );
+	if ( 200 === wp_remote_retrieve_response_code( $respuesta ) && 0 === strpos( wp_remote_retrieve_body( $respuesta ), "\xFF\xD8" ) ) {
+		return wp_remote_retrieve_body( $respuesta );
+	}
+
+	mt_srand( $seed );
 	$im = imagecreatetruecolor( $w, $h );
 	$a  = array( mt_rand( 30, 220 ), mt_rand( 30, 220 ), mt_rand( 30, 220 ) );
 	$b  = array( mt_rand( 30, 220 ), mt_rand( 30, 220 ), mt_rand( 30, 220 ) );
