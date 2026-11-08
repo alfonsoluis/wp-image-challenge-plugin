@@ -159,11 +159,8 @@ class Concursos_Participantes_Admin {
 	 */
 	private static function social_links( array $p ) {
 		$links = array();
-		if ( $p['instagram'] ) {
-			$links[] = sprintf( '<a href="%s" target="_blank" rel="noopener">Instagram</a>', esc_url( 'https://www.instagram.com/' . $p['instagram'] . '/' ) );
-		}
-		if ( $p['facebook'] ) {
-			$links[] = sprintf( '<a href="%s" target="_blank" rel="noopener">Facebook</a>', esc_url( 'https://www.facebook.com/' . $p['facebook'] ) );
+		foreach ( Concursos_Participante::redes( $p ) as $red => $url ) {
+			$links[] = sprintf( '<a href="%s" target="_blank" rel="noopener">%s</a>', esc_url( $url ), esc_html( $red ) );
 		}
 		echo $links ? wp_kses_post( implode( ' · ', $links ) ) : '—';
 	}

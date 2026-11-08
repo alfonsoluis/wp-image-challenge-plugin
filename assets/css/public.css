@@ -234,3 +234,180 @@ button.concursos-voto:disabled {
 	font-size: 0.9em;
 	opacity: 0.85;
 }
+
+/* Páginas públicas propias */
+
+.concursos-publico {
+	box-sizing: border-box;
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 2em 16px 4em;
+}
+
+.concursos-galeria figcaption a {
+	color: inherit;
+}
+
+.concursos-etiqueta {
+	display: inline-block;
+	margin: 0;
+	padding: 0.15em 0.7em;
+	border-radius: 1em;
+	background: #f0f0f1;
+	color: #3c434a;
+	font-size: 0.8em;
+	font-weight: 600;
+}
+
+.concursos-etiqueta--envios {
+	background: #d1e4dd;
+	color: #0a4b33;
+}
+
+.concursos-etiqueta--votacion {
+	background: #dbe7fb;
+	color: #0a3d8f;
+}
+
+.concursos-etiqueta--evaluacion {
+	background: #fcf0d4;
+	color: #6b4c00;
+}
+
+.concursos-etiqueta--proximo {
+	background: #ece4f7;
+	color: #4b2a7a;
+}
+
+/* Reto destacado */
+
+.concursos-destacado {
+	position: relative;
+	display: flex;
+	align-items: flex-end;
+	min-height: 420px;
+	margin-bottom: 3em;
+	overflow: hidden;
+	border-radius: 8px;
+	background-color: #1d2327;
+	background-position: center;
+	background-size: cover;
+	color: #fff;
+}
+
+.concursos-destacado::before {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.15));
+	content: "";
+}
+
+.concursos-destacado__contenido {
+	position: relative;
+	max-width: 44em;
+	padding: 2em;
+}
+
+.concursos-destacado h2 {
+	margin: 0.3em 0;
+}
+
+.concursos-destacado h2 a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.concursos-boton {
+	display: inline-block;
+	padding: 0.6em 1.4em;
+	border-radius: 4px;
+	background: #fff;
+	color: #1d2327;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+/* Listas de retos */
+
+.concursos-lista-retos {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	gap: 20px;
+	padding: 0;
+	list-style: none;
+}
+
+.concursos-lista-retos li {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.3em;
+}
+
+.concursos-lista-retos a {
+	display: block;
+	width: 100%;
+	color: inherit;
+	text-decoration: none;
+}
+
+.concursos-lista-retos img,
+.concursos-lista-retos__vacia {
+	display: block;
+	width: 100%;
+	aspect-ratio: 3 / 2;
+	margin-bottom: 0.4em;
+	border-radius: 4px;
+	object-fit: cover;
+	background: #dcdcde;
+}
+
+/* Perfil */
+
+.concursos-perfil {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 1.5em;
+	margin-bottom: 2em;
+}
+
+.concursos-perfil h1 {
+	margin: 0;
+}
+
+.concursos-perfil__foto {
+	display: flex;
+	flex: none;
+	align-items: center;
+	justify-content: center;
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.concursos-perfil__foto--vacia {
+	background: #dcdcde;
+	color: #50575e;
+	font-size: 3em;
+}
+
+.concursos-perfil__cifras {
+	margin: 0.25em 0;
+	opacity: 0.75;
+}
+
+.concursos-perfil__redes {
+	display: flex;
+	gap: 1em;
+	margin: 0;
+}
+
+.concursos-perfil__reto {
+	margin-top: 2.5em;
+}
+
+.concursos-perfil__puesto {
+	margin-left: 0.5em;
+}

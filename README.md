@@ -5,8 +5,8 @@ WordPress de una asociación, escuela u organización: participantes, envíos,
 votación y resultados.
 
 > En desarrollo. Ya funciona: crear retos, inscribir y aprobar participantes,
-> enviar fotos, votar y ver resultados. Próximamente: portada pública de retos,
-> perfil de participante y recurrencia automática.
+> enviar fotos, votar, ver resultados, portada pública en `/retos/` y perfil de
+> participante. Próximamente: recurrencia automática.
 
 **Requisitos:** WordPress 7.0 o posterior, PHP 7.4 o posterior.
 

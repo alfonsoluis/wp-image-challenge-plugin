@@ -4,7 +4,7 @@ Tags: concursos, retos, fotografía, votación, galería
 Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.4.1
+Stable tag: 0.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,7 +23,7 @@ Concursos permite a asociaciones, escuelas y organizaciones crear retos artísti
 * Votación con email confirmado y resultados con empates.
 * Avisos por email de nuevos retos, con baja en un clic.
 
-El plugin está en desarrollo: la portada pública de retos, el perfil de participante y la recurrencia automática llegarán en próximas versiones.
+El plugin está en desarrollo: la recurrencia automática llegará en próximas versiones.
 
 == Installation ==
 
@@ -33,6 +33,10 @@ El plugin está en desarrollo: la portada pública de retos, el perfil de partic
 4. Crea una página con el shortcode `[concursos_inscripcion]` para que la gente se inscriba.
 
 == Changelog ==
+
+= 0.5.0 =
+* Portada pública en /retos/: el reto en curso más reciente destacado y listas de otros retos y de retos anteriores.
+* Perfil público de cada participante con su foto, sus redes, sus retos, sus fotos y sus puestos.
 
 = 0.4.1 =
 * Al desactivar un participante, sus fotos se ocultan y sus votos se borran. Al reactivarlo, las fotos vuelven.

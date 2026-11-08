@@ -108,6 +108,40 @@ class Concursos_Votos {
 	}
 
 	/**
+	 * Votos de cada foto dada, con cero para las que no tienen.
+	 *
+	 * @param int       $reto_id  Reto.
+	 * @param WP_Post[] $entradas Fotos, en el orden en que deben listarse los empates.
+	 * @return int[] entrada => votos.
+	 */
+	public static function de_fotos( $reto_id, array $entradas ) {
+		$counts = self::counts( $reto_id );
+		$votos  = array();
+		foreach ( $entradas as $entrada ) {
+			$votos[ $entrada->ID ] = isset( $counts[ $entrada->ID ] ) ? $counts[ $entrada->ID ] : 0;
+		}
+
+		return $votos;
+	}
+
+	/**
+	 * Nombre de un puesto.
+	 *
+	 * @param int  $lugar  Puesto (1 a 3).
+	 * @param bool $empate Si lo comparten varias fotos.
+	 * @return string
+	 */
+	public static function nombre_lugar( $lugar, $empate ) {
+		$nombres = array(
+			1 => array( __( 'Primer lugar', 'concursos' ), __( 'Empate en el primer lugar', 'concursos' ) ),
+			2 => array( __( 'Segundo lugar', 'concursos' ), __( 'Empate en el segundo lugar', 'concursos' ) ),
+			3 => array( __( 'Tercer lugar', 'concursos' ), __( 'Empate en el tercer lugar', 'concursos' ) ),
+		);
+
+		return $nombres[ $lugar ][ $empate ? 1 : 0 ];
+	}
+
+	/**
 	 * Procesa un voto o su retirada y vuelve a la página del reto.
 	 */
 	public static function handle() {

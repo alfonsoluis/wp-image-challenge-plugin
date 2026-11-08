@@ -73,12 +73,26 @@ class Concursos_Galeria {
 	}
 
 	/**
-	 * Frase con la fase del reto y su próxima fecha.
+	 * Pinta la frase con la fase del reto.
 	 *
 	 * @param string $status Estado.
 	 * @param array  $s      Configuración.
 	 */
 	private static function estado( $status, array $s ) {
+		$frase = self::frase_estado( $status, $s );
+		if ( '' !== $frase ) {
+			printf( '<p class="concursos-estado concursos-estado--%s">%s</p>', esc_attr( $status ), esc_html( $frase ) );
+		}
+	}
+
+	/**
+	 * Frase con la fase del reto y su próxima fecha.
+	 *
+	 * @param string $status Estado.
+	 * @param array  $s      Configuración.
+	 * @return string
+	 */
+	public static function frase_estado( $status, array $s ) {
 		$frases = array(
 			/* translators: %s: fecha. */
 			'proximo'    => array( __( 'Empieza el %s.', 'concursos' ), 'inicio' ),
@@ -91,13 +105,8 @@ class Concursos_Galeria {
 			/* translators: %s: fecha. */
 			'finalizado' => array( __( 'Reto finalizado el %s.', 'concursos' ), 'cierre' ),
 		);
-		if ( isset( $frases[ $status ] ) ) {
-			printf(
-				'<p class="concursos-estado concursos-estado--%s">%s</p>',
-				esc_attr( $status ),
-				esc_html( sprintf( $frases[ $status ][0], Concursos_Reto::format_date( $s[ $frases[ $status ][1] ] ) ) )
-			);
-		}
+
+		return isset( $frases[ $status ] ) ? sprintf( $frases[ $status ][0], Concursos_Reto::format_date( $s[ $frases[ $status ][1] ] ) ) : '';
 	}
 
 	/**
@@ -114,7 +123,7 @@ class Concursos_Galeria {
 			'<li><figure>%s<figcaption><strong>%s</strong><span>%s</span>%s</figcaption></figure></li>',
 			get_the_post_thumbnail( $entrada, 'medium_large', array( 'loading' => 'lazy' ) ),
 			esc_html( get_the_title( $entrada ) ),
-			esc_html( $autor ? get_the_title( $autor ) : '' ),
+			$autor ? sprintf( '<a href="%s">%s</a>', esc_url( Concursos_Perfil::url( $autor ) ), esc_html( get_the_title( $autor ) ) ) : '',
 			$extra
 		);
 	}
@@ -177,19 +186,11 @@ class Concursos_Galeria {
 	 */
 	private static function resultados( $reto_id, array $s, array $entradas ) {
 		$por_id = array();
-		$votos  = array();
-		$counts = Concursos_Votos::counts( $reto_id );
 		foreach ( $entradas as $entrada ) {
 			$por_id[ $entrada->ID ] = $entrada;
-			$votos[ $entrada->ID ]  = isset( $counts[ $entrada->ID ] ) ? $counts[ $entrada->ID ] : 0;
 		}
+		$votos   = Concursos_Votos::de_fotos( $reto_id, $entradas );
 		$ranking = Concursos_Votos::rank( $votos, (int) $s['lugares'] );
-
-		$nombres = array(
-			1 => array( __( 'Primer lugar', 'concursos' ), __( 'Empate en el primer lugar', 'concursos' ) ),
-			2 => array( __( 'Segundo lugar', 'concursos' ), __( 'Empate en el segundo lugar', 'concursos' ) ),
-			3 => array( __( 'Tercer lugar', 'concursos' ), __( 'Empate en el tercer lugar', 'concursos' ) ),
-		);
 
 		$etiqueta_votos = function ( $n ) {
 			/* translators: %d: número de votos. */
@@ -207,7 +208,7 @@ class Concursos_Galeria {
 			$premio = isset( $s['premios'][ $lugar - 1 ] ) ? $s['premios'][ $lugar - 1 ] : '';
 
 			printf( '<div class="concursos-puesto concursos-puesto--%d">', (int) $lugar );
-			echo '<h3>' . esc_html( $nombres[ $lugar ][ count( $puesto['entradas'] ) > 1 ? 1 : 0 ] ) . '</h3>';
+			echo '<h3>' . esc_html( Concursos_Votos::nombre_lugar( $lugar, count( $puesto['entradas'] ) > 1 ) ) . '</h3>';
 			if ( '' !== $premio ) {
 				/* translators: %s: premio. */
 				echo '<p class="concursos-premio">' . esc_html( sprintf( __( 'Premio: %s', 'concursos' ), $premio ) ) . '</p>';

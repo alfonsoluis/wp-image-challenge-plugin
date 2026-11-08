@@ -126,6 +126,24 @@ class Concursos_Participante {
 	}
 
 	/**
+	 * Enlaces a las redes de un participante.
+	 *
+	 * @param array $p Participante.
+	 * @return array nombre de la red => URL.
+	 */
+	public static function redes( array $p ) {
+		$redes = array();
+		if ( $p['instagram'] ) {
+			$redes['Instagram'] = 'https://www.instagram.com/' . rawurlencode( $p['instagram'] ) . '/';
+		}
+		if ( $p['facebook'] ) {
+			$redes['Facebook'] = 'https://www.facebook.com/' . rawurlencode( $p['facebook'] );
+		}
+
+		return $redes;
+	}
+
+	/**
 	 * Crea una inscripción pendiente.
 	 *
 	 * @param array $data nombre, email, reto, instagram, facebook (ya saneados).
