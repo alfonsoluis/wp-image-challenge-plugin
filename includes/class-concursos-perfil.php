@@ -264,7 +264,7 @@ class Concursos_Perfil {
 						<?php foreach ( $fila['mias'] as $entrada ) : ?>
 							<li>
 								<figure>
-									<?php echo get_the_post_thumbnail( $entrada, 'medium_large', array( 'loading' => 'lazy' ) ); ?>
+									<?php echo Concursos_Entrada::miniatura( $entrada ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
 									<figcaption><strong><?php echo esc_html( get_the_title( $entrada ) ); ?></strong></figcaption>
 								</figure>
 							</li>

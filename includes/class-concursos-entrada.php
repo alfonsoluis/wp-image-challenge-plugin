@@ -136,6 +136,45 @@ class Concursos_Entrada {
 	}
 
 	/**
+	 * Miniatura de una foto: al pulsarla se abre en grande con su autor y su reto.
+	 *
+	 * @param WP_Post $foto Foto.
+	 * @return string
+	 */
+	public static function miniatura( $foto ) {
+		if ( ! wp_script_is( 'concursos-public', 'enqueued' ) ) {
+			wp_enqueue_script( 'concursos-public', CONCURSOS_URL . 'assets/js/public.js', array(), CONCURSOS_VERSION, true );
+			wp_localize_script(
+				'concursos-public',
+				'concursosModal',
+				array(
+					'cerrar' => __( 'Close', 'concursos' ),
+					'reto'   => __( 'Challenge', 'concursos' ),
+				)
+			);
+		}
+
+		$titulo  = get_the_title( $foto );
+		$autor   = self::owner( $foto->ID );
+		$reto_id = (int) get_post_meta( $foto->ID, self::META . 'reto', true );
+		$avatar  = get_the_post_thumbnail_url( $autor, 'thumbnail' );
+
+		return sprintf(
+			'<button type="button" class="concursos-foto" aria-haspopup="dialog" aria-label="%1$s" data-grande="%2$s" data-titulo="%3$s" data-autor="%4$s" data-autor-url="%5$s" data-avatar="%6$s" data-reto="%7$s" data-reto-url="%8$s">%9$s</button>',
+			/* translators: %s: photo title. */
+			esc_attr( sprintf( __( 'View larger photo: %s', 'concursos' ), $titulo ) ),
+			esc_url( wp_get_attachment_image_url( get_post_thumbnail_id( $foto ), '1536x1536' ) ),
+			esc_attr( $titulo ),
+			esc_attr( get_the_title( $autor ) ),
+			esc_url( Concursos_Perfil::url( $autor ) ),
+			esc_url( (string) $avatar ),
+			esc_attr( get_the_title( $reto_id ) ),
+			esc_url( get_permalink( $reto_id ) ),
+			get_the_post_thumbnail( $foto, 'medium_large', array( 'loading' => 'lazy' ) )
+		);
+	}
+
+	/**
 	 * Cuántas fotos tiene un reto.
 	 *
 	 * @param int $reto_id Reto.

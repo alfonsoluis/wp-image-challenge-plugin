@@ -310,6 +310,120 @@
 	gap: 0.4em;
 }
 
+/* Foto en grande */
+
+.concursos-foto {
+	display: block;
+	width: 100%;
+	padding: 0;
+	border: 0;
+	background: none;
+	cursor: zoom-in;
+	transition: opacity 200ms ease;
+}
+
+.concursos-foto:hover {
+	opacity: 0.88;
+}
+
+.concursos-modal {
+	box-sizing: border-box;
+	width: min(1100px, calc(100vw - 32px));
+	max-width: none;
+	max-height: calc(100dvh - 32px);
+	padding: 0;
+	overflow: hidden;
+	border: 0;
+	border-radius: 8px;
+	background: var(--c-fondo, #fff);
+	color: var(--c-texto, #1d2327);
+}
+
+.concursos-modal[open] {
+	display: flex;
+	flex-direction: column;
+}
+
+.concursos-modal::backdrop {
+	background: rgba(0, 0, 0, 0.82);
+}
+
+.concursos-modal__marco {
+	display: flex;
+	flex: 1 1 auto;
+	align-items: center;
+	justify-content: center;
+	min-height: 0;
+	background: #111;
+}
+
+.concursos-modal__marco img {
+	display: block;
+	max-width: 100%;
+	max-height: calc(100dvh - 140px);
+	object-fit: contain;
+}
+
+.concursos-modal__cerrar {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	z-index: 1;
+	width: 44px;
+	height: 44px;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(0, 0, 0, 0.6);
+	color: #fff;
+	font-size: 24px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.concursos-modal__pie {
+	display: flex;
+	flex: none;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px 24px;
+	padding: 14px 20px;
+}
+
+.concursos-modal__autor {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	min-width: 0;
+}
+
+.concursos-modal__autor img {
+	flex: none;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.concursos-modal__autor img[hidden] {
+	display: none;
+}
+
+.concursos-modal__autor div,
+.concursos-modal__reto {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+
+.concursos-modal__reto {
+	text-align: right;
+}
+
+.concursos-modal a {
+	color: var(--c-color, inherit);
+}
+
 /* Votación */
 
 .concursos-panel-voto {
@@ -598,6 +712,10 @@
 }
 
 @media (max-width: 720px) {
+	.concursos-modal__reto {
+		text-align: left;
+	}
+
 	.concursos-cabecera--imagen {
 		grid-template-columns: minmax(0, 1fr);
 	}
@@ -610,6 +728,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+	.concursos-foto,
 	.concursos-lista-retos li,
 	.concursos-disenado button.concursos-voto {
 		transition: none;

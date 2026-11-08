@@ -200,7 +200,7 @@ class Concursos_Galeria {
 
 		return sprintf(
 			'<li><figure>%s<figcaption><strong>%s</strong><span>%s</span>%s</figcaption></figure></li>',
-			get_the_post_thumbnail( $entrada, 'medium_large', array( 'loading' => 'lazy' ) ),
+			Concursos_Entrada::miniatura( $entrada ),
 			esc_html( get_the_title( $entrada ) ),
 			$autor ? sprintf( '<a href="%s">%s</a>', esc_url( Concursos_Perfil::url( $autor ) ), esc_html( get_the_title( $autor ) ) ) : '',
 			$extra
