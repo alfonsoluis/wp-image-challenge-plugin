@@ -30,7 +30,7 @@ class Concursos_Plantilla {
 			}
 		);
 
-		$main = '<main class="' . esc_attr( trim( 'concursos-publico ' . $clase ) ) . '">' . $html . '</main>';
+		$main = '<main class="' . esc_attr( trim( 'concursos-publico concursos-disenado ' . $clase ) ) . '">' . $html . '</main>';
 
 		if ( wp_is_block_theme() ) {
 			self::con_bloques( $main );

@@ -78,7 +78,7 @@ class Concursos_Inscripcion {
 
 		ob_start();
 		?>
-		<div class="concursos-inscripcion">
+		<div class="concursos-inscripcion concursos-disenado">
 			<?php if ( isset( $messages[ $code ] ) ) : ?>
 				<p class="concursos-aviso concursos-aviso--<?php echo esc_attr( $messages[ $code ][0] ); ?>" role="status">
 					<?php echo esc_html( $messages[ $code ][1] ); ?>

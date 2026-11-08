@@ -1,4 +1,451 @@
-/* Concursos – formulario público */
+/*
+ * Concursos – parte pública.
+ *
+ * Estilo de galería sobria: la tipografía y la escala son las del tema, las
+ * fotos mandan y el color de cada reto se concentra en su cabecera, sus botones
+ * y sus acentos. Sin paleta elegida, todo hereda los colores del tema.
+ */
+
+.concursos-disenado {
+	--c-color: var(--wp--preset--color--contrast, currentColor);
+	--c-sobre: var(--wp--preset--color--base, #fff);
+	--c-suave: color-mix(in srgb, currentColor 6%, transparent);
+	--c-borde: color-mix(in srgb, currentColor 16%, transparent);
+	--c-acento: var(--c-color);
+	--c-sobre-acento: var(--c-sobre);
+}
+
+.concursos-disenado :is(a, button, input, select):focus-visible {
+	outline: 2px solid var(--c-color);
+	outline-offset: 2px;
+}
+
+/* Páginas */
+
+.concursos-publico {
+	box-sizing: border-box;
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 2em 16px 4em;
+}
+
+.concursos-publico--reto {
+	max-width: none;
+	margin-block: 0;
+	padding: 0;
+}
+
+.concursos-publico__titulo {
+	margin-top: 0;
+}
+
+.concursos-reto {
+	background: var(--c-fondo, transparent);
+	color: var(--c-texto, inherit);
+	font-size: calc(var(--c-escala, 1) * 1em);
+}
+
+.concursos-reto__interior {
+	box-sizing: border-box;
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 2em 16px 4em;
+}
+
+.concursos-reto h1 {
+	font-size: clamp(2em, 5vw, 2.75em);
+}
+
+.concursos-reto h2 {
+	font-size: 1.6em;
+}
+
+.concursos-reto h3 {
+	font-size: 1.25em;
+}
+
+.concursos-reto a {
+	color: var(--c-color);
+}
+
+.concursos-reto__descripcion {
+	max-width: 44em;
+	margin: 2em 0;
+}
+
+.concursos-reto__info {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+	gap: 1em 2em;
+	margin: 2em 0;
+	padding: 0.5em 1.5em 1em;
+	border-radius: 8px;
+	background: var(--c-suave);
+}
+
+/* Cabecera de un reto: portada y página del reto */
+
+.concursos-cabecera {
+	display: grid;
+	overflow: hidden;
+	border-radius: 8px;
+	background: var(--c-cabecera, var(--c-suave));
+	color: var(--c-sobre-cabecera, inherit);
+}
+
+.concursos-cabecera--imagen {
+	grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+}
+
+.concursos-cabecera__texto {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-end;
+	gap: 0.5em;
+	padding: clamp(1.5em, 4vw, 3em);
+}
+
+.concursos-cabecera__texto > * {
+	margin: 0;
+}
+
+.concursos-cabecera h1,
+.concursos-cabecera h2 {
+	line-height: 1.1;
+}
+
+.concursos-cabecera h2 a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.concursos-cabecera h2 a:hover {
+	text-decoration: underline;
+}
+
+.concursos-cabecera :focus-visible {
+	outline-color: currentColor;
+}
+
+.concursos-cabecera__imagen {
+	display: block;
+	width: 100%;
+	height: 100%;
+	min-height: 320px;
+	object-fit: cover;
+}
+
+.concursos-cabecera .concursos-etiqueta {
+	background: var(--c-sobre-cabecera, var(--c-suave));
+	color: var(--c-cabecera, inherit);
+}
+
+.concursos-estado {
+	font-weight: 600;
+}
+
+.concursos-destacado {
+	margin-bottom: 3em;
+}
+
+.concursos-destacado__datos {
+	opacity: 0.9;
+}
+
+.concursos-boton {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	margin-top: 0.5em;
+	padding: 0 1.4em;
+	border-radius: 4px;
+	background: var(--c-sobre-cabecera, var(--c-color));
+	color: var(--c-cabecera, var(--c-sobre));
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.concursos-boton:hover {
+	opacity: 0.88;
+}
+
+/* Etiqueta de fase */
+
+.concursos-etiqueta {
+	display: inline-block;
+	margin: 0;
+	padding: 0.15em 0.75em;
+	border-radius: 1em;
+	background: var(--c-suave);
+	color: var(--c-color);
+	font-size: 0.8em;
+	font-weight: 600;
+}
+
+/* Listas de retos */
+
+.concursos-lista-retos {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+	gap: 20px;
+	margin: 1em 0 3em;
+	padding: 0;
+	list-style: none;
+}
+
+.concursos-lista-retos li {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.4em;
+	padding-bottom: 1em;
+	overflow: hidden;
+	border: 1px solid var(--c-borde);
+	border-radius: 8px;
+	transition: border-color 200ms ease;
+}
+
+.concursos-lista-retos li:hover {
+	border-color: var(--c-color);
+}
+
+.concursos-lista-retos a {
+	display: block;
+	width: 100%;
+	color: inherit;
+	text-decoration: none;
+}
+
+.concursos-lista-retos strong {
+	display: block;
+	padding: 10px 16px 0;
+}
+
+.concursos-lista-retos .concursos-etiqueta {
+	margin-left: 16px;
+}
+
+.concursos-lista-retos small {
+	padding: 0 16px;
+}
+
+.concursos-lista-retos img,
+.concursos-lista-retos__vacia {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 3 / 2;
+	object-fit: cover;
+	background: var(--c-cabecera, var(--c-suave));
+}
+
+/* Fotos: se muestran enteras, sin recortar la obra */
+
+.concursos-galeria__rejilla,
+.concursos-mis-fotos {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+	gap: 24px;
+	padding: 0;
+	list-style: none;
+}
+
+.concursos-galeria__rejilla figure {
+	margin: 0;
+}
+
+.concursos-galeria__rejilla img,
+.concursos-mis-fotos img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 4 / 3;
+	object-fit: contain;
+	border-radius: 6px;
+	background: var(--c-suave);
+}
+
+.concursos-galeria__rejilla figcaption {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	margin-top: 0.5em;
+}
+
+.concursos-galeria figcaption a {
+	color: inherit;
+}
+
+.concursos-mis-fotos li {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4em;
+}
+
+/* Votación */
+
+.concursos-panel-voto {
+	margin: 2em 0;
+	padding: 1em 1.5em;
+	border-radius: 8px;
+	background: var(--c-suave);
+}
+
+.concursos-panel-voto h3 {
+	margin-top: 0;
+}
+
+.concursos-panel-voto__acciones {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1em;
+}
+
+.concursos-enlace {
+	min-height: 24px;
+	padding: 0;
+	border: 0;
+	background: none;
+	color: inherit;
+	font: inherit;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.concursos-voto-form {
+	margin-top: 0.5em;
+}
+
+.concursos-disenado button.concursos-voto {
+	min-height: 44px;
+	padding: 0 1.2em;
+	border: 1px solid var(--c-color);
+	border-radius: 4px;
+	background: transparent;
+	color: var(--c-color);
+	font: inherit;
+	cursor: pointer;
+	transition: background-color 200ms ease, color 200ms ease;
+}
+
+.concursos-disenado button.concursos-voto:hover:not(:disabled) {
+	background: var(--c-suave);
+}
+
+.concursos-disenado button.concursos-voto--hecho,
+.concursos-disenado button.concursos-voto--hecho:hover:not(:disabled) {
+	border-color: var(--c-acento);
+	background: var(--c-acento);
+	color: var(--c-sobre-acento);
+}
+
+.concursos-disenado button.concursos-voto:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* Resultados */
+
+.concursos-puesto {
+	margin: 2.5em 0;
+}
+
+.concursos-puesto h3,
+.concursos-premio {
+	color: var(--c-acento);
+}
+
+.concursos-premio {
+	font-weight: 600;
+}
+
+.concursos-puesto--1 .concursos-galeria__rejilla {
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+}
+
+.concursos-votos {
+	opacity: 0.75;
+}
+
+.concursos-resto {
+	margin-top: 3em;
+	padding-top: 1em;
+	border-top: 1px solid var(--c-borde);
+	font-size: 0.9em;
+}
+
+.concursos-resto .concursos-galeria__rejilla {
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr));
+	gap: 16px;
+}
+
+/* Perfil: siempre neutro, una persona participa en retos distintos */
+
+.concursos-perfil {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 1.5em;
+	margin-bottom: 1em;
+	padding-bottom: 2em;
+	border-bottom: 1px solid var(--c-borde);
+}
+
+.concursos-perfil h1 {
+	margin: 0;
+}
+
+.concursos-perfil__foto {
+	display: flex;
+	flex: none;
+	align-items: center;
+	justify-content: center;
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.concursos-perfil__foto--vacia {
+	background: var(--c-suave);
+	font-size: 3em;
+}
+
+.concursos-perfil__cifras {
+	margin: 0.25em 0;
+	opacity: 0.75;
+}
+
+.concursos-perfil__redes {
+	display: flex;
+	gap: 1em;
+	margin: 0;
+}
+
+.concursos-perfil__reto {
+	margin-top: 2.5em;
+}
+
+.concursos-perfil__reto h2 {
+	margin-bottom: 0.25em;
+}
+
+.concursos-perfil__reto h2 a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.concursos-perfil__reto h2 a:hover {
+	text-decoration: underline;
+}
+
+.concursos-perfil__puesto {
+	margin-left: 0.5em;
+	font-weight: 700;
+}
+
+/* Formularios */
 
 .concursos-form-publico p {
 	margin: 0 0 1em;
@@ -10,13 +457,18 @@
 	font-weight: 600;
 }
 
+.concursos-form-publico .concursos-casilla label {
+	font-weight: 400;
+}
+
 .concursos-form-publico input[type="text"],
 .concursos-form-publico input[type="email"],
 .concursos-form-publico select {
+	box-sizing: border-box;
 	width: 100%;
 	max-width: 32em;
-	box-sizing: border-box;
-	padding: 0.55em 0.7em;
+	min-height: 44px;
+	padding: 0.5em 0.7em;
 	border: 1px solid rgba(127, 127, 127, 0.6);
 	border-radius: 4px;
 	background: #fff;
@@ -27,6 +479,22 @@
 .concursos-form-publico small {
 	display: block;
 	opacity: 0.75;
+}
+
+.concursos-disenado button[type="submit"]:not(.concursos-enlace):not(.concursos-voto):not(.concursos-boton-secundario) {
+	min-height: 44px;
+	padding: 0 1.4em;
+	border: 0;
+	border-radius: 4px;
+	background: var(--c-color);
+	color: var(--c-sobre);
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.concursos-disenado button[type="submit"]:hover {
+	opacity: 0.88;
 }
 
 /* Campo trampa para bots: fuera de la vista, pero no display:none. */
@@ -57,9 +525,9 @@
 
 .concursos-pagina {
 	margin: 0;
-	background: #f6f7f7;
-	color: #1d2327;
-	font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	background: var(--c-fondo, #f6f7f7);
+	color: var(--c-texto, #1d2327);
+	font: 16px/1.5 system-ui, sans-serif;
 }
 
 .concursos-pagina__contenido {
@@ -80,45 +548,15 @@
 	opacity: 0.8;
 }
 
-.concursos-pagina button {
-	padding: 0.6em 1.2em;
-	border: 0;
+.concursos-pagina .concursos-boton-secundario {
+	min-height: 32px;
+	padding: 0 0.8em;
+	border: 1px solid #b32d2e;
 	border-radius: 4px;
-	background: #2271b1;
-	color: #fff;
+	background: transparent;
+	color: #b32d2e;
 	font: inherit;
 	cursor: pointer;
-}
-
-.concursos-pagina .concursos-boton-secundario {
-	padding: 0.3em 0.8em;
-	background: transparent;
-	border: 1px solid #b32d2e;
-	color: #b32d2e;
-}
-
-.concursos-mis-fotos {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-	gap: 16px;
-	padding: 0;
-	list-style: none;
-}
-
-.concursos-mis-fotos li {
-	display: flex;
-	flex-direction: column;
-	gap: 0.4em;
-}
-
-.concursos-mis-fotos img,
-.concursos-galeria__rejilla img {
-	display: block;
-	width: 100%;
-	height: auto;
-	aspect-ratio: 1;
-	object-fit: cover;
-	border-radius: 4px;
 }
 
 .concursos-privado {
@@ -127,440 +565,22 @@
 	opacity: 0.7;
 }
 
-/* Galería del reto */
-
-.concursos-galeria__rejilla {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-	gap: 20px;
-	padding: 0;
-	list-style: none;
-}
-
-.concursos-galeria__rejilla figure {
-	margin: 0;
-}
-
-.concursos-galeria__rejilla figcaption {
-	display: flex;
-	flex-direction: column;
-	margin-top: 0.4em;
-}
-
-/* Votación */
-
-.concursos-estado {
-	font-weight: 600;
-}
-
-.concursos-panel-voto {
-	margin: 1em 0 2em;
-	padding: 1em 1.25em;
-	border: 1px solid rgba(127, 127, 127, 0.35);
-	border-radius: 6px;
-}
-
-.concursos-panel-voto h3 {
-	margin-top: 0;
-}
-
-.concursos-panel-voto__acciones {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 1em;
-}
-
-.concursos-form-publico .concursos-casilla label {
-	font-weight: 400;
-}
-
-.concursos-enlace {
-	padding: 0;
-	border: 0;
-	background: none;
-	color: inherit;
-	font: inherit;
-	text-decoration: underline;
-	cursor: pointer;
-}
-
-.concursos-voto-form {
-	margin-top: 0.5em;
-}
-
-button.concursos-voto {
-	margin-top: 0.5em;
-	padding: 0.4em 1.1em;
-	border: 1px solid currentColor;
-	border-radius: 4px;
-	background: transparent;
-	color: inherit;
-	font: inherit;
-	cursor: pointer;
-}
-
-.concursos-voto-form button.concursos-voto {
-	margin-top: 0;
-}
-
-button.concursos-voto--hecho {
-	border-color: #2271b1;
-	background: #2271b1;
-	color: #fff;
-}
-
-button.concursos-voto:disabled {
-	opacity: 0.5;
-	cursor: not-allowed;
-}
-
-/* Resultados */
-
-.concursos-puesto {
-	margin: 2em 0;
-}
-
-.concursos-puesto--1 .concursos-galeria__rejilla {
-	grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
-}
-
-.concursos-premio {
-	font-weight: 600;
-}
-
-.concursos-votos {
-	opacity: 0.75;
-}
-
-.concursos-resto .concursos-galeria__rejilla {
-	grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-}
-
-.concursos-resto {
-	font-size: 0.9em;
-	opacity: 0.85;
-}
-
-/* Páginas públicas propias */
-
-.concursos-publico {
-	box-sizing: border-box;
-	max-width: 1100px;
-	margin: 0 auto;
-	padding: 2em 16px 4em;
-}
-
-.concursos-galeria figcaption a {
-	color: inherit;
-}
-
-.concursos-etiqueta {
-	display: inline-block;
-	margin: 0;
-	padding: 0.15em 0.7em;
-	border-radius: 1em;
-	background: #f0f0f1;
-	color: #3c434a;
-	font-size: 0.8em;
-	font-weight: 600;
-}
-
-.concursos-etiqueta--envios {
-	background: #d1e4dd;
-	color: #0a4b33;
-}
-
-.concursos-etiqueta--votacion {
-	background: #dbe7fb;
-	color: #0a3d8f;
-}
-
-.concursos-etiqueta--evaluacion {
-	background: #fcf0d4;
-	color: #6b4c00;
-}
-
-.concursos-etiqueta--proximo {
-	background: #ece4f7;
-	color: #4b2a7a;
-}
-
-/* Reto destacado */
-
-.concursos-destacado {
-	position: relative;
-	display: flex;
-	align-items: flex-end;
-	min-height: 420px;
-	margin-bottom: 3em;
-	overflow: hidden;
-	border-radius: 8px;
-	background-color: #1d2327;
-	background-position: center;
-	background-size: cover;
-	color: #fff;
-}
-
-.concursos-destacado::before {
-	position: absolute;
-	inset: 0;
-	background: linear-gradient(to top, rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.15));
-	content: "";
-}
-
-.concursos-destacado__contenido {
-	position: relative;
-	max-width: 44em;
-	padding: 2em;
-}
-
-.concursos-destacado h2 {
-	margin: 0.3em 0;
-}
-
-.concursos-destacado h2 a {
-	color: inherit;
-	text-decoration: none;
-}
-
-.concursos-boton {
-	display: inline-block;
-	padding: 0.6em 1.4em;
-	border-radius: 4px;
-	background: #fff;
-	color: #1d2327;
-	font-weight: 600;
-	text-decoration: none;
-}
-
-/* Listas de retos */
-
-.concursos-lista-retos {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-	gap: 20px;
-	padding: 0;
-	list-style: none;
-}
-
-.concursos-lista-retos li {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: 0.3em;
-}
-
-.concursos-lista-retos a {
-	display: block;
-	width: 100%;
-	color: inherit;
-	text-decoration: none;
-}
-
-.concursos-lista-retos img,
-.concursos-lista-retos__vacia {
-	display: block;
-	width: 100%;
-	aspect-ratio: 3 / 2;
-	margin-bottom: 0.4em;
-	border-radius: 4px;
-	object-fit: cover;
-	background: #dcdcde;
-}
-
-/* Perfil */
-
-.concursos-perfil {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 1.5em;
-	margin-bottom: 2em;
-}
-
-.concursos-perfil h1 {
-	margin: 0;
-}
-
-.concursos-perfil__foto {
-	display: flex;
-	flex: none;
-	align-items: center;
-	justify-content: center;
-	width: 120px;
-	height: 120px;
-	border-radius: 50%;
-	object-fit: cover;
-}
-
-.concursos-perfil__foto--vacia {
-	background: #dcdcde;
-	color: #50575e;
-	font-size: 3em;
-}
-
-.concursos-perfil__cifras {
-	margin: 0.25em 0;
-	opacity: 0.75;
-}
-
-.concursos-perfil__redes {
-	display: flex;
-	gap: 1em;
-	margin: 0;
-}
-
-.concursos-perfil__reto {
-	margin-top: 2.5em;
-}
-
-.concursos-perfil__puesto {
-	margin-left: 0.5em;
-}
-
-/* Diseño por reto. Sin paleta ni tipografía elegidas, todo hereda del tema. */
-
-.concursos-disenado {
-	--c-color: var(--wp--preset--color--contrast, currentColor);
-	--c-sobre: var(--wp--preset--color--base, #fff);
-	--c-suave: color-mix(in srgb, currentColor 7%, transparent);
-	--c-acento: var(--c-color);
-	--c-sobre-acento: var(--c-sobre);
-	--c-fuente-titulos: inherit;
-	--c-fuente-texto: inherit;
-	font-family: var(--c-fuente-texto);
-}
-
-.concursos-disenado :is(h1, h2, h3) {
-	font-family: var(--c-fuente-titulos);
-}
-
-.concursos-publico--reto {
-	max-width: none;
-	margin-block: 0;
-	padding: 0;
-}
-
-.concursos-reto {
-	background: var(--c-fondo, transparent);
-	color: var(--c-texto, inherit);
-	font-size: calc(var(--c-escala, 1) * 1em);
-}
-
-.concursos-reto__interior {
-	box-sizing: border-box;
-	max-width: 1100px;
-	margin: 0 auto;
-	padding: 2em 16px;
-}
-
-.concursos-reto h1 {
-	margin: 0.25em 0;
-	font-size: clamp(2em, 6vw, 2.75em);
-	line-height: 1.1;
-}
-
-.concursos-reto h2 {
-	font-size: 1.6em;
-}
-
-.concursos-reto h3 {
-	font-size: 1.25em;
-}
-
-.concursos-reto a {
-	color: var(--c-color);
-}
-
-.concursos-reto__cabecera {
-	position: relative;
-	background-color: var(--c-cabecera, transparent);
-	background-position: center;
-	background-size: cover;
-	color: var(--c-sobre-cabecera, inherit);
-}
-
-.concursos-reto__cabecera--imagen {
-	display: flex;
-	align-items: flex-end;
-	min-height: 22em;
-	color: #fff;
-}
-
-.concursos-reto__cabecera--imagen::before {
-	position: absolute;
-	inset: 0;
-	background: linear-gradient(to top, rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.15));
-	content: "";
-}
-
-.concursos-reto__cabecera .concursos-reto__interior {
-	position: relative;
-	width: 100%;
-}
-
-.concursos-reto__info {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-	gap: 1em 2em;
-	margin: 1em 0 2em;
-	padding: 0.5em 1.5em 1em;
-	border-radius: 6px;
-	background: var(--c-suave);
-}
-
-.concursos-reto .concursos-panel-voto {
-	border-color: transparent;
-	background: var(--c-suave);
-}
-
-.concursos-reto .concursos-reto__interior .concursos-etiqueta {
-	background: var(--c-suave);
-	color: inherit;
-}
-
-.concursos-reto__cabecera .concursos-etiqueta {
-	background: rgba(255, 255, 255, 0.92) !important;
-	color: #1d2327 !important;
-}
-
-.concursos-reto .concursos-premio,
-.concursos-reto .concursos-puesto h3 {
-	color: var(--c-acento);
-}
-
-.concursos-disenado button[type="submit"]:not(.concursos-enlace):not(.concursos-voto):not(.concursos-boton-secundario) {
-	padding: 0.6em 1.2em;
-	border: 0;
-	border-radius: 4px;
-	background: var(--c-color);
-	color: var(--c-sobre);
-	font: inherit;
-	cursor: pointer;
-}
-
-.concursos-disenado button.concursos-voto {
-	border-color: var(--c-color);
-	color: var(--c-color);
-}
-
-.concursos-disenado button.concursos-voto--hecho {
-	border-color: var(--c-acento);
-	background: var(--c-acento);
-	color: var(--c-sobre-acento);
-}
-
-.concursos-destacado {
-	background-color: var(--c-cabecera, #1d2327);
-}
-
-.concursos-pagina.concursos-disenado {
-	background: var(--c-fondo, #f6f7f7);
-	color: var(--c-texto, #1d2327);
-}
-
-/* Con los colores del tema y sin imagen, la cabecera no tiene fondo propio. */
-.concursos-reto:not([style*="--c-cabecera"]) .concursos-reto__cabecera:not(.concursos-reto__cabecera--imagen) .concursos-etiqueta {
-	background: var(--c-suave) !important;
-	color: inherit !important;
+@media (max-width: 720px) {
+	.concursos-cabecera--imagen {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.concursos-cabecera__imagen {
+		order: -1;
+		height: auto;
+		min-height: 0;
+		aspect-ratio: 3 / 2;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.concursos-lista-retos li,
+	.concursos-disenado button.concursos-voto {
+		transition: none;
+	}
 }

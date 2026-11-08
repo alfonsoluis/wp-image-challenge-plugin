@@ -100,33 +100,41 @@ class Concursos_Portada {
 	 * @param array $reto Reto.
 	 */
 	private static function destacado( array $reto ) {
-		$labels = Concursos_Reto::status_labels();
-		$imagen = self::imagen( $reto, 'full' );
 		$texto  = wp_trim_words( wp_strip_all_tags( strip_shortcodes( $reto['post']->post_content ) ), 40 );
 		$fotos  = count( Concursos_Entrada::find( array( 'reto' => $reto['post']->ID ) ) );
 		$accion = 'votacion' === $reto['status'] ? __( 'Ver las fotos y votar', 'concursos' ) : __( 'Ver el reto', 'concursos' );
-		$estilo = ' style="' . esc_attr( Concursos_Diseno::estilo( $reto['settings'] ) ) . ( $imagen ? 'background-image:url(' . esc_url( $imagen ) . ')' : '' ) . '"';
+		$url    = get_permalink( $reto['post'] );
+
 		Concursos_Diseno::aplicar( $reto['settings'] );
-		?>
-		<section class="concursos-destacado concursos-disenado"<?php echo $estilo; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- URL escapada arriba. ?>>
-			<div class="concursos-destacado__contenido">
-				<p class="concursos-etiqueta concursos-etiqueta--<?php echo esc_attr( $reto['status'] ); ?>"><?php echo esc_html( $labels[ $reto['status'] ] ); ?></p>
-				<h2><a href="<?php echo esc_url( get_permalink( $reto['post'] ) ); ?>"><?php echo esc_html( get_the_title( $reto['post'] ) ); ?></a></h2>
-				<?php if ( $texto ) : ?>
-					<p><?php echo esc_html( $texto ); ?></p>
-				<?php endif; ?>
-				<p class="concursos-destacado__datos">
-					<?php
-					echo esc_html( Concursos_Galeria::frase_estado( $reto['status'], $reto['settings'] ) );
-					echo ' ';
-					/* translators: %d: número de fotos. */
-					echo esc_html( sprintf( _n( '%d foto enviada.', '%d fotos enviadas.', $fotos, 'concursos' ), $fotos ) );
-					?>
-				</p>
-				<p><a class="concursos-boton" href="<?php echo esc_url( get_permalink( $reto['post'] ) ); ?>"><?php echo esc_html( $accion ); ?></a></p>
-			</div>
-		</section>
-		<?php
+
+		$extra = ( $texto ? '<p>' . esc_html( $texto ) . '</p>' : '' )
+			/* translators: %d: número de fotos. */
+			. '<p class="concursos-destacado__datos">' . esc_html( sprintf( _n( '%d foto enviada', '%d fotos enviadas', $fotos, 'concursos' ), $fotos ) ) . '</p>'
+			. '<p><a class="concursos-boton" href="' . esc_url( $url ) . '">' . esc_html( $accion ) . '</a></p>';
+
+		printf(
+			'<section class="concursos-destacado concursos-disenado" style="%1$s">%2$s</section>',
+			esc_attr( Concursos_Diseno::estilo( $reto['settings'] ) ),
+			self::cabecera_destacado( $reto, $url, $extra ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+		);
+	}
+
+	/**
+	 * Cabecera del reto destacado.
+	 *
+	 * @param array  $reto  Reto.
+	 * @param string $url   Enlace al reto.
+	 * @param string $extra HTML ya escapado.
+	 * @return string
+	 */
+	private static function cabecera_destacado( array $reto, $url, $extra ) {
+		return Concursos_Galeria::cabecera(
+			$reto['status'],
+			$reto['settings'],
+			self::imagen( $reto, 'large' ),
+			'<h2><a href="' . esc_url( $url ) . '">' . esc_html( get_the_title( $reto['post'] ) ) . '</a></h2>',
+			$extra
+		);
 	}
 
 	/**
@@ -141,7 +149,7 @@ class Concursos_Portada {
 		foreach ( $retos as $reto ) {
 			$imagen = self::imagen( $reto, 'medium_large' );
 			?>
-			<li>
+			<li class="concursos-disenado" style="<?php echo esc_attr( Concursos_Diseno::estilo( $reto['settings'] ) ); ?>">
 				<a href="<?php echo esc_url( get_permalink( $reto['post'] ) ); ?>">
 					<?php if ( $imagen ) : ?>
 						<img src="<?php echo esc_url( $imagen ); ?>" alt="" loading="lazy">
@@ -150,7 +158,7 @@ class Concursos_Portada {
 					<?php endif; ?>
 					<strong><?php echo esc_html( get_the_title( $reto['post'] ) ); ?></strong>
 				</a>
-				<span class="concursos-etiqueta concursos-etiqueta--<?php echo esc_attr( $reto['status'] ); ?>"><?php echo esc_html( $labels[ $reto['status'] ] ); ?></span>
+				<span class="concursos-etiqueta"><?php echo esc_html( $labels[ $reto['status'] ] ); ?></span>
 				<small><?php echo esc_html( Concursos_Galeria::frase_estado( $reto['status'], $reto['settings'] ) ); ?></small>
 			</li>
 			<?php

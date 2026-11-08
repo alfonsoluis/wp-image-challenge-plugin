@@ -30,6 +30,32 @@ class Concursos_Galeria {
 	}
 
 	/**
+	 * Cabecera de un reto: panel de color con sus datos junto a su imagen. La usan
+	 * la página del reto y la portada. El texto va sobre color sólido, no sobre la
+	 * foto, para que su contraste no dependa de la imagen.
+	 *
+	 * @param string $status Estado.
+	 * @param array  $s      Configuración.
+	 * @param string $imagen URL de la imagen o vacío.
+	 * @param string $titulo Título, en HTML ya escapado.
+	 * @param string $extra  HTML ya escapado bajo la fase.
+	 * @return string
+	 */
+	public static function cabecera( $status, array $s, $imagen, $titulo, $extra = '' ) {
+		$labels = Concursos_Reto::status_labels();
+
+		return sprintf(
+			'<header class="concursos-cabecera%1$s"><div class="concursos-cabecera__texto"><p class="concursos-etiqueta">%2$s</p>%3$s<p class="concursos-estado">%4$s</p>%5$s</div>%6$s</header>',
+			$imagen ? ' concursos-cabecera--imagen' : '',
+			esc_html( isset( $labels[ $status ] ) ? $labels[ $status ] : $status ),
+			$titulo,
+			esc_html( self::frase_estado( $status, $s ) ),
+			$extra,
+			$imagen ? '<img class="concursos-cabecera__imagen" src="' . esc_url( $imagen ) . '" alt="">' : ''
+		);
+	}
+
+	/**
 	 * Página completa de un reto, con su diseño.
 	 *
 	 * @param WP_Post $post Reto.
@@ -38,13 +64,12 @@ class Concursos_Galeria {
 	private static function pagina( $post ) {
 		$s      = Concursos_Reto::get_settings( $post->ID );
 		$status = Concursos_Reto::status( $s );
-		$labels = Concursos_Reto::status_labels();
 		$imagen = Concursos_Portada::imagen(
 			array(
 				'post'     => $post,
 				'settings' => $s,
 			),
-			'full'
+			'large'
 		);
 		$reglas = Concursos_Reto::rules_list( $s['reglas'] );
 		$premios = array();
@@ -59,14 +84,8 @@ class Concursos_Galeria {
 		ob_start();
 		?>
 		<div class="concursos-reto concursos-disenado" style="<?php echo esc_attr( Concursos_Diseno::estilo( $s ) ); ?>">
-			<header class="concursos-reto__cabecera<?php echo $imagen ? ' concursos-reto__cabecera--imagen' : ''; ?>"<?php echo $imagen ? ' style="background-image:url(' . esc_url( $imagen ) . ')"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- URL escapada. ?>>
-				<div class="concursos-reto__interior">
-					<p class="concursos-etiqueta concursos-etiqueta--<?php echo esc_attr( $status ); ?>"><?php echo esc_html( isset( $labels[ $status ] ) ? $labels[ $status ] : $status ); ?></p>
-					<h1><?php echo esc_html( get_the_title( $post ) ); ?></h1>
-					<p class="concursos-estado"><?php echo esc_html( self::frase_estado( $status, $s ) ); ?></p>
-				</div>
-			</header>
 			<div class="concursos-reto__interior">
+				<?php echo self::cabecera( $status, $s, $imagen, '<h1>' . esc_html( get_the_title( $post ) ) . '</h1>' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
 				<div class="concursos-reto__descripcion">
 					<?php echo apply_filters( 'the_content', $post->post_content ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound,WordPress.Security.EscapeOutput.OutputNotEscaped -- filtro estándar de WordPress. ?>
 				</div>

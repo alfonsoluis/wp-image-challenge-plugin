@@ -66,7 +66,6 @@ class Concursos_Reto {
 			'premios'           => array( '', '', '' ),
 			'reglas'            => '',
 			'paleta'            => Concursos_Diseno::TEMA,
-			'tipografia'        => Concursos_Diseno::TEMA,
 			'tamano'            => Concursos_Diseno::NORMAL,
 		);
 	}

@@ -156,7 +156,7 @@ class Concursos_Reto_Metabox {
 	}
 
 	/**
-	 * Caja de diseño: paleta, tipografía y tamaño.
+	 * Caja de diseño: paleta y tamaño.
 	 *
 	 * @param WP_Post $post Reto.
 	 */
@@ -180,24 +180,6 @@ class Concursos_Reto_Metabox {
 								<?php endforeach; ?>
 							</span>
 							<span><?php echo esc_html( $p['nombre'] ); ?></span>
-						</label>
-					<?php endforeach; ?>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Tipografía', 'concursos' ); ?></th>
-				<td class="concursos-opciones">
-					<label class="concursos-opcion">
-						<input type="radio" name="concursos[tipografia]" value="<?php echo esc_attr( Concursos_Diseno::TEMA ); ?>" <?php checked( $s['tipografia'], Concursos_Diseno::TEMA ); ?>>
-						<span><?php esc_html_e( 'La del tema', 'concursos' ); ?></span>
-					</label>
-					<?php foreach ( Concursos_Diseno::tipografias() as $clave => $t ) : ?>
-						<label class="concursos-opcion">
-							<input type="radio" name="concursos[tipografia]" value="<?php echo esc_attr( $clave ); ?>" <?php checked( $s['tipografia'], $clave ); ?>>
-							<span class="concursos-tipografia">
-								<strong style="font-family:<?php echo esc_attr( Concursos_Diseno::familia( $t['titulos'] ) ); ?>"><?php echo esc_html( $t['nombre'] ); ?></strong>
-								<small style="font-family:<?php echo esc_attr( Concursos_Diseno::familia( $t['texto'] ) ); ?>"><?php echo esc_html( $t['titulos'][0] . ' / ' . $t['texto'][0] ); ?></small>
-							</span>
 						</label>
 					<?php endforeach; ?>
 				</td>

@@ -244,7 +244,7 @@ class Concursos_Perfil {
 			<section class="concursos-perfil__reto">
 				<h2><a href="<?php echo esc_url( get_permalink( $fila['reto_id'] ) ); ?>"><?php echo esc_html( get_the_title( $fila['reto_id'] ) ); ?></a></h2>
 				<p>
-					<span class="concursos-etiqueta concursos-etiqueta--<?php echo esc_attr( $fila['status'] ); ?>"><?php echo esc_html( $labels[ $fila['status'] ] ); ?></span>
+					<span class="concursos-etiqueta"><?php echo esc_html( $labels[ $fila['status'] ] ); ?></span>
 					<?php if ( $fila['puesto'] ) : ?>
 						<strong class="concursos-perfil__puesto">
 							<?php echo esc_html( Concursos_Votos::nombre_lugar( $fila['puesto']['lugar'], $fila['puesto']['empate'] ) ); ?>

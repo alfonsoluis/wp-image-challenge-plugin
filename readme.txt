@@ -4,7 +4,7 @@ Tags: concursos, retos, fotografía, votación, galería
 Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.6.0
+Stable tag: 0.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,7 +15,7 @@ Retos y concursos de fotografía, dibujo, diseño o cualquier arte: participante
 Concursos permite a asociaciones, escuelas y organizaciones crear retos artísticos en su sitio WordPress:
 
 * Retos con calendario de envíos, votación y resultados; cada nueva edición se crea duplicando un reto.
-* Diseño por reto: 5 paletas de color o los colores del tema, 3 combinaciones tipográficas o la del tema, y 3 tamaños de texto.
+* Diseño por reto: 5 paletas de color o los colores del tema, y 3 tamaños de texto. La tipografía es siempre la del tema.
 * Retos abiertos (las fotos se ven al enviarse) o cerrados (se ven al terminar los envíos).
 * Uno o tres ganadores, con premio opcional para cada lugar.
 * Inscripción pública de participantes con el shortcode `[concursos_inscripcion]`, con foto de perfil y redes sociales.
@@ -26,8 +26,6 @@ Concursos permite a asociaciones, escuelas y organizaciones crear retos artísti
 
 El plugin está en desarrollo.
 
-Las fuentes incluidas (Playfair Display, Source Sans 3, Space Grotesk, Inter, Fraunces y Nunito Sans) se distribuyen bajo la licencia SIL Open Font License 1.1: ver `assets/fonts/`.
-
 == Installation ==
 
 1. Descarga el ZIP del repositorio y súbelo en Plugins → Añadir nuevo → Subir plugin, o copia la carpeta en `wp-content/plugins/`.
@@ -36,6 +34,12 @@ Las fuentes incluidas (Playfair Display, Source Sans 3, Space Grotesk, Inter, Fr
 4. Crea una página con el shortcode `[concursos_inscripcion]` para que la gente se inscriba.
 
 == Changelog ==
+
+= 0.7.0 =
+* Nuevo diseño común para la portada, los retos y los perfiles, que respeta la tipografía del tema.
+* Paletas nuevas: Galería, Océano, Esmeralda, Fucsia y Coral.
+* Se quitan las opciones de tipografía y las fuentes incluidas.
+* Las fotos de la galería se muestran enteras, sin recortar.
 
 = 0.6.0 =
 * Duplicar un reto como borrador, sin fotos ni votos y con la opción de copiar sus participantes activos, que reciben su enlace al publicarlo.

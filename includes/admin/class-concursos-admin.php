@@ -56,9 +56,6 @@ class Concursos_Admin {
 
 		wp_enqueue_style( 'concursos-admin', CONCURSOS_URL . 'assets/css/admin.css', array(), CONCURSOS_VERSION );
 		wp_enqueue_script( 'concursos-admin', CONCURSOS_URL . 'assets/js/admin.js', array(), CONCURSOS_VERSION, true );
-		foreach ( array_keys( Concursos_Diseno::tipografias() ) as $tipografia ) {
-			wp_add_inline_style( 'concursos-admin', Concursos_Diseno::css_fuentes( $tipografia ) );
-		}
 	}
 
 	/**
