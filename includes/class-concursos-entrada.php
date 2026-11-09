@@ -163,7 +163,7 @@ class Concursos_Entrada {
 			'<button type="button" class="concursos-foto" aria-haspopup="dialog" aria-label="%1$s" data-grande="%2$s" data-titulo="%3$s" data-autor="%4$s" data-autor-url="%5$s" data-avatar="%6$s" data-reto="%7$s" data-reto-url="%8$s">%9$s</button>',
 			/* translators: %s: photo title. */
 			esc_attr( sprintf( __( 'View larger photo: %s', 'concursos' ), $titulo ) ),
-			esc_url( wp_get_attachment_image_url( get_post_thumbnail_id( $foto ), '1536x1536' ) ),
+			esc_url( wp_get_attachment_image_url( get_post_thumbnail_id( $foto ), 'full' ) ),
 			esc_attr( $titulo ),
 			esc_attr( get_the_title( $autor ) ),
 			esc_url( Concursos_Perfil::url( $autor ) ),

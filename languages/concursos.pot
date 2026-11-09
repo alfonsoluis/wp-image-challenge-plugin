@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Concursos 0.11.0\n"
+"Project-Id-Version: Concursos 0.12.0\n"
 "Report-Msgid-Bugs-To: https://github.com/alfonsoluis/wp-image-challenge-plugin/issues\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-08T23:54:35+00:00\n"
+"POT-Creation-Date: 2026-11-09T00:11:19+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: concursos\n"
@@ -92,8 +92,8 @@ msgstr ""
 #: includes/admin/class-concursos-entradas-admin.php:96
 #: includes/admin/class-concursos-participantes-admin.php:116
 #: includes/admin/class-concursos-participantes-admin.php:284
-#: includes/class-concursos-entrada.php:151
-#: includes/class-concursos-inscripcion.php:144
+#: includes/class-concursos-entrada.php:152
+#: includes/class-concursos-inscripcion.php:147
 #: includes/class-concursos-post-types.php:36
 msgid "Challenge"
 msgstr ""
@@ -125,9 +125,9 @@ msgid "Active / registered"
 msgstr ""
 
 #: includes/admin/class-concursos-admin.php:111
-#: includes/class-concursos-participante.php:66
-#: includes/class-concursos-participante.php:68
-#: includes/class-concursos-participante.php:69
+#: includes/class-concursos-participante.php:112
+#: includes/class-concursos-participante.php:114
+#: includes/class-concursos-participante.php:115
 msgid "Participants"
 msgstr ""
 
@@ -211,7 +211,7 @@ msgstr ""
 #: includes/admin/class-concursos-entradas-admin.php:93
 #: includes/admin/class-concursos-participantes-admin.php:113
 #: includes/class-concursos-entrada.php:42
-#: includes/class-concursos-envio.php:226
+#: includes/class-concursos-envio.php:229
 msgid "Photo"
 msgstr ""
 
@@ -220,7 +220,7 @@ msgid "Title"
 msgstr ""
 
 #: includes/admin/class-concursos-entradas-admin.php:95
-#: includes/class-concursos-participante.php:67
+#: includes/class-concursos-participante.php:113
 msgid "Participant"
 msgstr ""
 
@@ -242,14 +242,14 @@ msgid "All statuses"
 msgstr ""
 
 #: includes/admin/class-concursos-participantes-admin.php:114
-#: includes/class-concursos-inscripcion.php:136
+#: includes/class-concursos-inscripcion.php:139
 msgid "Name"
 msgstr ""
 
 #: includes/admin/class-concursos-participantes-admin.php:115
 #: includes/admin/class-concursos-participantes-admin.php:283
 #: includes/admin/class-concursos-votantes-admin.php:49
-#: includes/class-concursos-inscripcion.php:140
+#: includes/class-concursos-inscripcion.php:143
 #: includes/class-concursos-votantes.php:490
 msgid "Email"
 msgstr ""
@@ -334,7 +334,7 @@ msgid "Schedule"
 msgstr ""
 
 #: includes/admin/class-concursos-reto-metabox.php:74
-#: includes/class-concursos-envio.php:242
+#: includes/class-concursos-envio.php:248
 #: includes/class-concursos-galeria.php:109
 msgid "Rules"
 msgstr ""
@@ -561,124 +561,130 @@ msgstr ""
 msgid "Photo by %s"
 msgstr ""
 
-#: includes/class-concursos-entrada.php:150
+#: includes/class-concursos-entrada.php:151
 msgid "Close"
 msgstr ""
 
 #. translators: %s: photo title.
-#: includes/class-concursos-entrada.php:163
+#: includes/class-concursos-entrada.php:165
 #, php-format
 msgid "View larger photo: %s"
 msgstr ""
 
-#: includes/class-concursos-envio.php:35
+#: includes/class-concursos-envio.php:34
 msgid "Photo submitted!"
 msgstr ""
 
-#: includes/class-concursos-envio.php:36
+#: includes/class-concursos-envio.php:35
 msgid "Photo deleted."
 msgstr ""
 
-#: includes/class-concursos-envio.php:37
+#: includes/class-concursos-envio.php:36
 msgid "The submission period is not open."
 msgstr ""
 
-#: includes/class-concursos-envio.php:38
+#: includes/class-concursos-envio.php:37
 msgid "You have already submitted the maximum number of photos for this challenge."
 msgstr ""
 
-#: includes/class-concursos-envio.php:39
-msgid "The photo must be a JPG, PNG or WebP of up to 10 MB."
+#. translators: %s: maximum file size, such as 5 MB.
+#: includes/class-concursos-envio.php:40
+#: includes/class-concursos-inscripcion.php:94
+#, php-format
+msgid "The photo must be a JPG, PNG or WebP of up to %s."
 msgstr ""
 
-#: includes/class-concursos-envio.php:40
+#: includes/class-concursos-envio.php:43
 #: includes/class-concursos-votantes.php:139
 msgid "We could not complete the action. Please try again."
 msgstr ""
 
-#: includes/class-concursos-envio.php:62
+#: includes/class-concursos-envio.php:65
 #: includes/class-concursos-votantes.php:299
 #: includes/class-concursos-votantes.php:393
 msgid "Invalid link"
 msgstr ""
 
-#: includes/class-concursos-envio.php:62
+#: includes/class-concursos-envio.php:65
 msgid "This link is not valid. Check that you copied all of it."
 msgstr ""
 
-#: includes/class-concursos-envio.php:67
+#: includes/class-concursos-envio.php:70
 msgid "Registration not active"
 msgstr ""
 
-#: includes/class-concursos-envio.php:67
+#: includes/class-concursos-envio.php:70
 msgid "Your registration is not active. If you think this is a mistake, contact us."
 msgstr ""
 
-#: includes/class-concursos-envio.php:71
+#: includes/class-concursos-envio.php:74
 msgid "Private challenge"
 msgstr ""
 
 #. translators: %s: participant name.
-#: includes/class-concursos-envio.php:173
+#: includes/class-concursos-envio.php:176
 #, php-format
 msgid "Hello, %s"
 msgstr ""
 
 #. translators: %s: submission end date.
-#: includes/class-concursos-envio.php:186
+#: includes/class-concursos-envio.php:189
 #, php-format
 msgid "You can submit photos until %s."
 msgstr ""
 
 #. translators: %s: challenge start date.
-#: includes/class-concursos-envio.php:189
+#: includes/class-concursos-envio.php:192
 #, php-format
 msgid "Photo submissions start on %s."
 msgstr ""
 
-#: includes/class-concursos-envio.php:191
+#: includes/class-concursos-envio.php:194
 msgid "The submission period for this challenge is closed."
 msgstr ""
 
 #. translators: 1: photos submitted, 2: maximum photos.
-#: includes/class-concursos-envio.php:199
+#: includes/class-concursos-envio.php:202
 #, php-format
 msgid "Your photos (%1$d of %2$d)"
 msgstr ""
 
-#: includes/class-concursos-envio.php:209
+#: includes/class-concursos-envio.php:212
 msgid "Delete this photo?"
 msgstr ""
 
-#: includes/class-concursos-envio.php:211
+#: includes/class-concursos-envio.php:214
 msgid "Delete"
 msgstr ""
 
-#: includes/class-concursos-envio.php:218
+#: includes/class-concursos-envio.php:221
 msgid "You have not submitted any photos yet."
 msgstr ""
 
-#: includes/class-concursos-envio.php:222
+#: includes/class-concursos-envio.php:225
 msgid "Submit a photo"
 msgstr ""
 
-#: includes/class-concursos-envio.php:228
-msgid "JPG, PNG or WebP, up to 10 MB."
+#. translators: %s: maximum file size, such as 5 MB.
+#: includes/class-concursos-envio.php:233
+#: includes/class-concursos-inscripcion.php:162
+#, php-format
+msgid "JPG, PNG or WebP, up to %s."
 msgstr ""
 
-#: includes/class-concursos-envio.php:231
+#: includes/class-concursos-envio.php:237
 msgid "Title (optional)"
 msgstr ""
 
-#: includes/class-concursos-envio.php:234
+#: includes/class-concursos-envio.php:240
 msgid "Submit photo"
 msgstr ""
 
-#: includes/class-concursos-envio.php:249
+#: includes/class-concursos-envio.php:255
 msgid "This page is personal: do not share its link."
 msgstr ""
 
-#: includes/class-concursos-envio.php:251
+#: includes/class-concursos-envio.php:257
 msgid "Your photos"
 msgstr ""
 
@@ -763,88 +769,80 @@ msgstr ""
 msgid "Other participants"
 msgstr ""
 
-#: includes/class-concursos-inscripcion.php:88
+#: includes/class-concursos-inscripcion.php:87
 msgid "Thank you! We received your registration. We will write to you when it is approved."
 msgstr ""
 
-#: includes/class-concursos-inscripcion.php:89
+#: includes/class-concursos-inscripcion.php:88
 msgid "Enter your name."
 msgstr ""
 
-#: includes/class-concursos-inscripcion.php:90
+#: includes/class-concursos-inscripcion.php:89
 #: includes/class-concursos-votantes.php:134
 msgid "Enter a valid email address."
 msgstr ""
 
-#: includes/class-concursos-inscripcion.php:91
+#: includes/class-concursos-inscripcion.php:90
 msgid "Choose an open challenge."
 msgstr ""
 
-#: includes/class-concursos-inscripcion.php:92
+#: includes/class-concursos-inscripcion.php:91
 msgid "That email is already registered for that challenge."
 msgstr ""
 
-#: includes/class-concursos-inscripcion.php:93
-msgid "The photo must be a JPG, PNG or WebP of up to 5 MB."
-msgstr ""
-
-#: includes/class-concursos-inscripcion.php:94
+#: includes/class-concursos-inscripcion.php:97
 msgid "You must accept the use of your data to register."
 msgstr ""
 
-#: includes/class-concursos-inscripcion.php:96
+#: includes/class-concursos-inscripcion.php:99
 msgid "We could not save your registration. Please try again."
 msgstr ""
 
-#: includes/class-concursos-inscripcion.php:125
+#: includes/class-concursos-inscripcion.php:128
 msgid "There are no challenges open for registration right now."
 msgstr ""
 
-#: includes/class-concursos-inscripcion.php:132
+#: includes/class-concursos-inscripcion.php:135
 #: includes/class-concursos-votantes.php:487
 msgid "Do not fill in this field"
 msgstr ""
 
-#: includes/class-concursos-inscripcion.php:147
+#: includes/class-concursos-inscripcion.php:150
 msgid "Choose a challenge"
 msgstr ""
 
-#: includes/class-concursos-inscripcion.php:155
+#: includes/class-concursos-inscripcion.php:158
 msgid "Profile photo (optional)"
 msgstr ""
 
-#: includes/class-concursos-inscripcion.php:157
-msgid "JPG, PNG or WebP, up to 5 MB."
-msgstr ""
-
-#: includes/class-concursos-inscripcion.php:160
+#: includes/class-concursos-inscripcion.php:166
 msgid "Instagram (optional)"
 msgstr ""
 
-#: includes/class-concursos-inscripcion.php:164
+#: includes/class-concursos-inscripcion.php:170
 msgid "Facebook (optional)"
 msgstr ""
 
-#: includes/class-concursos-inscripcion.php:170
+#: includes/class-concursos-inscripcion.php:176
 msgid "I agree that this data is stored to manage my participation, and that my name, photo and social networks are shown next to my photos."
 msgstr ""
 
-#: includes/class-concursos-inscripcion.php:175
+#: includes/class-concursos-inscripcion.php:181
 msgid "Privacy policy"
 msgstr ""
 
-#: includes/class-concursos-inscripcion.php:179
+#: includes/class-concursos-inscripcion.php:185
 msgid "Register"
 msgstr ""
 
 #. translators: %s: challenge name.
-#: includes/class-concursos-inscripcion.php:378
+#: includes/class-concursos-inscripcion.php:384
 #, php-format
 msgid "We received your registration: %s"
 msgstr ""
 
 #. translators: 1: participant name, 2: challenge name, 3: site name.
-#: includes/class-concursos-inscripcion.php:381
+#: includes/class-concursos-inscripcion.php:387
 #, php-format
 msgid ""
 "Hello %1$s,\n"
@@ -855,13 +853,13 @@ msgid ""
 msgstr ""
 
 #. translators: %s: challenge name.
-#: includes/class-concursos-inscripcion.php:403
+#: includes/class-concursos-inscripcion.php:409
 #, php-format
 msgid "You can now take part in “%s”"
 msgstr ""
 
 #. translators: 1: participant name, 2: challenge name, 3: personal link, 4: site name.
-#: includes/class-concursos-inscripcion.php:406
+#: includes/class-concursos-inscripcion.php:412
 #, php-format
 msgid ""
 "Hello %1$s,\n"
@@ -875,47 +873,47 @@ msgid ""
 "%4$s"
 msgstr ""
 
-#: includes/class-concursos-participante.php:70
+#: includes/class-concursos-participante.php:116
 msgid "Edit participant"
 msgstr ""
 
-#: includes/class-concursos-participante.php:71
+#: includes/class-concursos-participante.php:117
 msgid "Search participants"
 msgstr ""
 
-#: includes/class-concursos-participante.php:72
+#: includes/class-concursos-participante.php:118
 msgid "No participants."
 msgstr ""
 
-#: includes/class-concursos-participante.php:73
+#: includes/class-concursos-participante.php:119
 msgid "No participants in the trash."
 msgstr ""
 
-#: includes/class-concursos-participante.php:74
+#: includes/class-concursos-participante.php:120
 msgid "Profile photo"
 msgstr ""
 
-#: includes/class-concursos-participante.php:75
+#: includes/class-concursos-participante.php:121
 msgid "Choose profile photo"
 msgstr ""
 
-#: includes/class-concursos-participante.php:76
+#: includes/class-concursos-participante.php:122
 msgid "Remove profile photo"
 msgstr ""
 
-#: includes/class-concursos-participante.php:77
+#: includes/class-concursos-participante.php:123
 msgid "Use as profile photo"
 msgstr ""
 
-#: includes/class-concursos-participante.php:99
+#: includes/class-concursos-participante.php:145
 msgid "Pending"
 msgstr ""
 
-#: includes/class-concursos-participante.php:100
+#: includes/class-concursos-participante.php:146
 msgid "Active"
 msgstr ""
 
-#: includes/class-concursos-participante.php:101
+#: includes/class-concursos-participante.php:147
 msgid "Inactive"
 msgstr ""
 

@@ -4,7 +4,7 @@ Tags: contest, photo contest, voting, gallery, challenges
 Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.11.0
+Stable tag: 0.12.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,6 +34,10 @@ Concursos lets associations, schools and organizations run art challenges on the
 5. Add the Challenges page to your site menu: Appearance > Editor > Navigation in block themes, or Appearance > Menus in classic themes.
 
 == Changelog ==
+
+= 0.12.0 =
+* Uploaded photos are limited to 5 MB, or the server limit if lower, and stored as WebP copies of up to 2048 px; the original file is discarded.
+* Permanently deleting a participant also deletes their photos.
 
 = 0.11.0 =
 * Thumbnails open a larger photo in a modal, with its author and challenge.

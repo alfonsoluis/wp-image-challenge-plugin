@@ -16,7 +16,6 @@ class Concursos_Inscripcion {
 	const ACTION        = 'concursos_inscribir';
 	const RESULT_PARAM  = 'concursos_inscripcion';
 	const LINK_PARAM    = 'concursos_envio';
-	const FOTO_MAX      = 5242880; // 5 MB.
 	const FOTO_EXTS     = array( 'jpg', 'jpeg', 'png', 'webp' );
 
 	/**
@@ -90,7 +89,11 @@ class Concursos_Inscripcion {
 			'email'     => array( 'error', __( 'Enter a valid email address.', 'concursos' ) ),
 			'reto'      => array( 'error', __( 'Choose an open challenge.', 'concursos' ) ),
 			'duplicado' => array( 'error', __( 'That email is already registered for that challenge.', 'concursos' ) ),
-			'foto'      => array( 'error', __( 'The photo must be a JPG, PNG or WebP of up to 5 MB.', 'concursos' ) ),
+			'foto'      => array( 'error', sprintf(
+				/* translators: %s: maximum file size, such as 5 MB. */
+				__( 'The photo must be a JPG, PNG or WebP of up to %s.', 'concursos' ),
+				size_format( Concursos_Imagenes::limite() )
+			) ),
 			'privacidad' => array( 'error', __( 'You must accept the use of your data to register.', 'concursos' ) ),
 			'privado'    => array( 'error', Concursos_Reto::mensaje_privado() ),
 			'error'     => array( 'error', __( 'We could not save your registration. Please try again.', 'concursos' ) ),
@@ -154,7 +157,10 @@ class Concursos_Inscripcion {
 					<p>
 						<label for="concursos-foto"><?php esc_html_e( 'Profile photo (optional)', 'concursos' ); ?></label>
 						<input type="file" id="concursos-foto" name="foto" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
-						<small><?php esc_html_e( 'JPG, PNG or WebP, up to 5 MB.', 'concursos' ); ?></small>
+						<small><?php 
+						/* translators: %s: maximum file size, such as 5 MB. */
+						echo esc_html( sprintf( __( 'JPG, PNG or WebP, up to %s.', 'concursos' ), size_format( Concursos_Imagenes::limite() ) ) );
+						 ?></small>
 					</p>
 					<p>
 						<label for="concursos-instagram"><?php esc_html_e( 'Instagram (optional)', 'concursos' ); ?></label>
@@ -229,7 +235,7 @@ class Concursos_Inscripcion {
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- se valida abajo y lo maneja media_handle_upload().
 		$foto     = isset( $_FILES['foto'] ) ? $_FILES['foto'] : null;
 		$has_foto = $foto && ! empty( $foto['name'] );
-		if ( $has_foto && ! self::valid_image( $foto, self::FOTO_MAX ) ) {
+		if ( $has_foto && ! self::valid_image( $foto, Concursos_Imagenes::limite() ) ) {
 			$done( 'foto' );
 		}
 
@@ -253,7 +259,7 @@ class Concursos_Inscripcion {
 			require_once ABSPATH . 'wp-admin/includes/media.php';
 			require_once ABSPATH . 'wp-admin/includes/image.php';
 
-			$attachment_id = media_handle_upload( 'foto', $id );
+			$attachment_id = Concursos_Imagenes::subir( 'foto', $id );
 			if ( is_wp_error( $attachment_id ) ) {
 				wp_delete_post( $id, true );
 				$done( 'foto' );

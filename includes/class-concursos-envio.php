@@ -15,7 +15,6 @@ defined( 'ABSPATH' ) || exit;
  */
 class Concursos_Envio {
 
-	const FOTO_MAX    = 10485760; // 10 MB.
 	const RESULT_PARAM = 'resultado';
 
 	/**
@@ -36,7 +35,11 @@ class Concursos_Envio {
 			'eliminada' => array( 'success', __( 'Photo deleted.', 'concursos' ) ),
 			'cerrado'   => array( 'error', __( 'The submission period is not open.', 'concursos' ) ),
 			'limite'    => array( 'error', __( 'You have already submitted the maximum number of photos for this challenge.', 'concursos' ) ),
-			'foto'      => array( 'error', __( 'The photo must be a JPG, PNG or WebP of up to 10 MB.', 'concursos' ) ),
+			'foto'      => array( 'error', sprintf(
+				/* translators: %s: maximum file size, such as 5 MB. */
+				__( 'The photo must be a JPG, PNG or WebP of up to %s.', 'concursos' ),
+				size_format( Concursos_Imagenes::limite() )
+			) ),
 			'error'     => array( 'error', __( 'We could not complete the action. Please try again.', 'concursos' ) ),
 		);
 	}
@@ -119,7 +122,7 @@ class Concursos_Envio {
 
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- se valida en valid_image() y lo maneja media_handle_upload().
 		$foto = isset( $_FILES['foto'] ) ? $_FILES['foto'] : null;
-		if ( ! $foto || ! Concursos_Inscripcion::valid_image( $foto, self::FOTO_MAX ) ) {
+		if ( ! $foto || ! Concursos_Inscripcion::valid_image( $foto, Concursos_Imagenes::limite() ) ) {
 			return 'foto';
 		}
 
@@ -127,7 +130,7 @@ class Concursos_Envio {
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
 
-		$attachment_id = media_handle_upload( 'foto', 0 );
+		$attachment_id = Concursos_Imagenes::subir( 'foto', 0 );
 		if ( is_wp_error( $attachment_id ) ) {
 			return 'foto';
 		}
@@ -225,7 +228,10 @@ class Concursos_Envio {
 				<p>
 					<label for="concursos-foto"><?php esc_html_e( 'Photo', 'concursos' ); ?> *</label>
 					<input type="file" id="concursos-foto" name="foto" required accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
-					<small><?php esc_html_e( 'JPG, PNG or WebP, up to 10 MB.', 'concursos' ); ?></small>
+					<small><?php 
+						/* translators: %s: maximum file size, such as 5 MB. */
+						echo esc_html( sprintf( __( 'JPG, PNG or WebP, up to %s.', 'concursos' ), size_format( Concursos_Imagenes::limite() ) ) );
+						 ?></small>
 				</p>
 				<p>
 					<label for="concursos-titulo"><?php esc_html_e( 'Title (optional)', 'concursos' ); ?></label>

@@ -115,7 +115,7 @@ class Concursos_Entradas_Admin {
 				break;
 			case 'concursos_participante':
 				$owner = Concursos_Entrada::owner( $id );
-				echo $owner ? '<a href="' . esc_url( get_edit_post_link( $owner ) ) . '">' . esc_html( get_the_title( $owner ) ) . '</a>' : '—';
+				echo ( $owner && get_post( $owner ) ) ? '<a href="' . esc_url( get_edit_post_link( $owner ) ) . '">' . esc_html( get_the_title( $owner ) ) . '</a>' : '—';
 				break;
 			case 'concursos_reto':
 				$reto = (int) get_post_meta( $id, Concursos_Entrada::META . 'reto', true );

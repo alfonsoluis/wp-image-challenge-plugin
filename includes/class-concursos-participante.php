@@ -30,6 +30,7 @@ class Concursos_Participante {
 		add_action( 'trashed_post', array( __CLASS__, 'quitar_votos_si_participante' ) );
 		add_filter( 'wp_untrash_post_status', array( __CLASS__, 'estado_al_restaurar' ), 10, 3 );
 		add_action( 'before_delete_post', array( __CLASS__, 'quitar_votos_si_participante' ) );
+		add_action( 'before_delete_post', array( __CLASS__, 'borrar_archivos' ) );
 	}
 
 	/**
@@ -42,6 +43,51 @@ class Concursos_Participante {
 	 */
 	public static function estado_al_restaurar( $new_status, $id, $previous_status ) {
 		return in_array( get_post_type( $id ), array( self::POST_TYPE, Concursos_Entrada::POST_TYPE ), true ) ? $previous_status : $new_status;
+	}
+
+	/**
+	 * Al borrar definitivamente a un participante se borran sus fotos y, si
+	 * ninguna otra inscripción la comparte, su foto de perfil.
+	 *
+	 * @param int $id Post que se borra.
+	 */
+	public static function borrar_archivos( $id ) {
+		if ( self::POST_TYPE !== get_post_type( $id ) ) {
+			return;
+		}
+
+		$fotos = get_posts(
+			array(
+				'post_type'      => Concursos_Entrada::POST_TYPE,
+				'post_status'    => 'any',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+				'meta_key'       => Concursos_Entrada::META . 'participante', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+				'meta_value'     => (int) $id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+			)
+		);
+		foreach ( $fotos as $foto ) {
+			wp_delete_post( $foto, true );
+		}
+
+		$avatar = get_post_thumbnail_id( $id );
+		if ( ! $avatar ) {
+			return;
+		}
+		$compartida = get_posts(
+			array(
+				'post_type'      => self::POST_TYPE,
+				'post_status'    => 'any',
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+				'post__not_in'   => array( (int) $id ),
+				'meta_key'       => '_thumbnail_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+				'meta_value'     => (int) $avatar, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+			)
+		);
+		if ( ! $compartida ) {
+			wp_delete_attachment( $avatar, true );
+		}
 	}
 
 	/**

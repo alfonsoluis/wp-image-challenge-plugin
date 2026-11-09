@@ -3,7 +3,7 @@
  * Plugin Name:       Concursos
  * Plugin URI:        https://github.com/alfonsoluis/wp-image-challenge-plugin
  * Description:       Photo, drawing, design and other art challenges with participants, submissions, voting and results.
- * Version:           0.11.0
+ * Version:           0.12.0
  * Requires at least: 7.0
  * Requires PHP:      7.4
  * Author:            Alfonso Rodriguez
@@ -17,7 +17,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'CONCURSOS_VERSION', '0.11.0' );
+define( 'CONCURSOS_VERSION', '0.12.0' );
 define( 'CONCURSOS_FILE', __FILE__ );
 define( 'CONCURSOS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'CONCURSOS_URL', plugin_dir_url( __FILE__ ) );
@@ -28,6 +28,7 @@ require_once CONCURSOS_PATH . 'includes/class-concursos-reto.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-post-types.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-participante.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-inscripcion.php';
+require_once CONCURSOS_PATH . 'includes/class-concursos-imagenes.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-entrada.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-envio.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-votantes.php';
