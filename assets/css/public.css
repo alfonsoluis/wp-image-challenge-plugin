@@ -7,7 +7,9 @@
  */
 
 .concursos-disenado {
-	--c-color: var(--wp--preset--color--contrast, currentColor);
+	/* --c-color pinta fondos y necesita un color concreto; --c-tinta, textos. */
+	--c-color: var(--wp--preset--color--contrast, #1d2327);
+	--c-tinta: var(--wp--preset--color--contrast, currentColor);
 	--c-sobre: var(--wp--preset--color--base, #fff);
 	--c-suave: color-mix(in srgb, currentColor 6%, transparent);
 	--c-borde: color-mix(in srgb, currentColor 16%, transparent);
@@ -86,8 +88,12 @@
 	font-size: 1.25em;
 }
 
+.concursos-reto :is(h2, h3) {
+	color: var(--c-texto, inherit);
+}
+
 .concursos-reto a {
-	color: var(--c-color);
+	color: var(--c-tinta);
 }
 
 .concursos-reto__descripcion {
@@ -132,8 +138,10 @@
 	margin: 0;
 }
 
+/* Algunos temas dan color propio a los títulos: aquí manda el panel. */
 .concursos-cabecera h1,
 .concursos-cabecera h2 {
+	color: var(--c-sobre-cabecera, inherit);
 	font-weight: 700;
 	line-height: 1.1;
 }
@@ -173,15 +181,11 @@
 
 .concursos-estado {
 	font-weight: 600;
-	opacity: 0.7;
+	opacity: var(--c-opacidad-cabecera, 0.8);
 }
 
 .concursos-destacado {
 	margin-bottom: 3em;
-}
-
-.concursos-destacado__datos {
-	opacity: 0.9;
 }
 
 .concursos-boton {
@@ -197,7 +201,8 @@
 	text-decoration: none;
 }
 
-.concursos-cabecera .concursos-boton {
+.concursos-cabecera .concursos-boton,
+.concursos-cabecera .concursos-boton:hover {
 	background: var(--c-acento);
 	color: var(--c-sobre-acento);
 }
@@ -214,7 +219,7 @@
 	padding: 0.15em 0.75em;
 	border-radius: 1em;
 	background: var(--c-suave);
-	color: var(--c-color);
+	color: var(--c-tinta);
 	font-size: 0.8em;
 	font-weight: 600;
 }
@@ -437,7 +442,7 @@
 }
 
 .concursos-modal a {
-	color: var(--c-color, inherit);
+	color: var(--c-tinta, inherit);
 }
 
 /* Votación */
@@ -477,10 +482,10 @@
 .concursos-disenado button.concursos-voto {
 	min-height: 44px;
 	padding: 0 1.2em;
-	border: 1px solid var(--c-color);
+	border: 1px solid var(--c-tinta);
 	border-radius: 4px;
 	background: transparent;
-	color: var(--c-color);
+	color: var(--c-tinta);
 	font: inherit;
 	cursor: pointer;
 	transition: background-color 200ms ease, color 200ms ease;
@@ -511,11 +516,11 @@
 .concursos-puesto h3 {
 	padding-left: 0.5em;
 	border-left: 4px solid var(--c-acento);
-	color: var(--c-color);
+	color: var(--c-tinta);
 }
 
 .concursos-premio {
-	color: var(--c-color);
+	color: var(--c-tinta);
 }
 
 .concursos-premio {
@@ -524,10 +529,6 @@
 
 .concursos-puesto--1 .concursos-galeria__rejilla {
 	grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
-}
-
-.concursos-votos {
-	opacity: 0.75;
 }
 
 .concursos-resto {
@@ -546,7 +547,6 @@
 
 .concursos-ficha {
 	margin: 1.5em 0 0;
-	opacity: 0.7;
 }
 
 .concursos-resumen {
@@ -628,7 +628,6 @@
 
 .concursos-perfil__cifras {
 	margin: 0.25em 0;
-	opacity: 0.75;
 }
 
 .concursos-perfil__redes {
@@ -692,7 +691,6 @@
 
 .concursos-form-publico small {
 	display: block;
-	opacity: 0.75;
 }
 
 .concursos-disenado button[type="submit"]:not(.concursos-enlace):not(.concursos-voto):not(.concursos-boton-secundario) {
@@ -759,7 +757,6 @@
 .concursos-reto-nombre {
 	margin-top: -0.5em;
 	font-size: 1.2em;
-	opacity: 0.8;
 }
 
 .concursos-pagina .concursos-boton-secundario {
@@ -776,7 +773,6 @@
 .concursos-privado {
 	margin-top: 3em;
 	font-size: 0.875em;
-	opacity: 0.7;
 }
 
 @media (max-width: 720px) {

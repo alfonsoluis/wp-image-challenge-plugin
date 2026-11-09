@@ -194,6 +194,8 @@ class Concursos_Diseno {
 			$p    = $paletas[ $s['paleta'] ];
 			$vars = array(
 				'--c-color'          => $p['color'],
+				'--c-tinta'          => $p['color'],
+				'--c-opacidad-cabecera' => self::opacidad_legible( $p['sobre'], $p['color'] ),
 				'--c-sobre'          => $p['sobre'],
 				'--c-fondo'          => $p['fondo'],
 				'--c-suave'          => $p['suave'],
@@ -216,6 +218,51 @@ class Concursos_Diseno {
 		}
 
 		return $css;
+	}
+
+	/**
+	 * Opacidad para texto atenuado: 70 % o la mínima que mantenga contraste AA.
+	 *
+	 * @param string $texto Color del texto.
+	 * @param string $fondo Color del fondo.
+	 * @return float
+	 */
+	private static function opacidad_legible( $texto, $fondo ) {
+		$t = sscanf( $texto, '#%02x%02x%02x' );
+		$f = sscanf( $fondo, '#%02x%02x%02x' );
+
+		for ( $o = 70; $o < 100; $o++ ) {
+			$mezcla = array();
+			foreach ( $t as $i => $canal ) {
+				$mezcla[] = $canal * $o / 100 + $f[ $i ] * ( 100 - $o ) / 100;
+			}
+			$a = self::luminancia( $mezcla );
+			$b = self::luminancia( $f );
+			if ( ( max( $a, $b ) + 0.05 ) / ( min( $a, $b ) + 0.05 ) >= 4.5 ) {
+				return $o / 100;
+			}
+		}
+
+		return 1;
+	}
+
+	/**
+	 * Luminancia relativa de un color, según WCAG.
+	 *
+	 * @param float[] $rgb Canales de 0 a 255.
+	 * @return float
+	 */
+	private static function luminancia( array $rgb ) {
+		$lineal = array_map(
+			function ( $canal ) {
+				$c = $canal / 255;
+
+				return $c <= 0.03928 ? $c / 12.92 : pow( ( $c + 0.055 ) / 1.055, 2.4 );
+			},
+			$rgb
+		);
+
+		return 0.2126 * $lineal[0] + 0.7152 * $lineal[1] + 0.0722 * $lineal[2];
 	}
 
 	/**
