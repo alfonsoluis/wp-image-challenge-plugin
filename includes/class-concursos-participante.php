@@ -78,14 +78,13 @@ class Concursos_Participante {
 			array(
 				'post_type'      => self::POST_TYPE,
 				'post_status'    => 'any',
-				'posts_per_page' => 1,
+				'posts_per_page' => 2,
 				'fields'         => 'ids',
-				'post__not_in'   => array( (int) $id ),
 				'meta_key'       => '_thumbnail_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 				'meta_value'     => (int) $avatar, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
 			)
 		);
-		if ( ! $compartida ) {
+		if ( ! array_diff( $compartida, array( (int) $id ) ) ) {
 			wp_delete_attachment( $avatar, true );
 		}
 	}
@@ -263,12 +262,10 @@ class Concursos_Participante {
 				'meta_value'     => (int) $id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
 			)
 		);
-		if ( ! $fotos ) {
-			return;
-		}
 
-		$ids = implode( ',', array_map( 'intval', $fotos ) );
-		$wpdb->query( "DELETE FROM " . Concursos_DB::votos() . " WHERE entrada_id IN ({$ids})" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		foreach ( $fotos as $foto ) {
+			$wpdb->delete( Concursos_DB::votos(), array( 'entrada_id' => (int) $foto ), array( '%d' ) );
+		}
 	}
 
 	/**

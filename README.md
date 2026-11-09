@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <img alt="WordPress 7.0 o posterior" src="https://img.shields.io/badge/WordPress-7.0%2B-21759b?logo=wordpress&logoColor=white">
+  <img alt="WordPress 7.1 o posterior" src="https://img.shields.io/badge/WordPress-7.1%2B-21759b?logo=wordpress&logoColor=white">
   <img alt="PHP 7.4 o posterior" src="https://img.shields.io/badge/PHP-7.4%2B-777bb4?logo=php&logoColor=white">
   <img alt="Licencia GPL-2.0 o posterior" src="https://img.shields.io/badge/licencia-GPL--2.0--or--later-3c8527">
   <img alt="Idiomas: inglés y español" src="https://img.shields.io/badge/idiomas-EN%20%C2%B7%20ES-e9c46a">
@@ -61,7 +61,7 @@ Diez combinaciones tomadas de las más populares de [Coolors](https://coolors.co
 
 ## Instalación
 
-**Requisitos:** WordPress 7.0 o posterior y PHP 7.4 o posterior.
+**Requisitos:** WordPress 7.1 o posterior y PHP 7.4 o posterior.
 
 1. Descarga el ZIP con **Code → Download ZIP**. Solo contiene el plugin.
 2. En tu WordPress, ve a **Plugins → Añadir nuevo → Subir plugin**, elige el ZIP y actívalo.

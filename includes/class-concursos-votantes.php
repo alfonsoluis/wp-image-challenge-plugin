@@ -85,7 +85,7 @@ class Concursos_Votantes {
 
 		$t = Concursos_DB::votantes();
 
-		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$t} WHERE id = %d", $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE id = %d', $t, $id ) );
 	}
 
 	/**
@@ -184,7 +184,7 @@ class Concursos_Votantes {
 
 		global $wpdb;
 		$t       = Concursos_DB::votantes();
-		$votante = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$t} WHERE email = %s", $email ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$votante = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE email = %s', $t, $email ) );
 
 		if ( ! $votante ) {
 			$wpdb->insert(
@@ -292,7 +292,7 @@ class Concursos_Votantes {
 
 		$t       = Concursos_DB::votantes();
 		$votante = preg_match( '/^[a-f0-9]{32}$/', $token )
-			? $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$t} WHERE confirm_hash = %s", hash( 'sha256', $token ) ) ) // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			? $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE confirm_hash = %s', $t, hash( 'sha256', $token ) ) )
 			: null;
 
 		if ( ! $votante || (int) $votante->confirm_expira < time() ) {
@@ -395,7 +395,7 @@ class Concursos_Votantes {
 
 		$titulo = __( 'New challenge notifications', 'photo-challenges' );
 
-		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] ) {
+		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ) {
 			self::set_suscrito( $votante, false );
 			Concursos_Envio::render_message( 200, $titulo, __( 'Done: you will no longer receive notifications about new challenges.', 'photo-challenges' ) );
 		}
@@ -442,7 +442,7 @@ class Concursos_Votantes {
 
 		global $wpdb;
 		$t         = Concursos_DB::votantes();
-		$suscritos = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$t} WHERE suscrito = 1 AND estado = %s", self::CONFIRMADO ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$suscritos = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i WHERE suscrito = 1 AND estado = %s', $t, self::CONFIRMADO ) );
 
 		foreach ( $suscritos as $votante ) {
 			$baja = self::enlace_baja( $votante );

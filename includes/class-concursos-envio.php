@@ -74,7 +74,7 @@ class Concursos_Envio {
 			self::render_message( 403, __( 'Private challenge', 'photo-challenges' ), Concursos_Reto::mensaje_privado() );
 		}
 
-		if ( 'POST' === ( isset( $_SERVER['REQUEST_METHOD'] ) ? $_SERVER['REQUEST_METHOD'] : '' ) ) {
+		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ) {
 			$code = self::handle_post( $p );
 			wp_safe_redirect( add_query_arg( self::RESULT_PARAM, $code, Concursos_Inscripcion::personal_link( $token ) ) );
 			exit;
@@ -210,7 +210,7 @@ class Concursos_Envio {
 						<?php echo get_the_post_thumbnail( $entrada, 'medium' ); ?>
 						<span><?php echo esc_html( get_the_title( $entrada ) ); ?></span>
 						<?php if ( $abierto ) : ?>
-							<form method="post" onsubmit="return confirm('<?php echo esc_js( __( 'Delete this photo?', 'photo-challenges' ) ); ?>');">
+							<form method="post" data-confirmar="<?php esc_attr_e( 'Delete this photo?', 'photo-challenges' ); ?>">
 								<input type="hidden" name="_wpnonce" value="<?php echo esc_attr( $nonce ); ?>">
 								<button type="submit" name="eliminar" value="<?php echo esc_attr( $entrada->ID ); ?>" class="concursos-boton-secundario"><?php esc_html_e( 'Delete', 'photo-challenges' ); ?></button>
 							</form>
@@ -284,6 +284,7 @@ class Concursos_Envio {
 	public static function layout( $status, $title, $body, $s = null ) {
 		status_header( $status );
 		wp_register_style( 'concursos-public', CONCURSOS_URL . 'assets/css/public.css', array(), CONCURSOS_VERSION );
+		wp_register_script( 'concursos-public', CONCURSOS_URL . 'assets/js/public.js', array(), CONCURSOS_VERSION, true );
 		if ( $s ) {
 			Concursos_Diseno::aplicar( $s );
 		}
@@ -302,6 +303,7 @@ class Concursos_Envio {
 		<p class="concursos-sitio"><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php bloginfo( 'name' ); ?></a></p>
 		<?php echo $body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado al construirlo. ?>
 	</main>
+	<?php wp_print_scripts( 'concursos-public' ); ?>
 </body>
 </html>
 		<?php

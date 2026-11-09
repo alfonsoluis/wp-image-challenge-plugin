@@ -4,7 +4,7 @@
  * Plugin URI:        https://github.com/alfonsoluis/wp-image-challenge-plugin
  * Description:       Photo, drawing, design and other art challenges with participants, submissions, voting and results.
  * Version:           0.18.0
- * Requires at least: 7.0
+ * Requires at least: 7.1
  * Requires PHP:      7.4
  * Author:            Alfonso Rodriguez
  * License:           GPL-2.0-or-later
@@ -45,8 +45,6 @@ add_action(
 		// Cualquier variante del español (es_MX, es_CO...) usa la traducción incluida.
 		if ( preg_match( '/^es(_|$)/', determine_locale() ) ) {
 			load_textdomain( 'photo-challenges', CONCURSOS_PATH . 'languages/photo-challenges-es_ES.mo' );
-		} else {
-			load_plugin_textdomain( 'photo-challenges', false, dirname( plugin_basename( CONCURSOS_FILE ) ) . '/languages' );
 		}
 	},
 	0

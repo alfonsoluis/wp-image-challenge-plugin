@@ -97,7 +97,8 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 			$args[]        = '%' . $wpdb->esc_like( $busqueda ) . '%';
 		}
 		if ( self::filtro_reto() ) {
-			$condiciones[] = "EXISTS (SELECT 1 FROM {$votos} x WHERE x.votante_id = t.id AND x.reto_id = %d)";
+			$condiciones[] = 'EXISTS (SELECT 1 FROM %i x WHERE x.votante_id = t.id AND x.reto_id = %d)';
+			$args[]        = $votos;
 			$args[]        = self::filtro_reto();
 		}
 		$desde = self::filtro_fecha( 'desde', '00:00:00' );
@@ -112,26 +113,26 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 		}
 		$where = implode( ' AND ', $condiciones );
 
-		// phpcs:disable WordPress.DB.PreparedSQL -- nombres de tabla y orden salen de valores fijos; los datos van preparados.
-		$sql_total = "SELECT COUNT(*) FROM {$votantes} t WHERE {$where}";
-		$total     = (int) $wpdb->get_var( $args ? $wpdb->prepare( $sql_total, $args ) : $sql_total );
+		// phpcs:disable WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB.UnescapedDBParameter, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- $where y el orden solo contienen fragmentos fijos; los datos van preparados.
+		$total = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i t WHERE {$where}", $votantes, ...$args ) );
 
 		$pagina = $this->get_pagenum();
 		$items  = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT t.id, t.email, t.estado, t.suscrito, t.creado, COUNT(v.id) AS votos FROM {$votantes} t LEFT JOIN {$votos} v ON v.votante_id = t.id WHERE {$where} GROUP BY t.id ORDER BY {$orden} {$sentido}, t.id DESC LIMIT %d OFFSET %d",
-				array_merge( $args, array( self::POR_PAGINA, ( $pagina - 1 ) * self::POR_PAGINA ) )
+				"SELECT t.id, t.email, t.estado, t.suscrito, t.creado, COUNT(v.id) AS votos FROM %i t LEFT JOIN %i v ON v.votante_id = t.id WHERE {$where} GROUP BY t.id ORDER BY {$orden} {$sentido}, t.id DESC LIMIT %d OFFSET %d",
+				$votantes,
+				$votos,
+				...array_merge( $args, array( self::POR_PAGINA, ( $pagina - 1 ) * self::POR_PAGINA ) )
 			)
 		);
 
-		$ids = wp_list_pluck( $items, 'id' );
-		if ( $ids ) {
-			$lista = implode( ',', array_map( 'intval', $ids ) );
-			foreach ( $wpdb->get_results( "SELECT votante_id, reto_id, COUNT(*) AS n FROM {$votos} WHERE votante_id IN ({$lista}) GROUP BY votante_id, reto_id ORDER BY reto_id DESC" ) as $fila ) {
-				$this->por_reto[ (int) $fila->votante_id ][ (int) $fila->reto_id ] = (int) $fila->n;
+		foreach ( wp_list_pluck( $items, 'id' ) as $id ) {
+			$filas = $wpdb->get_results( $wpdb->prepare( 'SELECT reto_id, COUNT(*) AS n FROM %i WHERE votante_id = %d GROUP BY reto_id ORDER BY reto_id DESC', $votos, (int) $id ) );
+			foreach ( $filas as $fila ) {
+				$this->por_reto[ (int) $id ][ (int) $fila->reto_id ] = (int) $fila->n;
 			}
 		}
-		// phpcs:enable WordPress.DB.PreparedSQL
+		// phpcs:enable
 
 		$this->items           = $items;
 		$this->_column_headers = array( $this->get_columns(), array(), $this->get_sortable_columns(), 'email' );
@@ -360,16 +361,13 @@ class Concursos_Votantes_Admin {
 		global $wpdb;
 		$ids = isset( $_REQUEST['votante'] ) ? array_filter( array_map( 'absint', (array) wp_unslash( $_REQUEST['votante'] ) ) ) : array();
 		$n   = count( $ids );
-		if ( $ids ) {
-			$lista = implode( ',', $ids );
-			// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- nombres de tabla fijos e IDs enteros.
+		foreach ( $ids as $id ) {
 			if ( 'concursos_eliminar' === $accion ) {
-				$wpdb->query( 'DELETE FROM ' . Concursos_DB::votos() . " WHERE votante_id IN ({$lista})" );
-				$wpdb->query( 'DELETE FROM ' . Concursos_DB::votantes() . " WHERE id IN ({$lista})" );
+				$wpdb->delete( Concursos_DB::votos(), array( 'votante_id' => $id ), array( '%d' ) );
+				$wpdb->delete( Concursos_DB::votantes(), array( 'id' => $id ), array( '%d' ) );
 			} else {
-				$wpdb->query( 'UPDATE ' . Concursos_DB::votantes() . " SET suscrito = 0 WHERE id IN ({$lista})" );
+				$wpdb->update( Concursos_DB::votantes(), array( 'suscrito' => 0 ), array( 'id' => $id ), array( '%d' ), array( '%d' ) );
 			}
-			// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 
 		$url = remove_query_arg( array( 'action', 'action2', 'votante', '_wpnonce', '_wp_http_referer', 'filter_action' ) );

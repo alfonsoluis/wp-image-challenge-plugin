@@ -67,6 +67,14 @@
 		modal.showModal();
 	}
 
+	// Pide confirmación antes de enviar los formularios que la necesitan.
+	document.addEventListener( 'submit', function ( event ) {
+		var aviso = event.target.dataset && event.target.dataset.confirmar;
+		if ( aviso && ! window.confirm( aviso ) ) {
+			event.preventDefault();
+		}
+	} );
+
 	document.addEventListener( 'click', function ( event ) {
 		var boton = event.target.closest( '.concursos-foto' );
 		if ( boton ) {

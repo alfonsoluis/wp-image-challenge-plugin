@@ -34,7 +34,7 @@ class Concursos_Votos {
 		global $wpdb;
 
 		$t    = Concursos_DB::votos();
-		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT entrada_id, COUNT(*) AS n FROM {$t} WHERE reto_id = %d GROUP BY entrada_id", $reto_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT entrada_id, COUNT(*) AS n FROM %i WHERE reto_id = %d GROUP BY entrada_id', $t, $reto_id ) );
 
 		$counts = array();
 		foreach ( $rows as $row ) {
@@ -55,7 +55,7 @@ class Concursos_Votos {
 
 		$t = Concursos_DB::votos();
 
-		return (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$t} WHERE entrada_id = %d", $entrada_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM %i WHERE entrada_id = %d', $t, $entrada_id ) );
 	}
 
 	/**
@@ -70,7 +70,7 @@ class Concursos_Votos {
 
 		$t = Concursos_DB::votos();
 
-		return array_map( 'intval', $wpdb->get_col( $wpdb->prepare( "SELECT entrada_id FROM {$t} WHERE votante_id = %d AND reto_id = %d", $votante_id, $reto_id ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return array_map( 'intval', $wpdb->get_col( $wpdb->prepare( 'SELECT entrada_id FROM %i WHERE votante_id = %d AND reto_id = %d', $t, $votante_id, $reto_id ) ) );
 	}
 
 	/**
@@ -135,7 +135,7 @@ class Concursos_Votos {
 
 		$t = Concursos_DB::votos();
 
-		return (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(DISTINCT votante_id) FROM {$t} WHERE reto_id = %d", $reto_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(DISTINCT votante_id) FROM %i WHERE reto_id = %d', $t, $reto_id ) );
 	}
 
 	/**
@@ -205,12 +205,13 @@ class Concursos_Votos {
 		// Comprueba el límite en la misma sentencia que inserta: dos clics simultáneos no lo superan.
 		$insertados = $wpdb->query(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				"INSERT IGNORE INTO {$t} (votante_id, reto_id, entrada_id, creado) SELECT %d, %d, %d, %d FROM DUAL WHERE (SELECT COUNT(*) FROM {$t} v WHERE v.votante_id = %d AND v.reto_id = %d) < %d",
+				'INSERT IGNORE INTO %i (votante_id, reto_id, entrada_id, creado) SELECT %d, %d, %d, %d FROM DUAL WHERE (SELECT COUNT(*) FROM %i v WHERE v.votante_id = %d AND v.reto_id = %d) < %d',
+				$t,
 				(int) $votante->id,
 				$reto,
 				$entrada,
 				time(),
+				$t,
 				(int) $votante->id,
 				$reto,
 				(int) $s['votos_por_votante']
