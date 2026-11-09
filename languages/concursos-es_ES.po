@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Concursos 0.12.1\n"
+"Project-Id-Version: Concursos 0.12.2\n"
 "Report-Msgid-Bugs-To: https://github.com/alfonsoluis/wp-image-challenge-plugin/issues\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Spanish\n"
@@ -11,7 +11,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-09T00:19:28+00:00\n"
+"POT-Creation-Date: 2026-11-09T00:21:45+00:00\n"
 "PO-Revision-Date: 2026-11-09 00:00+0000\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: concursos\n"
@@ -93,7 +93,7 @@ msgstr "Crear el primer reto"
 #: includes/admin/class-concursos-admin.php:109
 #: includes/admin/class-concursos-entradas-admin.php:96
 #: includes/admin/class-concursos-participantes-admin.php:116
-#: includes/admin/class-concursos-participantes-admin.php:284
+#: includes/admin/class-concursos-participantes-admin.php:297
 #: includes/class-concursos-entrada.php:152
 #: includes/class-concursos-inscripcion.php:147
 #: includes/class-concursos-post-types.php:36
@@ -278,7 +278,7 @@ msgid "Name"
 msgstr "Nombre"
 
 #: includes/admin/class-concursos-participantes-admin.php:115
-#: includes/admin/class-concursos-participantes-admin.php:283
+#: includes/admin/class-concursos-participantes-admin.php:296
 #: includes/admin/class-concursos-votantes-admin.php:49
 #: includes/class-concursos-inscripcion.php:143
 #: includes/class-concursos-votantes.php:490
@@ -286,13 +286,13 @@ msgid "Email"
 msgstr "Email"
 
 #: includes/admin/class-concursos-participantes-admin.php:117
-#: includes/admin/class-concursos-participantes-admin.php:285
+#: includes/admin/class-concursos-participantes-admin.php:298
 #: includes/admin/class-concursos-votantes-admin.php:50
 msgid "Status"
 msgstr "Estado"
 
 #: includes/admin/class-concursos-participantes-admin.php:118
-#: includes/admin/class-concursos-participantes-admin.php:286
+#: includes/admin/class-concursos-participantes-admin.php:299
 msgid "Social networks"
 msgstr "Redes"
 
@@ -312,8 +312,12 @@ msgstr "Activar (aprobar)"
 msgid "Deactivate"
 msgstr "Desactivar"
 
+#: includes/admin/class-concursos-participantes-admin.php:237
+msgid "View profile"
+msgstr "Ver perfil"
+
 #. translators: %d: number of participants.
-#: includes/admin/class-concursos-participantes-admin.php:245
+#: includes/admin/class-concursos-participantes-admin.php:258
 #, php-format
 msgid "%d participant activated. Anyone without a personal link received it by email."
 msgid_plural "%d participants activated. Anyone without a personal link received it by email."
@@ -321,32 +325,32 @@ msgstr[0] "%d participante activado. Quien no tenía enlace personal lo recibió
 msgstr[1] "%d participantes activados. Quienes no tenían enlace personal lo recibieron por email."
 
 #. translators: %d: number of participants.
-#: includes/admin/class-concursos-participantes-admin.php:248
+#: includes/admin/class-concursos-participantes-admin.php:261
 #, php-format
 msgid "%d participant deactivated: their photos are hidden and their votes have been deleted."
 msgid_plural "%d participants deactivated: their photos are hidden and their votes have been deleted."
 msgstr[0] "%d participante desactivado: sus fotos quedan ocultas y sus votos se han borrado."
 msgstr[1] "%d participantes desactivados: sus fotos quedan ocultas y sus votos se han borrado."
 
-#: includes/admin/class-concursos-participantes-admin.php:270
+#: includes/admin/class-concursos-participantes-admin.php:283
 msgid "Registration details"
 msgstr "Datos de la inscripción"
 
-#: includes/admin/class-concursos-participantes-admin.php:288
+#: includes/admin/class-concursos-participantes-admin.php:301
 msgid "Personal link"
 msgstr "Enlace personal"
 
 #. translators: %s: date.
-#: includes/admin/class-concursos-participantes-admin.php:293
+#: includes/admin/class-concursos-participantes-admin.php:306
 #, php-format
 msgid "Sent on %s"
 msgstr "Enviado el %s"
 
-#: includes/admin/class-concursos-participantes-admin.php:294
+#: includes/admin/class-concursos-participantes-admin.php:307
 msgid "Sent when the participant is activated."
 msgstr "Se envía al activar al participante."
 
-#: includes/admin/class-concursos-participantes-admin.php:299
+#: includes/admin/class-concursos-participantes-admin.php:312
 msgid "The status is changed from the participant list, using the bulk actions."
 msgstr "El estado se cambia desde la lista de participantes, con las acciones en bloque."
 

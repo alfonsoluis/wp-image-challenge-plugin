@@ -223,8 +223,21 @@ class Concursos_Participantes_Admin {
 	 * @return array
 	 */
 	public static function row_actions( $actions, $post ) {
-		if ( self::TYPE === $post->post_type ) {
-			unset( $actions['inline hide-if-no-js'] );
+		if ( self::TYPE !== $post->post_type ) {
+			return $actions;
+		}
+		unset( $actions['inline hide-if-no-js'] );
+
+		// Solo los participantes activos tienen perfil público.
+		if ( Concursos_Participante::esta_activo( $post->ID ) ) {
+			$perfil  = array(
+				'concursos_perfil' => sprintf(
+					'<a href="%s" target="_blank" rel="noopener">%s</a>',
+					esc_url( Concursos_Perfil::url( $post->ID ) ),
+					esc_html__( 'View profile', 'concursos' )
+				),
+			);
+			$actions = array_slice( $actions, 0, 1, true ) + $perfil + array_slice( $actions, 1, null, true );
 		}
 
 		return $actions;
