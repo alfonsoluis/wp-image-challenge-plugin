@@ -79,10 +79,11 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 
 1. The challenges page, with the current challenge featured.
 2. A challenge open for voting.
-3. Results with prizes, ties and a vote summary.
+3. Results with prizes and ties.
 4. A participant profile.
 5. The challenges dashboard.
 6. Challenge settings: participation, prizes and design.
+7. Vote summary and annual general ranking.
 
 == Changelog ==
 
