@@ -618,6 +618,43 @@
 	border-radius: 4px;
 }
 
+/* Navegación entre retos */
+
+.concursos-navegacion {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 1em 2em;
+	margin-top: 3em;
+	padding-top: 1.5em;
+	border-top: 1px solid var(--c-borde);
+}
+
+.concursos-navegacion a {
+	display: flex;
+	flex-direction: column;
+	gap: 0.15em;
+	max-width: min(100%, 26em);
+	text-decoration: none;
+}
+
+.concursos-navegacion a:hover strong {
+	text-decoration: underline;
+}
+
+.concursos-navegacion__anterior span::before {
+	content: "← ";
+}
+
+.concursos-navegacion__siguiente {
+	margin-left: auto;
+	text-align: right;
+}
+
+.concursos-navegacion__siguiente span::after {
+	content: " →";
+}
+
 /* Perfil: siempre neutro, una persona participa en retos distintos */
 
 .concursos-perfil {

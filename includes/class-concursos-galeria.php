@@ -82,6 +82,57 @@ class Concursos_Galeria {
 	}
 
 	/**
+	 * Enlaces al reto anterior y al siguiente, por fecha de inicio. Solo cuenta
+	 * los retos publicados, como la portada.
+	 *
+	 * @param WP_Post $post Reto.
+	 * @return string
+	 */
+	private static function navegacion( $post ) {
+		$retos = array_values(
+			array_filter(
+				Concursos_Reto::all( array( 'publish' ) ),
+				function ( $reto ) {
+					return 'sin_fechas' !== $reto['status'];
+				}
+			)
+		);
+		$ids   = array_map(
+			function ( $reto ) {
+				return $reto['post']->ID;
+			},
+			$retos
+		);
+		$pos   = array_search( $post->ID, $ids, true );
+		if ( false === $pos ) {
+			return '';
+		}
+
+		// La lista va del más reciente al más antiguo.
+		$anterior  = isset( $retos[ $pos + 1 ] ) ? $retos[ $pos + 1 ]['post'] : null;
+		$siguiente = $pos > 0 ? $retos[ $pos - 1 ]['post'] : null;
+		if ( ! $anterior && ! $siguiente ) {
+			return '';
+		}
+
+		$enlace = function ( $reto, $clase, $rel, $etiqueta ) {
+			return sprintf(
+				'<a class="concursos-navegacion__%1$s" rel="%2$s" href="%3$s"><span class="concursos-xs">%4$s</span><strong>%5$s</strong></a>',
+				$clase,
+				$rel,
+				esc_url( get_permalink( $reto ) ),
+				esc_html( $etiqueta ),
+				esc_html( get_the_title( $reto ) )
+			);
+		};
+
+		return '<nav class="concursos-navegacion" aria-label="' . esc_attr__( 'Challenge navigation', 'concursos' ) . '">'
+			. ( $anterior ? $enlace( $anterior, 'anterior', 'prev', __( 'Previous challenge', 'concursos' ) ) : '' )
+			. ( $siguiente ? $enlace( $siguiente, 'siguiente', 'next', __( 'Next challenge', 'concursos' ) ) : '' )
+			. '</nav>';
+	}
+
+	/**
 	 * Enlace para inscribirse en un reto mientras acepta inscripciones.
 	 *
 	 * @param int    $reto_id Reto.
@@ -154,6 +205,7 @@ class Concursos_Galeria {
 					</div>
 				<?php endif; ?>
 				<?php echo self::render( $post->ID ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+				<?php echo self::navegacion( $post ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
 			</div>
 		</div>
 		<?php
