@@ -138,10 +138,11 @@ class Concursos_Entrada {
 	/**
 	 * Miniatura de una foto: al pulsarla se abre en grande con su autor y su reto.
 	 *
-	 * @param WP_Post $foto Foto.
+	 * @param WP_Post $foto   Foto.
+	 * @param string  $tamano Tamaño de la miniatura.
 	 * @return string
 	 */
-	public static function miniatura( $foto ) {
+	public static function miniatura( $foto, $tamano = 'medium_large' ) {
 		if ( ! wp_script_is( 'concursos-public', 'enqueued' ) ) {
 			wp_enqueue_script( 'concursos-public', CONCURSOS_URL . 'assets/js/public.js', array(), CONCURSOS_VERSION, true );
 			wp_localize_script(
@@ -170,7 +171,7 @@ class Concursos_Entrada {
 			esc_url( (string) $avatar ),
 			esc_attr( get_the_title( $reto_id ) ),
 			esc_url( get_permalink( $reto_id ) ),
-			get_the_post_thumbnail( $foto, 'medium_large', array( 'loading' => 'lazy' ) )
+			get_the_post_thumbnail( $foto, $tamano, array( 'loading' => 'lazy' ) )
 		);
 	}
 

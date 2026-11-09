@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Concursos 0.14.0\n"
+"Project-Id-Version: Concursos 0.15.0\n"
 "Report-Msgid-Bugs-To: https://github.com/alfonsoluis/wp-image-challenge-plugin/issues\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Spanish\n"
@@ -11,7 +11,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-09T00:28:33+00:00\n"
+"POT-Creation-Date: 2026-11-09T22:00:32+00:00\n"
 "PO-Revision-Date: 2026-11-09 00:00+0000\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: concursos\n"
@@ -94,7 +94,7 @@ msgstr "Crear el primer reto"
 #: includes/admin/class-concursos-entradas-admin.php:152
 #: includes/admin/class-concursos-participantes-admin.php:116
 #: includes/admin/class-concursos-participantes-admin.php:297
-#: includes/class-concursos-entrada.php:152
+#: includes/class-concursos-entrada.php:153
 #: includes/class-concursos-inscripcion.php:147
 #: includes/class-concursos-post-types.php:36
 msgid "Challenge"
@@ -120,7 +120,7 @@ msgid "Voting until"
 msgstr "Votación hasta"
 
 #: includes/admin/class-concursos-admin.php:114
-#: includes/class-concursos-galeria.php:282
+#: includes/class-concursos-galeria.php:309
 msgid "Results"
 msgstr "Resultados"
 
@@ -167,7 +167,7 @@ msgid "Private"
 msgstr "Privado"
 
 #: includes/admin/class-concursos-admin.php:217
-#: includes/class-concursos-post-types.php:78
+#: includes/class-concursos-post-types.php:79
 msgid "Archived"
 msgstr "Archivado"
 
@@ -217,14 +217,14 @@ msgid "%s (copy)"
 msgstr "%s (copia)"
 
 #. translators: %d: number of copied participants.
-#: includes/admin/class-concursos-duplicar.php:251
+#: includes/admin/class-concursos-duplicar.php:253
 #, php-format
 msgid "Copy created with %d participant. Choose the dates and publish it: they will then receive their personal link."
 msgid_plural "Copy created with %d participants. Choose the dates and publish it: they will then receive their personal links."
 msgstr[0] "Copia creada con %d participante. Elige las fechas y publícala: entonces recibirá su enlace personal."
 msgstr[1] "Copia creada con %d participantes. Elige las fechas y publícala: entonces recibirán su enlace personal."
 
-#: includes/admin/class-concursos-duplicar.php:252
+#: includes/admin/class-concursos-duplicar.php:254
 msgid "Copy created. Choose the dates and publish it."
 msgstr "Copia creada. Elige las fechas y publícala."
 
@@ -257,6 +257,7 @@ msgstr "Todos los retos"
 #: includes/admin/class-concursos-participantes-admin.php:113
 #: includes/class-concursos-entrada.php:42
 #: includes/class-concursos-envio.php:229
+#: includes/class-concursos-galeria.php:384
 msgid "Photo"
 msgstr "Foto"
 
@@ -265,12 +266,14 @@ msgid "Title"
 msgstr "Título"
 
 #: includes/admin/class-concursos-entradas-admin.php:151
+#: includes/class-concursos-galeria.php:385
 #: includes/class-concursos-participante.php:113
 msgid "Participant"
 msgstr "Participante"
 
 #: includes/admin/class-concursos-entradas-admin.php:153
 #: includes/admin/class-concursos-votantes-admin.php:53
+#: includes/class-concursos-galeria.php:386
 msgid "Votes"
 msgstr "Votos"
 
@@ -390,7 +393,7 @@ msgstr "Calendario"
 
 #: includes/admin/class-concursos-reto-metabox.php:74
 #: includes/class-concursos-envio.php:248
-#: includes/class-concursos-galeria.php:109
+#: includes/class-concursos-galeria.php:136
 msgid "Rules"
 msgstr "Reglas"
 
@@ -673,12 +676,12 @@ msgstr "No hay fotos en la papelera."
 msgid "Photo by %s"
 msgstr "Foto de %s"
 
-#: includes/class-concursos-entrada.php:151
+#: includes/class-concursos-entrada.php:152
 msgid "Close"
 msgstr "Cerrar"
 
 #. translators: %s: photo title.
-#: includes/class-concursos-entrada.php:165
+#: includes/class-concursos-entrada.php:166
 #, php-format
 msgid "View larger photo: %s"
 msgstr "Ver la foto en grande: %s"
@@ -796,86 +799,122 @@ msgstr "Esta página es personal: no compartas su enlace."
 msgid "Your photos"
 msgstr "Tus fotos"
 
-#: includes/class-concursos-galeria.php:68
+#. translators: %s: name of the user who created the challenge.
+#: includes/class-concursos-galeria.php:71
+#, php-format
+msgid "By %s"
+msgstr "Por %s"
+
+#. translators: %s: list of tags.
+#: includes/class-concursos-galeria.php:78
+#, php-format
+msgid "Tags: %s"
+msgstr "Etiquetas: %s"
+
+#: includes/class-concursos-galeria.php:94
 msgid "Join this challenge"
 msgstr "Inscribirme en este reto"
 
-#: includes/class-concursos-galeria.php:119
+#: includes/class-concursos-galeria.php:146
 msgid "Prizes"
 msgstr "Premios"
 
 #. translators: %s: date.
-#: includes/class-concursos-galeria.php:177
+#: includes/class-concursos-galeria.php:204
 #, php-format
 msgid "Starts on %s."
 msgstr "Empieza el %s."
 
 #. translators: %s: date.
-#: includes/class-concursos-galeria.php:179
+#: includes/class-concursos-galeria.php:206
 #, php-format
 msgid "Accepting photos until %s."
 msgstr "Recibiendo fotos hasta el %s."
 
 #. translators: %s: date.
-#: includes/class-concursos-galeria.php:181
+#: includes/class-concursos-galeria.php:208
 #, php-format
 msgid "Voting until %s."
 msgstr "En votación hasta el %s."
 
 #. translators: %s: date.
-#: includes/class-concursos-galeria.php:183
+#: includes/class-concursos-galeria.php:210
 #, php-format
 msgid "Voting has ended. Results on %s."
 msgstr "La votación terminó. Resultados el %s."
 
 #. translators: %s: date.
-#: includes/class-concursos-galeria.php:185
+#: includes/class-concursos-galeria.php:212
 #, php-format
 msgid "Challenge finished on %s."
 msgstr "Reto finalizado el %s."
 
-#: includes/class-concursos-galeria.php:219
+#: includes/class-concursos-galeria.php:246
 msgid "Submitted entries"
 msgstr "Fotos participantes"
 
 #. translators: 1: number of photos, 2: submission end date.
-#: includes/class-concursos-galeria.php:228
+#: includes/class-concursos-galeria.php:255
 #, php-format
 msgid "%1$d photo has been submitted so far. All of them will be shown when submissions end, on %2$s."
 msgid_plural "%1$d photos have been submitted so far. All of them will be shown when submissions end, on %2$s."
 msgstr[0] "Ya se ha enviado %1$d foto. Se mostrarán todas cuando terminen los envíos, el %2$s."
 msgstr[1] "Ya se han enviado %1$d fotos. Se mostrarán todas cuando terminen los envíos, el %2$s."
 
-#: includes/class-concursos-galeria.php:235
+#: includes/class-concursos-galeria.php:262
 msgid "Photos will be shown when the challenge starts."
 msgstr "Las fotos se mostrarán cuando empiece el reto."
 
-#: includes/class-concursos-galeria.php:242
+#: includes/class-concursos-galeria.php:269
 msgid "There are no photos yet."
 msgstr "Todavía no hay fotos."
 
 #. translators: %d: number of votes.
-#: includes/class-concursos-galeria.php:279
+#: includes/class-concursos-galeria.php:306
 #, php-format
 msgid "%d vote"
 msgid_plural "%d votes"
 msgstr[0] "%d voto"
 msgstr[1] "%d votos"
 
-#: includes/class-concursos-galeria.php:285
+#: includes/class-concursos-galeria.php:312
 msgid "This challenge ended without votes."
 msgstr "Este reto terminó sin votos."
 
 #. translators: %s: prize.
-#: includes/class-concursos-galeria.php:296
+#: includes/class-concursos-galeria.php:323
 #: includes/class-concursos-perfil.php:258
 #, php-format
 msgid "Prize: %s"
 msgstr "Premio: %s"
 
-#: includes/class-concursos-galeria.php:306
+#: includes/class-concursos-galeria.php:333
 msgid "Other participants"
 msgstr "Resto de participantes"
+
+#: includes/class-concursos-galeria.php:362
+msgid "(tie)"
+msgstr "(empate)"
+
+#: includes/class-concursos-galeria.php:372
+msgid "Vote summary"
+msgstr "Resumen de votos"
+
+#. translators: %d: number of voters.
+#: includes/class-concursos-galeria.php:376
+#, php-format
+msgid "%d voter took part."
+msgid_plural "%d voters took part."
+msgstr[0] "%d votante participó."
+msgstr[1] "%d votantes participaron."
+
+#: includes/class-concursos-galeria.php:383
+msgid "Place"
+msgstr "Lugar"
+
+#: includes/class-concursos-galeria.php:413
+msgid "Total"
+msgstr "Total"
 
 #: includes/class-concursos-inscripcion.php:87
 msgid "Thank you! We received your registration. We will write to you when it is approved."
@@ -1126,7 +1165,7 @@ msgid "Use as background image"
 msgstr "Usar como imagen de fondo"
 
 #. translators: %s: number of archived challenges.
-#: includes/class-concursos-post-types.php:85
+#: includes/class-concursos-post-types.php:86
 #, php-format
 msgid "Archived <span class=\"count\">(%s)</span>"
 msgid_plural "Archived <span class=\"count\">(%s)</span>"
@@ -1357,38 +1396,38 @@ msgstr "Avisarme de nuevos retos"
 msgid "Sign out"
 msgstr "Salir"
 
-#: includes/class-concursos-votos.php:136
+#: includes/class-concursos-votos.php:150
 msgid "First place"
 msgstr "Primer lugar"
 
-#: includes/class-concursos-votos.php:136
+#: includes/class-concursos-votos.php:150
 msgid "Tied for first place"
 msgstr "Empate en el primer lugar"
 
-#: includes/class-concursos-votos.php:137
+#: includes/class-concursos-votos.php:151
 msgid "Second place"
 msgstr "Segundo lugar"
 
-#: includes/class-concursos-votos.php:137
+#: includes/class-concursos-votos.php:151
 msgid "Tied for second place"
 msgstr "Empate en el segundo lugar"
 
-#: includes/class-concursos-votos.php:138
+#: includes/class-concursos-votos.php:152
 msgid "Third place"
 msgstr "Tercer lugar"
 
-#: includes/class-concursos-votos.php:138
+#: includes/class-concursos-votos.php:152
 msgid "Tied for third place"
 msgstr "Empate en el tercer lugar"
 
-#: includes/class-concursos-votos.php:224
+#: includes/class-concursos-votos.php:238
 msgid "No votes left"
 msgstr "Sin votos"
 
-#: includes/class-concursos-votos.php:236
+#: includes/class-concursos-votos.php:250
 msgid "Remove vote"
 msgstr "Quitar voto"
 
-#: includes/class-concursos-votos.php:236
+#: includes/class-concursos-votos.php:250
 msgid "Vote"
 msgstr "Votar"

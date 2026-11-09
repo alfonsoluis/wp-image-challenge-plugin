@@ -125,6 +125,20 @@ class Concursos_Votos {
 	}
 
 	/**
+	 * Cuántas personas votaron en un reto.
+	 *
+	 * @param int $reto_id Reto.
+	 * @return int
+	 */
+	public static function votantes_de_reto( $reto_id ) {
+		global $wpdb;
+
+		$t = Concursos_DB::votos();
+
+		return (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(DISTINCT votante_id) FROM {$t} WHERE reto_id = %d", $reto_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	}
+
+	/**
 	 * Nombre de un puesto.
 	 *
 	 * @param int  $lugar  Puesto (1 a 3).

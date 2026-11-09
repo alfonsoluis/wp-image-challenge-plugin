@@ -64,6 +64,7 @@ class Concursos_Post_Types {
 				'menu_position' => 26,
 				'supports'      => array( 'title', 'editor', 'thumbnail' ),
 				'show_in_rest'  => true,
+				'taxonomies'    => array( 'post_tag' ),
 			)
 		);
 	}

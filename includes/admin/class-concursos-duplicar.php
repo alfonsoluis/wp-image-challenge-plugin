@@ -181,6 +181,8 @@ class Concursos_Duplicar {
 			set_post_thumbnail( $nuevo, $imagen );
 		}
 
+		wp_set_object_terms( $nuevo, wp_get_object_terms( $id, 'post_tag', array( 'fields' => 'ids' ) ), 'post_tag' );
+
 		$copiados = 0;
 		if ( ! empty( $_POST['participantes'] ) ) {
 			foreach ( self::activos( $id ) as $participante ) {

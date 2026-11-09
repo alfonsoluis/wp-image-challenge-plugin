@@ -134,6 +134,7 @@
 
 .concursos-cabecera h1,
 .concursos-cabecera h2 {
+	font-weight: 700;
 	line-height: 1.1;
 }
 
@@ -165,12 +166,14 @@
 }
 
 .concursos-cabecera .concursos-etiqueta {
+	text-transform: uppercase;
 	background: var(--c-sobre-cabecera, var(--c-suave));
 	color: var(--c-cabecera, inherit);
 }
 
 .concursos-estado {
 	font-weight: 600;
+	opacity: 0.7;
 }
 
 .concursos-destacado {
@@ -537,6 +540,58 @@
 .concursos-resto .concursos-galeria__rejilla {
 	grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr));
 	gap: 16px;
+}
+
+/* Ficha y resumen de votos de un reto terminado */
+
+.concursos-ficha {
+	margin: 1.5em 0 0;
+	opacity: 0.7;
+}
+
+.concursos-resumen {
+	margin-top: 3em;
+}
+
+.concursos-tabla-marco {
+	overflow-x: auto;
+}
+
+.concursos-tabla {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.concursos-tabla th,
+.concursos-tabla td {
+	padding: 0.6em 0.8em;
+	border-bottom: 1px solid var(--c-borde);
+	text-align: left;
+	vertical-align: middle;
+}
+
+.concursos-tabla .concursos-tabla__num {
+	text-align: right;
+	white-space: nowrap;
+}
+
+.concursos-tabla__foto {
+	display: flex;
+	align-items: center;
+	gap: 0.75em;
+}
+
+.concursos-tabla__foto .concursos-foto {
+	flex: none;
+	width: 48px;
+}
+
+.concursos-tabla__foto img {
+	display: block;
+	width: 48px;
+	height: 48px;
+	object-fit: cover;
+	border-radius: 4px;
 }
 
 /* Perfil: siempre neutro, una persona participa en retos distintos */

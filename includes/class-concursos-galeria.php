@@ -45,7 +45,7 @@ class Concursos_Galeria {
 		$labels = Concursos_Reto::status_labels();
 
 		return sprintf(
-			'<header class="concursos-cabecera%1$s"><div class="concursos-cabecera__texto"><p class="concursos-etiqueta">%2$s</p>%3$s<p class="concursos-estado">%4$s</p>%5$s</div>%6$s</header>',
+			'<header class="concursos-cabecera%1$s"><div class="concursos-cabecera__texto"><p class="concursos-etiqueta concursos-xs">%2$s</p>%3$s<p class="concursos-estado concursos-sm">%4$s</p>%5$s</div>%6$s</header>',
 			$imagen ? ' concursos-cabecera--imagen' : '',
 			esc_html( isset( $labels[ $status ] ) ? $labels[ $status ] : $status ),
 			$titulo,
@@ -53,6 +53,32 @@ class Concursos_Galeria {
 			$extra,
 			$imagen ? '<div class="concursos-cabecera__media"><img class="concursos-cabecera__imagen" src="' . esc_url( $imagen['url'] ) . '" alt=""></div>' : ''
 		);
+	}
+
+	/**
+	 * Línea con el autor, la fecha de finalización y las etiquetas de un reto.
+	 *
+	 * @param WP_Post $post Reto.
+	 * @param array   $s    Configuración.
+	 * @return string
+	 */
+	private static function ficha( $post, array $s ) {
+		$datos = array();
+
+		$autor = get_the_author_meta( 'display_name', $post->post_author );
+		if ( $autor ) {
+			/* translators: %s: name of the user who created the challenge. */
+			$datos[] = sprintf( __( 'By %s', 'concursos' ), $autor );
+		}
+		$datos[] = wp_date( get_option( 'date_format' ), (int) $s['cierre'] );
+
+		$etiquetas = wp_get_post_terms( $post->ID, 'post_tag', array( 'fields' => 'names' ) );
+		if ( $etiquetas && ! is_wp_error( $etiquetas ) ) {
+			/* translators: %s: list of tags. */
+			$datos[] = sprintf( __( 'Tags: %s', 'concursos' ), implode( ', ', $etiquetas ) );
+		}
+
+		return '<p class="concursos-ficha concursos-sm">' . esc_html( implode( ' · ', $datos ) ) . '</p>';
 	}
 
 	/**
@@ -99,6 +125,7 @@ class Concursos_Galeria {
 		<div class="concursos-reto concursos-disenado" style="<?php echo esc_attr( Concursos_Diseno::estilo( $s ) ); ?>">
 			<div class="concursos-reto__interior">
 				<?php echo self::cabecera( $status, $s, $imagen, '<h1>' . esc_html( get_the_title( $post ) ) . '</h1>', self::boton_inscripcion( $post->ID, $status ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+				<?php echo 'finalizado' === $status ? self::ficha( $post, $s ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
 				<div class="concursos-reto__descripcion">
 					<?php echo apply_filters( 'the_content', $post->post_content ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound,WordPress.Security.EscapeOutput.OutputNotEscaped -- filtro estándar de WordPress. ?>
 				</div>
@@ -310,5 +337,87 @@ class Concursos_Galeria {
 			}
 			echo '</ul></div>';
 		}
+
+		self::resumen( $reto_id, $ranking, $votos, $por_id );
+	}
+
+	/**
+	 * Tabla final con los votos de cada foto.
+	 *
+	 * @param int       $reto_id Reto.
+	 * @param array     $ranking Puestos y resto.
+	 * @param int[]     $votos   entrada => votos.
+	 * @param WP_Post[] $por_id  entrada => foto.
+	 */
+	private static function resumen( $reto_id, array $ranking, array $votos, array $por_id ) {
+		$total = array_sum( $votos );
+		if ( ! $total ) {
+			return;
+		}
+
+		$filas = array();
+		foreach ( $ranking['puestos'] as $puesto ) {
+			$empate = count( $puesto['entradas'] ) > 1;
+			foreach ( $puesto['entradas'] as $id ) {
+				$filas[] = array( $id, number_format_i18n( $puesto['lugar'] ) . ( $empate ? ' ' . __( '(tie)', 'concursos' ) : '' ) );
+			}
+		}
+		foreach ( $ranking['resto'] as $id ) {
+			$filas[] = array( $id, '—' );
+		}
+
+		$participantes = Concursos_Votos::votantes_de_reto( $reto_id );
+		?>
+		<section class="concursos-resumen">
+			<h2><?php esc_html_e( 'Vote summary', 'concursos' ); ?></h2>
+			<p class="concursos-sm">
+				<?php
+				/* translators: %d: number of voters. */
+				echo esc_html( sprintf( _n( '%d voter took part.', '%d voters took part.', $participantes, 'concursos' ), $participantes ) );
+				?>
+			</p>
+			<div class="concursos-tabla-marco">
+				<table class="concursos-tabla concursos-sm">
+					<thead>
+						<tr>
+							<th scope="col"><?php esc_html_e( 'Place', 'concursos' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Photo', 'concursos' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Participant', 'concursos' ); ?></th>
+							<th scope="col" class="concursos-tabla__num"><?php esc_html_e( 'Votes', 'concursos' ); ?></th>
+							<th scope="col" class="concursos-tabla__num">%</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						foreach ( $filas as $fila ) :
+							$foto  = $por_id[ $fila[0] ];
+							$autor = Concursos_Entrada::owner( $foto->ID );
+							$n     = $votos[ $fila[0] ];
+							?>
+							<tr>
+								<td><?php echo esc_html( $fila[1] ); ?></td>
+								<td>
+									<div class="concursos-tabla__foto">
+										<?php echo Concursos_Entrada::miniatura( $foto, 'thumbnail' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+										<span><?php echo esc_html( get_the_title( $foto ) ); ?></span>
+									</div>
+								</td>
+								<td><a href="<?php echo esc_url( Concursos_Perfil::url( $autor ) ); ?>"><?php echo esc_html( get_the_title( $autor ) ); ?></a></td>
+								<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( $n ) ); ?></td>
+								<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( $n / $total * 100, 1 ) ); ?></td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th scope="row" colspan="3"><?php esc_html_e( 'Total', 'concursos' ); ?></th>
+							<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( $total ) ); ?></td>
+							<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( 100, 1 ) ); ?></td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</section>
+		<?php
 	}
 }

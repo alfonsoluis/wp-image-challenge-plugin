@@ -160,7 +160,7 @@ class Concursos_Portada {
 
 		$extra = ( $texto ? '<p>' . esc_html( $texto ) . '</p>' : '' )
 			/* translators: %d: number of photos. */
-			. '<p class="concursos-destacado__datos">' . esc_html( sprintf( _n( '%d photo submitted', '%d photos submitted', $fotos, 'concursos' ), $fotos ) ) . '</p>'
+			. '<p class="concursos-destacado__datos concursos-xs">' . esc_html( sprintf( _n( '%d photo submitted', '%d photos submitted', $fotos, 'concursos' ), $fotos ) ) . '</p>'
 			. '<p><a class="concursos-boton" href="' . esc_url( $url ) . '">' . esc_html( $accion ) . '</a></p>';
 
 		printf(
