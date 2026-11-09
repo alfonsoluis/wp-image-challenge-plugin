@@ -66,7 +66,10 @@ class Concursos_Admin {
 		$labels = Concursos_Reto::status_labels();
 		$counts = array_fill_keys( array_keys( $labels ), 0 );
 		foreach ( $retos as $reto ) {
-			++$counts[ $reto['status'] ];
+			// Las fases solo cuentan en los retos que se ven en el sitio.
+			if ( 'publish' === $reto['post']->post_status ) {
+				++$counts[ $reto['status'] ];
+			}
 		}
 		$en_curso = $counts['envios'] + $counts['votacion'] + $counts['evaluacion'];
 		$new_url  = admin_url( 'post-new.php?post_type=' . Concursos_Post_Types::RETO );
@@ -104,7 +107,8 @@ class Concursos_Admin {
 					<thead>
 						<tr>
 							<th scope="col" class="column-primary"><?php esc_html_e( 'Challenge', 'concursos' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Status', 'concursos' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Publication', 'concursos' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Phase', 'concursos' ); ?></th>
 							<th scope="col"><?php esc_html_e( 'Submissions until', 'concursos' ); ?></th>
 							<th scope="col"><?php esc_html_e( 'Voting until', 'concursos' ); ?></th>
 							<th scope="col"><?php esc_html_e( 'Results', 'concursos' ); ?></th>
@@ -117,12 +121,18 @@ class Concursos_Admin {
 							<tr>
 								<td class="column-primary">
 									<strong><a href="<?php echo esc_url( get_edit_post_link( $reto['post']->ID ) ); ?>"><?php echo esc_html( get_the_title( $reto['post'] ) ); ?></a></strong>
-									<?php if ( 'publish' !== $reto['post']->post_status ) : ?>
-										— <span class="post-state"><?php echo esc_html( get_post_status_object( $reto['post']->post_status )->label ); ?></span>
-									<?php endif; ?>
 									<div class="row-actions"><a href="<?php echo esc_url( Concursos_Duplicar::url( $reto['post']->ID ) ); ?>"><?php esc_html_e( 'Duplicate', 'concursos' ); ?></a></div>
 								</td>
-								<td><?php self::status_badge( $reto['status'] ); ?></td>
+								<td><?php self::publicacion_badge( $reto['post']->post_status ); ?></td>
+								<td>
+									<?php
+									if ( 'publish' === $reto['post']->post_status ) {
+										self::status_badge( $reto['status'] );
+									} else {
+										echo '—';
+									}
+									?>
+								</td>
 								<td><?php echo esc_html( Concursos_Reto::format_date( $reto['settings']['fin_envios'] ) ); ?></td>
 								<td><?php echo esc_html( Concursos_Reto::format_date( $reto['settings']['fin_votacion'] ) ); ?></td>
 								<td><?php echo esc_html( Concursos_Reto::format_date( $reto['settings']['cierre'] ) ); ?></td>
@@ -155,7 +165,8 @@ class Concursos_Admin {
 		$date = $columns['date'] ?? null;
 		unset( $columns['date'] );
 
-		$columns['concursos_estado']     = __( 'Status', 'concursos' );
+		$columns['concursos_publicacion'] = __( 'Publication', 'concursos' );
+		$columns['concursos_estado']     = __( 'Phase', 'concursos' );
 		$columns['concursos_fin_envios'] = __( 'Submissions until', 'concursos' );
 		if ( $date ) {
 			$columns['date'] = $date;
@@ -174,13 +185,42 @@ class Concursos_Admin {
 		$s = Concursos_Reto::get_settings( $post_id );
 
 		switch ( $column ) {
+			case 'concursos_publicacion':
+				self::publicacion_badge( get_post_status( $post_id ) );
+				break;
 			case 'concursos_estado':
-				self::status_badge( Concursos_Reto::status( $s ) );
+				if ( 'publish' === get_post_status( $post_id ) ) {
+					self::status_badge( Concursos_Reto::status( $s ) );
+				} else {
+					echo '—';
+				}
 				break;
 			case 'concursos_fin_envios':
 				echo esc_html( Concursos_Reto::format_date( $s['fin_envios'] ) );
 				break;
 		}
+	}
+
+	/**
+	 * Etiqueta con el estado de publicación de un reto.
+	 *
+	 * @param string $status Estado del post.
+	 */
+	private static function publicacion_badge( $status ) {
+		$labels = array(
+			'publish'                       => __( 'Published', 'concursos' ),
+			'draft'                         => __( 'Draft', 'concursos' ),
+			'auto-draft'                    => __( 'Draft', 'concursos' ),
+			'future'                        => __( 'Scheduled', 'concursos' ),
+			'pending'                       => __( 'Pending', 'concursos' ),
+			'private'                       => __( 'Private', 'concursos' ),
+			Concursos_Post_Types::ARCHIVADO => __( 'Archived', 'concursos' ),
+		);
+		printf(
+			'<span class="concursos-badge concursos-badge--pub-%s">%s</span>',
+			esc_attr( $status ),
+			esc_html( $labels[ $status ] ?? $status )
+		);
 	}
 
 	/**

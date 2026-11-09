@@ -88,15 +88,16 @@ class Concursos_Post_Types {
 	}
 
 	/**
-	 * Marca los retos archivados en la lista.
+	 * Quita de la lista de retos los estados que ya muestra su columna.
 	 *
 	 * @param string[] $states Estados.
 	 * @param WP_Post  $post   Post.
 	 * @return string[]
 	 */
 	public static function estado_archivado( $states, $post ) {
-		if ( self::ARCHIVADO === $post->post_status ) {
-			$states['concursos_archivado'] = __( 'Archived', 'concursos' );
+		// La columna Publicación ya lo indica: no se repite junto al título.
+		if ( self::RETO === $post->post_type ) {
+			unset( $states['draft'], $states['pending'], $states['scheduled'] );
 		}
 
 		return $states;

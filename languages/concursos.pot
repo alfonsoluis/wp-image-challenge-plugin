@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Concursos 0.12.0\n"
+"Project-Id-Version: Concursos 0.12.1\n"
 "Report-Msgid-Bugs-To: https://github.com/alfonsoluis/wp-image-challenge-plugin/issues\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-09T00:11:19+00:00\n"
+"POT-Creation-Date: 2026-11-09T00:19:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: concursos\n"
@@ -35,7 +35,7 @@ msgid "Alfonso Rodriguez"
 msgstr ""
 
 #: includes/admin/class-concursos-admin.php:35
-#: includes/admin/class-concursos-admin.php:84
+#: includes/admin/class-concursos-admin.php:87
 msgid "Challenges dashboard"
 msgstr ""
 
@@ -43,7 +43,7 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:75
+#: includes/admin/class-concursos-admin.php:78
 #: includes/class-concursos-portada.php:41
 #: includes/class-concursos-portada.php:71
 #: includes/class-concursos-portada.php:99
@@ -52,43 +52,43 @@ msgstr ""
 msgid "Challenges"
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:76
+#: includes/admin/class-concursos-admin.php:79
 msgid "In progress"
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:77
+#: includes/admin/class-concursos-admin.php:80
 #: includes/class-concursos-reto.php:320
 msgid "Accepting photos"
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:78
+#: includes/admin/class-concursos-admin.php:81
 #: includes/class-concursos-reto.php:321
 msgid "Voting"
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:79
+#: includes/admin/class-concursos-admin.php:82
 msgid "Upcoming challenges"
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:80
+#: includes/admin/class-concursos-admin.php:83
 msgid "Finished challenges"
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:85
+#: includes/admin/class-concursos-admin.php:88
 #: includes/class-concursos-post-types.php:38
 #: includes/class-concursos-post-types.php:41
 msgid "New challenge"
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:99
+#: includes/admin/class-concursos-admin.php:102
 msgid "There are no challenges yet."
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:100
+#: includes/admin/class-concursos-admin.php:103
 msgid "Create the first challenge"
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:106
+#: includes/admin/class-concursos-admin.php:109
 #: includes/admin/class-concursos-entradas-admin.php:96
 #: includes/admin/class-concursos-participantes-admin.php:116
 #: includes/admin/class-concursos-participantes-admin.php:284
@@ -98,46 +98,75 @@ msgstr ""
 msgid "Challenge"
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:107
-#: includes/admin/class-concursos-admin.php:158
-#: includes/admin/class-concursos-participantes-admin.php:117
-#: includes/admin/class-concursos-participantes-admin.php:285
-#: includes/admin/class-concursos-votantes-admin.php:50
-msgid "Status"
+#: includes/admin/class-concursos-admin.php:110
+#: includes/admin/class-concursos-admin.php:168
+msgid "Publication"
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:108
-#: includes/admin/class-concursos-admin.php:159
+#: includes/admin/class-concursos-admin.php:111
+#: includes/admin/class-concursos-admin.php:169
+msgid "Phase"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:112
+#: includes/admin/class-concursos-admin.php:170
 msgid "Submissions until"
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:109
+#: includes/admin/class-concursos-admin.php:113
 msgid "Voting until"
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:110
+#: includes/admin/class-concursos-admin.php:114
 #: includes/class-concursos-galeria.php:282
 msgid "Results"
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:111
+#: includes/admin/class-concursos-admin.php:115
 msgid "Active / registered"
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:111
+#: includes/admin/class-concursos-admin.php:115
 #: includes/class-concursos-participante.php:112
 #: includes/class-concursos-participante.php:114
 #: includes/class-concursos-participante.php:115
 msgid "Participants"
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:112
+#: includes/admin/class-concursos-admin.php:116
 msgid "Photos"
 msgstr ""
 
-#: includes/admin/class-concursos-admin.php:123
+#: includes/admin/class-concursos-admin.php:124
 #: includes/admin/class-concursos-duplicar.php:56
 msgid "Duplicate"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:211
+msgid "Published"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:212
+#: includes/admin/class-concursos-admin.php:213
+msgid "Draft"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:214
+msgid "Scheduled"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:215
+#: includes/class-concursos-participante.php:145
+msgid "Pending"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:216
+msgid "Private"
+msgstr ""
+
+#: includes/admin/class-concursos-admin.php:217
+#: includes/class-concursos-post-types.php:78
+msgid "Archived"
 msgstr ""
 
 #: includes/admin/class-concursos-duplicar.php:66
@@ -252,6 +281,12 @@ msgstr ""
 #: includes/class-concursos-inscripcion.php:143
 #: includes/class-concursos-votantes.php:490
 msgid "Email"
+msgstr ""
+
+#: includes/admin/class-concursos-participantes-admin.php:117
+#: includes/admin/class-concursos-participantes-admin.php:285
+#: includes/admin/class-concursos-votantes-admin.php:50
+msgid "Status"
 msgstr ""
 
 #: includes/admin/class-concursos-participantes-admin.php:118
@@ -905,10 +940,6 @@ msgstr ""
 msgid "Use as profile photo"
 msgstr ""
 
-#: includes/class-concursos-participante.php:145
-msgid "Pending"
-msgstr ""
-
 #: includes/class-concursos-participante.php:146
 msgid "Active"
 msgstr ""
@@ -1019,11 +1050,6 @@ msgstr ""
 
 #: includes/class-concursos-post-types.php:50
 msgid "Use as background image"
-msgstr ""
-
-#: includes/class-concursos-post-types.php:78
-#: includes/class-concursos-post-types.php:99
-msgid "Archived"
 msgstr ""
 
 #. translators: %s: number of archived challenges.
