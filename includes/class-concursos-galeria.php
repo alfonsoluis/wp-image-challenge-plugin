@@ -209,7 +209,7 @@ class Concursos_Galeria {
 			/* translators: %s: date. */
 			'evaluacion' => array( __( 'Voting has ended. Results on %s.', 'concursos' ), 'cierre' ),
 			/* translators: %s: date. */
-			'finalizado' => array( __( 'Challenge finished on %s.', 'concursos' ), 'cierre' ),
+			'finalizado' => array( __( 'Finished on %s.', 'concursos' ), 'cierre' ),
 		);
 
 		return isset( $frases[ $status ] ) ? sprintf( $frases[ $status ][0], Concursos_Reto::format_date( $s[ $frases[ $status ][1] ] ) ) : '';

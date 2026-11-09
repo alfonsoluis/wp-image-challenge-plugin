@@ -4,7 +4,7 @@ Tags: contest, photo contest, voting, gallery, challenges
 Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.16.3
+Stable tag: 0.16.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,6 +34,9 @@ Concursos lets associations, schools and organizations run art challenges on the
 5. Add the Challenges page to your site menu: Appearance > Editor > Navigation in block themes, or Appearance > Menus in classic themes.
 
 == Changelog ==
+
+= 0.16.4 =
+* Challenge cards: phase labels over the image, and shorter finished text.
 
 = 0.16.3 =
 * Challenge cards: phase labels in extra-small capitals.

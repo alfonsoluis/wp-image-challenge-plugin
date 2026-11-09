@@ -260,6 +260,7 @@
 }
 
 .concursos-lista-retos li {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
@@ -291,23 +292,27 @@
 /*
  * Las etiquetas de las tarjetas indican la fase con colores del tema, no con
  * la paleta de cada reto, para que todas las de una misma fase sean iguales.
+ * Van sobre la foto, así que todas llevan fondo opaco.
  */
 .concursos-lista-retos .concursos-etiqueta {
-	margin-left: 16px;
-	text-transform: uppercase;
+	position: absolute;
+	top: 10px;
+	right: 10px;
 	background: var(--wp--preset--color--contrast, #1d2327);
 	color: var(--wp--preset--color--base, #fff);
+	text-transform: uppercase;
+	pointer-events: none;
 }
 
 .concursos-lista-retos .concursos-etiqueta--finalizado {
-	background: color-mix(in srgb, currentColor 10%, transparent);
-	color: inherit;
+	background: color-mix(in srgb, var(--wp--preset--color--contrast, #1d2327) 14%, var(--wp--preset--color--base, #fff));
+	color: var(--wp--preset--color--contrast, #1d2327);
 }
 
 .concursos-lista-retos .concursos-etiqueta--proximo {
-	background: transparent;
-	box-shadow: inset 0 0 0 1px currentColor;
-	color: inherit;
+	background: var(--wp--preset--color--base, #fff);
+	box-shadow: inset 0 0 0 1px var(--wp--preset--color--contrast, #1d2327);
+	color: var(--wp--preset--color--contrast, #1d2327);
 }
 
 .concursos-lista-retos small {
