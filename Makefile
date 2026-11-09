@@ -24,6 +24,7 @@ install: up ## Instala WordPress y activa el plugin (idempotente)
 		--admin_user="$(WP_ADMIN_USER)" --admin_password="$(WP_ADMIN_PASSWORD)" \
 		--admin_email="$(WP_ADMIN_EMAIL)" --skip-email
 	$(WP) language core install es_ES --activate || true
+	$(WP) option update date_format 'j \d\e F \d\e Y'
 	$(WP) rewrite structure '/%postname%/'
 	$(WP) plugin activate concursos
 	@$(WP) post list --post_type=page --name=inscripcion-retos --format=ids | grep -q . || \
