@@ -89,9 +89,9 @@
 	inset: 0 0 auto;
 	height: min(100%, 900px);
 	pointer-events: none;
-	background: linear-gradient(to bottom, color-mix(in srgb, var(--c-color) 30%, transparent), transparent);
-	-webkit-mask: url(../img/fondo-iconos.svg) top center / 680px 600px repeat;
-	mask: url(../img/fondo-iconos.svg) top center / 680px 600px repeat;
+	background: linear-gradient(to bottom, color-mix(in srgb, var(--c-color) 18%, transparent), transparent);
+	-webkit-mask: url(../img/fondo-iconos.svg) top center / 650px 690px repeat;
+	mask: url(../img/fondo-iconos.svg) top center / 650px 690px repeat;
 }
 
 .concursos-publico--portada > *,
