@@ -285,10 +285,28 @@
 .concursos-lista-retos strong {
 	display: block;
 	padding: 10px 16px 0;
+	line-height: 1.25;
 }
 
+/*
+ * Las etiquetas de las tarjetas indican la fase con colores del tema, no con
+ * la paleta de cada reto, para que todas las de una misma fase sean iguales.
+ */
 .concursos-lista-retos .concursos-etiqueta {
 	margin-left: 16px;
+	background: var(--wp--preset--color--contrast, #1d2327);
+	color: var(--wp--preset--color--base, #fff);
+}
+
+.concursos-lista-retos .concursos-etiqueta--finalizado {
+	background: color-mix(in srgb, currentColor 10%, transparent);
+	color: inherit;
+}
+
+.concursos-lista-retos .concursos-etiqueta--proximo {
+	background: transparent;
+	box-shadow: inset 0 0 0 1px currentColor;
+	color: inherit;
 }
 
 .concursos-lista-retos small {

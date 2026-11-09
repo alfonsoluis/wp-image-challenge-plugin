@@ -210,7 +210,7 @@ class Concursos_Portada {
 					<?php endif; ?>
 					<strong><?php echo esc_html( get_the_title( $reto['post'] ) ); ?></strong>
 				</a>
-				<span class="concursos-etiqueta"><?php echo esc_html( $labels[ $reto['status'] ] ); ?></span>
+				<span class="concursos-etiqueta concursos-etiqueta--<?php echo esc_attr( $reto['status'] ); ?>"><?php echo esc_html( $labels[ $reto['status'] ] ); ?></span>
 				<small><?php echo esc_html( Concursos_Galeria::frase_estado( $reto['status'], $reto['settings'] ) ); ?></small>
 			</li>
 			<?php
