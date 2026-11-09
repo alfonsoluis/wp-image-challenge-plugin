@@ -25,6 +25,62 @@ class Concursos_Entradas_Admin {
 		add_action( "manage_{$t}_posts_custom_column", array( __CLASS__, 'column' ), 10, 2 );
 		add_filter( "bulk_actions-edit-{$t}", array( __CLASS__, 'bulk_actions' ) );
 		add_filter( 'post_row_actions', array( __CLASS__, 'row_actions' ), 10, 2 );
+		add_filter( 'admin_body_class', array( __CLASS__, 'clase_vista' ) );
+		add_action( 'manage_posts_extra_tablenav', array( __CLASS__, 'selector_vista' ) );
+	}
+
+	const VISTA_META = 'concursos_vista_fotos';
+
+	/**
+	 * Vista elegida: tabla o rejilla. Se recuerda para el usuario.
+	 *
+	 * @return string tabla|rejilla
+	 */
+	public static function vista() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- solo cambia la presentación.
+		$pedida = isset( $_GET['vista'] ) ? sanitize_key( wp_unslash( $_GET['vista'] ) ) : '';
+		if ( in_array( $pedida, array( 'tabla', 'rejilla' ), true ) ) {
+			update_user_meta( get_current_user_id(), self::VISTA_META, $pedida );
+
+			return $pedida;
+		}
+
+		return 'rejilla' === get_user_meta( get_current_user_id(), self::VISTA_META, true ) ? 'rejilla' : 'tabla';
+	}
+
+	/**
+	 * Botones para cambiar entre tabla y rejilla, junto a los filtros.
+	 *
+	 * @param string $which Barra superior o inferior.
+	 */
+	public static function selector_vista( $which ) {
+		$screen = get_current_screen();
+		if ( 'top' !== $which || ! $screen || 'edit-' . self::TYPE !== $screen->id ) {
+			return;
+		}
+		$vista = self::vista();
+		$url   = remove_query_arg( 'vista' );
+		?>
+		<span class="concursos-vistas" role="group" aria-label="<?php esc_attr_e( 'View', 'concursos' ); ?>">
+			<a href="<?php echo esc_url( add_query_arg( 'vista', 'tabla', $url ) ); ?>" class="button<?php echo 'tabla' === $vista ? ' button-primary' : ''; ?>" aria-pressed="<?php echo 'tabla' === $vista ? 'true' : 'false'; ?>"><?php esc_html_e( 'Table', 'concursos' ); ?></a>
+			<a href="<?php echo esc_url( add_query_arg( 'vista', 'rejilla', $url ) ); ?>" class="button<?php echo 'rejilla' === $vista ? ' button-primary' : ''; ?>" aria-pressed="<?php echo 'rejilla' === $vista ? 'true' : 'false'; ?>"><?php esc_html_e( 'Grid', 'concursos' ); ?></a>
+		</span>
+		<?php
+	}
+
+	/**
+	 * Clase de la pantalla para la vista de rejilla.
+	 *
+	 * @param string $clases Clases.
+	 * @return string
+	 */
+	public static function clase_vista( $clases ) {
+		$screen = get_current_screen();
+		if ( $screen && 'edit-' . self::TYPE === $screen->id && 'rejilla' === self::vista() ) {
+			$clases .= ' concursos-vista-rejilla';
+		}
+
+		return $clases;
 	}
 
 	/**
@@ -110,7 +166,7 @@ class Concursos_Entradas_Admin {
 			case 'concursos_foto':
 				$full = wp_get_attachment_url( get_post_thumbnail_id( $id ) );
 				if ( $full ) {
-					printf( '<a href="%s" target="_blank" rel="noopener">%s</a>', esc_url( $full ), get_the_post_thumbnail( $id, array( 80, 80 ), array( 'class' => 'concursos-miniatura' ) ) );
+					printf( '<a href="%s" target="_blank" rel="noopener">%s</a>', esc_url( $full ), get_the_post_thumbnail( $id, 'rejilla' === self::vista() ? 'medium_large' : array( 80, 80 ), array( 'class' => 'concursos-miniatura' ) ) );
 				}
 				break;
 			case 'concursos_participante':
