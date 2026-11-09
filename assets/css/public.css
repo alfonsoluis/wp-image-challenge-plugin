@@ -13,6 +13,19 @@
 	--c-borde: color-mix(in srgb, currentColor 16%, transparent);
 	--c-acento: var(--c-color);
 	--c-sobre-acento: var(--c-sobre);
+
+	/* Tamaños menores que el texto del tema (md), relativos a él. */
+	--c-tam-sm: 0.875em;
+	--c-tam-xs: max(0.75em, 12px);
+}
+
+/* Tipografía pequeña: clases para aplicar a elementos concretos. */
+.concursos-disenado .concursos-sm {
+	font-size: var(--c-tam-sm);
+}
+
+.concursos-disenado .concursos-xs {
+	font-size: var(--c-tam-xs);
 }
 
 .concursos-disenado :is(a, button, input, select):focus-visible {
