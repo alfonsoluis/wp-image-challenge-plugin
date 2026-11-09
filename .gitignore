@@ -4,6 +4,6 @@
 node_modules/
 *.log
 
-# Instalación local de skills de Claude Code: no es parte del plugin.
+# Herramientas locales: no forman parte del plugin.
 /.agents/
 /skills-lock.json
