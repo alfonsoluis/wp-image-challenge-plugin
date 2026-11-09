@@ -67,7 +67,7 @@ class Concursos_Portada {
 	public static function route() {
 		$pagina = (int) get_option( self::OPCION_PAGINA );
 		if ( ( is_post_type_archive( Concursos_Post_Types::RETO ) || ( $pagina && is_page( $pagina ) ) ) && ! is_feed() ) {
-			Concursos_Plantilla::pagina( __( 'Challenges', 'photo-challenges' ), self::render() );
+			Concursos_Plantilla::pagina( __( 'Challenges', 'photo-challenges' ), self::render(), 'concursos-publico--portada' );
 		}
 	}
 

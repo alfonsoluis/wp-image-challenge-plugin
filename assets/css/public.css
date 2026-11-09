@@ -69,6 +69,36 @@
 	font-size: calc(var(--c-escala, 1) * 1em);
 }
 
+/* Fondo decorativo: mosaico de iconos cuyo trazo se funde hacia abajo con el
+   fondo de la página, sea cual sea, porque el degradado acaba en transparente. */
+
+.concursos-publico--portada {
+	max-width: none;
+	padding-inline: max(16px, calc((100% - 1100px) / 2 + 16px));
+}
+
+.concursos-publico--portada,
+.concursos-reto {
+	position: relative;
+}
+
+.concursos-publico--portada::before,
+.concursos-reto::before {
+	content: "";
+	position: absolute;
+	inset: 0 0 auto;
+	height: min(100%, 900px);
+	pointer-events: none;
+	background: linear-gradient(to bottom, color-mix(in srgb, var(--c-color) 30%, transparent), transparent);
+	-webkit-mask: url(../img/fondo-iconos.svg) top center / 680px 600px repeat;
+	mask: url(../img/fondo-iconos.svg) top center / 680px 600px repeat;
+}
+
+.concursos-publico--portada > *,
+.concursos-reto > * {
+	position: relative;
+}
+
 .concursos-reto__interior {
 	box-sizing: border-box;
 	max-width: 1100px;
