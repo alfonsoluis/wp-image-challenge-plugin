@@ -371,6 +371,16 @@ class Concursos_Reto {
 	}
 
 	/**
+	 * Formatea solo el día, para las páginas públicas.
+	 *
+	 * @param int $timestamp Fecha.
+	 * @return string
+	 */
+	public static function format_dia( $timestamp ) {
+		return $timestamp ? wp_date( get_option( 'date_format' ), (int) $timestamp ) : '—';
+	}
+
+	/**
 	 * Formatea una fecha para mostrarla.
 	 *
 	 * @param int $timestamp Fecha.

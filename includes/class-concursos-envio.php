@@ -186,10 +186,10 @@ class Concursos_Envio {
 			<?php
 			if ( $abierto ) {
 				/* translators: %s: submission end date. */
-				echo esc_html( sprintf( __( 'You can submit photos until %s.', 'concursos' ), Concursos_Reto::format_date( $reto['fin_envios'] ) ) );
+				echo esc_html( sprintf( __( 'You can submit photos until %s.', 'concursos' ), Concursos_Reto::format_dia( $reto['fin_envios'] ) ) );
 			} elseif ( 'proximo' === $status ) {
 				/* translators: %s: challenge start date. */
-				echo esc_html( sprintf( __( 'Photo submissions start on %s.', 'concursos' ), Concursos_Reto::format_date( $reto['inicio'] ) ) );
+				echo esc_html( sprintf( __( 'Photo submissions start on %s.', 'concursos' ), Concursos_Reto::format_dia( $reto['inicio'] ) ) );
 			} else {
 				esc_html_e( 'The submission period for this challenge is closed.', 'concursos' );
 			}

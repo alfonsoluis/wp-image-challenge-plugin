@@ -212,7 +212,7 @@ class Concursos_Galeria {
 			'finalizado' => array( __( 'Finished on %s.', 'concursos' ), 'cierre' ),
 		);
 
-		return isset( $frases[ $status ] ) ? sprintf( $frases[ $status ][0], Concursos_Reto::format_date( $s[ $frases[ $status ][1] ] ) ) : '';
+		return isset( $frases[ $status ] ) ? sprintf( $frases[ $status ][0], Concursos_Reto::format_dia( $s[ $frases[ $status ][1] ] ) ) : '';
 	}
 
 	/**
@@ -254,7 +254,7 @@ class Concursos_Galeria {
 							/* translators: 1: number of photos, 2: submission end date. */
 							_n( '%1$d photo has been submitted so far. All of them will be shown when submissions end, on %2$s.', '%1$d photos have been submitted so far. All of them will be shown when submissions end, on %2$s.', count( $entradas ), 'concursos' ),
 							count( $entradas ),
-							Concursos_Reto::format_date( $s['fin_envios'] )
+							Concursos_Reto::format_dia( $s['fin_envios'] )
 						)
 					)
 				);
