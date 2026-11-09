@@ -90,8 +90,8 @@
 	height: min(100%, 900px);
 	pointer-events: none;
 	background: linear-gradient(to bottom, color-mix(in srgb, var(--c-color) 18%, transparent), transparent);
-	-webkit-mask: url(../img/fondo-iconos.svg) top center / 575px 600px repeat;
-	mask: url(../img/fondo-iconos.svg) top center / 575px 600px repeat;
+	-webkit-mask: url(../img/fondo-iconos.svg) top center / 1380px 800px repeat;
+	mask: url(../img/fondo-iconos.svg) top center / 1380px 800px repeat;
 }
 
 .concursos-publico--portada > *,
