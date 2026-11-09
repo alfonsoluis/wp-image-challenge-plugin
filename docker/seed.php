@@ -182,7 +182,8 @@ function concursos_demo_participante( $reto, $n, $nombre, $red, $cuantas ) {
 	for ( $k = 0; $k < $cuantas; $k++ ) {
 		$titulo  = $titulos[ $cuenta % count( $titulos ) ];
 		$adjunto = concursos_demo_adjunto( concursos_demo_imagen( $cuenta + 7 ), $titulo );
-		$entrada = Concursos_Entrada::create( Concursos_Participante::get( $id ), $titulo, $adjunto );
+		$descripcion = 'Tomada a primera hora de la mañana, buscando el contraste entre la luz directa y las sombras largas. Sin más edición que un ajuste suave de exposición.';
+		$entrada     = Concursos_Entrada::create( Concursos_Participante::get( $id ), $titulo, $adjunto, $descripcion );
 		update_post_meta( $entrada, '_concursos_demo', '1' );
 		$fotos[] = $entrada;
 		++$cuenta;
