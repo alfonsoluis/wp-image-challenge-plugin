@@ -121,6 +121,8 @@ function concursos_demo_reto( $titulo, $contenido, array $f, array $extra ) {
 			'post_status'  => 'publish',
 			'post_title'   => $titulo,
 			'post_content' => $contenido,
+			'post_author'  => 1,
+			'tags_input'   => array( 'demostración', 'fotografía' ),
 		),
 		true
 	);
