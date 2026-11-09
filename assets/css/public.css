@@ -471,15 +471,55 @@
 
 /* Votación */
 
+/* Colores invertidos, como la cabecera del reto. */
 .concursos-panel-voto {
+	--c-boton: var(--c-acento);
+	--c-boton-texto: var(--c-sobre-acento);
 	margin: 2em 0;
-	padding: 1em 1.5em;
+	padding: 1.25em 1.5em;
 	border-radius: 8px;
-	background: var(--c-suave);
+	background: var(--c-cabecera, var(--c-suave));
+	color: var(--c-sobre-cabecera, inherit);
+}
+
+.concursos-panel-voto :focus-visible {
+	outline-color: var(--c-sobre-cabecera, currentColor);
 }
 
 .concursos-panel-voto h3 {
-	margin-top: 0;
+	margin: 0 0 0.25em;
+	color: inherit;
+}
+
+.concursos-panel-voto--registro {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+	align-items: center;
+	gap: 1em 2.5em;
+}
+
+.concursos-panel-voto__intro p {
+	margin: 0;
+}
+
+.concursos-panel-voto .concursos-form-publico p {
+	margin: 0;
+}
+
+.concursos-panel-voto__fila {
+	display: flex;
+	gap: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.concursos-panel-voto__fila input[type="email"] {
+	flex: 1 1 auto;
+	max-width: none;
+	min-width: 0;
+}
+
+.concursos-panel-voto__fila button {
+	flex: none;
 }
 
 .concursos-panel-voto__acciones {
@@ -759,8 +799,8 @@
 	padding: 0 1.4em;
 	border: 0;
 	border-radius: 4px;
-	background: var(--c-color);
-	color: var(--c-sobre);
+	background: var(--c-boton, var(--c-color));
+	color: var(--c-boton-texto, var(--c-sobre));
 	font: inherit;
 	font-weight: 600;
 	cursor: pointer;
@@ -837,6 +877,14 @@
 }
 
 @media (max-width: 720px) {
+	.concursos-panel-voto--registro {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.concursos-panel-voto__fila {
+		flex-direction: column;
+	}
+
 	.concursos-modal__reto {
 		text-align: left;
 	}

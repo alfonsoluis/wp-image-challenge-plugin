@@ -474,11 +474,14 @@ class Concursos_Votantes {
 		$votante = self::actual();
 
 		ob_start();
-		echo '<div class="concursos-panel-voto">';
+		echo '<div class="concursos-panel-voto' . ( $votante ? '' : ' concursos-panel-voto--registro' ) . '">';
 
 		if ( ! $votante ) {
 			?>
-			<h3><?php esc_html_e( 'Register your email to vote', 'concursos' ); ?></h3>
+			<div class="concursos-panel-voto__intro">
+				<h3><?php esc_html_e( 'Register your email to vote', 'concursos' ); ?></h3>
+				<p class="concursos-xs"><?php esc_html_e( 'We only use your email to confirm that you are a real person and, if you tick the box, to tell you about new challenges. You can unsubscribe at any time.', 'concursos' ); ?></p>
+			</div>
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="concursos-form-publico">
 				<input type="hidden" name="action" value="<?php echo esc_attr( self::REGISTRO ); ?>">
 				<input type="hidden" name="reto" value="<?php echo esc_attr( $reto_id ); ?>">
@@ -486,15 +489,14 @@ class Concursos_Votantes {
 				<p class="concursos-hp" aria-hidden="true">
 					<label><?php esc_html_e( 'Do not fill in this field', 'concursos' ); ?> <input type="text" name="web" tabindex="-1" autocomplete="off"></label>
 				</p>
-				<p>
-					<label for="concursos-votante-email"><?php esc_html_e( 'Email', 'concursos' ); ?></label>
+				<label for="concursos-votante-email"><?php esc_html_e( 'Email', 'concursos' ); ?></label>
+				<div class="concursos-panel-voto__fila">
 					<input type="email" id="concursos-votante-email" name="email" required autocomplete="email">
-				</p>
-				<p class="concursos-casilla">
+					<button type="submit"><?php esc_html_e( 'Send me the link', 'concursos' ); ?></button>
+				</div>
+				<p class="concursos-casilla concursos-sm">
 					<label><input type="checkbox" name="suscribir" value="1"> <?php esc_html_e( 'Email me when there is a new challenge', 'concursos' ); ?></label>
 				</p>
-				<p><button type="submit"><?php esc_html_e( 'Send me the link', 'concursos' ); ?></button></p>
-				<p><small><?php esc_html_e( 'We only use your email to confirm that you are a real person and, if you tick the box, to tell you about new challenges. You can unsubscribe at any time.', 'concursos' ); ?></small></p>
 			</form>
 			<?php
 		} else {
