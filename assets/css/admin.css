@@ -264,3 +264,11 @@
 	color: #50575e;
 	font-size: 13px;
 }
+
+.concursos-filtros label {
+	margin: 0 6px;
+}
+
+.concursos-filtros input[type="date"] {
+	vertical-align: baseline;
+}

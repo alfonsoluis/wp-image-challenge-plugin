@@ -26,5 +26,18 @@
 		}
 	} );
 
+
+	var votantes = document.getElementById( 'concursos-votantes-form' );
+	if ( votantes ) {
+		votantes.addEventListener( 'submit', function ( event ) {
+			var boton = event.submitter;
+			var campo = boton && boton.id === 'doaction2' ? 'action2' : 'action';
+			var accion = votantes.querySelector( 'select[name="' + campo + '"]' );
+			if ( boton && /^doaction2?$/.test( boton.id ) && accion && accion.value === 'concursos_eliminar' && ! window.confirm( votantes.dataset.confirmar ) ) {
+				event.preventDefault();
+			}
+		} );
+	}
+
 	update();
 } )();

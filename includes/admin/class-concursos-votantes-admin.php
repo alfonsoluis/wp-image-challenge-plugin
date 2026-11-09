@@ -45,9 +45,11 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 	 */
 	public function get_columns() {
 		return array(
+			'cb'     => '<input type="checkbox">',
 			'creado' => __( 'Registration date', 'concursos' ),
 			'email'  => __( 'Email', 'concursos' ),
 			'estado' => __( 'Status', 'concursos' ),
+			'avisos' => __( 'Notifications', 'concursos' ),
 			'votos'  => __( 'Votes', 'concursos' ),
 			'retos'  => __( 'Challenges voted in', 'concursos' ),
 		);
@@ -88,12 +90,27 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 		);
 		$orden    = isset( $columnas[ $pedido ] ) ? $columnas[ $pedido ] : 't.creado';
 
-		$where = '1=1';
-		$args  = array();
+		$condiciones = array( '1=1' );
+		$args        = array();
 		if ( '' !== $busqueda ) {
-			$where  = 't.email LIKE %s';
-			$args[] = '%' . $wpdb->esc_like( $busqueda ) . '%';
+			$condiciones[] = 't.email LIKE %s';
+			$args[]        = '%' . $wpdb->esc_like( $busqueda ) . '%';
 		}
+		if ( self::filtro_reto() ) {
+			$condiciones[] = "EXISTS (SELECT 1 FROM {$votos} x WHERE x.votante_id = t.id AND x.reto_id = %d)";
+			$args[]        = self::filtro_reto();
+		}
+		$desde = self::filtro_fecha( 'desde', '00:00:00' );
+		$hasta = self::filtro_fecha( 'hasta', '23:59:59' );
+		if ( $desde ) {
+			$condiciones[] = 't.creado >= %d';
+			$args[]        = $desde;
+		}
+		if ( $hasta ) {
+			$condiciones[] = 't.creado <= %d';
+			$args[]        = $hasta;
+		}
+		$where = implode( ' AND ', $condiciones );
 
 		// phpcs:disable WordPress.DB.PreparedSQL -- nombres de tabla y orden salen de valores fijos; los datos van preparados.
 		$sql_total = "SELECT COUNT(*) FROM {$votantes} t WHERE {$where}";
@@ -102,7 +119,7 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 		$pagina = $this->get_pagenum();
 		$items  = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT t.id, t.email, t.estado, t.creado, COUNT(v.id) AS votos FROM {$votantes} t LEFT JOIN {$votos} v ON v.votante_id = t.id WHERE {$where} GROUP BY t.id ORDER BY {$orden} {$sentido}, t.id DESC LIMIT %d OFFSET %d",
+				"SELECT t.id, t.email, t.estado, t.suscrito, t.creado, COUNT(v.id) AS votos FROM {$votantes} t LEFT JOIN {$votos} v ON v.votante_id = t.id WHERE {$where} GROUP BY t.id ORDER BY {$orden} {$sentido}, t.id DESC LIMIT %d OFFSET %d",
 				array_merge( $args, array( self::POR_PAGINA, ( $pagina - 1 ) * self::POR_PAGINA ) )
 			)
 		);
@@ -124,6 +141,91 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 				'per_page'    => self::POR_PAGINA,
 			)
 		);
+	}
+
+	/**
+	 * Reto elegido en el filtro.
+	 *
+	 * @return int
+	 */
+	private static function filtro_reto() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- filtro de solo lectura.
+		return isset( $_REQUEST['concursos_reto'] ) ? absint( $_REQUEST['concursos_reto'] ) : 0;
+	}
+
+	/**
+	 * Valor escrito en un campo de fecha.
+	 *
+	 * @param string $campo desde|hasta.
+	 * @return string Fecha AAAA-MM-DD o vacío.
+	 */
+	private static function fecha_escrita( $campo ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- filtro de solo lectura.
+		$valor = isset( $_REQUEST[ $campo ] ) ? sanitize_text_field( wp_unslash( $_REQUEST[ $campo ] ) ) : '';
+
+		return preg_match( '/^\d{4}-\d{2}-\d{2}$/', $valor ) ? $valor : '';
+	}
+
+	/**
+	 * Marca de tiempo de un campo de fecha, en la zona horaria del sitio.
+	 *
+	 * @param string $campo desde|hasta.
+	 * @param string $hora  Hora del día.
+	 * @return int 0 si no hay fecha válida.
+	 */
+	private static function filtro_fecha( $campo, $hora ) {
+		$fecha = self::fecha_escrita( $campo );
+		$dia   = $fecha ? DateTimeImmutable::createFromFormat( 'Y-m-d H:i:s', $fecha . ' ' . $hora, wp_timezone() ) : false;
+
+		return $dia ? $dia->getTimestamp() : 0;
+	}
+
+	/**
+	 * Filtros sobre la tabla.
+	 *
+	 * @param string $which Barra superior o inferior.
+	 */
+	protected function extra_tablenav( $which ) {
+		if ( 'top' !== $which ) {
+			return;
+		}
+		$reto = self::filtro_reto();
+		?>
+		<div class="alignleft actions concursos-filtros">
+			<label class="screen-reader-text" for="concursos-filtro-reto"><?php esc_html_e( 'Filter by challenge', 'concursos' ); ?></label>
+			<select name="concursos_reto" id="concursos-filtro-reto">
+				<option value=""><?php esc_html_e( 'All challenges', 'concursos' ); ?></option>
+				<?php foreach ( Concursos_Reto::all() as $r ) : ?>
+					<option value="<?php echo esc_attr( $r['post']->ID ); ?>" <?php selected( $reto, $r['post']->ID ); ?>><?php echo esc_html( get_the_title( $r['post'] ) ); ?></option>
+				<?php endforeach; ?>
+			</select>
+			<label><?php esc_html_e( 'From', 'concursos' ); ?> <input type="date" name="desde" value="<?php echo esc_attr( self::fecha_escrita( 'desde' ) ); ?>"></label>
+			<label><?php esc_html_e( 'To', 'concursos' ); ?> <input type="date" name="hasta" value="<?php echo esc_attr( self::fecha_escrita( 'hasta' ) ); ?>"></label>
+			<?php submit_button( __( 'Filter', 'concursos' ), '', 'filter_action', false ); ?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Acciones en bloque.
+	 *
+	 * @return array
+	 */
+	protected function get_bulk_actions() {
+		return array(
+			'concursos_baja'     => __( 'Unsubscribe from notifications', 'concursos' ),
+			'concursos_eliminar' => __( 'Delete', 'concursos' ),
+		);
+	}
+
+	/**
+	 * Casilla de cada fila.
+	 *
+	 * @param object $item Votante.
+	 * @return string
+	 */
+	protected function column_cb( $item ) {
+		return sprintf( '<input type="checkbox" name="votante[]" value="%d">', (int) $item->id );
 	}
 
 	/**
@@ -154,6 +256,8 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 					esc_attr( $item->estado ),
 					$confirmado ? esc_html__( 'Confirmed', 'concursos' ) : esc_html__( 'Unconfirmed', 'concursos' )
 				);
+			case 'avisos':
+				return $item->suscrito ? esc_html__( 'Yes', 'concursos' ) : esc_html__( 'No', 'concursos' );
 			case 'votos':
 				return esc_html( number_format_i18n( (int) $item->votos ) );
 			case 'retos':
@@ -213,7 +317,7 @@ class Concursos_Votantes_Admin {
 	 * Añade la página al menú "Retos".
 	 */
 	public static function menu() {
-		add_submenu_page(
+		$hook = add_submenu_page(
 			'edit.php?post_type=' . Concursos_Post_Types::RETO,
 			__( 'Voters', 'concursos' ),
 			__( 'Voters', 'concursos' ),
@@ -221,6 +325,84 @@ class Concursos_Votantes_Admin {
 			self::PAGE,
 			array( __CLASS__, 'render' )
 		);
+		add_action( 'load-' . $hook, array( __CLASS__, 'procesar' ) );
+		add_filter( 'removable_query_args', array( __CLASS__, 'removable_args' ) );
+	}
+
+	/**
+	 * Quita de la URL los parámetros del aviso.
+	 *
+	 * @param string[] $args Parámetros.
+	 * @return string[]
+	 */
+	public static function removable_args( $args ) {
+		$args[] = 'concursos_hecho';
+		$args[] = 'concursos_n';
+
+		return $args;
+	}
+
+	/**
+	 * Ejecuta una acción en bloque antes de pintar la página.
+	 */
+	public static function procesar() {
+		$tabla  = new Concursos_Votantes_Tabla();
+		$accion = $tabla->current_action();
+		if ( ! in_array( $accion, array( 'concursos_baja', 'concursos_eliminar' ), true ) ) {
+			return;
+		}
+
+		check_admin_referer( 'bulk-votantes' );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die( esc_html__( 'You cannot do this.', 'concursos' ) );
+		}
+
+		global $wpdb;
+		$ids = isset( $_REQUEST['votante'] ) ? array_filter( array_map( 'absint', (array) wp_unslash( $_REQUEST['votante'] ) ) ) : array();
+		$n   = count( $ids );
+		if ( $ids ) {
+			$lista = implode( ',', $ids );
+			// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- nombres de tabla fijos e IDs enteros.
+			if ( 'concursos_eliminar' === $accion ) {
+				$wpdb->query( 'DELETE FROM ' . Concursos_DB::votos() . " WHERE votante_id IN ({$lista})" );
+				$wpdb->query( 'DELETE FROM ' . Concursos_DB::votantes() . " WHERE id IN ({$lista})" );
+			} else {
+				$wpdb->query( 'UPDATE ' . Concursos_DB::votantes() . " SET suscrito = 0 WHERE id IN ({$lista})" );
+			}
+			// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		}
+
+		$url = remove_query_arg( array( 'action', 'action2', 'votante', '_wpnonce', '_wp_http_referer', 'filter_action' ) );
+		wp_safe_redirect(
+			add_query_arg(
+				array(
+					'concursos_hecho' => 'concursos_eliminar' === $accion ? 'eliminados' : 'bajas',
+					'concursos_n'     => $n,
+				),
+				$url
+			)
+		);
+		exit;
+	}
+
+	/**
+	 * Aviso tras una acción en bloque.
+	 */
+	private static function aviso() {
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- solo muestra un aviso.
+		$hecho = isset( $_GET['concursos_hecho'] ) ? sanitize_key( wp_unslash( $_GET['concursos_hecho'] ) ) : '';
+		$n     = isset( $_GET['concursos_n'] ) ? absint( $_GET['concursos_n'] ) : 0;
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
+		if ( 'eliminados' === $hecho ) {
+			/* translators: %d: number of voters. */
+			$texto = sprintf( _n( '%d voter and their votes deleted.', '%d voters and their votes deleted.', $n, 'concursos' ), $n );
+		} elseif ( 'bajas' === $hecho ) {
+			/* translators: %d: number of voters. */
+			$texto = sprintf( _n( '%d voter will no longer receive notifications.', '%d voters will no longer receive notifications.', $n, 'concursos' ), $n );
+		} else {
+			return;
+		}
+		printf( '<div class="notice notice-success is-dismissible"><p>%s</p></div>', esc_html( $texto ) );
 	}
 
 	/**
@@ -232,7 +414,8 @@ class Concursos_Votantes_Admin {
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Voters', 'concursos' ); ?></h1>
-			<form method="get">
+			<?php self::aviso(); ?>
+			<form method="get" id="concursos-votantes-form" data-confirmar="<?php esc_attr_e( 'Delete the selected voters and all their votes? Results may change and this cannot be undone.', 'concursos' ); ?>">
 				<input type="hidden" name="post_type" value="<?php echo esc_attr( Concursos_Post_Types::RETO ); ?>">
 				<input type="hidden" name="page" value="<?php echo esc_attr( self::PAGE ); ?>">
 				<?php
