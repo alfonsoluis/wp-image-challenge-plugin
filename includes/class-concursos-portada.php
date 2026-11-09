@@ -117,6 +117,7 @@ class Concursos_Portada {
 			echo '<h2>' . esc_html__( 'Past challenges', 'concursos' ) . '</h2>';
 			self::lista( $pasados );
 		}
+		echo Concursos_Clasificacion::html( (int) wp_date( 'Y' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
 
 		return ob_get_clean();
 	}

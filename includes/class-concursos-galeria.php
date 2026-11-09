@@ -339,6 +339,7 @@ class Concursos_Galeria {
 		}
 
 		self::resumen( $reto_id, $ranking, $votos, $por_id );
+		echo Concursos_Clasificacion::html( (int) wp_date( 'Y', (int) $s['cierre'] ), (int) $s['cierre'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
 	}
 
 	/**

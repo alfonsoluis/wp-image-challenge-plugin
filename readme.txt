@@ -4,7 +4,7 @@ Tags: contest, photo contest, voting, gallery, challenges
 Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.15.0
+Stable tag: 0.16.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,7 +20,7 @@ Concursos lets associations, schools and organizations run art challenges on the
 * Public registration with the `[concursos_inscripcion]` shortcode, including profile photo and social networks.
 * Bulk approval of participants; each approved participant receives a personal link by email to submit photos.
 * Email-confirmed voters, 1 to 3 votes per challenge, and optional notifications about new challenges.
-* Public challenges page, challenge pages with results, and participant profiles.
+* Public challenges page, challenge pages with results, participant profiles and an annual general ranking.
 * Per-challenge design: theme colors or 10 color palettes, and 3 text sizes. Typography always comes from your theme.
 * Private challenges: restrict participants and voters to a list of email addresses.
 * Available in English and Spanish.
@@ -34,6 +34,9 @@ Concursos lets associations, schools and organizations run art challenges on the
 5. Add the Challenges page to your site menu: Appearance > Editor > Navigation in block themes, or Appearance > Menus in classic themes.
 
 == Changelog ==
+
+= 0.16.0 =
+* Annual general ranking: one point per vote received, shown on the challenges page and on each finished challenge.
 
 = 0.15.0 =
 * Finished challenges show their author, end date and tags, and a table summarizing the votes for each photo.
