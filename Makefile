@@ -9,7 +9,7 @@ export
 
 WP = docker compose run --rm wpcli
 
-.PHONY: up down install wp logs debug-log reset demo
+.PHONY: up down install wp logs debug-log reset demo zip
 
 up: ## Levanta WordPress, MariaDB y phpMyAdmin
 	docker compose up -d
@@ -45,6 +45,9 @@ debug-log: ## Sigue wp-content/debug.log
 
 demo: ## Reto de prueba abierto con participantes y fotos (FASE=envios|votacion|finalizado)
 	docker compose run --rm -q -e CONCURSOS_FASE=$(or $(FASE),envios) wpcli eval-file /var/www/html/wp-content/plugins/photo-challenges/docker/seed.php
+
+zip: ## Genera photo-challenges.zip con lo último confirmado en git
+	git archive --format=zip --prefix=photo-challenges/ -o photo-challenges.zip HEAD
 
 reset: ## Borra TODO (contenedores y volúmenes de datos)
 	docker compose down -v

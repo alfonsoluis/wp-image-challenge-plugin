@@ -1,4 +1,4 @@
-<h1 align="center">🏆 Concursos</h1>
+<h1 align="center">🏆 Photo Challenges</h1>
 
 <p align="center">
   <strong>Retos fotográficos y concursos de arte para tu sitio WordPress.</strong><br>
