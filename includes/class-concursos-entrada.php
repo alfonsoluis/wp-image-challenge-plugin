@@ -15,6 +15,9 @@ class Concursos_Entrada {
 	const POST_TYPE = 'concurso_entrada';
 	const META      = '_concursos_';
 
+	/** Longitud máxima de la descripción de una foto. */
+	const DESCRIPCION_MAX = 500;
+
 	/**
 	 * Engancha los hooks.
 	 */
@@ -46,7 +49,7 @@ class Concursos_Entrada {
 				'show_in_menu'        => 'edit.php?post_type=' . Concursos_Post_Types::RETO,
 				'show_in_rest'        => false,
 				'exclude_from_search' => true,
-				'supports'            => array( 'title', 'thumbnail' ),
+				'supports'            => array( 'title', 'thumbnail', 'excerpt' ),
 				// Las fotos llegan desde el enlace personal de cada participante.
 				'capabilities'        => array( 'create_posts' => 'do_not_allow' ),
 				'map_meta_cap'        => true,
@@ -60,9 +63,10 @@ class Concursos_Entrada {
 	 * @param array  $participante  Datos del participante (Concursos_Participante::get()).
 	 * @param string $titulo        Título opcional.
 	 * @param int    $attachment_id Foto.
+	 * @param string $descripcion   Descripción opcional.
 	 * @return int|WP_Error
 	 */
-	public static function create( array $participante, $titulo, $attachment_id ) {
+	public static function create( array $participante, $titulo, $attachment_id, $descripcion = '' ) {
 		if ( '' === $titulo ) {
 			/* translators: %s: participant name. */
 			$titulo = sprintf( __( 'Photo by %s', 'concursos' ), $participante['nombre'] );
@@ -73,6 +77,7 @@ class Concursos_Entrada {
 				'post_type'   => self::POST_TYPE,
 				'post_status' => 'publish',
 				'post_title'  => $titulo,
+				'post_excerpt' => $descripcion,
 			),
 			true
 		);
@@ -161,7 +166,7 @@ class Concursos_Entrada {
 		$avatar  = get_the_post_thumbnail_url( $autor, 'thumbnail' );
 
 		return sprintf(
-			'<button type="button" class="concursos-foto" aria-haspopup="dialog" aria-label="%1$s" data-grande="%2$s" data-titulo="%3$s" data-autor="%4$s" data-autor-url="%5$s" data-avatar="%6$s" data-reto="%7$s" data-reto-url="%8$s">%9$s</button>',
+			'<button type="button" class="concursos-foto" aria-haspopup="dialog" aria-label="%1$s" data-grande="%2$s" data-titulo="%3$s" data-autor="%4$s" data-autor-url="%5$s" data-avatar="%6$s" data-reto="%7$s" data-reto-url="%8$s" data-descripcion="%10$s">%9$s</button>',
 			/* translators: %s: photo title. */
 			esc_attr( sprintf( __( 'View larger photo: %s', 'concursos' ), $titulo ) ),
 			esc_url( wp_get_attachment_image_url( get_post_thumbnail_id( $foto ), 'full' ) ),
@@ -171,7 +176,8 @@ class Concursos_Entrada {
 			esc_url( (string) $avatar ),
 			esc_attr( get_the_title( $reto_id ) ),
 			esc_url( get_permalink( $reto_id ) ),
-			get_the_post_thumbnail( $foto, $tamano, array( 'loading' => 'lazy' ) )
+			get_the_post_thumbnail( $foto, $tamano, array( 'loading' => 'lazy' ) ),
+			esc_attr( $foto->post_excerpt )
 		);
 	}
 

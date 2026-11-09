@@ -402,6 +402,34 @@
 	background: #111;
 }
 
+/* Se ajusta a la foto, para que la descripción quede sobre la imagen. */
+.concursos-modal__foto {
+	position: relative;
+	display: flex;
+	max-width: 100%;
+	min-height: 0;
+}
+
+/*
+ * El tramo del texto nunca baja de 60 % de negro: el blanco cumple AA incluso
+ * sobre una foto blanca. Solo los últimos 56 px se funden con la imagen.
+ */
+.concursos-modal__descripcion {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	box-sizing: border-box;
+	max-height: 70%;
+	margin: 0;
+	padding: 56px 20px 16px;
+	overflow-y: auto;
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.6) calc(100% - 56px), rgba(0, 0, 0, 0));
+	color: #fff;
+	line-height: 1.4;
+	white-space: pre-line;
+}
+
 .concursos-modal__marco img {
 	display: block;
 	max-width: 100%;
@@ -777,7 +805,8 @@
 
 .concursos-form-publico input[type="text"],
 .concursos-form-publico input[type="email"],
-.concursos-form-publico select {
+.concursos-form-publico select,
+.concursos-form-publico textarea {
 	box-sizing: border-box;
 	width: 100%;
 	max-width: 32em;

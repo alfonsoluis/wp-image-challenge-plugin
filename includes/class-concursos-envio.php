@@ -136,7 +136,8 @@ class Concursos_Envio {
 		}
 
 		$titulo  = isset( $_POST['titulo'] ) ? sanitize_text_field( wp_unslash( $_POST['titulo'] ) ) : '';
-		$entrada = Concursos_Entrada::create( $p, mb_substr( $titulo, 0, 100 ), $attachment_id );
+		$descripcion = isset( $_POST['descripcion'] ) ? sanitize_textarea_field( wp_unslash( $_POST['descripcion'] ) ) : '';
+		$entrada     = Concursos_Entrada::create( $p, mb_substr( $titulo, 0, 100 ), $attachment_id, mb_substr( $descripcion, 0, Concursos_Entrada::DESCRIPCION_MAX ) );
 		if ( is_wp_error( $entrada ) ) {
 			wp_delete_attachment( $attachment_id, true );
 
@@ -236,6 +237,10 @@ class Concursos_Envio {
 				<p>
 					<label for="concursos-titulo"><?php esc_html_e( 'Title (optional)', 'concursos' ); ?></label>
 					<input type="text" id="concursos-titulo" name="titulo" maxlength="100">
+				</p>
+				<p>
+					<label for="concursos-descripcion"><?php esc_html_e( 'Description (optional)', 'concursos' ); ?></label>
+					<textarea id="concursos-descripcion" name="descripcion" rows="3" maxlength="<?php echo esc_attr( Concursos_Entrada::DESCRIPCION_MAX ); ?>"></textarea>
 				</p>
 				<p><button type="submit"><?php esc_html_e( 'Submit photo', 'concursos' ); ?></button></p>
 			</form>

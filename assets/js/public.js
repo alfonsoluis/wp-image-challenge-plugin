@@ -3,20 +3,21 @@
 	'use strict';
 
 	var textos = window.concursosModal || {};
-	var modal, imagen, avatar, titulo, autor, reto;
+	var modal, imagen, descripcion, avatar, titulo, autor, reto;
 
 	function crear() {
 		modal = document.createElement( 'dialog' );
 		modal.className = 'concursos-modal';
 		modal.innerHTML =
 			'<button type="button" class="concursos-modal__cerrar">&times;</button>' +
-			'<div class="concursos-modal__marco"><img alt=""></div>' +
+			'<div class="concursos-modal__marco"><div class="concursos-modal__foto"><img alt=""><p class="concursos-modal__descripcion concursos-sm" hidden></p></div></div>' +
 			'<div class="concursos-modal__pie">' +
 				'<div class="concursos-modal__autor"><img alt=""><div><strong></strong><a></a></div></div>' +
 				'<div class="concursos-modal__reto"><small></small><a></a></div>' +
 			'</div>';
 
 		imagen = modal.querySelector( '.concursos-modal__marco img' );
+		descripcion = modal.querySelector( '.concursos-modal__descripcion' );
 		avatar = modal.querySelector( '.concursos-modal__autor img' );
 		titulo = modal.querySelector( '.concursos-modal__autor strong' );
 		autor = modal.querySelector( '.concursos-modal__autor a' );
@@ -49,6 +50,8 @@
 
 		imagen.src = datos.grande;
 		imagen.alt = datos.titulo;
+		descripcion.textContent = datos.descripcion || '';
+		descripcion.hidden = ! datos.descripcion;
 		titulo.textContent = datos.titulo;
 		autor.textContent = datos.autor;
 		autor.href = datos.autorUrl;
