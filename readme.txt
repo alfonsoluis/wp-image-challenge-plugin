@@ -1,5 +1,5 @@
 === Photo Challenges ===
-Contributors: alfonsoluis
+Contributors: foncholuis
 Tags: contest, photo contest, voting, gallery, challenges
 Requires at least: 7.1
 Tested up to: 7.1
