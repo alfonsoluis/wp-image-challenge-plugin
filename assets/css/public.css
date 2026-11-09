@@ -294,6 +294,7 @@
  */
 .concursos-lista-retos .concursos-etiqueta {
 	margin-left: 16px;
+	text-transform: uppercase;
 	background: var(--wp--preset--color--contrast, #1d2327);
 	color: var(--wp--preset--color--base, #fff);
 }
