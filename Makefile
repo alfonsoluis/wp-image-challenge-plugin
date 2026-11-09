@@ -26,11 +26,11 @@ install: up ## Instala WordPress y activa el plugin (idempotente)
 	$(WP) language core install es_ES --activate || true
 	$(WP) option update date_format 'j \d\e F \d\e Y'
 	$(WP) rewrite structure '/%postname%/'
-	$(WP) plugin activate concursos
+	$(WP) plugin activate photo-challenges
 	@$(WP) post list --post_type=page --name=inscripcion-retos --format=ids | grep -q . || \
 		$(WP) post create --post_type=page --post_status=publish --post_title="Inscripción a retos" \
 		--post_name=inscripcion-retos --post_content='[concursos_inscripcion]'
-	@$(WP) eval-file /var/www/html/wp-content/plugins/concursos/docker/menu.php
+	@$(WP) eval-file /var/www/html/wp-content/plugins/photo-challenges/docker/menu.php
 	@echo "Listo: $(WP_URL)/wp-admin  ($(WP_ADMIN_USER) / $(WP_ADMIN_PASSWORD))"
 	@echo "Emails de prueba: http://localhost:$(MAILPIT_PORT)"
 
@@ -44,7 +44,7 @@ debug-log: ## Sigue wp-content/debug.log
 	docker compose exec wordpress sh -c 'touch wp-content/debug.log && tail -f wp-content/debug.log'
 
 demo: ## Reto de prueba abierto con participantes y fotos (FASE=envios|votacion|finalizado)
-	docker compose run --rm -q -e CONCURSOS_FASE=$(or $(FASE),envios) wpcli eval-file /var/www/html/wp-content/plugins/concursos/docker/seed.php
+	docker compose run --rm -q -e CONCURSOS_FASE=$(or $(FASE),envios) wpcli eval-file /var/www/html/wp-content/plugins/photo-challenges/docker/seed.php
 
 reset: ## Borra TODO (contenedores y volúmenes de datos)
 	docker compose down -v

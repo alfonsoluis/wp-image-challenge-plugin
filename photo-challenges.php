@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Concursos
+ * Plugin Name:       Photo Challenges
  * Plugin URI:        https://github.com/alfonsoluis/wp-image-challenge-plugin
  * Description:       Photo, drawing, design and other art challenges with participants, submissions, voting and results.
  * Version:           0.18.0
@@ -9,10 +9,10 @@
  * Author:            Alfonso Rodriguez
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       concursos
+ * Text Domain:       photo-challenges
  * Domain Path:       /languages
  *
- * @package Concursos
+ * @package PhotoChallenges
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -44,9 +44,9 @@ add_action(
 	function () {
 		// Cualquier variante del español (es_MX, es_CO...) usa la traducción incluida.
 		if ( preg_match( '/^es(_|$)/', determine_locale() ) ) {
-			load_textdomain( 'concursos', CONCURSOS_PATH . 'languages/concursos-es_ES.mo' );
+			load_textdomain( 'photo-challenges', CONCURSOS_PATH . 'languages/photo-challenges-es_ES.mo' );
 		} else {
-			load_plugin_textdomain( 'concursos', false, dirname( plugin_basename( CONCURSOS_FILE ) ) . '/languages' );
+			load_plugin_textdomain( 'photo-challenges', false, dirname( plugin_basename( CONCURSOS_FILE ) ) . '/languages' );
 		}
 	},
 	0

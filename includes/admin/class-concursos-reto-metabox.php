@@ -39,10 +39,10 @@ class Concursos_Reto_Metabox {
 		echo '<div class="misc-pub-section">';
 		if ( Concursos_Post_Types::ARCHIVADO === $post->post_status ) {
 			echo '<input type="hidden" name="concursos_archivar" value="1">';
-			echo '<strong>' . esc_html__( 'Archived:', 'concursos' ) . '</strong> ' . esc_html__( 'this challenge is hidden from the site. Publish it to show it.', 'concursos' );
+			echo '<strong>' . esc_html__( 'Archived:', 'photo-challenges' ) . '</strong> ' . esc_html__( 'this challenge is hidden from the site. Publish it to show it.', 'photo-challenges' );
 		} else {
-			echo '<button type="submit" class="button-link" name="concursos_archivar" value="1">' . esc_html__( 'Archive this challenge', 'concursos' ) . '</button>';
-			echo '<p class="description">' . esc_html__( 'Archived challenges are hidden from the site and send no notifications.', 'concursos' ) . '</p>';
+			echo '<button type="submit" class="button-link" name="concursos_archivar" value="1">' . esc_html__( 'Archive this challenge', 'photo-challenges' ) . '</button>';
+			echo '<p class="description">' . esc_html__( 'Archived challenges are hidden from the site and send no notifications.', 'photo-challenges' ) . '</p>';
 		}
 		echo '</div>';
 	}
@@ -70,10 +70,10 @@ class Concursos_Reto_Metabox {
 	 * Registra las cajas.
 	 */
 	public static function add() {
-		add_meta_box( 'concursos-calendario', __( 'Schedule', 'concursos' ), array( __CLASS__, 'render_calendar' ), null, 'normal', 'high' );
-		add_meta_box( 'concursos-reglas', __( 'Rules', 'concursos' ), array( __CLASS__, 'render_rules' ), null, 'normal', 'high' );
-		add_meta_box( 'concursos-votacion', __( 'Participation, voting and prizes', 'concursos' ), array( __CLASS__, 'render_voting' ), null, 'normal', 'high' );
-		add_meta_box( 'concursos-diseno', __( 'Design', 'concursos' ), array( __CLASS__, 'render_design' ), null, 'normal', 'high' );
+		add_meta_box( 'concursos-calendario', __( 'Schedule', 'photo-challenges' ), array( __CLASS__, 'render_calendar' ), null, 'normal', 'high' );
+		add_meta_box( 'concursos-reglas', __( 'Rules', 'photo-challenges' ), array( __CLASS__, 'render_rules' ), null, 'normal', 'high' );
+		add_meta_box( 'concursos-votacion', __( 'Participation, voting and prizes', 'photo-challenges' ), array( __CLASS__, 'render_voting' ), null, 'normal', 'high' );
+		add_meta_box( 'concursos-diseno', __( 'Design', 'photo-challenges' ), array( __CLASS__, 'render_design' ), null, 'normal', 'high' );
 	}
 
 	/**
@@ -83,7 +83,7 @@ class Concursos_Reto_Metabox {
 	 */
 	public static function description_heading( $post ) {
 		if ( Concursos_Post_Types::RETO === $post->post_type ) {
-			echo '<h2 class="concursos-section-title">' . esc_html__( 'General description', 'concursos' ) . '</h2>';
+			echo '<h2 class="concursos-section-title">' . esc_html__( 'General description', 'photo-challenges' ) . '</h2>';
 		}
 	}
 
@@ -109,7 +109,7 @@ class Concursos_Reto_Metabox {
 			<?php endforeach; ?>
 		</table>
 		<p class="description">
-			<?php esc_html_e( 'Submissions: from the start until the end of submissions. Voting: from the end of submissions until the end of voting. Votes are reviewed between the end of voting and the publication of results.', 'concursos' ); ?>
+			<?php esc_html_e( 'Submissions: from the start until the end of submissions. Voting: from the end of submissions until the end of voting. Votes are reviewed between the end of voting and the publication of results.', 'photo-challenges' ); ?>
 		</p>
 		<?php
 	}
@@ -122,7 +122,7 @@ class Concursos_Reto_Metabox {
 	public static function render_rules( $post ) {
 		$s = Concursos_Reto::get_settings( $post->ID );
 		?>
-		<p><label for="concursos-reglas"><?php esc_html_e( 'One rule per line.', 'concursos' ); ?></label></p>
+		<p><label for="concursos-reglas"><?php esc_html_e( 'One rule per line.', 'photo-challenges' ); ?></label></p>
 		<textarea id="concursos-reglas" name="concursos[reglas]" rows="6" class="large-text"><?php echo esc_textarea( $s['reglas'] ); ?></textarea>
 		<?php
 	}
@@ -138,7 +138,7 @@ class Concursos_Reto_Metabox {
 		?>
 		<table class="form-table concursos-form">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Photo visibility', 'concursos' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Photo visibility', 'photo-challenges' ); ?></th>
 				<td>
 					<?php foreach ( $choices['modo'] as $value => $label ) : ?>
 						<label class="concursos-radio concursos-radio--block">
@@ -150,8 +150,8 @@ class Concursos_Reto_Metabox {
 			</tr>
 			<?php
 			$accesos = array(
-				'participantes' => array( __( 'Who can participate', 'concursos' ), __( 'Private: only the emails on this list can register', 'concursos' ) ),
-				'votantes'      => array( __( 'Who can vote', 'concursos' ), __( 'Private: only the emails on this list can vote', 'concursos' ) ),
+				'participantes' => array( __( 'Who can participate', 'photo-challenges' ), __( 'Private: only the emails on this list can register', 'photo-challenges' ) ),
+				'votantes'      => array( __( 'Who can vote', 'photo-challenges' ), __( 'Private: only the emails on this list can vote', 'photo-challenges' ) ),
 			);
 			foreach ( $accesos as $grupo => $textos ) :
 				// En un reto nuevo la participación es privada por defecto; votar, no.
@@ -166,24 +166,24 @@ class Concursos_Reto_Metabox {
 						</label>
 						<div class="concursos-if-privado-<?php echo esc_attr( $grupo ); ?>">
 							<textarea name="concursos[emails_<?php echo esc_attr( $grupo ); ?>]" rows="3" class="large-text" aria-label="<?php echo esc_attr( $textos[0] ); ?>"><?php echo esc_textarea( $s[ 'emails_' . $grupo ] ); ?></textarea>
-							<p class="description"><?php esc_html_e( 'Email addresses separated by commas.', 'concursos' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Email addresses separated by commas.', 'photo-challenges' ); ?></p>
 						</div>
 					</td>
 				</tr>
 			<?php endforeach; ?>
 			<tr>
-				<th scope="row"><label for="concursos-max-fotos"><?php esc_html_e( 'Photos per participant', 'concursos' ); ?></label></th>
+				<th scope="row"><label for="concursos-max-fotos"><?php esc_html_e( 'Photos per participant', 'photo-challenges' ); ?></label></th>
 				<td><input type="number" id="concursos-max-fotos" name="concursos[max_fotos]" min="1" max="20" value="<?php echo esc_attr( $s['max_fotos'] ); ?>" class="small-text"></td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="concursos-votos"><?php esc_html_e( 'Votes per voter', 'concursos' ); ?></label></th>
+				<th scope="row"><label for="concursos-votos"><?php esc_html_e( 'Votes per voter', 'photo-challenges' ); ?></label></th>
 				<td>
 					<select id="concursos-votos" name="concursos[votos_por_votante]">
 						<?php for ( $i = 1; $i <= 3; $i++ ) : ?>
 							<option value="<?php echo esc_attr( $i ); ?>" <?php selected( (int) $s['votos_por_votante'], $i ); ?>>
 								<?php
 								/* translators: %d: number of photos a voter can choose. */
-								echo esc_html( sprintf( _n( '%d photo only', 'Up to %d photos', $i, 'concursos' ), $i ) );
+								echo esc_html( sprintf( _n( '%d photo only', 'Up to %d photos', $i, 'photo-challenges' ), $i ) );
 								?>
 							</option>
 						<?php endfor; ?>
@@ -191,7 +191,7 @@ class Concursos_Reto_Metabox {
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Winners', 'concursos' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Winners', 'photo-challenges' ); ?></th>
 				<td>
 					<?php foreach ( $choices['lugares'] as $value => $label ) : ?>
 						<label class="concursos-radio">
@@ -203,16 +203,16 @@ class Concursos_Reto_Metabox {
 			</tr>
 			<?php
 			$places = array(
-				__( '1st place prize', 'concursos' ),
-				__( '2nd place prize', 'concursos' ),
-				__( '3rd place prize', 'concursos' ),
+				__( '1st place prize', 'photo-challenges' ),
+				__( '2nd place prize', 'photo-challenges' ),
+				__( '3rd place prize', 'photo-challenges' ),
 			);
 			foreach ( $places as $i => $label ) :
 				?>
 				<tr class="<?php echo $i > 0 ? 'concursos-if-tres-lugares' : ''; ?>">
 					<th scope="row"><label for="concursos-premio-<?php echo esc_attr( $i ); ?>"><?php echo esc_html( $label ); ?></label></th>
 					<td>
-						<input type="text" id="concursos-premio-<?php echo esc_attr( $i ); ?>" name="concursos[premios][<?php echo esc_attr( $i ); ?>]" value="<?php echo esc_attr( $s['premios'][ $i ] ); ?>" class="regular-text" placeholder="<?php esc_attr_e( 'Optional', 'concursos' ); ?>">
+						<input type="text" id="concursos-premio-<?php echo esc_attr( $i ); ?>" name="concursos[premios][<?php echo esc_attr( $i ); ?>]" value="<?php echo esc_attr( $s['premios'][ $i ] ); ?>" class="regular-text" placeholder="<?php esc_attr_e( 'Optional', 'photo-challenges' ); ?>">
 					</td>
 				</tr>
 			<?php endforeach; ?>
@@ -230,11 +230,11 @@ class Concursos_Reto_Metabox {
 		?>
 		<table class="form-table concursos-form">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Colors', 'concursos' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Colors', 'photo-challenges' ); ?></th>
 				<td class="concursos-opciones">
 					<label class="concursos-opcion">
 						<input type="radio" name="concursos[paleta]" value="<?php echo esc_attr( Concursos_Diseno::TEMA ); ?>" <?php checked( $s['paleta'], Concursos_Diseno::TEMA ); ?>>
-						<span><?php esc_html_e( 'Theme colors', 'concursos' ); ?></span>
+						<span><?php esc_html_e( 'Theme colors', 'photo-challenges' ); ?></span>
 					</label>
 					<?php foreach ( Concursos_Diseno::paletas() as $clave => $p ) : ?>
 						<label class="concursos-opcion">
@@ -250,7 +250,7 @@ class Concursos_Reto_Metabox {
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Text size', 'concursos' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Text size', 'photo-challenges' ); ?></th>
 				<td>
 					<?php foreach ( Concursos_Diseno::tamanos() as $clave => $t ) : ?>
 						<label class="concursos-radio">
@@ -291,7 +291,7 @@ class Concursos_Reto_Metabox {
 			$invalidos = Concursos_Reto::emails_invalidos( isset( $raw[ 'emails_' . $grupo ] ) ? (string) $raw[ 'emails_' . $grupo ] : '' );
 			if ( $invalidos ) {
 				/* translators: %s: list of invalid email addresses. */
-				$errors[] = sprintf( __( 'These addresses are not valid and were ignored: %s', 'concursos' ), implode( ', ', $invalidos ) );
+				$errors[] = sprintf( __( 'These addresses are not valid and were ignored: %s', 'photo-challenges' ), implode( ', ', $invalidos ) );
 			}
 		}
 		if ( $errors && 'auto-draft' !== $post->post_status ) {
@@ -311,7 +311,7 @@ class Concursos_Reto_Metabox {
 		delete_transient( $key );
 		?>
 		<div class="notice notice-warning is-dismissible">
-			<p><strong><?php esc_html_e( 'The challenge was saved, but check its settings:', 'concursos' ); ?></strong></p>
+			<p><strong><?php esc_html_e( 'The challenge was saved, but check its settings:', 'photo-challenges' ); ?></strong></p>
 			<ul class="ul-disc">
 				<?php foreach ( (array) $errors as $error ) : ?>
 					<li><?php echo esc_html( $error ); ?></li>

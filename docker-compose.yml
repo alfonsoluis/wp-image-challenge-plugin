@@ -14,7 +14,7 @@ x-wp-env: &wp-env
 
 x-wp-volumes: &wp-volumes
   - wordpress:/var/www/html
-  - .:/var/www/html/wp-content/plugins/concursos
+  - .:/var/www/html/wp-content/plugins/photo-challenges
   - ./docker/mu-plugins:/var/www/html/wp-content/mu-plugins
 
 services:
@@ -45,7 +45,7 @@ services:
     environment: *wp-env
     volumes:
       - wordpress:/var/www/html
-      - .:/var/www/html/wp-content/plugins/concursos
+      - .:/var/www/html/wp-content/plugins/photo-challenges
       - ./docker/mu-plugins:/var/www/html/wp-content/mu-plugins
       - ./docker/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
 

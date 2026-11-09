@@ -68,14 +68,14 @@ class Concursos_Galeria {
 		$autor = get_the_author_meta( 'display_name', $post->post_author );
 		if ( $autor ) {
 			/* translators: %s: name of the user who created the challenge. */
-			$datos[] = sprintf( __( 'By %s', 'concursos' ), $autor );
+			$datos[] = sprintf( __( 'By %s', 'photo-challenges' ), $autor );
 		}
 		$datos[] = wp_date( get_option( 'date_format' ), (int) $s['cierre'] );
 
 		$etiquetas = wp_get_post_terms( $post->ID, 'post_tag', array( 'fields' => 'names' ) );
 		if ( $etiquetas && ! is_wp_error( $etiquetas ) ) {
 			/* translators: %s: list of tags. */
-			$datos[] = sprintf( __( 'Tags: %s', 'concursos' ), implode( ', ', $etiquetas ) );
+			$datos[] = sprintf( __( 'Tags: %s', 'photo-challenges' ), implode( ', ', $etiquetas ) );
 		}
 
 		return '<p class="concursos-ficha concursos-sm">' . esc_html( implode( ' · ', $datos ) ) . '</p>';
@@ -126,9 +126,9 @@ class Concursos_Galeria {
 			);
 		};
 
-		return '<nav class="concursos-navegacion" aria-label="' . esc_attr__( 'Challenge navigation', 'concursos' ) . '">'
-			. ( $anterior ? $enlace( $anterior, 'anterior', 'prev', __( 'Previous challenge', 'concursos' ) ) : '' )
-			. ( $siguiente ? $enlace( $siguiente, 'siguiente', 'next', __( 'Next challenge', 'concursos' ) ) : '' )
+		return '<nav class="concursos-navegacion" aria-label="' . esc_attr__( 'Challenge navigation', 'photo-challenges' ) . '">'
+			. ( $anterior ? $enlace( $anterior, 'anterior', 'prev', __( 'Previous challenge', 'photo-challenges' ) ) : '' )
+			. ( $siguiente ? $enlace( $siguiente, 'siguiente', 'next', __( 'Next challenge', 'photo-challenges' ) ) : '' )
 			. '</nav>';
 	}
 
@@ -142,7 +142,7 @@ class Concursos_Galeria {
 	private static function boton_inscripcion( $reto_id, $status ) {
 		$url = in_array( $status, array( 'proximo', 'envios' ), true ) ? Concursos_Inscripcion::url( $reto_id ) : '';
 
-		return $url ? '<p><a class="concursos-boton" href="' . esc_url( $url ) . '">' . esc_html__( 'Join this challenge', 'concursos' ) . '</a></p>' : '';
+		return $url ? '<p><a class="concursos-boton" href="' . esc_url( $url ) . '">' . esc_html__( 'Join this challenge', 'photo-challenges' ) . '</a></p>' : '';
 	}
 
 	/**
@@ -184,7 +184,7 @@ class Concursos_Galeria {
 					<div class="concursos-reto__info">
 						<?php if ( $reglas ) : ?>
 							<section>
-								<h2><?php esc_html_e( 'Rules', 'concursos' ); ?></h2>
+								<h2><?php esc_html_e( 'Rules', 'photo-challenges' ); ?></h2>
 								<ul>
 									<?php foreach ( $reglas as $regla ) : ?>
 										<li><?php echo esc_html( $regla ); ?></li>
@@ -194,7 +194,7 @@ class Concursos_Galeria {
 						<?php endif; ?>
 						<?php if ( $premios ) : ?>
 							<section>
-								<h2><?php esc_html_e( 'Prizes', 'concursos' ); ?></h2>
+								<h2><?php esc_html_e( 'Prizes', 'photo-challenges' ); ?></h2>
 								<ul>
 									<?php foreach ( $premios as $lugar => $premio ) : ?>
 										<li><strong><?php echo esc_html( Concursos_Votos::nombre_lugar( $lugar, false ) ); ?>:</strong> <?php echo esc_html( $premio ); ?></li>
@@ -253,15 +253,15 @@ class Concursos_Galeria {
 	public static function frase_estado( $status, array $s ) {
 		$frases = array(
 			/* translators: %s: date. */
-			'proximo'    => array( __( 'Starts on %s.', 'concursos' ), 'inicio' ),
+			'proximo'    => array( __( 'Starts on %s.', 'photo-challenges' ), 'inicio' ),
 			/* translators: %s: date. */
-			'envios'     => array( __( 'Accepting photos until %s.', 'concursos' ), 'fin_envios' ),
+			'envios'     => array( __( 'Accepting photos until %s.', 'photo-challenges' ), 'fin_envios' ),
 			/* translators: %s: date. */
-			'votacion'   => array( __( 'Voting until %s.', 'concursos' ), 'fin_votacion' ),
+			'votacion'   => array( __( 'Voting until %s.', 'photo-challenges' ), 'fin_votacion' ),
 			/* translators: %s: date. */
-			'evaluacion' => array( __( 'Voting has ended. Results on %s.', 'concursos' ), 'cierre' ),
+			'evaluacion' => array( __( 'Voting has ended. Results on %s.', 'photo-challenges' ), 'cierre' ),
 			/* translators: %s: date. */
-			'finalizado' => array( __( 'Finished on %s.', 'concursos' ), 'cierre' ),
+			'finalizado' => array( __( 'Finished on %s.', 'photo-challenges' ), 'cierre' ),
 		);
 
 		return isset( $frases[ $status ] ) ? sprintf( $frases[ $status ][0], Concursos_Reto::format_dia( $s[ $frases[ $status ][1] ] ) ) : '';
@@ -295,7 +295,7 @@ class Concursos_Galeria {
 	 * @param WP_Post[] $entradas Fotos.
 	 */
 	private static function fotos( $reto_id, array $s, $status, array $entradas ) {
-		echo '<h2>' . esc_html__( 'Submitted entries', 'concursos' ) . '</h2>';
+		echo '<h2>' . esc_html__( 'Submitted entries', 'photo-challenges' ) . '</h2>';
 
 		if ( ! Concursos_Reto::photos_visible( $s ) ) {
 			if ( 'envios' === $status ) {
@@ -304,21 +304,21 @@ class Concursos_Galeria {
 					esc_html(
 						sprintf(
 							/* translators: 1: number of photos, 2: submission end date. */
-							_n( '%1$d photo has been submitted so far. All of them will be shown when submissions end, on %2$s.', '%1$d photos have been submitted so far. All of them will be shown when submissions end, on %2$s.', count( $entradas ), 'concursos' ),
+							_n( '%1$d photo has been submitted so far. All of them will be shown when submissions end, on %2$s.', '%1$d photos have been submitted so far. All of them will be shown when submissions end, on %2$s.', count( $entradas ), 'photo-challenges' ),
 							count( $entradas ),
 							Concursos_Reto::format_dia( $s['fin_envios'] )
 						)
 					)
 				);
 			} else {
-				echo '<p>' . esc_html__( 'Photos will be shown when the challenge starts.', 'concursos' ) . '</p>';
+				echo '<p>' . esc_html__( 'Photos will be shown when the challenge starts.', 'photo-challenges' ) . '</p>';
 			}
 
 			return;
 		}
 
 		if ( ! $entradas ) {
-			echo '<p>' . esc_html__( 'There are no photos yet.', 'concursos' ) . '</p>';
+			echo '<p>' . esc_html__( 'There are no photos yet.', 'photo-challenges' ) . '</p>';
 
 			return;
 		}
@@ -355,13 +355,13 @@ class Concursos_Galeria {
 
 		$etiqueta_votos = function ( $n ) {
 			/* translators: %d: number of votes. */
-			return '<span class="concursos-votos">' . esc_html( sprintf( _n( '%d vote', '%d votes', $n, 'concursos' ), $n ) ) . '</span>';
+			return '<span class="concursos-votos">' . esc_html( sprintf( _n( '%d vote', '%d votes', $n, 'photo-challenges' ), $n ) ) . '</span>';
 		};
 
-		echo '<h2>' . esc_html__( 'Results', 'concursos' ) . '</h2>';
+		echo '<h2>' . esc_html__( 'Results', 'photo-challenges' ) . '</h2>';
 
 		if ( ! $ranking['puestos'] ) {
-			echo '<p>' . esc_html__( 'This challenge ended without votes.', 'concursos' ) . '</p>';
+			echo '<p>' . esc_html__( 'This challenge ended without votes.', 'photo-challenges' ) . '</p>';
 		}
 
 		foreach ( $ranking['puestos'] as $puesto ) {
@@ -372,7 +372,7 @@ class Concursos_Galeria {
 			echo '<h3>' . esc_html( Concursos_Votos::nombre_lugar( $lugar, count( $puesto['entradas'] ) > 1 ) ) . '</h3>';
 			if ( '' !== $premio ) {
 				/* translators: %s: prize. */
-				echo '<p class="concursos-premio">' . esc_html( sprintf( __( 'Prize: %s', 'concursos' ), $premio ) ) . '</p>';
+				echo '<p class="concursos-premio">' . esc_html( sprintf( __( 'Prize: %s', 'photo-challenges' ), $premio ) ) . '</p>';
 			}
 			echo '<ul class="concursos-galeria__rejilla">';
 			foreach ( $puesto['entradas'] as $id ) {
@@ -382,7 +382,7 @@ class Concursos_Galeria {
 		}
 
 		if ( $ranking['resto'] ) {
-			echo '<div class="concursos-resto"><h3>' . esc_html__( 'Other participants', 'concursos' ) . '</h3>';
+			echo '<div class="concursos-resto"><h3>' . esc_html__( 'Other participants', 'photo-challenges' ) . '</h3>';
 			echo '<ul class="concursos-galeria__rejilla">';
 			foreach ( $ranking['resto'] as $id ) {
 				echo self::tarjeta( $por_id[ $id ], $etiqueta_votos( $votos[ $id ] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
@@ -412,7 +412,7 @@ class Concursos_Galeria {
 		foreach ( $ranking['puestos'] as $puesto ) {
 			$empate = count( $puesto['entradas'] ) > 1;
 			foreach ( $puesto['entradas'] as $id ) {
-				$filas[] = array( $id, number_format_i18n( $puesto['lugar'] ) . ( $empate ? ' ' . __( '(tie)', 'concursos' ) : '' ) );
+				$filas[] = array( $id, number_format_i18n( $puesto['lugar'] ) . ( $empate ? ' ' . __( '(tie)', 'photo-challenges' ) : '' ) );
 			}
 		}
 		foreach ( $ranking['resto'] as $id ) {
@@ -422,21 +422,21 @@ class Concursos_Galeria {
 		$participantes = Concursos_Votos::votantes_de_reto( $reto_id );
 		?>
 		<section class="concursos-resumen">
-			<h2><?php esc_html_e( 'Vote summary', 'concursos' ); ?></h2>
+			<h2><?php esc_html_e( 'Vote summary', 'photo-challenges' ); ?></h2>
 			<p class="concursos-sm">
 				<?php
 				/* translators: %d: number of voters. */
-				echo esc_html( sprintf( _n( '%d voter took part.', '%d voters took part.', $participantes, 'concursos' ), $participantes ) );
+				echo esc_html( sprintf( _n( '%d voter took part.', '%d voters took part.', $participantes, 'photo-challenges' ), $participantes ) );
 				?>
 			</p>
 			<div class="concursos-tabla-marco">
 				<table class="concursos-tabla concursos-sm">
 					<thead>
 						<tr>
-							<th scope="col"><?php esc_html_e( 'Place', 'concursos' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Photo', 'concursos' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Participant', 'concursos' ); ?></th>
-							<th scope="col" class="concursos-tabla__num"><?php esc_html_e( 'Votes', 'concursos' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Place', 'photo-challenges' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Photo', 'photo-challenges' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Participant', 'photo-challenges' ); ?></th>
+							<th scope="col" class="concursos-tabla__num"><?php esc_html_e( 'Votes', 'photo-challenges' ); ?></th>
 							<th scope="col" class="concursos-tabla__num">%</th>
 						</tr>
 					</thead>
@@ -463,7 +463,7 @@ class Concursos_Galeria {
 					</tbody>
 					<tfoot>
 						<tr>
-							<th scope="row" colspan="3"><?php esc_html_e( 'Total', 'concursos' ); ?></th>
+							<th scope="row" colspan="3"><?php esc_html_e( 'Total', 'photo-challenges' ); ?></th>
 							<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( $total ) ); ?></td>
 							<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( 100, 1 ) ); ?></td>
 						</tr>

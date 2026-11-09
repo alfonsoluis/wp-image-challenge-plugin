@@ -82,12 +82,12 @@ class Concursos_Reto {
 	public static function choices() {
 		return array(
 			'modo'       => array(
-				'abierto' => __( 'Open: photos are shown as they are submitted', 'concursos' ),
-				'cerrado' => __( 'Closed: photos are shown when submissions end', 'concursos' ),
+				'abierto' => __( 'Open: photos are shown as they are submitted', 'photo-challenges' ),
+				'cerrado' => __( 'Closed: photos are shown when submissions end', 'photo-challenges' ),
 			),
 			'lugares'    => array(
-				1 => __( 'A single winner', 'concursos' ),
-				3 => __( 'Three places', 'concursos' ),
+				1 => __( 'A single winner', 'photo-challenges' ),
+				3 => __( 'Three places', 'photo-challenges' ),
 			),
 		);
 	}
@@ -177,14 +177,14 @@ class Concursos_Reto {
 		foreach ( self::FECHAS as $key ) {
 			if ( ! $s[ $key ] ) {
 				/* translators: %s: date name. */
-				$errors[] = sprintf( __( 'Missing date: %s.', 'concursos' ), $labels[ $key ] );
+				$errors[] = sprintf( __( 'Missing date: %s.', 'photo-challenges' ), $labels[ $key ] );
 			}
 		}
 		if ( ! empty( $s['privado_participantes'] ) && '' === $s['emails_participantes'] ) {
-			$errors[] = __( 'Participation is private but the list of emails is empty: nobody will be able to register.', 'concursos' );
+			$errors[] = __( 'Participation is private but the list of emails is empty: nobody will be able to register.', 'photo-challenges' );
 		}
 		if ( ! empty( $s['privado_votantes'] ) && '' === $s['emails_votantes'] ) {
-			$errors[] = __( 'Voting is private but the list of emails is empty: nobody will be able to vote.', 'concursos' );
+			$errors[] = __( 'Voting is private but the list of emails is empty: nobody will be able to vote.', 'photo-challenges' );
 		}
 		if ( $errors ) {
 			return $errors;
@@ -195,7 +195,7 @@ class Concursos_Reto {
 			$curr = self::FECHAS[ $i ];
 			if ( $s[ $curr ] < $s[ $prev ] ) {
 				/* translators: 1: later date, 2: earlier date. */
-				$errors[] = sprintf( __( '“%1$s” cannot be before “%2$s”.', 'concursos' ), $labels[ $curr ], $labels[ $prev ] );
+				$errors[] = sprintf( __( '“%1$s” cannot be before “%2$s”.', 'photo-challenges' ), $labels[ $curr ], $labels[ $prev ] );
 			}
 		}
 
@@ -257,7 +257,7 @@ class Concursos_Reto {
 	 * @return string
 	 */
 	public static function mensaje_privado() {
-		return __( 'This challenge is private. Contact the organizers for more information.', 'concursos' );
+		return __( 'This challenge is private. Contact the organizers for more information.', 'photo-challenges' );
 	}
 
 	/**
@@ -315,12 +315,12 @@ class Concursos_Reto {
 	 */
 	public static function status_labels() {
 		return array(
-			'sin_fechas' => __( 'No dates', 'concursos' ),
-			'proximo'    => __( 'Upcoming', 'concursos' ),
-			'envios'     => __( 'Accepting photos', 'concursos' ),
-			'votacion'   => __( 'Voting', 'concursos' ),
-			'evaluacion' => __( 'Under review', 'concursos' ),
-			'finalizado' => __( 'Finished', 'concursos' ),
+			'sin_fechas' => __( 'No dates', 'photo-challenges' ),
+			'proximo'    => __( 'Upcoming', 'photo-challenges' ),
+			'envios'     => __( 'Accepting photos', 'photo-challenges' ),
+			'votacion'   => __( 'Voting', 'photo-challenges' ),
+			'evaluacion' => __( 'Under review', 'photo-challenges' ),
+			'finalizado' => __( 'Finished', 'photo-challenges' ),
 		);
 	}
 
@@ -331,10 +331,10 @@ class Concursos_Reto {
 	 */
 	public static function date_labels() {
 		return array(
-			'inicio'       => __( 'Challenge start', 'concursos' ),
-			'fin_envios'   => __( 'End of submissions', 'concursos' ),
-			'fin_votacion' => __( 'End of voting', 'concursos' ),
-			'cierre'       => __( 'Publication of results', 'concursos' ),
+			'inicio'       => __( 'Challenge start', 'photo-challenges' ),
+			'fin_envios'   => __( 'End of submissions', 'photo-challenges' ),
+			'fin_votacion' => __( 'End of voting', 'photo-challenges' ),
+			'cierre'       => __( 'Publication of results', 'photo-challenges' ),
 		);
 	}
 

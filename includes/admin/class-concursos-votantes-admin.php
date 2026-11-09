@@ -46,12 +46,12 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 	public function get_columns() {
 		return array(
 			'cb'     => '<input type="checkbox">',
-			'creado' => __( 'Registration date', 'concursos' ),
-			'email'  => __( 'Email', 'concursos' ),
-			'estado' => __( 'Status', 'concursos' ),
-			'avisos' => __( 'Notifications', 'concursos' ),
-			'votos'  => __( 'Votes', 'concursos' ),
-			'retos'  => __( 'Challenges voted in', 'concursos' ),
+			'creado' => __( 'Registration date', 'photo-challenges' ),
+			'email'  => __( 'Email', 'photo-challenges' ),
+			'estado' => __( 'Status', 'photo-challenges' ),
+			'avisos' => __( 'Notifications', 'photo-challenges' ),
+			'votos'  => __( 'Votes', 'photo-challenges' ),
+			'retos'  => __( 'Challenges voted in', 'photo-challenges' ),
 		);
 	}
 
@@ -192,16 +192,16 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 		$reto = self::filtro_reto();
 		?>
 		<div class="alignleft actions concursos-filtros">
-			<label class="screen-reader-text" for="concursos-filtro-reto"><?php esc_html_e( 'Filter by challenge', 'concursos' ); ?></label>
+			<label class="screen-reader-text" for="concursos-filtro-reto"><?php esc_html_e( 'Filter by challenge', 'photo-challenges' ); ?></label>
 			<select name="concursos_reto" id="concursos-filtro-reto">
-				<option value=""><?php esc_html_e( 'All challenges', 'concursos' ); ?></option>
+				<option value=""><?php esc_html_e( 'All challenges', 'photo-challenges' ); ?></option>
 				<?php foreach ( Concursos_Reto::all() as $r ) : ?>
 					<option value="<?php echo esc_attr( $r['post']->ID ); ?>" <?php selected( $reto, $r['post']->ID ); ?>><?php echo esc_html( get_the_title( $r['post'] ) ); ?></option>
 				<?php endforeach; ?>
 			</select>
-			<label><?php esc_html_e( 'From', 'concursos' ); ?> <input type="date" name="desde" value="<?php echo esc_attr( self::fecha_escrita( 'desde' ) ); ?>"></label>
-			<label><?php esc_html_e( 'To', 'concursos' ); ?> <input type="date" name="hasta" value="<?php echo esc_attr( self::fecha_escrita( 'hasta' ) ); ?>"></label>
-			<?php submit_button( __( 'Filter', 'concursos' ), '', 'filter_action', false ); ?>
+			<label><?php esc_html_e( 'From', 'photo-challenges' ); ?> <input type="date" name="desde" value="<?php echo esc_attr( self::fecha_escrita( 'desde' ) ); ?>"></label>
+			<label><?php esc_html_e( 'To', 'photo-challenges' ); ?> <input type="date" name="hasta" value="<?php echo esc_attr( self::fecha_escrita( 'hasta' ) ); ?>"></label>
+			<?php submit_button( __( 'Filter', 'photo-challenges' ), '', 'filter_action', false ); ?>
 		</div>
 		<?php
 	}
@@ -213,8 +213,8 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 	 */
 	protected function get_bulk_actions() {
 		return array(
-			'concursos_baja'     => __( 'Unsubscribe from notifications', 'concursos' ),
-			'concursos_eliminar' => __( 'Delete', 'concursos' ),
+			'concursos_baja'     => __( 'Unsubscribe from notifications', 'photo-challenges' ),
+			'concursos_eliminar' => __( 'Delete', 'photo-challenges' ),
 		);
 	}
 
@@ -232,7 +232,7 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 	 * Mensaje sin resultados.
 	 */
 	public function no_items() {
-		esc_html_e( 'There are no voters yet.', 'concursos' );
+		esc_html_e( 'There are no voters yet.', 'photo-challenges' );
 	}
 
 	/**
@@ -254,10 +254,10 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 				return sprintf(
 					'<span class="concursos-badge concursos-badge--%s">%s</span>',
 					esc_attr( $item->estado ),
-					$confirmado ? esc_html__( 'Confirmed', 'concursos' ) : esc_html__( 'Unconfirmed', 'concursos' )
+					$confirmado ? esc_html__( 'Confirmed', 'photo-challenges' ) : esc_html__( 'Unconfirmed', 'photo-challenges' )
 				);
 			case 'avisos':
-				return $item->suscrito ? esc_html__( 'Yes', 'concursos' ) : esc_html__( 'No', 'concursos' );
+				return $item->suscrito ? esc_html__( 'Yes', 'photo-challenges' ) : esc_html__( 'No', 'photo-challenges' );
 			case 'votos':
 				return esc_html( number_format_i18n( (int) $item->votos ) );
 			case 'retos':
@@ -284,7 +284,7 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 			$enlace = get_edit_post_link( $reto );
 			if ( ! $titulo ) {
 				/* translators: %d: votes in a deleted challenge. */
-				$retos[] = esc_html( sprintf( __( 'Deleted challenge (%d)', 'concursos' ), $n ) );
+				$retos[] = esc_html( sprintf( __( 'Deleted challenge (%d)', 'photo-challenges' ), $n ) );
 				continue;
 			}
 			$retos[] = sprintf(
@@ -319,8 +319,8 @@ class Concursos_Votantes_Admin {
 	public static function menu() {
 		$hook = add_submenu_page(
 			'edit.php?post_type=' . Concursos_Post_Types::RETO,
-			__( 'Voters', 'concursos' ),
-			__( 'Voters', 'concursos' ),
+			__( 'Voters', 'photo-challenges' ),
+			__( 'Voters', 'photo-challenges' ),
 			self::CAPABILITY,
 			self::PAGE,
 			array( __CLASS__, 'render' )
@@ -354,7 +354,7 @@ class Concursos_Votantes_Admin {
 
 		check_admin_referer( 'bulk-votantes' );
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_die( esc_html__( 'You cannot do this.', 'concursos' ) );
+			wp_die( esc_html__( 'You cannot do this.', 'photo-challenges' ) );
 		}
 
 		global $wpdb;
@@ -395,10 +395,10 @@ class Concursos_Votantes_Admin {
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		if ( 'eliminados' === $hecho ) {
 			/* translators: %d: number of voters. */
-			$texto = sprintf( _n( '%d voter and their votes deleted.', '%d voters and their votes deleted.', $n, 'concursos' ), $n );
+			$texto = sprintf( _n( '%d voter and their votes deleted.', '%d voters and their votes deleted.', $n, 'photo-challenges' ), $n );
 		} elseif ( 'bajas' === $hecho ) {
 			/* translators: %d: number of voters. */
-			$texto = sprintf( _n( '%d voter will no longer receive notifications.', '%d voters will no longer receive notifications.', $n, 'concursos' ), $n );
+			$texto = sprintf( _n( '%d voter will no longer receive notifications.', '%d voters will no longer receive notifications.', $n, 'photo-challenges' ), $n );
 		} else {
 			return;
 		}
@@ -413,13 +413,13 @@ class Concursos_Votantes_Admin {
 		$tabla->prepare_items();
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'Voters', 'concursos' ); ?></h1>
+			<h1><?php esc_html_e( 'Voters', 'photo-challenges' ); ?></h1>
 			<?php self::aviso(); ?>
-			<form method="get" id="concursos-votantes-form" data-confirmar="<?php esc_attr_e( 'Delete the selected voters and all their votes? Results may change and this cannot be undone.', 'concursos' ); ?>">
+			<form method="get" id="concursos-votantes-form" data-confirmar="<?php esc_attr_e( 'Delete the selected voters and all their votes? Results may change and this cannot be undone.', 'photo-challenges' ); ?>">
 				<input type="hidden" name="post_type" value="<?php echo esc_attr( Concursos_Post_Types::RETO ); ?>">
 				<input type="hidden" name="page" value="<?php echo esc_attr( self::PAGE ); ?>">
 				<?php
-				$tabla->search_box( __( 'Search by email', 'concursos' ), 'concursos-votantes' );
+				$tabla->search_box( __( 'Search by email', 'photo-challenges' ), 'concursos-votantes' );
 				$tabla->display();
 				?>
 			</form>

@@ -54,16 +54,16 @@ class Concursos_Participantes_Admin {
 		$reto   = absint( self::filter_value( 'concursos_reto' ) );
 		$estado = self::filter_value( 'concursos_estado' );
 		?>
-		<label class="screen-reader-text" for="concursos-filtro-reto"><?php esc_html_e( 'Filter by challenge', 'concursos' ); ?></label>
+		<label class="screen-reader-text" for="concursos-filtro-reto"><?php esc_html_e( 'Filter by challenge', 'photo-challenges' ); ?></label>
 		<select name="concursos_reto" id="concursos-filtro-reto">
-			<option value=""><?php esc_html_e( 'All challenges', 'concursos' ); ?></option>
+			<option value=""><?php esc_html_e( 'All challenges', 'photo-challenges' ); ?></option>
 			<?php foreach ( Concursos_Reto::all() as $r ) : ?>
 				<option value="<?php echo esc_attr( $r['post']->ID ); ?>" <?php selected( $reto, $r['post']->ID ); ?>><?php echo esc_html( get_the_title( $r['post'] ) ); ?></option>
 			<?php endforeach; ?>
 		</select>
-		<label class="screen-reader-text" for="concursos-filtro-estado"><?php esc_html_e( 'Filter by status', 'concursos' ); ?></label>
+		<label class="screen-reader-text" for="concursos-filtro-estado"><?php esc_html_e( 'Filter by status', 'photo-challenges' ); ?></label>
 		<select name="concursos_estado" id="concursos-filtro-estado">
-			<option value=""><?php esc_html_e( 'All statuses', 'concursos' ); ?></option>
+			<option value=""><?php esc_html_e( 'All statuses', 'photo-challenges' ); ?></option>
 			<?php foreach ( Concursos_Participante::estado_labels() as $value => $label ) : ?>
 				<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $estado, $value ); ?>><?php echo esc_html( $label ); ?></option>
 			<?php endforeach; ?>
@@ -110,13 +110,13 @@ class Concursos_Participantes_Admin {
 	public static function columns( $columns ) {
 		return array(
 			'cb'               => $columns['cb'],
-			'concursos_foto'   => __( 'Photo', 'concursos' ),
-			'title'            => __( 'Name', 'concursos' ),
-			'concursos_email'  => __( 'Email', 'concursos' ),
-			'concursos_reto'   => __( 'Challenge', 'concursos' ),
-			'concursos_estado' => __( 'Status', 'concursos' ),
-			'concursos_redes'  => __( 'Social networks', 'concursos' ),
-			'date'             => __( 'Registration', 'concursos' ),
+			'concursos_foto'   => __( 'Photo', 'photo-challenges' ),
+			'title'            => __( 'Name', 'photo-challenges' ),
+			'concursos_email'  => __( 'Email', 'photo-challenges' ),
+			'concursos_reto'   => __( 'Challenge', 'photo-challenges' ),
+			'concursos_estado' => __( 'Status', 'photo-challenges' ),
+			'concursos_redes'  => __( 'Social networks', 'photo-challenges' ),
+			'date'             => __( 'Registration', 'photo-challenges' ),
 		);
 	}
 
@@ -143,7 +143,7 @@ class Concursos_Participantes_Admin {
 				$labels = Concursos_Participante::estado_labels();
 				printf( '<span class="concursos-badge concursos-badge--%1$s">%2$s</span>', esc_attr( $p['estado'] ), esc_html( $labels[ $p['estado'] ] ?? $p['estado'] ) );
 				if ( $p['enlace_enviado'] ) {
-					echo '<br><small>' . esc_html__( 'Link sent', 'concursos' ) . '</small>';
+					echo '<br><small>' . esc_html__( 'Link sent', 'photo-challenges' ) . '</small>';
 				}
 				break;
 			case 'concursos_redes':
@@ -175,8 +175,8 @@ class Concursos_Participantes_Admin {
 		unset( $actions['edit'] );
 
 		return array(
-			'concursos_activar'    => __( 'Activate (approve)', 'concursos' ),
-			'concursos_desactivar' => __( 'Deactivate', 'concursos' ),
+			'concursos_activar'    => __( 'Activate (approve)', 'photo-challenges' ),
+			'concursos_desactivar' => __( 'Deactivate', 'photo-challenges' ),
 		) + $actions;
 	}
 
@@ -234,7 +234,7 @@ class Concursos_Participantes_Admin {
 				'concursos_perfil' => sprintf(
 					'<a href="%s" target="_blank" rel="noopener">%s</a>',
 					esc_url( Concursos_Perfil::url( $post->ID ) ),
-					esc_html__( 'View profile', 'concursos' )
+					esc_html__( 'View profile', 'photo-challenges' )
 				),
 			);
 			$actions = array_slice( $actions, 0, 1, true ) + $perfil + array_slice( $actions, 1, null, true );
@@ -255,10 +255,10 @@ class Concursos_Participantes_Admin {
 		$n = absint( self::filter_value( 'concursos_n' ) );
 		if ( 'activados' === $hecho ) {
 			/* translators: %d: number of participants. */
-			$text = sprintf( _n( '%d participant activated. Anyone without a personal link received it by email.', '%d participants activated. Anyone without a personal link received it by email.', $n, 'concursos' ), $n );
+			$text = sprintf( _n( '%d participant activated. Anyone without a personal link received it by email.', '%d participants activated. Anyone without a personal link received it by email.', $n, 'photo-challenges' ), $n );
 		} else {
 			/* translators: %d: number of participants. */
-			$text = sprintf( _n( '%d participant deactivated: their photos are hidden and their votes have been deleted.', '%d participants deactivated: their photos are hidden and their votes have been deleted.', $n, 'concursos' ), $n );
+			$text = sprintf( _n( '%d participant deactivated: their photos are hidden and their votes have been deleted.', '%d participants deactivated: their photos are hidden and their votes have been deleted.', $n, 'photo-challenges' ), $n );
 		}
 		printf( '<div class="notice notice-success is-dismissible"><p>%s</p></div>', esc_html( $text ) );
 	}
@@ -280,7 +280,7 @@ class Concursos_Participantes_Admin {
 	 * Caja con los datos de la inscripción en la pantalla de edición.
 	 */
 	public static function meta_box() {
-		add_meta_box( 'concursos-participante', __( 'Registration details', 'concursos' ), array( __CLASS__, 'render_meta_box' ), null, 'normal', 'high' );
+		add_meta_box( 'concursos-participante', __( 'Registration details', 'photo-challenges' ), array( __CLASS__, 'render_meta_box' ), null, 'normal', 'high' );
 	}
 
 	/**
@@ -293,23 +293,23 @@ class Concursos_Participantes_Admin {
 		$labels = Concursos_Participante::estado_labels();
 		?>
 		<table class="form-table">
-			<tr><th scope="row"><?php esc_html_e( 'Email', 'concursos' ); ?></th><td><?php echo esc_html( $p['email'] ); ?></td></tr>
-			<tr><th scope="row"><?php esc_html_e( 'Challenge', 'concursos' ); ?></th><td><?php echo $p['reto'] ? esc_html( get_the_title( $p['reto'] ) ) : '—'; ?></td></tr>
-			<tr><th scope="row"><?php esc_html_e( 'Status', 'concursos' ); ?></th><td><?php echo esc_html( $labels[ $p['estado'] ] ?? $p['estado'] ); ?></td></tr>
-			<tr><th scope="row"><?php esc_html_e( 'Social networks', 'concursos' ); ?></th><td><?php self::social_links( $p ); ?></td></tr>
+			<tr><th scope="row"><?php esc_html_e( 'Email', 'photo-challenges' ); ?></th><td><?php echo esc_html( $p['email'] ); ?></td></tr>
+			<tr><th scope="row"><?php esc_html_e( 'Challenge', 'photo-challenges' ); ?></th><td><?php echo $p['reto'] ? esc_html( get_the_title( $p['reto'] ) ) : '—'; ?></td></tr>
+			<tr><th scope="row"><?php esc_html_e( 'Status', 'photo-challenges' ); ?></th><td><?php echo esc_html( $labels[ $p['estado'] ] ?? $p['estado'] ); ?></td></tr>
+			<tr><th scope="row"><?php esc_html_e( 'Social networks', 'photo-challenges' ); ?></th><td><?php self::social_links( $p ); ?></td></tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Personal link', 'concursos' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Personal link', 'photo-challenges' ); ?></th>
 				<td>
 					<?php
 					echo $p['enlace_enviado']
 						/* translators: %s: date. */
-						? esc_html( sprintf( __( 'Sent on %s', 'concursos' ), Concursos_Reto::format_date( $p['enlace_enviado'] ) ) )
-						: esc_html__( 'Sent when the participant is activated.', 'concursos' );
+						? esc_html( sprintf( __( 'Sent on %s', 'photo-challenges' ), Concursos_Reto::format_date( $p['enlace_enviado'] ) ) )
+						: esc_html__( 'Sent when the participant is activated.', 'photo-challenges' );
 					?>
 				</td>
 			</tr>
 		</table>
-		<p class="description"><?php esc_html_e( 'The status is changed from the participant list, using the bulk actions.', 'concursos' ); ?></p>
+		<p class="description"><?php esc_html_e( 'The status is changed from the participant list, using the bulk actions.', 'photo-challenges' ); ?></p>
 		<?php
 	}
 }

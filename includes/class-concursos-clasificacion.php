@@ -96,9 +96,9 @@ class Concursos_Clasificacion {
 
 		$titulo = null === $hasta
 			/* translators: %d: year. */
-			? sprintf( __( 'General ranking %d', 'concursos' ), $anio )
+			? sprintf( __( 'General ranking %d', 'photo-challenges' ), $anio )
 			/* translators: %d: year. */
-			: sprintf( __( 'General ranking %d after this challenge', 'concursos' ), $anio );
+			: sprintf( __( 'General ranking %d after this challenge', 'photo-challenges' ), $anio );
 
 		ob_start();
 		?>
@@ -108,16 +108,16 @@ class Concursos_Clasificacion {
 				<table class="concursos-tabla concursos-sm">
 					<thead>
 						<tr>
-							<th scope="col"><?php esc_html_e( 'Place', 'concursos' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Participant', 'concursos' ); ?></th>
-							<th scope="col" class="concursos-tabla__num"><?php esc_html_e( 'Challenges', 'concursos' ); ?></th>
-							<th scope="col" class="concursos-tabla__num"><?php esc_html_e( 'Points', 'concursos' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Place', 'photo-challenges' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Participant', 'photo-challenges' ); ?></th>
+							<th scope="col" class="concursos-tabla__num"><?php esc_html_e( 'Challenges', 'photo-challenges' ); ?></th>
+							<th scope="col" class="concursos-tabla__num"><?php esc_html_e( 'Points', 'photo-challenges' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php foreach ( $filas as $fila ) : ?>
 							<tr>
-								<td><?php echo esc_html( number_format_i18n( $fila['lugar'] ) . ( $fila['empate'] ? ' ' . __( '(tie)', 'concursos' ) : '' ) ); ?></td>
+								<td><?php echo esc_html( number_format_i18n( $fila['lugar'] ) . ( $fila['empate'] ? ' ' . __( '(tie)', 'photo-challenges' ) : '' ) ); ?></td>
 								<td><a href="<?php echo esc_url( $fila['url'] ); ?>"><?php echo esc_html( $fila['nombre'] ); ?></a></td>
 								<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( $fila['retos'] ) ); ?></td>
 								<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( $fila['puntos'] ) ); ?></td>
@@ -126,7 +126,7 @@ class Concursos_Clasificacion {
 					</tbody>
 				</table>
 			</div>
-			<p class="concursos-xs"><?php esc_html_e( 'Points are the sum of the votes received in the challenges finished during the year.', 'concursos' ); ?></p>
+			<p class="concursos-xs"><?php esc_html_e( 'Points are the sum of the votes received in the challenges finished during the year.', 'photo-challenges' ); ?></p>
 		</section>
 		<?php
 		return ob_get_clean();

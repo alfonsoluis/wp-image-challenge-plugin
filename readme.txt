@@ -1,4 +1,4 @@
-=== Concursos ===
+=== Photo Challenges ===
 Contributors: alfonsoluis
 Tags: contest, photo contest, voting, gallery, challenges
 Requires at least: 7.0
@@ -12,7 +12,7 @@ Photo, drawing, design and other art challenges with participants, submissions, 
 
 == Description ==
 
-Concursos lets associations, schools and organizations run art challenges on their WordPress site:
+Photo Challenges lets associations, schools and organizations run art challenges on their WordPress site:
 
 * Challenges with a schedule for submissions, voting and results. New editions are created by duplicating a challenge.
 * Open challenges (photos appear as they are submitted) or closed ones (photos appear when submissions end).

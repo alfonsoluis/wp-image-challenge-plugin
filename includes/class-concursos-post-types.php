@@ -26,28 +26,47 @@ class Concursos_Post_Types {
 	}
 
 	/**
+	 * ¿El sitio está en español? Las URL dependen del idioma del sitio y no del
+	 * de cada usuario, para que sean las mismas para todos.
+	 *
+	 * @return bool
+	 */
+	public static function sitio_en_espanol() {
+		return (bool) preg_match( '/^es(_|$)/', get_locale() );
+	}
+
+	/**
+	 * Primer tramo de la URL de los retos.
+	 *
+	 * @return string
+	 */
+	public static function base_url() {
+		return self::sitio_en_espanol() ? 'retos' : 'challenges';
+	}
+
+	/**
 	 * Registra el tipo de contenido "reto".
 	 */
 	public static function register() {
 		self::register_estado();
 
 		$labels = array(
-			'name'               => __( 'Challenges', 'concursos' ),
-			'singular_name'      => __( 'Challenge', 'concursos' ),
-			'menu_name'          => __( 'Challenges', 'concursos' ),
-			'add_new'            => __( 'New challenge', 'concursos' ),
-			'add_new_item'       => __( 'Create new challenge', 'concursos' ),
-			'edit_item'          => __( 'Edit challenge', 'concursos' ),
-			'new_item'           => __( 'New challenge', 'concursos' ),
-			'view_item'          => __( 'View challenge', 'concursos' ),
-			'search_items'       => __( 'Search challenges', 'concursos' ),
-			'not_found'          => __( 'No challenges.', 'concursos' ),
-			'not_found_in_trash' => __( 'No challenges in the trash.', 'concursos' ),
-			'all_items'          => __( 'All challenges', 'concursos' ),
-			'featured_image'     => __( 'Background image', 'concursos' ),
-			'set_featured_image' => __( 'Choose background image', 'concursos' ),
-			'remove_featured_image' => __( 'Remove background image', 'concursos' ),
-			'use_featured_image' => __( 'Use as background image', 'concursos' ),
+			'name'               => __( 'Challenges', 'photo-challenges' ),
+			'singular_name'      => __( 'Challenge', 'photo-challenges' ),
+			'menu_name'          => __( 'Challenges', 'photo-challenges' ),
+			'add_new'            => __( 'New challenge', 'photo-challenges' ),
+			'add_new_item'       => __( 'Create new challenge', 'photo-challenges' ),
+			'edit_item'          => __( 'Edit challenge', 'photo-challenges' ),
+			'new_item'           => __( 'New challenge', 'photo-challenges' ),
+			'view_item'          => __( 'View challenge', 'photo-challenges' ),
+			'search_items'       => __( 'Search challenges', 'photo-challenges' ),
+			'not_found'          => __( 'No challenges.', 'photo-challenges' ),
+			'not_found_in_trash' => __( 'No challenges in the trash.', 'photo-challenges' ),
+			'all_items'          => __( 'All challenges', 'photo-challenges' ),
+			'featured_image'     => __( 'Background image', 'photo-challenges' ),
+			'set_featured_image' => __( 'Choose background image', 'photo-challenges' ),
+			'remove_featured_image' => __( 'Remove background image', 'photo-challenges' ),
+			'use_featured_image' => __( 'Use as background image', 'photo-challenges' ),
 		);
 
 		register_post_type(
@@ -55,9 +74,9 @@ class Concursos_Post_Types {
 			array(
 				'labels'        => $labels,
 				'public'        => true,
-				'has_archive'   => 'retos',
+				'has_archive'   => self::base_url(),
 				'rewrite'       => array(
-					'slug'       => 'retos',
+					'slug'       => self::base_url(),
 					'with_front' => false,
 				),
 				'menu_icon'     => 'dashicons-awards',
@@ -76,14 +95,14 @@ class Concursos_Post_Types {
 		register_post_status(
 			self::ARCHIVADO,
 			array(
-				'label'                     => __( 'Archived', 'concursos' ),
+				'label'                     => __( 'Archived', 'photo-challenges' ),
 				'public'                    => false,
 				'protected'                 => true,
 				'exclude_from_search'       => true,
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
 				/* translators: %s: number of archived challenges. */
-				'label_count'               => _n_noop( 'Archived <span class="count">(%s)</span>', 'Archived <span class="count">(%s)</span>', 'concursos' ),
+				'label_count'               => _n_noop( 'Archived <span class="count">(%s)</span>', 'Archived <span class="count">(%s)</span>', 'photo-challenges' ),
 			)
 		);
 	}

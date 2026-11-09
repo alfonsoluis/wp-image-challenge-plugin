@@ -31,19 +31,30 @@ class Concursos_Perfil {
 	}
 
 	/**
+	 * Primer tramo de la URL de los perfiles.
+	 *
+	 * @return string
+	 */
+	public static function base_url() {
+		return Concursos_Post_Types::sitio_en_espanol() ? 'participante' : 'participant';
+	}
+
+	/**
 	 * Registra la URL del perfil.
 	 */
 	public static function add_rules() {
-		add_rewrite_rule( '^participante/([a-z0-9-]+)/?$', 'index.php?' . self::QUERY . '=$matches[1]', 'top' );
+		add_rewrite_rule( '^' . self::base_url() . '/([a-z0-9-]+)/?$', 'index.php?' . self::QUERY . '=$matches[1]', 'top' );
 	}
 
 	/**
 	 * Regenera las reglas una vez tras actualizar el plugin.
 	 */
 	public static function maybe_flush() {
-		if ( self::RULES_VERSION !== get_option( self::RULES_OPTION ) ) {
+		// Incluye las URL actuales: si cambia el idioma del sitio, cambian las reglas.
+		$version = self::RULES_VERSION . '-' . Concursos_Post_Types::base_url();
+		if ( get_option( self::RULES_OPTION ) !== $version ) {
 			flush_rewrite_rules( false );
-			update_option( self::RULES_OPTION, self::RULES_VERSION );
+			update_option( self::RULES_OPTION, $version );
 		}
 	}
 
@@ -79,7 +90,7 @@ class Concursos_Perfil {
 		$slug  = trim( sanitize_title( get_the_title( $id ) ) . '-' . substr( md5( self::sal() . $email ), 0, self::HASH_LEN ), '-' );
 
 		if ( get_option( 'permalink_structure' ) ) {
-			return home_url( '/participante/' . $slug . '/' );
+			return home_url( '/' . self::base_url() . '/' . $slug . '/' );
 		}
 
 		return add_query_arg( self::QUERY, $slug, home_url( '/' ) );
@@ -220,11 +231,11 @@ class Concursos_Perfil {
 							' · ',
 							array(
 								/* translators: %d: number of challenges. */
-								sprintf( _n( '%d challenge', '%d challenges', count( $filas ), 'concursos' ), count( $filas ) ),
+								sprintf( _n( '%d challenge', '%d challenges', count( $filas ), 'photo-challenges' ), count( $filas ) ),
 								/* translators: %d: number of photos. */
-								sprintf( _n( '%d photo', '%d photos', $fotos, 'concursos' ), $fotos ),
+								sprintf( _n( '%d photo', '%d photos', $fotos, 'photo-challenges' ), $fotos ),
 								/* translators: %d: number of places. */
-								sprintf( _n( '%d place', '%d places', $puestos, 'concursos' ), $puestos ),
+								sprintf( _n( '%d place', '%d places', $puestos, 'photo-challenges' ), $puestos ),
 							)
 						)
 					);
@@ -255,7 +266,7 @@ class Concursos_Perfil {
 					<p class="concursos-premio">
 						<?php
 						/* translators: %s: prize. */
-						echo esc_html( sprintf( __( 'Prize: %s', 'concursos' ), $fila['puesto']['premio'] ) );
+						echo esc_html( sprintf( __( 'Prize: %s', 'photo-challenges' ), $fila['puesto']['premio'] ) );
 						?>
 					</p>
 				<?php endif; ?>
@@ -271,7 +282,7 @@ class Concursos_Perfil {
 						<?php endforeach; ?>
 					</ul>
 				<?php else : ?>
-					<p><?php esc_html_e( 'Their photos in this challenge cannot be shown yet.', 'concursos' ); ?></p>
+					<p><?php esc_html_e( 'Their photos in this challenge cannot be shown yet.', 'photo-challenges' ); ?></p>
 				<?php endif; ?>
 			</section>
 		<?php endforeach; ?>

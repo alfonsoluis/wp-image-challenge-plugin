@@ -34,15 +34,15 @@ class Concursos_Entrada {
 			self::POST_TYPE,
 			array(
 				'labels'              => array(
-					'name'               => __( 'Submitted photos', 'concursos' ),
-					'singular_name'      => __( 'Submitted photo', 'concursos' ),
-					'menu_name'          => __( 'Submitted photos', 'concursos' ),
-					'all_items'          => __( 'Submitted photos', 'concursos' ),
-					'edit_item'          => __( 'Edit submitted photo', 'concursos' ),
-					'search_items'       => __( 'Search photos', 'concursos' ),
-					'not_found'          => __( 'No submitted photos.', 'concursos' ),
-					'not_found_in_trash' => __( 'No photos in the trash.', 'concursos' ),
-					'featured_image'     => __( 'Photo', 'concursos' ),
+					'name'               => __( 'Submitted photos', 'photo-challenges' ),
+					'singular_name'      => __( 'Submitted photo', 'photo-challenges' ),
+					'menu_name'          => __( 'Submitted photos', 'photo-challenges' ),
+					'all_items'          => __( 'Submitted photos', 'photo-challenges' ),
+					'edit_item'          => __( 'Edit submitted photo', 'photo-challenges' ),
+					'search_items'       => __( 'Search photos', 'photo-challenges' ),
+					'not_found'          => __( 'No submitted photos.', 'photo-challenges' ),
+					'not_found_in_trash' => __( 'No photos in the trash.', 'photo-challenges' ),
+					'featured_image'     => __( 'Photo', 'photo-challenges' ),
 				),
 				'public'              => false,
 				'show_ui'             => true,
@@ -69,7 +69,7 @@ class Concursos_Entrada {
 	public static function create( array $participante, $titulo, $attachment_id, $descripcion = '' ) {
 		if ( '' === $titulo ) {
 			/* translators: %s: participant name. */
-			$titulo = sprintf( __( 'Photo by %s', 'concursos' ), $participante['nombre'] );
+			$titulo = sprintf( __( 'Photo by %s', 'photo-challenges' ), $participante['nombre'] );
 		}
 
 		$id = wp_insert_post(
@@ -154,8 +154,8 @@ class Concursos_Entrada {
 				'concursos-public',
 				'concursosModal',
 				array(
-					'cerrar' => __( 'Close', 'concursos' ),
-					'reto'   => __( 'Challenge', 'concursos' ),
+					'cerrar' => __( 'Close', 'photo-challenges' ),
+					'reto'   => __( 'Challenge', 'photo-challenges' ),
 				)
 			);
 		}
@@ -168,7 +168,7 @@ class Concursos_Entrada {
 		return sprintf(
 			'<button type="button" class="concursos-foto" aria-haspopup="dialog" aria-label="%1$s" data-grande="%2$s" data-titulo="%3$s" data-autor="%4$s" data-autor-url="%5$s" data-avatar="%6$s" data-reto="%7$s" data-reto-url="%8$s" data-descripcion="%10$s">%9$s</button>',
 			/* translators: %s: photo title. */
-			esc_attr( sprintf( __( 'View larger photo: %s', 'concursos' ), $titulo ) ),
+			esc_attr( sprintf( __( 'View larger photo: %s', 'photo-challenges' ), $titulo ) ),
 			esc_url( wp_get_attachment_image_url( get_post_thumbnail_id( $foto ), 'full' ) ),
 			esc_attr( $titulo ),
 			esc_attr( get_the_title( $autor ) ),

@@ -61,9 +61,9 @@ class Concursos_Entradas_Admin {
 		$vista = self::vista();
 		$url   = remove_query_arg( 'vista' );
 		?>
-		<span class="concursos-vistas" role="group" aria-label="<?php esc_attr_e( 'View', 'concursos' ); ?>">
-			<a href="<?php echo esc_url( add_query_arg( 'vista', 'tabla', $url ) ); ?>" class="button<?php echo 'tabla' === $vista ? ' button-primary' : ''; ?>" aria-pressed="<?php echo 'tabla' === $vista ? 'true' : 'false'; ?>"><?php esc_html_e( 'Table', 'concursos' ); ?></a>
-			<a href="<?php echo esc_url( add_query_arg( 'vista', 'rejilla', $url ) ); ?>" class="button<?php echo 'rejilla' === $vista ? ' button-primary' : ''; ?>" aria-pressed="<?php echo 'rejilla' === $vista ? 'true' : 'false'; ?>"><?php esc_html_e( 'Grid', 'concursos' ); ?></a>
+		<span class="concursos-vistas" role="group" aria-label="<?php esc_attr_e( 'View', 'photo-challenges' ); ?>">
+			<a href="<?php echo esc_url( add_query_arg( 'vista', 'tabla', $url ) ); ?>" class="button<?php echo 'tabla' === $vista ? ' button-primary' : ''; ?>" aria-pressed="<?php echo 'tabla' === $vista ? 'true' : 'false'; ?>"><?php esc_html_e( 'Table', 'photo-challenges' ); ?></a>
+			<a href="<?php echo esc_url( add_query_arg( 'vista', 'rejilla', $url ) ); ?>" class="button<?php echo 'rejilla' === $vista ? ' button-primary' : ''; ?>" aria-pressed="<?php echo 'rejilla' === $vista ? 'true' : 'false'; ?>"><?php esc_html_e( 'Grid', 'photo-challenges' ); ?></a>
 		</span>
 		<?php
 	}
@@ -104,9 +104,9 @@ class Concursos_Entradas_Admin {
 		}
 		$reto = self::selected_reto();
 		?>
-		<label class="screen-reader-text" for="concursos-filtro-reto"><?php esc_html_e( 'Filter by challenge', 'concursos' ); ?></label>
+		<label class="screen-reader-text" for="concursos-filtro-reto"><?php esc_html_e( 'Filter by challenge', 'photo-challenges' ); ?></label>
 		<select name="concursos_reto" id="concursos-filtro-reto">
-			<option value=""><?php esc_html_e( 'All challenges', 'concursos' ); ?></option>
+			<option value=""><?php esc_html_e( 'All challenges', 'photo-challenges' ); ?></option>
 			<?php foreach ( Concursos_Reto::all() as $r ) : ?>
 				<option value="<?php echo esc_attr( $r['post']->ID ); ?>" <?php selected( $reto, $r['post']->ID ); ?>><?php echo esc_html( get_the_title( $r['post'] ) ); ?></option>
 			<?php endforeach; ?>
@@ -146,12 +146,12 @@ class Concursos_Entradas_Admin {
 	public static function columns( $columns ) {
 		return array(
 			'cb'                     => $columns['cb'],
-			'concursos_foto'         => __( 'Photo', 'concursos' ),
-			'title'                  => __( 'Title', 'concursos' ),
-			'concursos_participante' => __( 'Participant', 'concursos' ),
-			'concursos_reto'         => __( 'Challenge', 'concursos' ),
-			'concursos_votos'        => __( 'Votes', 'concursos' ),
-			'date'                   => __( 'Submitted', 'concursos' ),
+			'concursos_foto'         => __( 'Photo', 'photo-challenges' ),
+			'title'                  => __( 'Title', 'photo-challenges' ),
+			'concursos_participante' => __( 'Participant', 'photo-challenges' ),
+			'concursos_reto'         => __( 'Challenge', 'photo-challenges' ),
+			'concursos_votos'        => __( 'Votes', 'photo-challenges' ),
+			'date'                   => __( 'Submitted', 'photo-challenges' ),
 		);
 	}
 

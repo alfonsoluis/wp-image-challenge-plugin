@@ -109,18 +109,18 @@ class Concursos_Participante {
 			self::POST_TYPE,
 			array(
 				'labels'              => array(
-					'name'                  => __( 'Participants', 'concursos' ),
-					'singular_name'         => __( 'Participant', 'concursos' ),
-					'menu_name'             => __( 'Participants', 'concursos' ),
-					'all_items'             => __( 'Participants', 'concursos' ),
-					'edit_item'             => __( 'Edit participant', 'concursos' ),
-					'search_items'          => __( 'Search participants', 'concursos' ),
-					'not_found'             => __( 'No participants.', 'concursos' ),
-					'not_found_in_trash'    => __( 'No participants in the trash.', 'concursos' ),
-					'featured_image'        => __( 'Profile photo', 'concursos' ),
-					'set_featured_image'    => __( 'Choose profile photo', 'concursos' ),
-					'remove_featured_image' => __( 'Remove profile photo', 'concursos' ),
-					'use_featured_image'    => __( 'Use as profile photo', 'concursos' ),
+					'name'                  => __( 'Participants', 'photo-challenges' ),
+					'singular_name'         => __( 'Participant', 'photo-challenges' ),
+					'menu_name'             => __( 'Participants', 'photo-challenges' ),
+					'all_items'             => __( 'Participants', 'photo-challenges' ),
+					'edit_item'             => __( 'Edit participant', 'photo-challenges' ),
+					'search_items'          => __( 'Search participants', 'photo-challenges' ),
+					'not_found'             => __( 'No participants.', 'photo-challenges' ),
+					'not_found_in_trash'    => __( 'No participants in the trash.', 'photo-challenges' ),
+					'featured_image'        => __( 'Profile photo', 'photo-challenges' ),
+					'set_featured_image'    => __( 'Choose profile photo', 'photo-challenges' ),
+					'remove_featured_image' => __( 'Remove profile photo', 'photo-challenges' ),
+					'use_featured_image'    => __( 'Use as profile photo', 'photo-challenges' ),
 				),
 				'public'              => false,
 				'show_ui'             => true,
@@ -142,9 +142,9 @@ class Concursos_Participante {
 	 */
 	public static function estado_labels() {
 		return array(
-			self::PENDIENTE => __( 'Pending', 'concursos' ),
-			self::ACTIVO    => __( 'Active', 'concursos' ),
-			self::INACTIVO  => __( 'Inactive', 'concursos' ),
+			self::PENDIENTE => __( 'Pending', 'photo-challenges' ),
+			self::ACTIVO    => __( 'Active', 'photo-challenges' ),
+			self::INACTIVO  => __( 'Inactive', 'photo-challenges' ),
 		);
 	}
 

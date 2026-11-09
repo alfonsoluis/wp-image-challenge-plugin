@@ -31,16 +31,16 @@ class Concursos_Envio {
 	 */
 	private static function messages() {
 		return array(
-			'subida'    => array( 'success', __( 'Photo submitted!', 'concursos' ) ),
-			'eliminada' => array( 'success', __( 'Photo deleted.', 'concursos' ) ),
-			'cerrado'   => array( 'error', __( 'The submission period is not open.', 'concursos' ) ),
-			'limite'    => array( 'error', __( 'You have already submitted the maximum number of photos for this challenge.', 'concursos' ) ),
+			'subida'    => array( 'success', __( 'Photo submitted!', 'photo-challenges' ) ),
+			'eliminada' => array( 'success', __( 'Photo deleted.', 'photo-challenges' ) ),
+			'cerrado'   => array( 'error', __( 'The submission period is not open.', 'photo-challenges' ) ),
+			'limite'    => array( 'error', __( 'You have already submitted the maximum number of photos for this challenge.', 'photo-challenges' ) ),
 			'foto'      => array( 'error', sprintf(
 				/* translators: %s: maximum file size, such as 5 MB. */
-				__( 'The photo must be a JPG, PNG or WebP of up to %s.', 'concursos' ),
+				__( 'The photo must be a JPG, PNG or WebP of up to %s.', 'photo-challenges' ),
 				size_format( Concursos_Imagenes::limite() )
 			) ),
-			'error'     => array( 'error', __( 'We could not complete the action. Please try again.', 'concursos' ) ),
+			'error'     => array( 'error', __( 'We could not complete the action. Please try again.', 'photo-challenges' ) ),
 		);
 	}
 
@@ -62,16 +62,16 @@ class Concursos_Envio {
 		$token = sanitize_text_field( wp_unslash( $_GET[ Concursos_Inscripcion::LINK_PARAM ] ) );
 		$id    = Concursos_Participante::find_by_token( $token );
 		if ( ! $id ) {
-			self::render_message( 404, __( 'Invalid link', 'concursos' ), __( 'This link is not valid. Check that you copied all of it.', 'concursos' ) );
+			self::render_message( 404, __( 'Invalid link', 'photo-challenges' ), __( 'This link is not valid. Check that you copied all of it.', 'photo-challenges' ) );
 		}
 
 		$p = Concursos_Participante::get( $id );
 		if ( Concursos_Participante::ACTIVO !== $p['estado'] ) {
-			self::render_message( 403, __( 'Registration not active', 'concursos' ), __( 'Your registration is not active. If you think this is a mistake, contact us.', 'concursos' ) );
+			self::render_message( 403, __( 'Registration not active', 'photo-challenges' ), __( 'Your registration is not active. If you think this is a mistake, contact us.', 'photo-challenges' ) );
 		}
 
 		if ( ! Concursos_Reto::permite_email( Concursos_Reto::get_settings( $p['reto'] ), 'participantes', $p['email'] ) ) {
-			self::render_message( 403, __( 'Private challenge', 'concursos' ), Concursos_Reto::mensaje_privado() );
+			self::render_message( 403, __( 'Private challenge', 'photo-challenges' ), Concursos_Reto::mensaje_privado() );
 		}
 
 		if ( 'POST' === ( isset( $_SERVER['REQUEST_METHOD'] ) ? $_SERVER['REQUEST_METHOD'] : '' ) ) {
@@ -174,7 +174,7 @@ class Concursos_Envio {
 		<h1>
 			<?php
 			/* translators: %s: participant name. */
-			echo esc_html( sprintf( __( 'Hello, %s', 'concursos' ), $p['nombre'] ) );
+			echo esc_html( sprintf( __( 'Hello, %s', 'photo-challenges' ), $p['nombre'] ) );
 			?>
 		</h1>
 		<p class="concursos-reto-nombre"><?php echo esc_html( get_the_title( $p['reto'] ) ); ?></p>
@@ -187,12 +187,12 @@ class Concursos_Envio {
 			<?php
 			if ( $abierto ) {
 				/* translators: %s: submission end date. */
-				echo esc_html( sprintf( __( 'You can submit photos until %s.', 'concursos' ), Concursos_Reto::format_dia( $reto['fin_envios'] ) ) );
+				echo esc_html( sprintf( __( 'You can submit photos until %s.', 'photo-challenges' ), Concursos_Reto::format_dia( $reto['fin_envios'] ) ) );
 			} elseif ( 'proximo' === $status ) {
 				/* translators: %s: challenge start date. */
-				echo esc_html( sprintf( __( 'Photo submissions start on %s.', 'concursos' ), Concursos_Reto::format_dia( $reto['inicio'] ) ) );
+				echo esc_html( sprintf( __( 'Photo submissions start on %s.', 'photo-challenges' ), Concursos_Reto::format_dia( $reto['inicio'] ) ) );
 			} else {
-				esc_html_e( 'The submission period for this challenge is closed.', 'concursos' );
+				esc_html_e( 'The submission period for this challenge is closed.', 'photo-challenges' );
 			}
 			?>
 		</p>
@@ -200,7 +200,7 @@ class Concursos_Envio {
 		<h2>
 			<?php
 			/* translators: 1: photos submitted, 2: maximum photos. */
-			echo esc_html( sprintf( __( 'Your photos (%1$d of %2$d)', 'concursos' ), count( $enviadas ), $max ) );
+			echo esc_html( sprintf( __( 'Your photos (%1$d of %2$d)', 'photo-challenges' ), count( $enviadas ), $max ) );
 			?>
 		</h2>
 		<?php if ( $enviadas ) : ?>
@@ -210,39 +210,39 @@ class Concursos_Envio {
 						<?php echo get_the_post_thumbnail( $entrada, 'medium' ); ?>
 						<span><?php echo esc_html( get_the_title( $entrada ) ); ?></span>
 						<?php if ( $abierto ) : ?>
-							<form method="post" onsubmit="return confirm('<?php echo esc_js( __( 'Delete this photo?', 'concursos' ) ); ?>');">
+							<form method="post" onsubmit="return confirm('<?php echo esc_js( __( 'Delete this photo?', 'photo-challenges' ) ); ?>');">
 								<input type="hidden" name="_wpnonce" value="<?php echo esc_attr( $nonce ); ?>">
-								<button type="submit" name="eliminar" value="<?php echo esc_attr( $entrada->ID ); ?>" class="concursos-boton-secundario"><?php esc_html_e( 'Delete', 'concursos' ); ?></button>
+								<button type="submit" name="eliminar" value="<?php echo esc_attr( $entrada->ID ); ?>" class="concursos-boton-secundario"><?php esc_html_e( 'Delete', 'photo-challenges' ); ?></button>
 							</form>
 						<?php endif; ?>
 					</li>
 				<?php endforeach; ?>
 			</ul>
 		<?php else : ?>
-			<p><?php esc_html_e( 'You have not submitted any photos yet.', 'concursos' ); ?></p>
+			<p><?php esc_html_e( 'You have not submitted any photos yet.', 'photo-challenges' ); ?></p>
 		<?php endif; ?>
 
 		<?php if ( $abierto && $quedan > 0 ) : ?>
-			<h2><?php esc_html_e( 'Submit a photo', 'concursos' ); ?></h2>
+			<h2><?php esc_html_e( 'Submit a photo', 'photo-challenges' ); ?></h2>
 			<form method="post" enctype="multipart/form-data" class="concursos-form-publico">
 				<input type="hidden" name="_wpnonce" value="<?php echo esc_attr( $nonce ); ?>">
 				<p>
-					<label for="concursos-foto"><?php esc_html_e( 'Photo', 'concursos' ); ?> *</label>
+					<label for="concursos-foto"><?php esc_html_e( 'Photo', 'photo-challenges' ); ?> *</label>
 					<input type="file" id="concursos-foto" name="foto" required accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
 					<small><?php 
 						/* translators: %s: maximum file size, such as 5 MB. */
-						echo esc_html( sprintf( __( 'JPG, PNG or WebP, up to %s.', 'concursos' ), size_format( Concursos_Imagenes::limite() ) ) );
+						echo esc_html( sprintf( __( 'JPG, PNG or WebP, up to %s.', 'photo-challenges' ), size_format( Concursos_Imagenes::limite() ) ) );
 						 ?></small>
 				</p>
 				<p>
-					<label for="concursos-titulo"><?php esc_html_e( 'Title (optional)', 'concursos' ); ?></label>
+					<label for="concursos-titulo"><?php esc_html_e( 'Title (optional)', 'photo-challenges' ); ?></label>
 					<input type="text" id="concursos-titulo" name="titulo" maxlength="100">
 				</p>
 				<p>
-					<label for="concursos-descripcion"><?php esc_html_e( 'Description (optional)', 'concursos' ); ?></label>
+					<label for="concursos-descripcion"><?php esc_html_e( 'Description (optional)', 'photo-challenges' ); ?></label>
 					<textarea id="concursos-descripcion" name="descripcion" rows="3" maxlength="<?php echo esc_attr( Concursos_Entrada::DESCRIPCION_MAX ); ?>"></textarea>
 				</p>
-				<p><button type="submit"><?php esc_html_e( 'Submit photo', 'concursos' ); ?></button></p>
+				<p><button type="submit"><?php esc_html_e( 'Submit photo', 'photo-challenges' ); ?></button></p>
 			</form>
 		<?php endif; ?>
 
@@ -250,16 +250,16 @@ class Concursos_Envio {
 		$rules = Concursos_Reto::rules_list( $reto['reglas'] );
 		if ( $rules ) :
 			?>
-			<h2><?php esc_html_e( 'Rules', 'concursos' ); ?></h2>
+			<h2><?php esc_html_e( 'Rules', 'photo-challenges' ); ?></h2>
 			<ul>
 				<?php foreach ( $rules as $rule ) : ?>
 					<li><?php echo esc_html( $rule ); ?></li>
 				<?php endforeach; ?>
 			</ul>
 		<?php endif; ?>
-		<p class="concursos-privado"><?php esc_html_e( 'This page is personal: do not share its link.', 'concursos' ); ?></p>
+		<p class="concursos-privado"><?php esc_html_e( 'This page is personal: do not share its link.', 'photo-challenges' ); ?></p>
 		<?php
-		self::layout( 200, __( 'Your photos', 'concursos' ), ob_get_clean(), $reto );
+		self::layout( 200, __( 'Your photos', 'photo-challenges' ), ob_get_clean(), $reto );
 	}
 
 	/**
