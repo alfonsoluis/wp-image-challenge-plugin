@@ -77,13 +77,22 @@
 	padding-inline: max(16px, calc((100% - 1100px) / 2 + 16px));
 }
 
-.concursos-publico--portada,
-.concursos-reto {
+.concursos-con-fondo {
 	position: relative;
 }
 
-.concursos-publico--portada::before,
-.concursos-reto::before {
+/* La inscripción es una página del tema: el fondo va en el body, detrás de todo. */
+body.concursos-fondo-pagina {
+	--c-color: var(--wp--preset--color--contrast, #1d2327);
+	position: relative;
+}
+
+body.concursos-fondo-pagina::before {
+	z-index: -1;
+}
+
+body.concursos-fondo-pagina::before,
+.concursos-con-fondo::before {
 	content: "";
 	position: absolute;
 	inset: 0 0 auto;
@@ -94,8 +103,7 @@
 	mask: url(../img/fondo-iconos.svg) top center / 1380px 800px repeat;
 }
 
-.concursos-publico--portada > *,
-.concursos-reto > * {
+.concursos-con-fondo > * {
 	position: relative;
 }
 

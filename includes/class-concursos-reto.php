@@ -71,6 +71,7 @@ class Concursos_Reto {
 			'emails_votantes'       => '',
 			'paleta'            => Concursos_Diseno::TEMA,
 			'tamano'            => Concursos_Diseno::NORMAL,
+			'fondo_iconos'      => Concursos_Diseno::PAGINAS_FONDO,
 		);
 	}
 

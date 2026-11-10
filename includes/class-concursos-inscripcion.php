@@ -26,6 +26,36 @@ class Concursos_Inscripcion {
 		add_action( 'admin_post_nopriv_' . self::ACTION, array( __CLASS__, 'handle' ) );
 		add_action( 'admin_post_' . self::ACTION, array( __CLASS__, 'handle' ) );
 		add_action( 'wp_after_insert_post', array( __CLASS__, 'enlaces_al_publicar' ), 10, 4 );
+		add_filter( 'body_class', array( __CLASS__, 'clase_fondo' ) );
+	}
+
+	/**
+	 * Activa el fondo de iconos en la página con el formulario. Sigue al reto
+	 * preseleccionado en el enlace o, si no hay, al mismo que la portada.
+	 *
+	 * @param string[] $clases Clases del body.
+	 * @return string[]
+	 */
+	public static function clase_fondo( $clases ) {
+		$post = get_post();
+		if ( ! is_page() || ! $post || ! has_shortcode( $post->post_content, self::SHORTCODE ) ) {
+			return $clases;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- solo decide un estilo.
+		$elegido = isset( $_GET['reto'] ) ? absint( $_GET['reto'] ) : 0;
+		$reto    = Concursos_Portada::reto_referencia();
+		foreach ( self::retos_abiertos() as $abierto ) {
+			if ( $abierto['post']->ID === $elegido ) {
+				$reto = $abierto;
+			}
+		}
+
+		if ( $reto && Concursos_Diseno::muestra_fondo( $reto['settings'], 'inscripcion' ) ) {
+			$clases[] = 'concursos-fondo-pagina';
+		}
+
+		return $clases;
 	}
 
 	/**

@@ -67,16 +67,18 @@ class Concursos_Portada {
 	public static function route() {
 		$pagina = (int) get_option( self::OPCION_PAGINA );
 		if ( ( is_post_type_archive( Concursos_Post_Types::RETO ) || ( $pagina && is_page( $pagina ) ) ) && ! is_feed() ) {
-			Concursos_Plantilla::pagina( __( 'Challenges', 'photo-challenges' ), self::render(), 'concursos-publico--portada' );
+			$referencia = self::reto_referencia();
+			$con_fondo  = $referencia && Concursos_Diseno::muestra_fondo( $referencia['settings'], 'portada' );
+			Concursos_Plantilla::pagina( __( 'Challenges', 'photo-challenges' ), self::render(), 'concursos-publico--portada' . ( $con_fondo ? ' concursos-con-fondo' : '' ) );
 		}
 	}
 
 	/**
-	 * Contenido de la portada.
+	 * Retos publicados, agrupados por momento.
 	 *
-	 * @return string
+	 * @return array[] En curso, próximos y pasados.
 	 */
-	private static function render() {
+	private static function clasificar() {
 		$en_curso = array();
 		$proximos = array();
 		$pasados  = array();
@@ -89,6 +91,34 @@ class Concursos_Portada {
 				$pasados[] = $reto;
 			}
 		}
+
+		return array( $en_curso, $proximos, $pasados );
+	}
+
+	/**
+	 * Reto que decide el diseño de las páginas comunes: el destacado o, si no
+	 * hay, el último terminado.
+	 *
+	 * @return array|null
+	 */
+	public static function reto_referencia() {
+		list( $en_curso, $proximos, $pasados ) = self::clasificar();
+
+		$destacado = $en_curso ? array_shift( $en_curso ) : array_pop( $proximos );
+		if ( $destacado ) {
+			return $destacado;
+		}
+
+		return $pasados ? $pasados[0] : null;
+	}
+
+	/**
+	 * Contenido de la portada.
+	 *
+	 * @return string
+	 */
+	private static function render() {
+		list( $en_curso, $proximos, $pasados ) = self::clasificar();
 
 		// Destacado: el reto en curso más reciente o, si no hay, el próximo en empezar.
 		$destacado = $en_curso ? array_shift( $en_curso ) : array_pop( $proximos );

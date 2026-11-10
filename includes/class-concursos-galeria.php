@@ -173,7 +173,7 @@ class Concursos_Galeria {
 
 		ob_start();
 		?>
-		<div class="concursos-reto concursos-disenado" style="<?php echo esc_attr( Concursos_Diseno::estilo( $s ) ); ?>">
+		<div class="concursos-reto concursos-disenado<?php echo Concursos_Diseno::muestra_fondo( $s, 'detalle' ) ? ' concursos-con-fondo' : ''; ?>" style="<?php echo esc_attr( Concursos_Diseno::estilo( $s ) ); ?>">
 			<div class="concursos-reto__interior">
 				<?php echo self::cabecera( $status, $s, $imagen, '<h1>' . esc_html( get_the_title( $post ) ) . '</h1>', self::boton_inscripcion( $post->ID, $status ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
 				<?php echo 'finalizado' === $status ? self::ficha( $post, $s ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>

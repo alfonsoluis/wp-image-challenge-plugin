@@ -18,6 +18,9 @@ class Concursos_Diseno {
 	const TEMA   = 'tema';
 	const NORMAL = 'normal';
 
+	/** Páginas que pueden llevar el fondo de iconos. */
+	const PAGINAS_FONDO = array( 'portada', 'detalle', 'inscripcion' );
+
 	/**
 	 * Paletas, tomadas de las más populares de coolors.co. El color principal se
 	 * usa en títulos, enlaces y botones, y el acento solo como relleno, porque
@@ -165,18 +168,44 @@ class Concursos_Diseno {
 	}
 
 	/**
+	 * Nombres de las páginas que pueden llevar el fondo de iconos.
+	 *
+	 * @return string[] clave => nombre.
+	 */
+	public static function paginas_fondo() {
+		return array(
+			'portada'     => __( 'Challenges page', 'photo-challenges' ),
+			'detalle'     => __( 'Challenge details', 'photo-challenges' ),
+			'inscripcion' => __( 'Registration page', 'photo-challenges' ),
+		);
+	}
+
+	/**
+	 * Indica si un reto activa el fondo de iconos en una página.
+	 *
+	 * @param array  $s      Configuración del reto.
+	 * @param string $pagina Clave de PAGINAS_FONDO.
+	 * @return bool
+	 */
+	public static function muestra_fondo( array $s, $pagina ) {
+		return in_array( $pagina, (array) $s['fondo_iconos'], true );
+	}
+
+	/**
 	 * Valida las opciones de diseño recibidas.
 	 *
 	 * @param array $raw Datos sin sanear.
-	 * @return array paleta, tamano.
+	 * @return array paleta, tamano, fondo_iconos.
 	 */
 	public static function sanitize( array $raw ) {
 		$paleta = isset( $raw['paleta'] ) ? sanitize_key( $raw['paleta'] ) : '';
 		$tamano = isset( $raw['tamano'] ) ? sanitize_key( $raw['tamano'] ) : '';
+		$fondo  = isset( $raw['fondo_iconos'] ) ? array_map( 'sanitize_key', (array) $raw['fondo_iconos'] ) : array();
 
 		return array(
-			'paleta' => isset( self::paletas()[ $paleta ] ) ? $paleta : self::TEMA,
-			'tamano' => isset( self::tamanos()[ $tamano ] ) ? $tamano : self::NORMAL,
+			'paleta'       => isset( self::paletas()[ $paleta ] ) ? $paleta : self::TEMA,
+			'tamano'       => isset( self::tamanos()[ $tamano ] ) ? $tamano : self::NORMAL,
+			'fondo_iconos' => array_values( array_intersect( self::PAGINAS_FONDO, $fondo ) ),
 		);
 	}
 
