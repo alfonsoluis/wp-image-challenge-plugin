@@ -34,7 +34,9 @@ Pensado para asociaciones de fotografía, escuelas y organizaciones que ya tiene
 | 📣 **Avisos de nuevos retos** | Quien se suscribe recibe un email al publicarse un reto, y puede darse de baja cuando quiera. |
 | 🧬 **Duplicar retos** | Crea una nueva edición en un clic, copiando o no a sus participantes activos. |
 | 🎨 **Diseño por reto** | Los colores del tema o 10 paletas armónicas, y 3 tamaños de texto. La tipografía siempre es la de tu tema. |
-| 🌍 **Inglés y español** | Traducción completa, válida para cualquier variante regional del español. |
+| 🖼️ **Fondo de iconos** | Un mosaico de 44 iconos de fotografía con el color del reto, que se funde con el fondo de la página. Se activa por reto en la portada, el detalle y la inscripción. |
+| 🌍 **Inglés y español** | Traducción completa, válida para cualquier variante regional del español. Las direcciones siguen el idioma del sitio: `/retos/` o `/challenges/`. |
+| 🧹 **Desinstalación limpia** | Al borrar el plugin desde WordPress se eliminan sus retos, participantes, fotos, votos y ajustes. |
 
 ## Capturas
 
@@ -58,6 +60,12 @@ Pensado para asociaciones de fotografía, escuelas y organizaciones que ya tiene
 Diez combinaciones tomadas de las más populares de [Coolors](https://coolors.co/palettes/popular/modern), todas con contraste AA.
 
 <p align="center"><img alt="Las diez paletas disponibles" src="docs/screenshots/paletas.jpg" width="640"></p>
+
+### Fondo de iconos
+
+Cada reto decide en qué páginas aparece: portada de retos, detalle del reto o inscripción. Si se desmarcan todas, no se muestra. La portada y la inscripción siguen al reto destacado.
+
+<p align="center"><img alt="Página de inscripción con el fondo de iconos" src="docs/screenshots/inscripcion.jpg" width="820"></p>
 
 ## Instalación
 
@@ -103,8 +111,8 @@ make reset                  # borra todo
 | phpMyAdmin  | http://localhost:8081          | automático    |
 | Mailpit     | http://localhost:8025          | emails de prueba |
 
-La raíz del repositorio es el plugin y está montada en `wp-content/plugins/concursos`: los cambios se ven al recargar el navegador. En local, ningún email sale de verdad; todos llegan a Mailpit.
+La raíz del repositorio es el plugin y está montada en `wp-content/plugins/photo-challenges`: los cambios se ven al recargar el navegador. En local, ningún email sale de verdad; todos llegan a Mailpit.
 
 ## Licencia
 
-[GPL-2.0 o posterior](LICENSE). Las fotos de las capturas y de la demo son de muestra, servidas por [Lorem Picsum](https://picsum.photos) bajo la [licencia de Unsplash](https://unsplash.com/license).
+[GPL-2.0 o posterior](LICENSE). Las fotos de las capturas y de la demo son de muestra, servidas por [Lorem Picsum](https://picsum.photos) bajo la [licencia de Unsplash](https://unsplash.com/license). Los iconos del fondo son [Material Symbols](https://fonts.google.com/icons) de Google, bajo la [licencia Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
