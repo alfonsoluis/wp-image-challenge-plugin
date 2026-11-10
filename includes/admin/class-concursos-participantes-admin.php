@@ -26,6 +26,7 @@ class Concursos_Participantes_Admin {
 		add_filter( "bulk_actions-edit-{$t}", array( __CLASS__, 'bulk_actions' ) );
 		add_filter( "handle_bulk_actions-edit-{$t}", array( __CLASS__, 'handle_bulk' ), 10, 3 );
 		add_filter( 'post_row_actions', array( __CLASS__, 'row_actions' ), 10, 2 );
+		add_action( 'admin_post_concursos_aprobar', array( __CLASS__, 'aprobar' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'notices' ) );
 		add_action( 'add_meta_boxes_' . $t, array( __CLASS__, 'meta_box' ) );
 		add_filter( 'removable_query_args', array( __CLASS__, 'removable_args' ) );
@@ -228,6 +229,19 @@ class Concursos_Participantes_Admin {
 		}
 		unset( $actions['inline hide-if-no-js'] );
 
+		// Aprobar con un clic a quien está pendiente, o reactivar a quien se desactivó.
+		if ( 'trash' !== $post->post_status && ! Concursos_Participante::esta_activo( $post->ID ) ) {
+			$p       = Concursos_Participante::get( $post->ID );
+			$url     = wp_nonce_url( admin_url( 'admin-post.php?action=concursos_aprobar&post=' . $post->ID ), 'concursos_aprobar_' . $post->ID );
+			$actions = array(
+				'concursos_aprobar' => sprintf(
+					'<a href="%s">%s</a>',
+					esc_url( $url ),
+					Concursos_Participante::PENDIENTE === $p['estado'] ? esc_html__( 'Approve', 'photo-challenges' ) : esc_html__( 'Activate', 'photo-challenges' )
+				),
+			) + $actions;
+		}
+
 		// Solo los participantes activos tienen perfil público.
 		if ( Concursos_Participante::esta_activo( $post->ID ) ) {
 			$perfil  = array(
@@ -241,6 +255,35 @@ class Concursos_Participantes_Admin {
 		}
 
 		return $actions;
+	}
+
+	/**
+	 * Aprueba a un participante desde el enlace de su fila.
+	 */
+	public static function aprobar() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- el nonce lleva el ID y se comprueba justo debajo.
+		$id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : 0;
+		check_admin_referer( 'concursos_aprobar_' . $id );
+		if ( ! current_user_can( 'edit_post', $id ) || self::TYPE !== get_post_type( $id ) ) {
+			wp_die( esc_html__( 'You cannot do this.', 'photo-challenges' ) );
+		}
+
+		Concursos_Inscripcion::activar( $id );
+
+		$volver = wp_get_referer();
+		if ( ! $volver ) {
+			$volver = admin_url( 'edit.php?post_type=' . self::TYPE );
+		}
+		wp_safe_redirect(
+			add_query_arg(
+				array(
+					'concursos_hecho' => 'activados',
+					'concursos_n'     => 1,
+				),
+				remove_query_arg( array( 'concursos_hecho', 'concursos_n' ), $volver )
+			)
+		);
+		exit;
 	}
 
 	/**

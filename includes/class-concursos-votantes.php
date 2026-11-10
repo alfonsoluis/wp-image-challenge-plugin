@@ -111,7 +111,7 @@ class Concursos_Votantes {
 	 * @param string $code    Aviso.
 	 */
 	public static function volver( $reto_id, $code ) {
-		$url = Concursos_Post_Types::RETO === get_post_type( $reto_id ) ? get_permalink( $reto_id ) : home_url( '/' );
+		$url = '' !== Concursos_Envio::estado_reto( $reto_id ) ? get_permalink( $reto_id ) : Concursos_Envio::url_retos();
 		wp_safe_redirect( add_query_arg( self::AVISO_PARAM, $code, $url ) . '#concursos-votacion' );
 		exit;
 	}
@@ -126,6 +126,8 @@ class Concursos_Votantes {
 			'revisa'      => array( 'success', __( 'We sent you an email: open its link to confirm your address and be able to vote.', 'photo-challenges' ) ),
 			'espera'      => array( 'success', __( 'We already sent a link to that email a few minutes ago. Check your inbox and spam folder. If it does not arrive, request it again in 5 minutes.', 'photo-challenges' ) ),
 			'confirmado'  => array( 'success', __( 'Email confirmed! You can now vote.', 'photo-challenges' ) ),
+			'confirmado_antes' => array( 'success', __( 'Email confirmed! Voting has not started yet: you can vote once photo submissions close.', 'photo-challenges' ) ),
+			'confirmado_tarde' => array( 'success', __( 'Email confirmed, but voting for this challenge has already ended.', 'photo-challenges' ) ),
 			'votado'      => array( 'success', __( 'Vote recorded.', 'photo-challenges' ) ),
 			'quitado'     => array( 'success', __( 'Vote removed.', 'photo-challenges' ) ),
 			'suscrito'    => array( 'success', __( 'We will let you know when there is a new challenge.', 'photo-challenges' ) ),
@@ -295,8 +297,18 @@ class Concursos_Votantes {
 			? $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE confirm_hash = %s', $t, hash( 'sha256', $token ) ) )
 			: null;
 
+		$estado    = Concursos_Envio::estado_reto( $reto_id );
+		$terminada = in_array( $estado, array( 'evaluacion', 'finalizado' ), true );
+
 		if ( ! $votante || (int) $votante->confirm_expira < time() ) {
-			Concursos_Envio::render_message( 404, __( 'Invalid link', 'photo-challenges' ), __( 'This link is not valid or has expired. Register your email again to receive a new one.', 'photo-challenges' ) );
+			Concursos_Envio::render_message(
+				404,
+				__( 'Invalid link', 'photo-challenges' ),
+				$terminada
+					? __( 'This link is not valid or has expired, and voting for this challenge has already ended.', 'photo-challenges' )
+					: __( 'This link is not valid or has expired. Register your email again to receive a new one.', 'photo-challenges' ),
+				Concursos_Envio::enlace_reto( $reto_id )
+			);
 		}
 
 		$datos = array( 'estado' => self::CONFIRMADO );
@@ -305,8 +317,54 @@ class Concursos_Votantes {
 		}
 		$wpdb->update( $t, $datos, array( 'id' => (int) $votante->id ) );
 
+		// El email queda confirmado igual, pero el aviso dice si ya se puede votar.
+		$aviso = 'confirmado';
+		if ( in_array( $estado, array( 'proximo', 'envios' ), true ) ) {
+			$aviso = 'confirmado_antes';
+		} elseif ( $terminada ) {
+			$aviso = 'confirmado_tarde';
+		}
+
 		self::set_cookie( self::firma( $votante, 'sesion' ), time() + self::COOKIE_VIDA );
-		self::volver( $reto_id, 'confirmado' );
+		self::volver( $reto_id, $aviso );
+	}
+
+	/**
+	 * Reenvía el enlace de confirmación a un votante sin confirmar, desde el panel.
+	 *
+	 * @param int $id Votante.
+	 * @return bool Si se envió.
+	 */
+	public static function reenviar( $id ) {
+		$votante = self::by_id( (int) $id );
+		$reto    = self::reto_para_votar();
+		if ( ! $votante || self::PENDIENTE !== $votante->estado || ! $reto ) {
+			return false;
+		}
+		self::enviar_confirmacion( $votante, $reto, false );
+
+		return true;
+	}
+
+	/**
+	 * Reto al que lleva un enlace reenviado: el que está en votación o, si no
+	 * hay, el próximo en votarse; en último caso, el destacado.
+	 *
+	 * @return int
+	 */
+	private static function reto_para_votar() {
+		$por_fase = array();
+		foreach ( Concursos_Reto::all( array( 'publish' ) ) as $reto ) {
+			$por_fase[ $reto['status'] ][] = $reto['post']->ID;
+		}
+		foreach ( array( 'votacion', 'envios', 'proximo' ) as $fase ) {
+			if ( ! empty( $por_fase[ $fase ] ) ) {
+				return $por_fase[ $fase ][0];
+			}
+		}
+		$referencia = Concursos_Portada::reto_referencia();
+
+		return $referencia ? $referencia['post']->ID : 0;
 	}
 
 	/**
@@ -390,7 +448,7 @@ class Concursos_Votantes {
 
 		$votante = self::desde_firma( $valor, 'baja' );
 		if ( ! $votante ) {
-			Concursos_Envio::render_message( 404, __( 'Invalid link', 'photo-challenges' ), __( 'This unsubscribe link is not valid.', 'photo-challenges' ) );
+			Concursos_Envio::render_message( 404, __( 'Invalid link', 'photo-challenges' ), __( 'This unsubscribe link is not valid.', 'photo-challenges' ), Concursos_Envio::enlace_reto( 0 ) );
 		}
 
 		$titulo = __( 'New challenge notifications', 'photo-challenges' );

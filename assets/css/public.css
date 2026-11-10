@@ -927,6 +927,12 @@ body.concursos-fondo-pagina::before,
 	font-size: 1.2em;
 }
 
+/* Botón para seguir al reto desde los mensajes de los enlaces. */
+.concursos-pagina .concursos-boton {
+	background: var(--c-boton, var(--c-color));
+	color: var(--c-boton-texto, var(--c-sobre));
+}
+
 .concursos-pagina .concursos-boton-secundario {
 	min-height: 32px;
 	padding: 0 0.8em;

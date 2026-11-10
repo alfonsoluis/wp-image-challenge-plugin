@@ -62,16 +62,20 @@ class Concursos_Envio {
 		$token = sanitize_text_field( wp_unslash( $_GET[ Concursos_Inscripcion::LINK_PARAM ] ) );
 		$id    = Concursos_Participante::find_by_token( $token );
 		if ( ! $id ) {
-			self::render_message( 404, __( 'Invalid link', 'photo-challenges' ), __( 'This link is not valid. Check that you copied all of it.', 'photo-challenges' ) );
+			self::render_message( 404, __( 'Invalid link', 'photo-challenges' ), __( 'This link is not valid. Check that you copied all of it.', 'photo-challenges' ), self::enlace_reto( 0 ) );
 		}
 
 		$p = Concursos_Participante::get( $id );
+		if ( '' === self::estado_reto( $p['reto'] ) ) {
+			self::render_message( 404, __( 'Challenge not available', 'photo-challenges' ), __( 'This challenge is no longer available.', 'photo-challenges' ), self::enlace_reto( 0 ) );
+		}
+
 		if ( Concursos_Participante::ACTIVO !== $p['estado'] ) {
-			self::render_message( 403, __( 'Registration not active', 'photo-challenges' ), __( 'Your registration is not active. If you think this is a mistake, contact us.', 'photo-challenges' ) );
+			self::render_message( 403, __( 'Registration not active', 'photo-challenges' ), __( 'Your registration is not active. If you think this is a mistake, contact us.', 'photo-challenges' ), self::enlace_reto( $p['reto'] ) );
 		}
 
 		if ( ! Concursos_Reto::permite_email( Concursos_Reto::get_settings( $p['reto'] ), 'participantes', $p['email'] ) ) {
-			self::render_message( 403, __( 'Private challenge', 'photo-challenges' ), Concursos_Reto::mensaje_privado() );
+			self::render_message( 403, __( 'Private challenge', 'photo-challenges' ), Concursos_Reto::mensaje_privado(), self::enlace_reto( $p['reto'] ) );
 		}
 
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ) {
@@ -192,10 +196,12 @@ class Concursos_Envio {
 				/* translators: %s: challenge start date. */
 				echo esc_html( sprintf( __( 'Photo submissions start on %s.', 'photo-challenges' ), Concursos_Reto::format_dia( $reto['inicio'] ) ) );
 			} else {
-				esc_html_e( 'The submission period for this challenge is closed.', 'photo-challenges' );
+				// Cerrado: se dice además en qué fase está y su fecha (votación, resultados).
+				echo esc_html( trim( __( 'The submission period for this challenge is closed.', 'photo-challenges' ) . ' ' . Concursos_Galeria::frase_estado( $status, $reto ) ) );
 			}
 			?>
 		</p>
+		<?php echo $abierto ? '' : self::enlace_reto( $p['reto'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
 
 		<h2>
 			<?php
@@ -268,9 +274,63 @@ class Concursos_Envio {
 	 * @param int    $status  Código HTTP.
 	 * @param string $title   Título.
 	 * @param string $message Mensaje.
+	 * @param string $extra   HTML ya escapado bajo el mensaje, como un enlace al reto.
 	 */
-	public static function render_message( $status, $title, $message ) {
-		self::layout( $status, $title, '<h1>' . esc_html( $title ) . '</h1><p>' . esc_html( $message ) . '</p>' );
+	public static function render_message( $status, $title, $message, $extra = '' ) {
+		self::layout( $status, $title, '<h1>' . esc_html( $title ) . '</h1><p>' . esc_html( $message ) . '</p>' . $extra );
+	}
+
+	/**
+	 * Fase de un reto visible en el sitio.
+	 *
+	 * @param int $reto_id Reto.
+	 * @return string Fase, o vacío si no existe o no está publicado.
+	 */
+	public static function estado_reto( $reto_id ) {
+		if ( ! $reto_id || Concursos_Post_Types::RETO !== get_post_type( $reto_id ) || 'publish' !== get_post_status( $reto_id ) ) {
+			return '';
+		}
+
+		return Concursos_Reto::status( Concursos_Reto::get_settings( $reto_id ) );
+	}
+
+	/**
+	 * Dirección de la página con todos los retos.
+	 *
+	 * @return string
+	 */
+	public static function url_retos() {
+		$pagina = (int) get_option( Concursos_Portada::OPCION_PAGINA );
+		if ( $pagina && 'publish' === get_post_status( $pagina ) ) {
+			return get_permalink( $pagina );
+		}
+		$archivo = get_post_type_archive_link( Concursos_Post_Types::RETO );
+
+		return $archivo ? $archivo : home_url( '/' );
+	}
+
+	/**
+	 * Botón para seguir desde un mensaje: al reto, con un texto según su fase,
+	 * o a la lista de retos si ya no está disponible.
+	 *
+	 * @param int $reto_id Reto (0 = ninguno).
+	 * @return string HTML.
+	 */
+	public static function enlace_reto( $reto_id ) {
+		$estado = self::estado_reto( $reto_id );
+		if ( '' === $estado ) {
+			$url   = self::url_retos();
+			$texto = __( 'See all challenges', 'photo-challenges' );
+		} else {
+			$url    = get_permalink( $reto_id );
+			$textos = array(
+				'votacion'   => __( 'See the photos and vote', 'photo-challenges' ),
+				'finalizado' => __( 'See the results', 'photo-challenges' ),
+			);
+			$texto  = isset( $textos[ $estado ] ) ? $textos[ $estado ] : __( 'See the challenge', 'photo-challenges' );
+		}
+
+		return sprintf( '<p><a class="concursos-boton" href="%s">%s</a></p>', esc_url( $url ), esc_html( $texto ) );
 	}
 
 	/**

@@ -214,6 +214,7 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 	 */
 	protected function get_bulk_actions() {
 		return array(
+			'concursos_reenviar' => __( 'Resend confirmation link', 'photo-challenges' ),
 			'concursos_baja'     => __( 'Unsubscribe from notifications', 'photo-challenges' ),
 			'concursos_eliminar' => __( 'Delete', 'photo-challenges' ),
 		);
@@ -248,7 +249,24 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 			case 'creado':
 				return esc_html( Concursos_Reto::format_date( (int) $item->creado ) );
 			case 'email':
-				return '<strong>' . esc_html( $item->email ) . '</strong>';
+				$html = '<strong>' . esc_html( $item->email ) . '</strong>';
+				if ( Concursos_Votantes::PENDIENTE === $item->estado ) {
+					$url   = wp_nonce_url(
+						add_query_arg(
+							array(
+								'post_type' => Concursos_Post_Types::RETO,
+								'page'      => Concursos_Votantes_Admin::PAGE,
+								'action'    => 'concursos_reenviar',
+								'votante'   => array( (int) $item->id ),
+							),
+							admin_url( 'edit.php' )
+						),
+						'bulk-votantes'
+					);
+					$html .= $this->row_actions( array( 'reenviar' => sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html__( 'Resend confirmation link', 'photo-challenges' ) ) ) );
+				}
+
+				return $html;
 			case 'estado':
 				$confirmado = Concursos_Votantes::CONFIRMADO === $item->estado;
 
@@ -349,7 +367,7 @@ class Concursos_Votantes_Admin {
 	public static function procesar() {
 		$tabla  = new Concursos_Votantes_Tabla();
 		$accion = $tabla->current_action();
-		if ( ! in_array( $accion, array( 'concursos_baja', 'concursos_eliminar' ), true ) ) {
+		if ( ! in_array( $accion, array( 'concursos_reenviar', 'concursos_baja', 'concursos_eliminar' ), true ) ) {
 			return;
 		}
 
@@ -360,9 +378,12 @@ class Concursos_Votantes_Admin {
 
 		global $wpdb;
 		$ids = isset( $_REQUEST['votante'] ) ? array_filter( array_map( 'absint', (array) wp_unslash( $_REQUEST['votante'] ) ) ) : array();
-		$n   = count( $ids );
+		$n   = 'concursos_reenviar' === $accion ? 0 : count( $ids );
 		foreach ( $ids as $id ) {
-			if ( 'concursos_eliminar' === $accion ) {
+			if ( 'concursos_reenviar' === $accion ) {
+				// Solo cuenta los envíos hechos: los ya confirmados se saltan.
+				$n += Concursos_Votantes::reenviar( $id ) ? 1 : 0;
+			} elseif ( 'concursos_eliminar' === $accion ) {
 				$wpdb->delete( Concursos_DB::votos(), array( 'votante_id' => $id ), array( '%d' ) );
 				$wpdb->delete( Concursos_DB::votantes(), array( 'id' => $id ), array( '%d' ) );
 			} else {
@@ -370,11 +391,16 @@ class Concursos_Votantes_Admin {
 			}
 		}
 
-		$url = remove_query_arg( array( 'action', 'action2', 'votante', '_wpnonce', '_wp_http_referer', 'filter_action' ) );
+		$hechos = array(
+			'concursos_reenviar' => 'reenviados',
+			'concursos_eliminar' => 'eliminados',
+			'concursos_baja'     => 'bajas',
+		);
+		$url    = remove_query_arg( array( 'action', 'action2', 'votante', '_wpnonce', '_wp_http_referer', 'filter_action' ) );
 		wp_safe_redirect(
 			add_query_arg(
 				array(
-					'concursos_hecho' => 'concursos_eliminar' === $accion ? 'eliminados' : 'bajas',
+					'concursos_hecho' => $hechos[ $accion ],
 					'concursos_n'     => $n,
 				),
 				$url
@@ -391,7 +417,15 @@ class Concursos_Votantes_Admin {
 		$hecho = isset( $_GET['concursos_hecho'] ) ? sanitize_key( wp_unslash( $_GET['concursos_hecho'] ) ) : '';
 		$n     = isset( $_GET['concursos_n'] ) ? absint( $_GET['concursos_n'] ) : 0;
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
-		if ( 'eliminados' === $hecho ) {
+		if ( 'reenviados' === $hecho && ! $n ) {
+			printf( '<div class="notice notice-warning is-dismissible"><p>%s</p></div>', esc_html__( 'No link was sent: only unconfirmed voters can receive one, and there must be a published challenge.', 'photo-challenges' ) );
+
+			return;
+		}
+		if ( 'reenviados' === $hecho ) {
+			/* translators: %d: number of voters. */
+			$texto = sprintf( _n( '%d confirmation link sent.', '%d confirmation links sent.', $n, 'photo-challenges' ), $n );
+		} elseif ( 'eliminados' === $hecho ) {
 			/* translators: %d: number of voters. */
 			$texto = sprintf( _n( '%d voter and their votes deleted.', '%d voters and their votes deleted.', $n, 'photo-challenges' ), $n );
 		} elseif ( 'bajas' === $hecho ) {
