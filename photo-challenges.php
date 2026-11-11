@@ -69,6 +69,7 @@ if ( is_admin() ) {
 	require_once CONCURSOS_PATH . 'includes/admin/class-concursos-entradas-admin.php';
 	require_once CONCURSOS_PATH . 'includes/admin/class-concursos-duplicar.php';
 	require_once CONCURSOS_PATH . 'includes/admin/class-concursos-votantes-admin.php';
+	require_once CONCURSOS_PATH . 'includes/admin/class-concursos-ajustes.php';
 
 	Concursos_Reto_Metabox::init();
 	Concursos_Admin::init();
@@ -76,6 +77,7 @@ if ( is_admin() ) {
 	Concursos_Entradas_Admin::init();
 	Concursos_Duplicar::init();
 	Concursos_Votantes_Admin::init();
+	Concursos_Ajustes::init();
 }
 
 register_activation_hook(

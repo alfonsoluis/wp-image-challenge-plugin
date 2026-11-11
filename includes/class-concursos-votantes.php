@@ -571,6 +571,13 @@ class Concursos_Votantes {
 					?>
 				</strong><br>
 				<?php
+				if ( $permitido && 3 === $total ) {
+					echo esc_html__( 'Choose your 1st, 2nd and 3rd: they are worth 3, 2 and 1 points.', 'photo-challenges' ) . '<br>';
+				} elseif ( $permitido && 2 === $total ) {
+					echo esc_html__( 'Choose your 1st and 2nd: they are worth 3 and 2 points.', 'photo-challenges' ) . '<br>';
+				}
+				?>
+				<?php
 				echo esc_html(
 					$permitido
 						/* translators: 1: votes left, 2: total votes. */

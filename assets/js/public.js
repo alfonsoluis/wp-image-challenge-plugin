@@ -54,7 +54,13 @@
 		descripcion.hidden = ! datos.descripcion;
 		titulo.textContent = datos.titulo;
 		autor.textContent = datos.autor;
-		autor.href = datos.autorUrl;
+		if ( datos.autorUrl ) {
+			autor.href = datos.autorUrl;
+		} else {
+			autor.removeAttribute( 'href' );
+		}
+		// En una votación anónima no hay título ni autor que mostrar.
+		modal.querySelector( '.concursos-modal__autor' ).hidden = ! datos.titulo && ! datos.autor;
 		reto.textContent = datos.reto;
 		reto.href = datos.retoUrl;
 		avatar.hidden = ! datos.avatar;

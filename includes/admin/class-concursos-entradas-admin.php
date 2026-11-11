@@ -150,7 +150,7 @@ class Concursos_Entradas_Admin {
 			'title'                  => __( 'Title', 'photo-challenges' ),
 			'concursos_participante' => __( 'Participant', 'photo-challenges' ),
 			'concursos_reto'         => __( 'Challenge', 'photo-challenges' ),
-			'concursos_votos'        => __( 'Votes', 'photo-challenges' ),
+			'concursos_votos'        => __( 'Points', 'photo-challenges' ),
 			'date'                   => __( 'Submitted', 'photo-challenges' ),
 		);
 	}

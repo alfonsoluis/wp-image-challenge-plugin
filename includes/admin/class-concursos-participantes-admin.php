@@ -242,8 +242,8 @@ class Concursos_Participantes_Admin {
 			) + $actions;
 		}
 
-		// Solo los participantes activos tienen perfil público.
-		if ( Concursos_Participante::esta_activo( $post->ID ) ) {
+		// Solo los participantes activos tienen perfil público, si los perfiles están activados.
+		if ( Concursos_Perfil::activos() && Concursos_Participante::esta_activo( $post->ID ) ) {
 			$perfil  = array(
 				'concursos_perfil' => sprintf(
 					'<a href="%s" target="_blank" rel="noopener">%s</a>',

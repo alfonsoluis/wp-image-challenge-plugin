@@ -63,6 +63,7 @@ class Concursos_Reto {
 			'votos_por_votante' => 1,
 			'lugares'           => 1,
 			'max_fotos'         => 1,
+			'anonimo'           => 0,
 			'premios'           => array( '', '', '' ),
 			'reglas'            => '',
 			'privado_participantes' => 0,
@@ -149,6 +150,7 @@ class Concursos_Reto {
 		$s['votos_por_votante'] = isset( $raw['votos_por_votante'] ) ? min( 3, max( 1, absint( $raw['votos_por_votante'] ) ) ) : 1;
 		$s['lugares']           = ( isset( $raw['lugares'] ) && 3 === absint( $raw['lugares'] ) ) ? 3 : 1;
 		$s['max_fotos']         = isset( $raw['max_fotos'] ) ? min( 20, max( 1, absint( $raw['max_fotos'] ) ) ) : 1;
+		$s['anonimo']           = empty( $raw['anonimo'] ) ? 0 : 1;
 
 		$premios = isset( $raw['premios'] ) ? (array) $raw['premios'] : array();
 		for ( $i = 0; $i < 3; $i++ ) {
@@ -201,6 +203,22 @@ class Concursos_Reto {
 		}
 
 		return $errors;
+	}
+
+	/**
+	 * Si hay que ocultar el título y el autor de las fotos: en un reto con
+	 * votación anónima, desde que se ven las fotos hasta que termina la votación.
+	 *
+	 * @param array       $s      Configuración del reto.
+	 * @param string|null $status Fase, si ya se conoce.
+	 * @return bool
+	 */
+	public static function oculta_autoria( array $s, $status = null ) {
+		if ( empty( $s['anonimo'] ) ) {
+			return false;
+		}
+
+		return in_array( null === $status ? self::status( $s ) : $status, array( 'envios', 'votacion' ), true );
 	}
 
 	/**

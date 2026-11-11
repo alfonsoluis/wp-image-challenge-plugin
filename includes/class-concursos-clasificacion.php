@@ -118,7 +118,13 @@ class Concursos_Clasificacion {
 						<?php foreach ( $filas as $fila ) : ?>
 							<tr>
 								<td><?php echo esc_html( number_format_i18n( $fila['lugar'] ) . ( $fila['empate'] ? ' ' . __( '(tie)', 'photo-challenges' ) : '' ) ); ?></td>
-								<td><a href="<?php echo esc_url( $fila['url'] ); ?>"><?php echo esc_html( $fila['nombre'] ); ?></a></td>
+								<td>
+									<?php if ( $fila['url'] ) : ?>
+										<a href="<?php echo esc_url( $fila['url'] ); ?>"><?php echo esc_html( $fila['nombre'] ); ?></a>
+									<?php else : ?>
+										<?php echo esc_html( $fila['nombre'] ); ?>
+									<?php endif; ?>
+								</td>
 								<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( $fila['retos'] ) ); ?></td>
 								<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( $fila['puntos'] ) ); ?></td>
 							</tr>
@@ -126,7 +132,7 @@ class Concursos_Clasificacion {
 					</tbody>
 				</table>
 			</div>
-			<p class="concursos-xs"><?php esc_html_e( 'Points are the sum of the votes received in the challenges finished during the year.', 'photo-challenges' ); ?></p>
+			<p class="concursos-xs"><?php esc_html_e( 'Points are added up across the challenges finished during the year. With several votes per voter, a 1st is worth 3 points, a 2nd 2 and a 3rd 1; with a single vote, each vote is worth 1 point.', 'photo-challenges' ); ?></p>
 		</section>
 		<?php
 		return ob_get_clean();

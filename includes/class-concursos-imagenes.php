@@ -64,6 +64,21 @@ class Concursos_Imagenes {
 		$accion( 'wp_editor_set_quality', array( __CLASS__, 'calidad' ), 999, 2 );
 		$accion( 'image_editor_output_format', array( __CLASS__, 'formato' ), 999, 1 );
 		$accion( 'intermediate_image_sizes_advanced', array( __CLASS__, 'tamanos' ), 999, 2 );
+		$accion( 'wp_handle_upload_prefilter', array( __CLASS__, 'nombre_aleatorio' ) );
+	}
+
+	/**
+	 * Da a cada archivo subido un nombre aleatorio: el nombre original puede
+	 * delatar a su autor, por ejemplo en una votación anónima.
+	 *
+	 * @param array $file Archivo subido.
+	 * @return array
+	 */
+	public static function nombre_aleatorio( $file ) {
+		$ext          = strtolower( pathinfo( (string) $file['name'], PATHINFO_EXTENSION ) );
+		$file['name'] = 'foto-' . strtolower( wp_generate_password( 12, false ) ) . ( $ext ? '.' . $ext : '' );
+
+		return $file;
 	}
 
 	/**

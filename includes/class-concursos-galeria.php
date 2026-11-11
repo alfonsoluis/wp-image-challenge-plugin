@@ -272,16 +272,21 @@ class Concursos_Galeria {
 	 *
 	 * @param WP_Post $entrada Foto.
 	 * @param string  $extra   HTML ya escapado bajo los datos.
+	 * @param bool    $anonima Si se ocultan su título y su autor.
 	 * @return string
 	 */
-	private static function tarjeta( $entrada, $extra = '' ) {
+	private static function tarjeta( $entrada, $extra = '', $anonima = false ) {
+		if ( $anonima ) {
+			return sprintf( '<li><figure>%s<figcaption>%s</figcaption></figure></li>', Concursos_Entrada::miniatura( $entrada, 'medium_large', true ), $extra );
+		}
+
 		$autor = Concursos_Entrada::owner( $entrada->ID );
 
 		return sprintf(
 			'<li><figure>%s<figcaption><strong>%s</strong><span>%s</span>%s</figcaption></figure></li>',
 			Concursos_Entrada::miniatura( $entrada ),
 			esc_html( get_the_title( $entrada ) ),
-			$autor ? sprintf( '<a href="%s">%s</a>', esc_url( Concursos_Perfil::url( $autor ) ), esc_html( get_the_title( $autor ) ) ) : '',
+			$autor ? Concursos_Perfil::enlace( $autor ) : '',
 			$extra
 		);
 	}
@@ -327,13 +332,17 @@ class Concursos_Galeria {
 		if ( $votante && ! Concursos_Reto::permite_email( $s, 'votantes', $votante->email ) ) {
 			$votante = null;
 		}
-		$mios    = $votante ? Concursos_Votos::de_votante( (int) $votante->id, $reto_id ) : array();
-		$puede   = count( $mios ) < (int) $s['votos_por_votante'];
+		$mios    = $votante ? Concursos_Votos::puestos_de_votante( (int) $votante->id, $reto_id ) : array();
+		$anonima = Concursos_Reto::oculta_autoria( $s, $status );
+
+		if ( $anonima ) {
+			echo '<p class="concursos-sm">' . esc_html__( 'Anonymous voting: the title and author of each photo will be shown when voting ends.', 'photo-challenges' ) . '</p>';
+		}
 
 		echo '<ul class="concursos-galeria__rejilla">';
 		foreach ( $entradas as $entrada ) {
-			$boton = $votante ? Concursos_Votos::boton( $reto_id, $entrada->ID, in_array( $entrada->ID, $mios, true ), $puede ) : '';
-			echo self::tarjeta( $entrada, $boton ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+			$boton = $votante ? Concursos_Votos::botones( $reto_id, $s, $entrada->ID, $mios ) : '';
+			echo self::tarjeta( $entrada, $boton, $anonima ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
 		}
 		echo '</ul>';
 	}
@@ -353,9 +362,8 @@ class Concursos_Galeria {
 		$votos   = Concursos_Votos::de_fotos( $reto_id, $entradas );
 		$ranking = Concursos_Votos::rank( $votos, (int) $s['lugares'] );
 
-		$etiqueta_votos = function ( $n ) {
-			/* translators: %d: number of votes. */
-			return '<span class="concursos-votos">' . esc_html( sprintf( _n( '%d vote', '%d votes', $n, 'photo-challenges' ), $n ) ) . '</span>';
+		$etiqueta_votos = function ( $n ) use ( $s ) {
+			return '<span class="concursos-votos">' . esc_html( Concursos_Votos::etiqueta( $n, $s ) ) . '</span>';
 		};
 
 		echo '<h2>' . esc_html__( 'Results', 'photo-challenges' ) . '</h2>';
@@ -390,7 +398,7 @@ class Concursos_Galeria {
 			echo '</ul></div>';
 		}
 
-		self::resumen( $reto_id, $ranking, $votos, $por_id );
+		self::resumen( $reto_id, $ranking, $votos, $por_id, $s );
 		echo Concursos_Clasificacion::html( (int) wp_date( 'Y', (int) $s['cierre'] ), (int) $s['cierre'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
 	}
 
@@ -401,8 +409,9 @@ class Concursos_Galeria {
 	 * @param array     $ranking Puestos y resto.
 	 * @param int[]     $votos   entrada => votos.
 	 * @param WP_Post[] $por_id  entrada => foto.
+	 * @param array     $s       Configuración del reto.
 	 */
-	private static function resumen( $reto_id, array $ranking, array $votos, array $por_id ) {
+	private static function resumen( $reto_id, array $ranking, array $votos, array $por_id, array $s ) {
 		$total = array_sum( $votos );
 		if ( ! $total ) {
 			return;
@@ -436,7 +445,7 @@ class Concursos_Galeria {
 							<th scope="col"><?php esc_html_e( 'Place', 'photo-challenges' ); ?></th>
 							<th scope="col"><?php esc_html_e( 'Photo', 'photo-challenges' ); ?></th>
 							<th scope="col"><?php esc_html_e( 'Participant', 'photo-challenges' ); ?></th>
-							<th scope="col" class="concursos-tabla__num"><?php esc_html_e( 'Votes', 'photo-challenges' ); ?></th>
+							<th scope="col" class="concursos-tabla__num"><?php echo Concursos_Votos::por_puestos( $s ) ? esc_html__( 'Points', 'photo-challenges' ) : esc_html__( 'Votes', 'photo-challenges' ); ?></th>
 							<th scope="col" class="concursos-tabla__num">%</th>
 						</tr>
 					</thead>
@@ -455,7 +464,7 @@ class Concursos_Galeria {
 										<span><?php echo esc_html( get_the_title( $foto ) ); ?></span>
 									</div>
 								</td>
-								<td><a href="<?php echo esc_url( Concursos_Perfil::url( $autor ) ); ?>"><?php echo esc_html( get_the_title( $autor ) ); ?></a></td>
+								<td><?php echo Concursos_Perfil::enlace( $autor ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?></td>
 								<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( $n ) ); ?></td>
 								<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( $n / $total * 100, 1 ) ); ?></td>
 							</tr>

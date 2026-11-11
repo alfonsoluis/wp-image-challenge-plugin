@@ -15,6 +15,9 @@ defined( 'ABSPATH' ) || exit;
  */
 class Concursos_Perfil {
 
+	/** Opción de los ajustes que activa los perfiles públicos. */
+	const OPCION = 'concursos_perfiles';
+
 	const QUERY         = 'concursos_perfil';
 	const HASH_LEN      = 10;
 	const RULES_VERSION = '1';
@@ -80,12 +83,39 @@ class Concursos_Perfil {
 	}
 
 	/**
+	 * Si los perfiles públicos están activados en los ajustes del plugin.
+	 *
+	 * @return bool
+	 */
+	public static function activos() {
+		return '1' === (string) get_option( self::OPCION, '1' );
+	}
+
+	/**
+	 * Nombre de un participante, enlazado a su perfil si los perfiles están activados.
+	 *
+	 * @param int $id Participante.
+	 * @return string HTML.
+	 */
+	public static function enlace( $id ) {
+		$url = self::url( $id );
+
+		return $url
+			? sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html( get_the_title( $id ) ) )
+			: esc_html( get_the_title( $id ) );
+	}
+
+	/**
 	 * URL del perfil de un participante.
 	 *
 	 * @param int $id Participante.
-	 * @return string
+	 * @return string Vacío si los perfiles están desactivados.
 	 */
 	public static function url( $id ) {
+		if ( ! self::activos() ) {
+			return '';
+		}
+
 		$email = (string) get_post_meta( $id, Concursos_Participante::META . 'email', true );
 		$slug  = trim( sanitize_title( get_the_title( $id ) ) . '-' . substr( md5( self::sal() . $email ), 0, self::HASH_LEN ), '-' );
 
@@ -128,7 +158,7 @@ class Concursos_Perfil {
 			return;
 		}
 
-		$inscripciones = preg_match( '/([a-f0-9]{' . self::HASH_LEN . '})$/', $slug, $m ) ? self::inscripciones( $m[1] ) : array();
+		$inscripciones = ( self::activos() && preg_match( '/([a-f0-9]{' . self::HASH_LEN . '})$/', $slug, $m ) ) ? self::inscripciones( $m[1] ) : array();
 		if ( ! $inscripciones ) {
 			global $wp_query;
 			$wp_query->set_404();
@@ -198,8 +228,9 @@ class Concursos_Perfil {
 			}
 			$s      = Concursos_Reto::get_settings( $reto_id );
 			$status = Concursos_Reto::status( $s );
-			// En un reto cerrado, las fotos no pueden verse aquí antes que en el reto.
-			$mias = Concursos_Reto::photos_visible( $s )
+			// En un reto cerrado, las fotos no pueden verse aquí antes que en el reto,
+			// y en una votación anónima no pueden delatar a su autor.
+			$mias = ( Concursos_Reto::photos_visible( $s ) && ! Concursos_Reto::oculta_autoria( $s, $status ) )
 				? Concursos_Entrada::find(
 					array(
 						'reto'         => $reto_id,

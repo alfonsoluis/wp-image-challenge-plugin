@@ -44,7 +44,7 @@ function photo_challenges_borrar_datos() {
 		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $wpdb->prefix . $tabla ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 	}
 
-	foreach ( array( 'concursos_db_version', 'concursos_rewrite_version', 'concursos_pagina_retos' ) as $opcion ) {
+	foreach ( array( 'concursos_db_version', 'concursos_rewrite_version', 'concursos_pagina_retos', 'concursos_perfiles' ) as $opcion ) {
 		delete_option( $opcion );
 	}
 }

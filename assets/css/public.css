@@ -637,6 +637,32 @@ body.concursos-fondo-pagina::before,
 	cursor: not-allowed;
 }
 
+/* Votación por puestos: un botón por puesto (1.º, 2.º, 3.º). */
+.concursos-puestos {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.4em;
+}
+
+.concursos-disenado .concursos-puestos button.concursos-voto {
+	min-width: 44px;
+	padding: 0 0.7em;
+}
+
+.concursos-disenado button.concursos-voto--usado {
+	border-style: dashed;
+}
+
+.concursos-puestos__mio {
+	padding: 0 0.7em;
+	border-radius: 4px;
+	background: var(--c-acento);
+	color: var(--c-sobre-acento);
+	font-weight: 600;
+	line-height: 44px;
+}
+
 /* Resultados */
 
 .concursos-puesto {

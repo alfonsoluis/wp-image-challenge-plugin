@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Concursos_DB {
 
-	const VERSION = '1';
+	const VERSION = '2';
 	const OPTION  = 'concursos_db_version';
 
 	/**
@@ -86,10 +86,12 @@ class Concursos_DB {
 				votante_id bigint(20) unsigned NOT NULL,
 				reto_id bigint(20) unsigned NOT NULL,
 				entrada_id bigint(20) unsigned NOT NULL,
+				puesto tinyint(3) unsigned NOT NULL DEFAULT 0,
 				creado bigint(20) unsigned NOT NULL DEFAULT 0,
 				PRIMARY KEY  (id),
 				UNIQUE KEY voto (votante_id,entrada_id),
-				KEY reto_entrada (reto_id,entrada_id)
+				KEY reto_entrada (reto_id,entrada_id),
+				KEY votante_reto (votante_id,reto_id)
 			) {$charset};"
 		);
 

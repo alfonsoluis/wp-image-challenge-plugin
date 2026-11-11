@@ -143,11 +143,12 @@ class Concursos_Entrada {
 	/**
 	 * Miniatura de una foto: al pulsarla se abre en grande con su autor y su reto.
 	 *
-	 * @param WP_Post $foto   Foto.
-	 * @param string  $tamano Tamaño de la miniatura.
+	 * @param WP_Post $foto    Foto.
+	 * @param string  $tamano  Tamaño de la miniatura.
+	 * @param bool    $anonima Si se ocultan su título y su autor.
 	 * @return string
 	 */
-	public static function miniatura( $foto, $tamano = 'medium_large' ) {
+	public static function miniatura( $foto, $tamano = 'medium_large', $anonima = false ) {
 		if ( ! wp_script_is( 'concursos-public', 'enqueued' ) ) {
 			wp_enqueue_script( 'concursos-public', CONCURSOS_URL . 'assets/js/public.js', array(), CONCURSOS_VERSION, true );
 			wp_localize_script(
@@ -160,19 +161,19 @@ class Concursos_Entrada {
 			);
 		}
 
-		$titulo  = get_the_title( $foto );
-		$autor   = self::owner( $foto->ID );
+		$titulo  = $anonima ? '' : get_the_title( $foto );
+		$autor   = $anonima ? 0 : self::owner( $foto->ID );
 		$reto_id = (int) get_post_meta( $foto->ID, self::META . 'reto', true );
-		$avatar  = get_the_post_thumbnail_url( $autor, 'thumbnail' );
+		$avatar  = $autor ? get_the_post_thumbnail_url( $autor, 'thumbnail' ) : '';
 
 		return sprintf(
 			'<button type="button" class="concursos-foto" aria-haspopup="dialog" aria-label="%1$s" data-grande="%2$s" data-titulo="%3$s" data-autor="%4$s" data-autor-url="%5$s" data-avatar="%6$s" data-reto="%7$s" data-reto-url="%8$s" data-descripcion="%10$s">%9$s</button>',
 			/* translators: %s: photo title. */
-			esc_attr( sprintf( __( 'View larger photo: %s', 'photo-challenges' ), $titulo ) ),
+			esc_attr( $anonima ? __( 'View larger photo', 'photo-challenges' ) : sprintf( __( 'View larger photo: %s', 'photo-challenges' ), $titulo ) ),
 			esc_url( wp_get_attachment_image_url( get_post_thumbnail_id( $foto ), 'full' ) ),
 			esc_attr( $titulo ),
-			esc_attr( get_the_title( $autor ) ),
-			esc_url( Concursos_Perfil::url( $autor ) ),
+			esc_attr( $autor ? get_the_title( $autor ) : '' ),
+			esc_url( $autor ? Concursos_Perfil::url( $autor ) : '' ),
 			esc_url( (string) $avatar ),
 			esc_attr( get_the_title( $reto_id ) ),
 			esc_url( get_permalink( $reto_id ) ),

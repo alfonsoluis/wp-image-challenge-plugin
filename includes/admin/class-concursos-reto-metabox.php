@@ -188,6 +188,16 @@ class Concursos_Reto_Metabox {
 							</option>
 						<?php endfor; ?>
 					</select>
+					<p class="description"><?php esc_html_e( 'With more than one vote, each voter chooses a 1st, 2nd and 3rd, worth 3, 2 and 1 points.', 'photo-challenges' ); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Anonymous voting', 'photo-challenges' ); ?></th>
+				<td>
+					<label class="concursos-radio--block">
+						<input type="checkbox" name="concursos[anonimo]" value="1" <?php checked( ! empty( $s['anonimo'] ) ); ?>>
+						<?php esc_html_e( 'Hide the title and author of each photo until voting ends', 'photo-challenges' ); ?>
+					</label>
 				</td>
 			</tr>
 			<tr>
