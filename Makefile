@@ -9,7 +9,7 @@ export
 
 WP = docker compose run --rm wpcli
 
-.PHONY: up down install wp logs debug-log reset demo zip
+.PHONY: up down install wp logs debug-log reset demo zip i18n e2e
 
 up: ## Levanta WordPress, MariaDB y phpMyAdmin
 	docker compose up -d
@@ -48,6 +48,14 @@ demo: ## Reto de prueba abierto con participantes y fotos (FASE=envios|votacion|
 
 zip: ## Genera photo-challenges.zip con lo último confirmado en git
 	git archive --format=zip --prefix=photo-challenges/ -o photo-challenges.zip HEAD
+
+i18n: ## Regenera .pot, .po y .mo (NUEVAS=pares.json añade traducciones nuevas)
+	docker compose run --rm -q wpcli i18n make-pot /var/www/html/wp-content/plugins/photo-challenges /var/www/html/wp-content/plugins/photo-challenges/languages/photo-challenges.pot --slug=photo-challenges --domain=photo-challenges --exclude=docker,tests,languages,docs,.wordpress-org --headers='{"Report-Msgid-Bugs-To":"https://github.com/alfonsoluis/wp-image-challenge-plugin/issues"}'
+	python3 -I docker/i18n.py $(NUEVAS)
+	docker compose run --rm -q wpcli i18n make-mo /var/www/html/wp-content/plugins/photo-challenges/languages
+
+e2e: ## Pruebas de extremo a extremo contra el entorno local (T=votacion para una sola)
+	@for t in $(if $(T),tests/e2e/e2e_$(T).py,tests/e2e/e2e_*.py); do echo "== $$t"; python3 -I $$t 2>&1 | grep -E "^FALLO|FALLOS|Traceback|Error:"; done
 
 reset: ## Borra TODO (contenedores y volúmenes de datos)
 	docker compose down -v

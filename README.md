@@ -98,6 +98,8 @@ cp .env.example .env        # opcional: puertos y credenciales
 make install                # levanta todo, instala WordPress en español y activa el plugin
 make demo                   # reto de ejemplo con participantes y fotos
 make demo FASE=votacion     # el mismo reto en votación (o FASE=finalizado, con resultados)
+make e2e                    # pruebas de extremo a extremo (T=votacion para una sola)
+make i18n                   # regenera .pot, .po y .mo (NUEVAS=pares.json añade traducciones)
 make wp c="plugin list"     # cualquier comando de wp-cli
 make debug-log              # sigue wp-content/debug.log
 make down                   # detiene (conserva los datos)
