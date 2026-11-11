@@ -27,10 +27,11 @@ Pensado para asociaciones de fotografía, escuelas y organizaciones que ya tiene
 | 🔒 **Retos privados** | Limita participantes y, si quieres, votantes a una lista de emails. |
 | 🙋 **Inscripción y aprobación** | Formulario público con foto y redes sociales. Filtra, aprueba o desactiva en bloque desde el panel. |
 | 🔗 **Enlace personal** | Cada participante aprobado recibe por email un enlace para subir sus fotos, sin contraseñas. |
-| 🗳️ **Votación con email confirmado** | De 1 a 3 votos por reto, con posibilidad de retirar un voto mientras dure la votación. |
+| 🗳️ **Votación con email confirmado** | De 1 a 3 votos por reto. Con varios, cada votante elige su 1.º, 2.º y 3.º, que valen 3, 2 y 1 puntos, y puede cambiarlos mientras dure la votación. |
+| 🕶️ **Votación anónima** | Opción por reto para ocultar el título y el autor de las fotos hasta que termina la votación. |
 | 🥇 **Resultados con empates** | Uno o tres lugares, premios opcionales y empates con la misma prominencia. |
 | 🏅 **Clasificación anual** | Suma los votos de cada persona en los retos terminados del año, en la portada y en cada reto. |
-| 👤 **Perfiles de participante** | Foto, redes, retos, fotos y puestos, sin mostrar nunca el email. |
+| 👤 **Perfiles de participante** | Foto, redes, retos, fotos y puestos, sin mostrar nunca el email. Se pueden desactivar en **Retos → Ajustes**. |
 | 📣 **Avisos de nuevos retos** | Quien se suscribe recibe un email al publicarse un reto, y puede darse de baja cuando quiera. |
 | 🧬 **Duplicar retos** | Crea una nueva edición en un clic, copiando o no a sus participantes activos. |
 | 🎨 **Diseño por reto** | Los colores del tema o 10 paletas armónicas, y 3 tamaños de texto. La tipografía siempre es la de tu tema. |
@@ -74,8 +75,21 @@ Cada reto decide en qué páginas aparece: portada de retos, detalle del reto o 
 1. Descarga el ZIP con **Code → Download ZIP**. Solo contiene el plugin.
 2. En tu WordPress, ve a **Plugins → Añadir nuevo → Subir plugin**, elige el ZIP y actívalo.
 3. Crea tu primer reto en **Retos → Crear nuevo reto**.
-4. Crea una página con el shortcode `[concursos_inscripcion]` para que la gente se inscriba.
-5. Añade al menú la página **Retos**, que el plugin crea automáticamente: en **Apariencia → Editor → Navegación** con temas de bloques, o en **Apariencia → Menús** con temas clásicos.
+4. Añade al menú las páginas **Retos** e **Inscripción a retos**, que el plugin crea al activarse: en **Apariencia → Editor → Navegación** con temas de bloques, o en **Apariencia → Menús** con temas clásicos.
+
+## Las páginas del plugin
+
+Al activarse, el plugin crea dos páginas normales de WordPress. En **Páginas** aparecen marcadas como «Página de retos» y «Página de inscripción». Puedes cambiarles el título, añadirlas al menú o moverlas como cualquier otra página.
+
+| Página | Qué muestra | Cómo funciona |
+|---|---|---|
+| **Retos** (`/retos/`, o `/challenges/` si el sitio está en inglés) | El reto en curso destacado, los próximos, los anteriores y la clasificación anual. | El plugin pinta su contenido, así que lo que escribas en ella no se muestra. Cada reto tiene además su propia página, `/retos/nombre-del-reto/`, con sus fotos, la votación y los resultados. |
+| **Inscripción a retos** | El formulario para inscribirse en un reto: nombre, email, foto y redes. | Lleva el shortcode `[concursos_inscripcion]`, que es el que muestra el formulario. Puedes añadir texto antes o después, o poner el shortcode en otra página. |
+
+- Los botones **Inscribirme en un reto** (en la página Retos) e **Inscribirme en este reto** (en cada reto) llevan a la primera página publicada que contiene el shortcode. Solo aparecen si esa página existe y hay algún reto **próximo** o **recibiendo fotos**.
+- El formulario para **registrarse como votante** no necesita ninguna página: aparece en la propia página del reto durante la fase de votación.
+- Si borras una de estas páginas, el plugin no la vuelve a crear. Para recuperar la inscripción, crea una página con el bloque **Shortcode** y escribe `[concursos_inscripcion]`. Sin la página Retos, la lista sigue disponible en `/retos/`.
+- Si ya tenías una página con el shortcode antes de activar el plugin, se usa esa y no se crea otra.
 
 ## Cómo funciona un reto
 

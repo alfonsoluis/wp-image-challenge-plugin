@@ -30,14 +30,15 @@ Create a challenge, open registration, approve participants, collect their photo
 
 * Public registration form with profile photo and social networks.
 * A personal link by email to submit photos: no passwords and no WordPress account.
-* Email-verified voting, with 1 to 3 votes per challenge.
+* Email-verified voting, with 1 to 3 votes per challenge. With several votes, each voter picks a 1st, 2nd and 3rd, worth 3, 2 and 1 points.
+* Optional anonymous voting: photo titles and authors stay hidden until voting ends.
 * Optional email notifications about new challenges, with one-click unsubscribe.
 
 = On your site =
 
 * A challenges page with the current challenge featured and past ones listed.
 * Results with prizes and ties shown with equal prominence, a vote summary and an annual general ranking.
-* Participant profiles with their photos and places.
+* Participant profiles with their photos and places, which you can turn off in the plugin settings.
 * Enlarged photos with their description, author and challenge.
 * Each challenge can use your theme colors or one of 10 color palettes, and 3 text sizes. Typography always comes from your theme.
 * An optional background of photography icons that fades into the page. Each challenge chooses whether it appears on the challenges page, the challenge details and the registration page.
@@ -55,10 +56,17 @@ The background icons are Material Symbols by Google, used under the Apache Licen
 
 1. In WordPress, go to Plugins > Add New, search for "Photo Challenges", then install and activate it.
 2. Create a challenge in Challenges > Create new challenge.
-3. Create a page with the `[concursos_inscripcion]` shortcode so people can register.
-4. Add the Challenges page, which the plugin creates for you, to your site menu.
+3. Add the Challenges and Challenge registration pages, which the plugin creates for you, to your site menu.
 
 == Frequently Asked Questions ==
+
+= Which pages does the plugin create? =
+
+Two normal WordPress pages. The Challenges page (/challenges/, or /retos/ on Spanish sites) lists the current, upcoming and past challenges; the plugin draws its content. The Challenge registration page contains the `[concursos_inscripcion]` shortcode, which shows the registration form: you can add text around it or move the shortcode to another page. If you delete a page, the plugin does not create it again; to restore registration, add the shortcode to any page.
+
+= Why don't I see the registration button? =
+
+The "Join a challenge" buttons appear when a published page contains the `[concursos_inscripcion]` shortcode and at least one challenge is upcoming or accepting photos. The form to register as a voter needs no page: it appears on the challenge page during voting.
 
 = Do participants need a WordPress account? =
 

@@ -17,6 +17,7 @@ class Concursos_Inscripcion {
 	const RESULT_PARAM  = 'concursos_inscripcion';
 	const LINK_PARAM    = 'concursos_envio';
 	const FOTO_EXTS     = array( 'jpg', 'jpeg', 'png', 'webp' );
+	const OPCION_PAGINA = 'concursos_pagina_inscripcion';
 
 	/**
 	 * Engancha los hooks.
@@ -27,6 +28,53 @@ class Concursos_Inscripcion {
 		add_action( 'admin_post_' . self::ACTION, array( __CLASS__, 'handle' ) );
 		add_action( 'wp_after_insert_post', array( __CLASS__, 'enlaces_al_publicar' ), 10, 4 );
 		add_filter( 'body_class', array( __CLASS__, 'clase_fondo' ) );
+		add_action( 'init', array( __CLASS__, 'asegurar_pagina' ), 21 );
+		add_filter( 'display_post_states', array( __CLASS__, 'estado_pagina' ), 10, 2 );
+	}
+
+	/**
+	 * Crea una vez la página de inscripción, con el shortcode, salvo que ya haya
+	 * una. Si después se borra, no se vuelve a crear.
+	 *
+	 * La opción guarda el ID de la página creada, o "existente" si se usó una
+	 * que ya había (esa no se borra al desinstalar).
+	 */
+	public static function asegurar_pagina() {
+		if ( get_option( self::OPCION_PAGINA ) ) {
+			return;
+		}
+		if ( self::url() ) {
+			update_option( self::OPCION_PAGINA, 'existente' );
+
+			return;
+		}
+
+		$id = wp_insert_post(
+			array(
+				'post_type'    => 'page',
+				'post_status'  => 'publish',
+				'post_title'   => __( 'Challenge registration', 'photo-challenges' ),
+				'post_content' => '<!-- wp:shortcode -->[' . self::SHORTCODE . ']<!-- /wp:shortcode -->',
+			)
+		);
+		if ( $id && ! is_wp_error( $id ) ) {
+			update_option( self::OPCION_PAGINA, (int) $id );
+		}
+	}
+
+	/**
+	 * Marca en la lista de páginas las que tienen el formulario de inscripción.
+	 *
+	 * @param string[] $states Estados.
+	 * @param WP_Post  $post   Post.
+	 * @return string[]
+	 */
+	public static function estado_pagina( $states, $post ) {
+		if ( 'page' === $post->post_type && has_shortcode( $post->post_content, self::SHORTCODE ) ) {
+			$states['concursos_inscripcion'] = __( 'Registration page', 'photo-challenges' );
+		}
+
+		return $states;
 	}
 
 	/**

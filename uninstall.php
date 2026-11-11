@@ -35,16 +35,19 @@ function photo_challenges_borrar_datos() {
 		wp_delete_post( (int) $post->ID, true );
 	}
 
-	$pagina = (int) get_option( 'concursos_pagina_retos' );
-	if ( $pagina ) {
-		wp_delete_post( $pagina, true );
+	// Páginas que creó el plugin. Una página de inscripción que ya existía ("existente") se conserva.
+	foreach ( array( 'concursos_pagina_retos', 'concursos_pagina_inscripcion' ) as $opcion ) {
+		$pagina = (int) get_option( $opcion );
+		if ( $pagina ) {
+			wp_delete_post( $pagina, true );
+		}
 	}
 
 	foreach ( array( 'concursos_votos', 'concursos_votantes' ) as $tabla ) {
 		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $wpdb->prefix . $tabla ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 	}
 
-	foreach ( array( 'concursos_db_version', 'concursos_rewrite_version', 'concursos_pagina_retos', 'concursos_perfiles' ) as $opcion ) {
+	foreach ( array( 'concursos_db_version', 'concursos_rewrite_version', 'concursos_pagina_retos', 'concursos_pagina_inscripcion', 'concursos_perfiles' ) as $opcion ) {
 		delete_option( $opcion );
 	}
 }
