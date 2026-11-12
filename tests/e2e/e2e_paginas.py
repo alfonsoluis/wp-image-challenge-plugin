@@ -70,7 +70,7 @@ if nueva.isdigit():
     st, h = get(url)
     check("la página muestra el formulario", st == 200 and 'name="nombre"' in h and 'value="concursos_inscribir"' in h, str(st))
     st, h = get(BASE + "/retos/")
-    check("la portada muestra «Inscribirme en un reto» hacia ella", re.search(r'<a class="concursos-boton" href="' + re.escape(url), h) is not None)
+    check("la portada muestra «Inscribirme en un reto» hacia ella", re.search(r'<a class="[^"]*concursos-boton" href="' + re.escape(url), h) is not None)
     st, h = get(BASE + "/retos/reto-de-prueba-luz-y-sombra/")
     check("el reto muestra «Inscribirme en este reto»", "Inscribirme en este reto" in h and url in h)
     get(BASE + "/")

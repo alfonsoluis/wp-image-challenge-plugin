@@ -25,34 +25,8 @@ class Concursos_Galeria {
 	public static function route() {
 		if ( is_singular( Concursos_Post_Types::RETO ) && ! is_feed() ) {
 			$post = get_queried_object();
-			Concursos_Plantilla::pagina( get_the_title( $post ), self::pagina( $post ), 'concursos-publico--reto' );
+			Concursos_Plantilla::pagina( get_the_title( $post ), self::pagina( $post ), 'concursos-publico--reto', Concursos_Reto::get_settings( $post->ID ) );
 		}
-	}
-
-	/**
-	 * Cabecera de un reto: panel de color con sus datos junto a su imagen. La usan
-	 * la página del reto y la portada. El texto va sobre color sólido, no sobre la
-	 * foto, para que su contraste no dependa de la imagen.
-	 *
-	 * @param string $status Estado.
-	 * @param array  $s      Configuración.
-	 * @param array  $imagen url, ancho y alto de la imagen, o null.
-	 * @param string $titulo Título, en HTML ya escapado.
-	 * @param string $extra  HTML ya escapado bajo la fase.
-	 * @return string
-	 */
-	public static function cabecera( $status, array $s, $imagen, $titulo, $extra = '' ) {
-		$labels = Concursos_Reto::status_labels();
-
-		return sprintf(
-			'<header class="concursos-cabecera%1$s"><div class="concursos-cabecera__texto"><p class="concursos-etiqueta concursos-xs">%2$s</p>%3$s<p class="concursos-estado concursos-sm">%4$s</p>%5$s</div>%6$s</header>',
-			$imagen ? ' concursos-cabecera--imagen' : '',
-			esc_html( isset( $labels[ $status ] ) ? $labels[ $status ] : $status ),
-			$titulo,
-			esc_html( self::frase_estado( $status, $s ) ),
-			$extra,
-			$imagen ? '<div class="concursos-cabecera__media"><img class="concursos-cabecera__imagen" src="' . esc_url( $imagen['url'] ) . '" alt=""></div>' : ''
-		);
 	}
 
 	/**
@@ -60,7 +34,7 @@ class Concursos_Galeria {
 	 *
 	 * @param WP_Post $post Reto.
 	 * @param array   $s    Configuración.
-	 * @return string
+	 * @return string Texto sin escapar.
 	 */
 	private static function ficha( $post, array $s ) {
 		$datos = array();
@@ -78,7 +52,7 @@ class Concursos_Galeria {
 			$datos[] = sprintf( __( 'Tags: %s', 'photo-challenges' ), implode( ', ', $etiquetas ) );
 		}
 
-		return '<p class="concursos-ficha concursos-sm">' . esc_html( implode( ' · ', $datos ) ) . '</p>';
+		return implode( ' · ', $datos );
 	}
 
 	/**
@@ -117,7 +91,7 @@ class Concursos_Galeria {
 
 		$enlace = function ( $reto, $clase, $rel, $etiqueta ) {
 			return sprintf(
-				'<a class="concursos-navegacion__%1$s" rel="%2$s" href="%3$s"><span class="concursos-xs">%4$s</span><strong>%5$s</strong></a>',
+				'<a class="pc-navegacion__enlace pc-navegacion__enlace--%1$s" rel="%2$s" href="%3$s"><span class="pc-etiqueta">%4$s</span><strong>%5$s</strong></a>',
 				$clase,
 				$rel,
 				esc_url( get_permalink( $reto ) ),
@@ -126,23 +100,69 @@ class Concursos_Galeria {
 			);
 		};
 
-		return '<nav class="concursos-navegacion" aria-label="' . esc_attr__( 'Challenge navigation', 'photo-challenges' ) . '">'
+		return '<nav class="pc-navegacion concursos-navegacion" aria-label="' . esc_attr__( 'Challenge navigation', 'photo-challenges' ) . '">'
 			. ( $anterior ? $enlace( $anterior, 'anterior', 'prev', __( 'Previous challenge', 'photo-challenges' ) ) : '' )
 			. ( $siguiente ? $enlace( $siguiente, 'siguiente', 'next', __( 'Next challenge', 'photo-challenges' ) ) : '' )
 			. '</nav>';
 	}
 
 	/**
-	 * Enlace para inscribirse en un reto mientras acepta inscripciones.
+	 * Siguiente reto en el que se puede participar, distinto del actual.
 	 *
-	 * @param int    $reto_id Reto.
-	 * @param string $status  Estado.
+	 * @param int $reto_id Reto actual.
+	 * @return array|null
+	 */
+	private static function siguiente_abierto( $reto_id ) {
+		$candidatos = array();
+		foreach ( Concursos_Reto::all( array( 'publish' ) ) as $reto ) {
+			if ( $reto['post']->ID !== $reto_id && in_array( $reto['status'], array( 'envios', 'proximo' ), true ) ) {
+				$candidatos[] = $reto;
+			}
+		}
+
+		return $candidatos ? end( $candidatos ) : null;
+	}
+
+	/**
+	 * Columna lateral del reto: calendario, cuenta atrás y acción de la fase.
+	 *
+	 * @param WP_Post $post   Reto.
+	 * @param array   $s      Configuración.
+	 * @param string  $status Fase.
 	 * @return string
 	 */
-	private static function boton_inscripcion( $reto_id, $status ) {
-		$url = in_array( $status, array( 'proximo', 'envios' ), true ) ? Concursos_Inscripcion::url( $reto_id ) : '';
+	private static function lateral( $post, array $s, $status ) {
+		$html = Concursos_Vista::calendario( $status, $s ) . Concursos_Vista::cuenta( $status, $s );
 
-		return $url ? '<p><a class="concursos-boton" href="' . esc_url( $url ) . '">' . esc_html__( 'Join this challenge', 'photo-challenges' ) . '</a></p>' : '';
+		$inscripcion = in_array( $status, array( 'proximo', 'envios' ), true ) ? Concursos_Inscripcion::url( $post->ID ) : '';
+		if ( $inscripcion ) {
+			$html .= '<p class="pc-acciones"><a class="pc-boton pc-boton--principal pc-boton--ancho concursos-boton" href="' . esc_url( $inscripcion ) . '">' . Concursos_Vista::icono( 'subir' ) . esc_html__( 'Join this challenge', 'photo-challenges' ) . '</a></p>';
+		}
+		if ( 'envios' === $status ) {
+			$html .= '<p class="pc-nota"><strong>' . esc_html__( 'Already registered?', 'photo-challenges' ) . '</strong> ' . esc_html__( 'Use the link we emailed you to upload or delete your photos.', 'photo-challenges' ) . '</p>';
+		}
+		if ( 'votacion' === $status ) {
+			$html .= '<p class="pc-acciones">' . Concursos_Vista::boton( '#concursos-votacion', __( 'See the photos and vote', 'photo-challenges' ), 'principal', 'flecha', 'pc-boton--ancho' ) . '</p>';
+			if ( Concursos_Votos::por_puestos( $s ) ) {
+				$html .= '<p class="pc-nota">' . esc_html( 3 === (int) $s['votos_por_votante'] ? __( 'Choose your 1st, 2nd and 3rd: they are worth 3, 2 and 1 points.', 'photo-challenges' ) : __( 'Choose your 1st and 2nd: they are worth 3 and 2 points.', 'photo-challenges' ) ) . '</p>';
+			}
+		}
+		if ( 'finalizado' === $status ) {
+			$siguiente = self::siguiente_abierto( $post->ID );
+			if ( $siguiente ) {
+				$imagen = Concursos_Portada::imagen( $siguiente, 'thumbnail' );
+				$html  .= sprintf(
+					'<a class="pc-siguiente" href="%1$s">%2$s<span class="pc-siguiente__texto"><span class="pc-texto-suave">%3$s</span><strong>%4$s</strong></span>%5$s</a>',
+					esc_url( get_permalink( $siguiente['post'] ) ),
+					$imagen ? '<img src="' . esc_url( $imagen['url'] ) . '" alt="" width="48" height="48">' : '',
+					esc_html( 'envios' === $siguiente['status'] ? __( 'Next open challenge', 'photo-challenges' ) : __( 'Next challenge', 'photo-challenges' ) ),
+					esc_html( get_the_title( $siguiente['post'] ) . ' · ' . Concursos_Galeria::frase_estado( $siguiente['status'], $siguiente['settings'] ) ),
+					Concursos_Vista::icono( 'flecha' )
+				);
+			}
+		}
+
+		return '<aside class="pc-lateral" aria-label="' . esc_attr__( 'Challenge schedule', 'photo-challenges' ) . '">' . $html . '</aside>';
 	}
 
 	/**
@@ -152,61 +172,85 @@ class Concursos_Galeria {
 	 * @return string
 	 */
 	private static function pagina( $post ) {
-		$s      = Concursos_Reto::get_settings( $post->ID );
-		$status = Concursos_Reto::status( $s );
-		$imagen = Concursos_Portada::imagen(
+		$s       = Concursos_Reto::get_settings( $post->ID );
+		$status  = Concursos_Reto::status( $s );
+		$imagen  = 'finalizado' === $status ? null : Concursos_Portada::imagen(
 			array(
 				'post'     => $post,
 				'settings' => $s,
 			),
-			'large'
+			'full'
 		);
-		$reglas = Concursos_Reto::rules_list( $s['reglas'] );
+		$reglas  = Concursos_Reto::rules_list( $s['reglas'] );
 		$premios = array();
 		for ( $i = 0; $i < (int) $s['lugares']; $i++ ) {
 			if ( '' !== $s['premios'][ $i ] ) {
 				$premios[ $i + 1 ] = $s['premios'][ $i ];
 			}
 		}
+		$fotos = Concursos_Entrada::count_for_reto( $post->ID );
+		$datos = array(
+			Concursos_Vista::intervalo( $s['inicio'], $s['cierre'] ) . ' ' . wp_date( 'Y', (int) $s['cierre'] ),
+			/* translators: %d: number of photos. */
+			sprintf( _n( '%d photo submitted', '%d photos submitted', $fotos, 'photo-challenges' ), $fotos ),
+		);
+		if ( 'finalizado' === $status ) {
+			$datos = array( self::ficha( $post, $s ), $datos[1] );
+		}
+		$pagina  = (int) get_option( Concursos_Portada::OPCION_PAGINA );
+		$portada = $pagina && 'publish' === get_post_status( $pagina ) ? get_permalink( $pagina ) : '';
+		$portada = $portada ? $portada : get_post_type_archive_link( Concursos_Post_Types::RETO );
 
 		Concursos_Diseno::aplicar( $s );
 
 		ob_start();
 		?>
-		<div class="concursos-reto concursos-disenado<?php echo Concursos_Diseno::muestra_fondo( $s, 'detalle' ) ? ' concursos-con-fondo' : ''; ?>" style="<?php echo esc_attr( Concursos_Diseno::estilo( $s ) ); ?>">
-			<div class="concursos-reto__interior">
-				<?php echo self::cabecera( $status, $s, $imagen, '<h1>' . esc_html( get_the_title( $post ) ) . '</h1>', self::boton_inscripcion( $post->ID, $status ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
-				<?php echo 'finalizado' === $status ? self::ficha( $post, $s ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
-				<div class="concursos-reto__descripcion">
-					<?php echo apply_filters( 'the_content', $post->post_content ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound,WordPress.Security.EscapeOutput.OutputNotEscaped -- filtro estándar de WordPress. ?>
+		<div class="pc-contenedor concursos-reto<?php echo Concursos_Diseno::muestra_fondo( $s, 'detalle' ) ? ' concursos-con-fondo' : ''; ?>">
+			<nav class="pc-ruta" aria-label="<?php esc_attr_e( 'Breadcrumb', 'photo-challenges' ); ?>">
+				<a href="<?php echo esc_url( $portada ); ?>"><?php esc_html_e( 'Challenges', 'photo-challenges' ); ?></a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page"><?php echo esc_html( get_the_title( $post ) ); ?></span>
+			</nav>
+			<header class="pc-cabecera-reto">
+				<div class="pc-cabecera-reto__titulo">
+					<?php echo Concursos_Vista::chip( $status ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+					<h1 class="pc-titulo-reto"><?php echo esc_html( get_the_title( $post ) ); ?></h1>
 				</div>
-				<?php if ( $reglas || $premios ) : ?>
-					<div class="concursos-reto__info">
-						<?php if ( $reglas ) : ?>
-							<section>
-								<h2><?php esc_html_e( 'Rules', 'photo-challenges' ); ?></h2>
-								<ul>
-									<?php foreach ( $reglas as $regla ) : ?>
-										<li><?php echo esc_html( $regla ); ?></li>
-									<?php endforeach; ?>
-								</ul>
-							</section>
-						<?php endif; ?>
-						<?php if ( $premios ) : ?>
-							<section>
-								<h2><?php esc_html_e( 'Prizes', 'photo-challenges' ); ?></h2>
-								<ul>
-									<?php foreach ( $premios as $lugar => $premio ) : ?>
-										<li><strong><?php echo esc_html( Concursos_Votos::nombre_lugar( $lugar, false ) ); ?>:</strong> <?php echo esc_html( $premio ); ?></li>
-									<?php endforeach; ?>
-								</ul>
-							</section>
-						<?php endif; ?>
+				<p class="pc-datos"><?php echo esc_html( implode( ' · ', $datos ) ); ?></p>
+			</header>
+			<?php if ( $imagen ) : ?>
+				<figure class="pc-portada"><img src="<?php echo esc_url( $imagen['url'] ); ?>" width="<?php echo esc_attr( $imagen['ancho'] ); ?>" height="<?php echo esc_attr( $imagen['alto'] ); ?>" alt=""></figure>
+			<?php endif; ?>
+			<div class="pc-cuerpo">
+				<div class="pc-cuerpo__principal">
+					<div class="pc-descripcion">
+						<?php echo apply_filters( 'the_content', $post->post_content ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound,WordPress.Security.EscapeOutput.OutputNotEscaped -- filtro estándar de WordPress. ?>
 					</div>
-				<?php endif; ?>
-				<?php echo self::render( $post->ID ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
-				<?php echo self::navegacion( $post ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+					<?php if ( $reglas ) : ?>
+						<section class="pc-bloque" id="reglas" aria-labelledby="pc-reglas">
+							<h2 class="pc-bloque__titulo" id="pc-reglas"><?php esc_html_e( 'Rules', 'photo-challenges' ); ?></h2>
+							<ul class="pc-reglas">
+								<?php foreach ( $reglas as $regla ) : ?>
+									<li><?php echo esc_html( $regla ); ?></li>
+								<?php endforeach; ?>
+							</ul>
+						</section>
+					<?php endif; ?>
+					<?php if ( $premios ) : ?>
+						<section class="pc-bloque"<?php echo $reglas ? '' : ' id="reglas"'; ?> aria-labelledby="pc-premios">
+							<h2 class="pc-bloque__titulo" id="pc-premios"><?php esc_html_e( 'Prizes', 'photo-challenges' ); ?></h2>
+							<ul class="pc-premios">
+								<?php foreach ( $premios as $lugar => $premio ) : ?>
+									<li class="pc-premio"><span class="pc-premio__lugar"><?php echo esc_html( Concursos_Votos::ordinal( $lugar ) ); ?></span><span><?php echo esc_html( $premio ); ?></span></li>
+								<?php endforeach; ?>
+							</ul>
+						</section>
+					<?php endif; ?>
+				</div>
+				<?php echo self::lateral( $post, $s, $status ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
 			</div>
+			<?php echo self::render( $post->ID ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+			<?php echo self::navegacion( $post ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
 		</div>
 		<?php
 		return ob_get_clean();
@@ -226,7 +270,7 @@ class Concursos_Galeria {
 		$entradas = Concursos_Entrada::find( array( 'reto' => $reto_id ) );
 
 		ob_start();
-		echo '<section class="concursos-galeria" id="concursos-votacion">';
+		echo '<section class="pc-seccion concursos-galeria" id="concursos-votacion">';
 		echo Concursos_Votantes::aviso_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
 
 		if ( 'finalizado' === $status && $entradas ) {
@@ -268,26 +312,33 @@ class Concursos_Galeria {
 	}
 
 	/**
-	 * Tarjeta de una foto.
+	 * Tarjeta de una foto en el mosaico.
 	 *
 	 * @param WP_Post $entrada Foto.
 	 * @param string  $extra   HTML ya escapado bajo los datos.
 	 * @param bool    $anonima Si se ocultan su título y su autor.
+	 * @param int     $numero  Número de la foto en una votación anónima.
 	 * @return string
 	 */
-	private static function tarjeta( $entrada, $extra = '', $anonima = false ) {
+	private static function tarjeta( $entrada, $extra = '', $anonima = false, $numero = 0 ) {
 		if ( $anonima ) {
-			return sprintf( '<li><figure>%s<figcaption>%s</figcaption></figure></li>', Concursos_Entrada::miniatura( $entrada, 'medium_large', true ), $extra );
+			return sprintf(
+				'<li class="pc-foto"><figure>%1$s<figcaption class="pc-foto__pie"><span class="pc-foto__titulo">%2$s</span></figcaption>%3$s</figure></li>',
+				Concursos_Entrada::miniatura( $entrada, 'large', true ),
+				/* translators: %s: photo number, such as 01. */
+				esc_html( sprintf( __( 'No. %s', 'photo-challenges' ), str_pad( (string) $numero, 2, '0', STR_PAD_LEFT ) ) ),
+				$extra ? '<div class="pc-foto__voto">' . $extra . '</div>' : ''
+			);
 		}
 
 		$autor = Concursos_Entrada::owner( $entrada->ID );
 
 		return sprintf(
-			'<li><figure>%s<figcaption><strong>%s</strong><span>%s</span>%s</figcaption></figure></li>',
-			Concursos_Entrada::miniatura( $entrada ),
+			'<li class="pc-foto"><figure>%1$s<figcaption class="pc-foto__pie"><span class="pc-foto__titulo">%2$s</span><span class="pc-foto__autor">%3$s</span></figcaption>%4$s</figure></li>',
+			Concursos_Entrada::miniatura( $entrada, 'large' ),
 			esc_html( get_the_title( $entrada ) ),
 			$autor ? Concursos_Perfil::enlace( $autor ) : '',
-			$extra
+			$extra ? '<div class="pc-foto__voto">' . $extra . '</div>' : ''
 		);
 	}
 
@@ -300,12 +351,20 @@ class Concursos_Galeria {
 	 * @param WP_Post[] $entradas Fotos.
 	 */
 	private static function fotos( $reto_id, array $s, $status, array $entradas ) {
-		echo '<h2>' . esc_html__( 'Submitted entries', 'photo-challenges' ) . '</h2>';
+		$nota = '';
+		if ( 'envios' === $status && Concursos_Reto::photos_visible( $s ) ) {
+			/* translators: %s: date. */
+			$nota = sprintf( __( 'Shown as they are submitted · voting starts on %s', 'photo-challenges' ), Concursos_Reto::format_dia( $s['fin_envios'] ) );
+		} elseif ( $entradas ) {
+			/* translators: %d: number of photos. */
+			$nota = sprintf( _n( '%d photo', '%d photos', count( $entradas ), 'photo-challenges' ), count( $entradas ) );
+		}
+		echo Concursos_Vista::cabecera_seccion( 'pc-fotos', 'votacion' === $status ? __( 'Photos in the vote', 'photo-challenges' ) : __( 'Submitted entries', 'photo-challenges' ), esc_html( $nota ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
 
 		if ( ! Concursos_Reto::photos_visible( $s ) ) {
 			if ( 'envios' === $status ) {
 				printf(
-					'<p>%s</p>',
+					'<p class="pc-vacio">%s</p>',
 					esc_html(
 						sprintf(
 							/* translators: 1: number of photos, 2: submission end date. */
@@ -316,14 +375,14 @@ class Concursos_Galeria {
 					)
 				);
 			} else {
-				echo '<p>' . esc_html__( 'Photos will be shown when the challenge starts.', 'photo-challenges' ) . '</p>';
+				echo '<p class="pc-vacio">' . esc_html__( 'Photos will be shown when the challenge starts.', 'photo-challenges' ) . '</p>';
 			}
 
 			return;
 		}
 
 		if ( ! $entradas ) {
-			echo '<p>' . esc_html__( 'There are no photos yet.', 'photo-challenges' ) . '</p>';
+			echo '<p class="pc-vacio">' . esc_html__( 'There are no photos yet.', 'photo-challenges' ) . '</p>';
 
 			return;
 		}
@@ -336,19 +395,19 @@ class Concursos_Galeria {
 		$anonima = Concursos_Reto::oculta_autoria( $s, $status );
 
 		if ( $anonima ) {
-			echo '<p class="concursos-sm">' . esc_html__( 'Anonymous voting: the title and author of each photo will be shown when voting ends.', 'photo-challenges' ) . '</p>';
+			echo '<p class="pc-aviso-suave">' . esc_html__( 'Anonymous voting: the title and author of each photo will be shown when voting ends.', 'photo-challenges' ) . '</p>';
 		}
 
-		echo '<ul class="concursos-galeria__rejilla">';
-		foreach ( $entradas as $entrada ) {
+		echo '<ul class="pc-mosaico concursos-galeria__rejilla">';
+		foreach ( $entradas as $i => $entrada ) {
 			$boton = $votante ? Concursos_Votos::botones( $reto_id, $s, $entrada->ID, $mios ) : '';
-			echo self::tarjeta( $entrada, $boton, $anonima ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+			echo self::tarjeta( $entrada, $boton, $anonima, $i + 1 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
 		}
 		echo '</ul>';
 	}
 
 	/**
-	 * Resultados finales: puestos (con empates en igualdad) y resto de fotos.
+	 * Resultados finales: podio (con empates en igualdad) y clasificación del reto.
 	 *
 	 * @param int       $reto_id  Reto.
 	 * @param array     $s        Configuración.
@@ -362,38 +421,51 @@ class Concursos_Galeria {
 		$votos   = Concursos_Votos::de_fotos( $reto_id, $entradas );
 		$ranking = Concursos_Votos::rank( $votos, (int) $s['lugares'] );
 
-		$etiqueta_votos = function ( $n ) use ( $s ) {
-			return '<span class="concursos-votos">' . esc_html( Concursos_Votos::etiqueta( $n, $s ) ) . '</span>';
-		};
-
-		echo '<h2>' . esc_html__( 'Results', 'photo-challenges' ) . '</h2>';
+		echo Concursos_Vista::cabecera_seccion( 'pc-ganadores', 1 === (int) $s['lugares'] ? __( 'Winner', 'photo-challenges' ) : __( 'Winners', 'photo-challenges' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
 
 		if ( ! $ranking['puestos'] ) {
-			echo '<p>' . esc_html__( 'This challenge ended without votes.', 'photo-challenges' ) . '</p>';
-		}
-
-		foreach ( $ranking['puestos'] as $puesto ) {
-			$lugar  = $puesto['lugar'];
-			$premio = isset( $s['premios'][ $lugar - 1 ] ) ? $s['premios'][ $lugar - 1 ] : '';
-
-			printf( '<div class="concursos-puesto concursos-puesto--%d">', (int) $lugar );
-			echo '<h3>' . esc_html( Concursos_Votos::nombre_lugar( $lugar, count( $puesto['entradas'] ) > 1 ) ) . '</h3>';
-			if ( '' !== $premio ) {
-				/* translators: %s: prize. */
-				echo '<p class="concursos-premio">' . esc_html( sprintf( __( 'Prize: %s', 'photo-challenges' ), $premio ) ) . '</p>';
+			echo '<p class="pc-vacio">' . esc_html__( 'This challenge ended without votes.', 'photo-challenges' ) . '</p>';
+		} else {
+			$primero = array_shift( $ranking['puestos'] );
+			echo '<div class="pc-podio">';
+			echo '<div class="pc-podio__primero">';
+			foreach ( $primero['entradas'] as $id ) {
+				echo self::ganadora( $por_id[ $id ], $primero, $s, count( $primero['entradas'] ) > 1 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
 			}
-			echo '<ul class="concursos-galeria__rejilla">';
-			foreach ( $puesto['entradas'] as $id ) {
-				echo self::tarjeta( $por_id[ $id ], $etiqueta_votos( $puesto['votos'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+			echo '</div>';
+			if ( $ranking['puestos'] ) {
+				echo '<div class="pc-podio__resto">';
+				foreach ( $ranking['puestos'] as $puesto ) {
+					$lugar  = $puesto['lugar'];
+					$premio = isset( $s['premios'][ $lugar - 1 ] ) ? $s['premios'][ $lugar - 1 ] : '';
+					printf(
+						'<div class="pc-podio__puesto concursos-puesto concursos-puesto--%1$d"><h3 class="pc-podio__lugar"><span class="pc-medalla pc-medalla--%1$d" aria-hidden="true"></span>%2$s</h3>',
+						(int) $lugar,
+						esc_html( Concursos_Votos::nombre_lugar( $lugar, count( $puesto['entradas'] ) > 1 ) . ( '' !== $premio ? ' · ' . $premio : '' ) )
+					);
+					foreach ( $puesto['entradas'] as $id ) {
+						$autor = Concursos_Entrada::owner( $id );
+						printf(
+							'<figure class="pc-podio__foto">%1$s<figcaption><span class="pc-foto__titulo">%2$s</span><span class="pc-foto__autor">%3$s</span><span class="pc-etiqueta concursos-votos">%4$s</span></figcaption></figure>',
+							Concursos_Entrada::miniatura( $por_id[ $id ], 'medium_large' ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+							esc_html( get_the_title( $id ) ),
+							$autor ? Concursos_Perfil::enlace( $autor ) : '', // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+							esc_html( Concursos_Votos::etiqueta( $puesto['votos'], $s ) )
+						);
+					}
+					echo '</div>';
+				}
+				echo '</div>';
 			}
-			echo '</ul></div>';
+			echo '</div>';
+			array_unshift( $ranking['puestos'], $primero );
 		}
 
 		if ( $ranking['resto'] ) {
-			echo '<div class="concursos-resto"><h3>' . esc_html__( 'Other participants', 'photo-challenges' ) . '</h3>';
-			echo '<ul class="concursos-galeria__rejilla">';
+			echo '<div class="pc-resto concursos-resto"><h3 class="pc-resto__titulo">' . esc_html__( 'Other participants', 'photo-challenges' ) . '</h3>';
+			echo '<ul class="pc-mosaico concursos-galeria__rejilla">';
 			foreach ( $ranking['resto'] as $id ) {
-				echo self::tarjeta( $por_id[ $id ], $etiqueta_votos( $votos[ $id ] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+				echo self::tarjeta( $por_id[ $id ], '<span class="pc-etiqueta concursos-votos">' . esc_html( Concursos_Votos::etiqueta( $votos[ $id ], $s ) ) . '</span>' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
 			}
 			echo '</ul></div>';
 		}
@@ -403,7 +475,33 @@ class Concursos_Galeria {
 	}
 
 	/**
-	 * Tabla final con los votos de cada foto.
+	 * Foto en primer lugar, en grande.
+	 *
+	 * @param WP_Post $foto   Foto.
+	 * @param array   $puesto Puesto.
+	 * @param array   $s      Configuración.
+	 * @param bool    $empate Si comparte el primer lugar.
+	 * @return string
+	 */
+	private static function ganadora( $foto, array $puesto, array $s, $empate ) {
+		$autor  = Concursos_Entrada::owner( $foto->ID );
+		$premio = isset( $s['premios'][0] ) ? $s['premios'][0] : '';
+
+		return sprintf(
+			'<figure class="pc-ganadora concursos-puesto concursos-puesto--1"><div class="pc-ganadora__media">%1$s<span class="pc-sello pc-sello--oro">%2$s%3$s</span></div><figcaption class="pc-ganadora__pie"><div><span class="pc-ganadora__titulo">%4$s</span><span class="pc-foto__autor">%5$s</span></div><div class="pc-ganadora__datos"><span class="pc-etiqueta concursos-votos">%6$s</span>%7$s</div></figcaption></figure>',
+			Concursos_Entrada::miniatura( $foto, 'full' ),
+			Concursos_Vista::icono( 'medalla', 16 ),
+			esc_html( Concursos_Votos::nombre_lugar( 1, $empate ) ),
+			esc_html( get_the_title( $foto ) ),
+			$autor ? Concursos_Perfil::enlace( $autor ) : '',
+			esc_html( Concursos_Votos::etiqueta( $puesto['votos'], $s ) ),
+			/* translators: %s: prize. */
+			'' !== $premio ? '<span class="pc-ganadora__premio concursos-premio">' . esc_html( sprintf( __( 'Prize: %s', 'photo-challenges' ), $premio ) ) . '</span>' : ''
+		);
+	}
+
+	/**
+	 * Clasificación del reto: todas las fotos con sus votos o puntos.
 	 *
 	 * @param int       $reto_id Reto.
 	 * @param array     $ranking Puestos y resto.
@@ -413,40 +511,34 @@ class Concursos_Galeria {
 	 */
 	private static function resumen( $reto_id, array $ranking, array $votos, array $por_id, array $s ) {
 		$total = array_sum( $votos );
-		if ( ! $total ) {
-			return;
-		}
 
 		$filas = array();
 		foreach ( $ranking['puestos'] as $puesto ) {
 			$empate = count( $puesto['entradas'] ) > 1;
 			foreach ( $puesto['entradas'] as $id ) {
-				$filas[] = array( $id, number_format_i18n( $puesto['lugar'] ) . ( $empate ? ' ' . __( '(tie)', 'photo-challenges' ) : '' ) );
+				$filas[] = array( $id, number_format_i18n( $puesto['lugar'] ), $empate );
 			}
 		}
 		foreach ( $ranking['resto'] as $id ) {
-			$filas[] = array( $id, '—' );
+			$filas[] = array( $id, '—', false );
 		}
 
 		$participantes = Concursos_Votos::votantes_de_reto( $reto_id );
+		$escala        = Concursos_Votos::por_puestos( $s ) ? __( '1st = 3 pts, 2nd = 2 pts, 3rd = 1 pt', 'photo-challenges' ) : '';
+		/* translators: %d: number of voters. */
+		$dato = sprintf( _n( '%d voter took part', '%d voters took part', $participantes, 'photo-challenges' ), $participantes ) . ( $escala ? ' · ' . $escala : '' );
 		?>
-		<section class="concursos-resumen">
-			<h2><?php esc_html_e( 'Vote summary', 'photo-challenges' ); ?></h2>
-			<p class="concursos-sm">
-				<?php
-				/* translators: %d: number of voters. */
-				echo esc_html( sprintf( _n( '%d voter took part.', '%d voters took part.', $participantes, 'photo-challenges' ), $participantes ) );
-				?>
-			</p>
-			<div class="concursos-tabla-marco">
-				<table class="concursos-tabla concursos-sm">
+		<section class="pc-seccion concursos-resumen" aria-labelledby="pc-resumen">
+			<?php echo Concursos_Vista::cabecera_seccion( 'pc-resumen', __( 'Challenge ranking', 'photo-challenges' ), esc_html( $dato ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+			<div class="pc-tabla-marco">
+				<table class="pc-tabla">
 					<thead>
 						<tr>
-							<th scope="col"><?php esc_html_e( 'Place', 'photo-challenges' ); ?></th>
+							<th scope="col" class="pc-tabla__puesto"><?php esc_html_e( 'Place', 'photo-challenges' ); ?></th>
 							<th scope="col"><?php esc_html_e( 'Photo', 'photo-challenges' ); ?></th>
 							<th scope="col"><?php esc_html_e( 'Participant', 'photo-challenges' ); ?></th>
-							<th scope="col" class="concursos-tabla__num"><?php echo Concursos_Votos::por_puestos( $s ) ? esc_html__( 'Points', 'photo-challenges' ) : esc_html__( 'Votes', 'photo-challenges' ); ?></th>
-							<th scope="col" class="concursos-tabla__num">%</th>
+							<th scope="col" class="pc-tabla__num concursos-tabla__num"><?php echo Concursos_Votos::por_puestos( $s ) ? esc_html__( 'Points', 'photo-challenges' ) : esc_html__( 'Votes', 'photo-challenges' ); ?></th>
+							<th scope="col" class="pc-tabla__num concursos-tabla__num">%</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -457,26 +549,33 @@ class Concursos_Galeria {
 							$n     = $votos[ $fila[0] ];
 							?>
 							<tr>
-								<td><?php echo esc_html( $fila[1] ); ?></td>
+								<td class="pc-tabla__puesto">
+									<?php echo esc_html( $fila[1] ); ?>
+									<?php if ( $fila[2] ) : ?>
+										<span class="pc-etiqueta"><?php esc_html_e( '(tie)', 'photo-challenges' ); ?></span>
+									<?php endif; ?>
+								</td>
 								<td>
-									<div class="concursos-tabla__foto">
+									<div class="pc-tabla__foto">
 										<?php echo Concursos_Entrada::miniatura( $foto, 'thumbnail' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
-										<span><?php echo esc_html( get_the_title( $foto ) ); ?></span>
+										<span class="pc-foto__titulo"><?php echo esc_html( get_the_title( $foto ) ); ?></span>
 									</div>
 								</td>
-								<td><?php echo Concursos_Perfil::enlace( $autor ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?></td>
-								<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( $n ) ); ?></td>
-								<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( $n / $total * 100, 1 ) ); ?></td>
+								<td class="pc-texto-suave"><?php echo $autor ? Concursos_Perfil::enlace( $autor ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?></td>
+								<td class="pc-tabla__num pc-tabla__fuerte concursos-tabla__num"><?php echo esc_html( number_format_i18n( $n ) ); ?></td>
+								<td class="pc-tabla__num pc-texto-suave concursos-tabla__num"><?php echo esc_html( $total ? number_format_i18n( $n / $total * 100, 1 ) : '—' ); ?></td>
 							</tr>
 						<?php endforeach; ?>
 					</tbody>
-					<tfoot>
-						<tr>
-							<th scope="row" colspan="3"><?php esc_html_e( 'Total', 'photo-challenges' ); ?></th>
-							<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( $total ) ); ?></td>
-							<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( 100, 1 ) ); ?></td>
-						</tr>
-					</tfoot>
+					<?php if ( $total ) : ?>
+						<tfoot>
+							<tr>
+								<th scope="row" colspan="3"><?php esc_html_e( 'Total', 'photo-challenges' ); ?></th>
+								<td class="pc-tabla__num concursos-tabla__num"><?php echo esc_html( number_format_i18n( $total ) ); ?></td>
+								<td class="pc-tabla__num concursos-tabla__num"><?php echo esc_html( number_format_i18n( 100, 1 ) ); ?></td>
+							</tr>
+						</tfoot>
+					<?php endif; ?>
 				</table>
 			</div>
 		</section>

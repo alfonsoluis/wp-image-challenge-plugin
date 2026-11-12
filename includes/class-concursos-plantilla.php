@@ -17,9 +17,10 @@ class Concursos_Plantilla {
 	 *
 	 * @param string $titulo Título del documento.
 	 * @param string $html   Contenido ya escapado.
-	 * @param string $clase  Clase adicional del contenedor.
+	 * @param string     $clase  Clase adicional del contenedor.
+	 * @param array|null $s      Reto que decide el estilo de la página.
 	 */
-	public static function pagina( $titulo, $html, $clase = '' ) {
+	public static function pagina( $titulo, $html, $clase = '', $s = null ) {
 		wp_enqueue_style( 'concursos-public', CONCURSOS_URL . 'assets/css/public.css', array(), CONCURSOS_VERSION );
 		status_header( 200 );
 
@@ -30,7 +31,8 @@ class Concursos_Plantilla {
 			}
 		);
 
-		$main = '<main class="' . esc_attr( trim( 'concursos-publico concursos-disenado ' . $clase ) ) . '">' . $html . '</main>';
+		// Contenedor raíz del sistema de diseño: nada de public.css sale de .pc.
+		$main = '<main class="' . esc_attr( trim( 'pc concursos-publico ' . $clase ) ) . '"' . Concursos_Diseno::atributos( $s ) . '>' . $html . '</main>';
 
 		if ( wp_is_block_theme() ) {
 			self::con_bloques( $main );

@@ -55,7 +55,7 @@ def guardar(paginas):
 def estado():
     return dict(
       portada=' concursos-con-fondo' in re.search(r'<main class="([^"]*)',get(BASE+"/retos/")).group(0) or 'concursos-con-fondo' in re.search(r'<main class="([^"]*)',get(BASE+"/retos/")).group(1),
-      detalle='concursos-reto concursos-disenado concursos-con-fondo' in get(f"{BASE}/retos/{slug}/"),
+      detalle='concursos-reto concursos-con-fondo' in get(f"{BASE}/retos/{slug}/"),
       inscripcion='concursos-fondo-pagina' in re.search(r'<body class="([^"]*)',get(BASE+"/inscripcion-retos/")).group(1))
 h=get(f"{BASE}/wp-admin/post.php?post={ID}&action=edit")
 check("el reto sin ajuste muestra las 3 casillas marcadas", len(re.findall(r'name="concursos\[fondo_iconos\]\[\]"[^>]*checked',h))==3)

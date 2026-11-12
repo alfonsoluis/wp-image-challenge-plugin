@@ -40,7 +40,8 @@ Create a challenge, open registration, approve participants, collect their photo
 * Results with prizes and ties shown with equal prominence, a vote summary and an annual general ranking.
 * Participant profiles with their photos and places, which you can turn off in the plugin settings.
 * Enlarged photos with their description, author and challenge.
-* Each challenge can use your theme colors or one of 10 color palettes, and 3 text sizes. Typography always comes from your theme.
+* Each challenge can use your theme colors or an editorial style, one of 6 accent colors and 3 text sizes. Typography always comes from your theme.
+* The public pages use their own isolated design system, so your theme's styles do not break them.
 * An optional background of photography icons that fades into the page. Each challenge chooses whether it appears on the challenges page, the challenge details and the registration page.
 * Available in English and Spanish.
 

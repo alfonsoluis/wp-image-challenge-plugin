@@ -89,8 +89,8 @@ fotos = wp("post", "list", "--post_type=concurso_entrada", f"--meta_key=_concurs
 
 v = session()
 html = fetch(v, RETO_URL)[2]
-check("anónimo ve registro y las 9 fotos, sin botones", 'name="email"' in html and html.count("<figcaption>") == 9 and not formularios(html))
-check("estado 'En votación'", "En votación hasta" in html)
+check("anónimo ve registro y las 9 fotos, sin botones", 'name="email"' in html and html.count("pc-foto__pie") == 9 and not formularios(html))
+check("estado 'En votación'", "la votación termina el" in html)
 
 check("registro responde revisa", registrar(v, email) == "revisa")
 check("email inválido", registrar(session(), "no-es-email") == "email")
@@ -150,7 +150,7 @@ ahora = int(wp("eval", "echo time();"))
 wp("post", "meta", "update", RETO, "_concursos_fin_votacion", str(ahora - 60))
 check("fuera de plazo no se vota", votar(v, fotos[0], "quitar") == "cerrado")
 html = fetch(v, RETO_URL)[2]
-check("evaluación: sin botones, sin resultados, fotos visibles", not formularios(html) and "Resultados</h2>" not in html and html.count("<figcaption>") == 9 and "Resultados el" in html)
+check("evaluación: sin botones, sin resultados, fotos visibles", not formularios(html) and 'id="pc-ganadores"' not in html and html.count("pc-foto__pie") == 9 and "hasta los resultados" in html)
 wp("post", "meta", "update", RETO, "_concursos_fin_votacion", fin)
 
 casos = {
@@ -166,8 +166,7 @@ for nombre, (arr, l, puestos, resto) in casos.items():
 
 print(sh("make", "demo", "FASE=finalizado").splitlines()[-1])
 html = fetch(session(), RETO_URL)[2]
-html = html[html.find("Resultados</h2>"):]
-html = html[html.find("Resultados</h2>"):]
+html = html[html.find('id="pc-ganadores"'):]
 pos = [html.find(t) for t in ("Empate en el primer lugar", "Segundo lugar", "Empate en el tercer lugar", "Resto de participantes")]
 check("resultados en orden con empates", -1 not in pos and pos == sorted(pos), str(pos))
 html = fetch(session(), RETO_URL)[2]

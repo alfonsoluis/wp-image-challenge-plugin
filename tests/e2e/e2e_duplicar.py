@@ -37,12 +37,12 @@ def ratio(a,b):
 
 print(sh("make","demo","FASE=finalizado").splitlines()[-1])
 # --- Contraste ---
-pal=json.loads(wp("eval","echo wp_json_encode(Concursos_Diseno::paletas());"))
-check("10 paletas",len(pal)==10)
-for n,p in pal.items():
-    pares={"texto/fondo":(p["texto"],p["fondo"]),"texto/suave":(p["texto"],p["suave"]),"sobre/color":(p["sobre"],p["color"]),"sobre/acento":(p["sobre_acento"],p["acento"]),"color/fondo":(p["color"],p["fondo"]),"color/suave":(p["color"],p["suave"])}
-    r={k:round(ratio(*v),2) for k,v in pares.items()}
-    check(f"contraste AA {n}",min(r.values())>=4.5 and ratio(p["acento"],p["color"])>=3,f"mín {min(r.values())} {min(r,key=r.get)}")
+acc=json.loads(wp("eval","echo wp_json_encode(Concursos_Diseno::acentos());"))
+check("7 acentos (tema y 6 colores)",len(acc)==7 and acc[""]["color"]=="")
+for n,a in acc.items():
+    if not a["color"]: continue
+    r=min(ratio(a["color"],"#FFFFFF"),ratio(a["color"],"#F5F3EE"))
+    check(f"contraste AA {n}",r>=4.5,f"mín {round(r,2)}")
 check("3 tamaños y sin tipografías",wp("eval","echo count(Concursos_Diseno::tamanos()).(int)method_exists('Concursos_Diseno','tipografias');")=="30")
 
 # --- Votantes ---
@@ -91,7 +91,7 @@ check("abre la edición con aviso",st==200 and "post.php" in final and "Copia cr
 check("borrador y título (copia)",wp("post","get",C,"--field=post_status")=="draft" and wp("post","get",C,"--field=post_title").endswith("(copia)"))
 check("copia la descripción",wp("post","get",C,"--field=post_content")==wp("post","get",R,"--field=post_content"))
 check("fechas vacías",all(meta(C,"_concursos_"+k)=="0" for k in ("inicio","fin_envios","fin_votacion","cierre")))
-check("copia configuración y diseño",meta(C,"_concursos_paleta")=="playa" and meta(C,"_concursos_votos_por_votante")=="3" and "Un cuadro" in meta(C,"_concursos_premios") and "Foto propia" in meta(C,"_concursos_reglas"))
+check("copia configuración y diseño",(meta(C,"_concursos_estilo"),meta(C,"_concursos_acento"))==("editorial","teja") and meta(C,"_concursos_votos_por_votante")=="3" and "Un cuadro" in meta(C,"_concursos_premios") and "Foto propia" in meta(C,"_concursos_reglas"))
 check("sin fotos",wp("post","list","--post_type=concurso_entrada","--meta_key=_concursos_reto",f"--meta_value={C}","--format=count")=="0")
 check("sin votos",wp("db","query",f"SELECT COUNT(*) FROM wp_concursos_votos WHERE reto_id={C}","--skip-column-names")=="0")
 cop=wp("post","list","--post_type=concurso_inscrito","--meta_key=_concursos_reto",f"--meta_value={C}","--field=ID").split()
@@ -107,9 +107,9 @@ m=enlaces("participante1@example.com")[0]
 txt=json.loads(fetch(urllib.request.build_opener(),f"{MAILPIT}/api/v1/message/{m['ID']}")[2])["Text"]
 link=re.search(r"http://localhost:8080/\?concursos_envio=[a-f0-9]{32}",txt).group(0)
 st,_,h=fetch(session(),link)
-check("el enlace abre el reto nuevo con su diseño",st==200 and "(copia)" in h and "--c-color:#264653" in H.unescape(h) and 'name="foto"' in h,str(st))
+check("el enlace abre el reto nuevo con su diseño",st==200 and "(copia)" in h and "--pc-acento:#C2410C" in H.unescape(h) and 'name="foto"' in h,str(st))
 url=wp("eval",f"echo Concursos_Perfil::url({cop[0]});")
-_,_,h=fetch(session(),url); check("el perfil suma el reto nuevo","4 retos" in h,str(re.findall(r'cifras">\s*([^<\t]+)',h)))
+_,_,h=fetch(session(),url); check("el perfil suma el reto nuevo",re.findall(r'<dd>([^<]+)</dd>',h)[:1]==["4"],str(re.findall(r'<dd>([^<]+)</dd>',h)))
 st,final,h=duplicar({})
 C2=urllib.parse.parse_qs(urllib.parse.urlparse(final).query)["post"][0]
 check("sin copiar participantes",wp("post","list","--post_type=concurso_inscrito","--meta_key=_concursos_reto",f"--meta_value={C2}","--format=count")=="0" and "Copia creada." in h)
@@ -124,29 +124,29 @@ class F(HTMLParser):
     def handle_endtag(s,t):
         if t=="form": s.i=False
 _,_,pg=fetch(admin,BASE+f"/wp-admin/post.php?post={C2}&action=edit")
-check("formulario con Diseño y sin Tipo","concursos[paleta]" in pg and "concursos[tipografia]" not in pg and "concursos[tamano]" in pg and "concursos[tipo]" not in pg and "concursos[frecuencia]" not in pg)
+check("formulario con Diseño y sin Tipo","concursos[estilo]" in pg and "concursos[acento]" in pg and "concursos[paleta]" not in pg and "concursos[tipografia]" not in pg and "concursos[tamano]" in pg and "concursos[tipo]" not in pg and "concursos[frecuencia]" not in pg)
 check("admin sin fuentes propias","Space Grotesk" not in pg and "Playfair" not in pg)
 pa=F(); pa.feed(pg); d=dict(pa.f)
 for x in ("aa","mm","jj","hh","mn"): d[x]=d.get("hidden_"+x,"")
-d.update({"post_title":"Guardado de diseño","content":"x","save":"Guardar","concursos[paleta]":"baya","concursos[tamano]":"grande","concursos[modo]":"abierto","concursos[lugares]":"1"})
+d.update({"post_title":"Guardado de diseño","content":"x","save":"Guardar","concursos[estilo]":"editorial","concursos[acento]":"frambuesa","concursos[tamano]":"grande","concursos[modo]":"abierto","concursos[lugares]":"1"})
 fetch(admin,BASE+"/wp-admin/post.php",urllib.parse.urlencode(d).encode())
-check("guarda el diseño elegido",(meta(C2,"_concursos_paleta"),meta(C2,"_concursos_tamano"))==("baya","grande"))
-d.update({"concursos[paleta]":"<script>","concursos[tamano]":"enorme"})
+check("guarda el diseño elegido",(meta(C2,"_concursos_estilo"),meta(C2,"_concursos_acento"),meta(C2,"_concursos_tamano"))==("editorial","frambuesa","grande"))
+d.update({"concursos[estilo]":"<script>","concursos[acento]":"#fff","concursos[tamano]":"enorme"})
 fetch(admin,BASE+"/wp-admin/post.php",urllib.parse.urlencode(d).encode())
-check("valores inválidos vuelven al tema",(meta(C2,"_concursos_paleta"),meta(C2,"_concursos_tamano"))==("tema","normal"))
+check("valores inválidos vuelven al tema",(meta(C2,"_concursos_estilo"),meta(C2,"_concursos_acento"),meta(C2,"_concursos_tamano"))==("tema","","normal"))
 
 st,_,h=fetch(session(),BASE+"/retos/reto-de-prueba-luz-y-sombra/")
 u=H.unescape(h)
-check("reto con su paleta y la fuente del tema","--c-color:#264653" in u and "--c-fuente" not in u and "Playfair" not in u)
-check("reglas, premios y fase","Foto propia" in h and "Un cuadro" in h and "En votación hasta" in h)
-check("una sola h1 y galería",h.count("<h1")==1 and h.count("<figcaption>")==9)
+check("reto con su estilo, acento y la fuente del tema",'data-pc-estilo="editorial" style="--pc-acento:#C2410C;"' in u and "--c-" not in u and "Playfair" not in u)
+check("reglas, premios y fase","Foto propia" in h and "Un cuadro" in h and "En votación" in h and "Votación · ahora" in h)
+check("una sola h1 y galería",h.count("<h1")==1 and h.count('class="pc-foto"')==9)
 check("sin fuentes externas ni propias","fonts.googleapis" not in h and "plugins/concursos/assets/fonts" not in h)
-_,_,g=fetch(session(),BASE+"/retos/reto-anterior-reflejos/"); check("tamaño grande",'--c-escala:1.125' in g)
-_,_,g=fetch(session(),BASE+"/retos/reto-anterior-calles-vacias/"); check("tamaño pequeño",'--c-escala:0.9' in g )
+_,_,g=fetch(session(),BASE+"/retos/reto-anterior-reflejos/"); check("tamaño grande",'--pc-escala:1.125' in g)
+_,_,g=fetch(session(),BASE+"/retos/reto-anterior-calles-vacias/"); check("tamaño pequeño",'--pc-escala:0.9' in g )
 _,_,g=fetch(session(),BASE+"/retos/reto-luz-de-otono/")
-est=re.search(r'class="concursos-reto concursos-disenado(?: concursos-con-fondo)?" style="([^"]*)"',g)
-check("con el tema no fija nada",est and est.group(1)=="",str(est and est.group(1)))
-_,_,p=fetch(session(),BASE+"/retos/"); check("portada con diseño del destacado","--c-cabecera:#264653" in H.unescape(p))
+est=re.search(r'<main class="pc[^"]*" data-pc-estilo="([^"]*)"( style)?',g)
+check("con el tema no fija nada",est and est.group(1)=="tema" and not est.group(2),str(est and est.groups()))
+_,_,p=fetch(session(),BASE+"/retos/"); check("portada con diseño del destacado",'<main class="pc concursos-publico concursos-publico--portada' in p and 'data-pc-estilo="editorial" style="--pc-acento:#C2410C;"' in H.unescape(p))
 
 # Limpieza
 for c in (C,C2):

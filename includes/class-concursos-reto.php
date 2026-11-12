@@ -70,7 +70,8 @@ class Concursos_Reto {
 			'emails_participantes'  => '',
 			'privado_votantes'      => 0,
 			'emails_votantes'       => '',
-			'paleta'            => Concursos_Diseno::TEMA,
+			'estilo'            => Concursos_Diseno::TEMA,
+			'acento'            => '',
 			'tamano'            => Concursos_Diseno::NORMAL,
 			'fondo_iconos'      => Concursos_Diseno::PAGINAS_FONDO,
 		);

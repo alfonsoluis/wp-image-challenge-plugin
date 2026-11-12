@@ -193,76 +193,119 @@ class Concursos_Inscripcion {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- solo preselecciona una opción.
 		$elegido = isset( $_GET['reto'] ) ? absint( $_GET['reto'] ) : 0;
 
+		$referencia = Concursos_Portada::reto_referencia();
+		foreach ( $retos as $reto ) {
+			if ( $reto['post']->ID === $elegido ) {
+				$referencia = $reto;
+			}
+		}
+		if ( ! $elegido && 1 === count( $retos ) ) {
+			$elegido = $retos[0]['post']->ID;
+		}
+
 		ob_start();
 		?>
-		<div class="concursos-inscripcion concursos-disenado">
-			<?php if ( isset( $messages[ $code ] ) ) : ?>
-				<p class="concursos-aviso concursos-aviso--<?php echo esc_attr( $messages[ $code ][0] ); ?>" role="status">
-					<?php echo esc_html( $messages[ $code ][1] ); ?>
-				</p>
-			<?php endif; ?>
+		<div class="pc alignwide concursos-inscripcion"<?php echo Concursos_Diseno::atributos( $referencia ? $referencia['settings'] : null ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escapado. ?>>
+			<div class="pc-inscripcion">
+				<div class="pc-inscripcion__intro">
+					<p class="pc-antetitulo"><?php esc_html_e( 'Registration', 'photo-challenges' ); ?></p>
+					<h2 class="pc-inscripcion__titulo"><?php esc_html_e( 'Take part with your photos', 'photo-challenges' ); ?></h2>
+					<p class="pc-texto-suave"><?php esc_html_e( 'Choose the challenge and tell us who you are. Once your registration is approved, we will email you a personal link to upload your photos.', 'photo-challenges' ); ?></p>
+				</div>
 
-			<?php if ( ! $retos ) : ?>
-				<p><?php esc_html_e( 'There are no challenges open for registration right now.', 'photo-challenges' ); ?></p>
-			<?php elseif ( 'ok' !== $code ) : ?>
-				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data" class="concursos-form-publico">
-					<input type="hidden" name="action" value="<?php echo esc_attr( self::ACTION ); ?>">
-					<?php wp_nonce_field( self::ACTION ); ?>
+				<?php if ( isset( $messages[ $code ] ) ) : ?>
+					<p class="pc-aviso concursos-aviso concursos-aviso--<?php echo esc_attr( $messages[ $code ][0] ); ?>" role="status">
+						<?php echo esc_html( $messages[ $code ][1] ); ?>
+					</p>
+				<?php endif; ?>
 
-					<p class="concursos-hp" aria-hidden="true">
-						<label><?php esc_html_e( 'Do not fill in this field', 'photo-challenges' ); ?> <input type="text" name="web" tabindex="-1" autocomplete="off"></label>
-					</p>
+				<?php if ( ! $retos ) : ?>
+					<p class="pc-vacio"><?php esc_html_e( 'There are no challenges open for registration right now.', 'photo-challenges' ); ?></p>
+				<?php elseif ( 'ok' !== $code ) : ?>
+					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data" class="pc-formulario concursos-form-publico">
+						<input type="hidden" name="action" value="<?php echo esc_attr( self::ACTION ); ?>">
+						<?php wp_nonce_field( self::ACTION ); ?>
 
-					<p>
-						<label for="concursos-nombre"><?php esc_html_e( 'Name', 'photo-challenges' ); ?> *</label>
-						<input type="text" id="concursos-nombre" name="nombre" required maxlength="100" autocomplete="name">
-					</p>
-					<p>
-						<label for="concursos-email"><?php esc_html_e( 'Email', 'photo-challenges' ); ?> *</label>
-						<input type="email" id="concursos-email" name="email" required autocomplete="email">
-					</p>
-					<p>
-						<label for="concursos-reto"><?php esc_html_e( 'Challenge', 'photo-challenges' ); ?> *</label>
-						<select id="concursos-reto" name="reto" required>
-							<?php if ( count( $retos ) > 1 ) : ?>
-								<option value=""><?php esc_html_e( 'Choose a challenge', 'photo-challenges' ); ?></option>
-							<?php endif; ?>
-							<?php foreach ( $retos as $reto ) : ?>
-								<option value="<?php echo esc_attr( $reto['post']->ID ); ?>" <?php selected( $elegido, $reto['post']->ID ); ?>><?php echo esc_html( get_the_title( $reto['post'] ) ); ?></option>
-							<?php endforeach; ?>
-						</select>
-					</p>
-					<p>
-						<label for="concursos-foto"><?php esc_html_e( 'Profile photo (optional)', 'photo-challenges' ); ?></label>
-						<input type="file" id="concursos-foto" name="foto" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
-						<small><?php 
-						/* translators: %s: maximum file size, such as 5 MB. */
-						echo esc_html( sprintf( __( 'JPG, PNG or WebP, up to %s.', 'photo-challenges' ), size_format( Concursos_Imagenes::limite() ) ) );
-						 ?></small>
-					</p>
-					<p>
-						<label for="concursos-instagram"><?php esc_html_e( 'Instagram (optional)', 'photo-challenges' ); ?></label>
-						<input type="text" id="concursos-instagram" name="instagram" maxlength="100" placeholder="@usuario">
-					</p>
-					<p>
-						<label for="concursos-facebook"><?php esc_html_e( 'Facebook (optional)', 'photo-challenges' ); ?></label>
-						<input type="text" id="concursos-facebook" name="facebook" maxlength="100" placeholder="usuario">
-					</p>
-					<p class="concursos-casilla">
-						<label>
-							<input type="checkbox" name="privacidad" value="1" required>
-							<?php esc_html_e( 'I agree that this data is stored to manage my participation, and that my name, photo and social networks are shown next to my photos.', 'photo-challenges' ); ?>
-							<?php
-							$politica = get_privacy_policy_url();
-							if ( $politica ) :
-								?>
-								<a href="<?php echo esc_url( $politica ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Privacy policy', 'photo-challenges' ); ?></a>
-							<?php endif; ?>
-						</label>
-					</p>
-					<p><button type="submit"><?php esc_html_e( 'Register', 'photo-challenges' ); ?></button></p>
-				</form>
-			<?php endif; ?>
+						<p class="concursos-hp" aria-hidden="true">
+							<label><?php esc_html_e( 'Do not fill in this field', 'photo-challenges' ); ?> <input type="text" name="web" tabindex="-1" autocomplete="off"></label>
+						</p>
+
+						<fieldset class="pc-paso">
+							<legend class="pc-paso__titulo"><span class="pc-paso__numero" aria-hidden="true">01</span><?php esc_html_e( 'Choose the challenge', 'photo-challenges' ); ?></legend>
+							<div class="pc-opciones-reto">
+								<?php
+								foreach ( $retos as $reto ) :
+									$imagen = Concursos_Portada::imagen( $reto, 'thumbnail' );
+									$campo  = 'concursos-reto-' . $reto['post']->ID;
+									?>
+									<label class="pc-opcion-reto" for="<?php echo esc_attr( $campo ); ?>">
+										<input type="radio" id="<?php echo esc_attr( $campo ); ?>" name="reto" value="<?php echo esc_attr( $reto['post']->ID ); ?>" required <?php checked( $elegido, $reto['post']->ID ); ?>>
+										<?php if ( $imagen ) : ?>
+											<img src="<?php echo esc_url( $imagen['url'] ); ?>" alt="" width="56" height="56">
+										<?php else : ?>
+											<span class="pc-opcion-reto__fecha" aria-hidden="true"><span><?php echo esc_html( wp_date( 'd', (int) $reto['settings']['inicio'] ) ); ?></span><span class="pc-etiqueta"><?php echo esc_html( wp_date( 'M', (int) $reto['settings']['inicio'] ) ); ?></span></span>
+										<?php endif; ?>
+										<span class="pc-opcion-reto__texto">
+											<strong><?php echo esc_html( get_the_title( $reto['post'] ) ); ?></strong>
+											<span class="pc-texto-suave"><?php echo esc_html( Concursos_Galeria::frase_estado( $reto['status'], $reto['settings'] ) ); ?></span>
+										</span>
+									</label>
+								<?php endforeach; ?>
+							</div>
+						</fieldset>
+
+						<fieldset class="pc-paso">
+							<legend class="pc-paso__titulo"><span class="pc-paso__numero" aria-hidden="true">02</span><?php esc_html_e( 'About you', 'photo-challenges' ); ?></legend>
+							<div class="pc-campos">
+								<p class="pc-campo">
+									<label for="concursos-nombre"><?php esc_html_e( 'Name', 'photo-challenges' ); ?> <span aria-hidden="true">*</span></label>
+									<input type="text" id="concursos-nombre" name="nombre" required maxlength="100" autocomplete="name">
+								</p>
+								<p class="pc-campo">
+									<label for="concursos-email"><?php esc_html_e( 'Email', 'photo-challenges' ); ?> <span aria-hidden="true">*</span></label>
+									<input type="email" id="concursos-email" name="email" required autocomplete="email" aria-describedby="concursos-email-ayuda">
+									<span class="pc-campo__ayuda" id="concursos-email-ayuda"><?php esc_html_e( 'Never published. We use it to send you the link for your photos.', 'photo-challenges' ); ?></span>
+								</p>
+								<p class="pc-campo">
+									<label for="concursos-instagram"><?php esc_html_e( 'Instagram', 'photo-challenges' ); ?> <span class="pc-campo__opcional"><?php esc_html_e( '(optional)', 'photo-challenges' ); ?></span></label>
+									<input type="text" id="concursos-instagram" name="instagram" maxlength="100" placeholder="@usuario">
+								</p>
+								<p class="pc-campo">
+									<label for="concursos-facebook"><?php esc_html_e( 'Facebook', 'photo-challenges' ); ?> <span class="pc-campo__opcional"><?php esc_html_e( '(optional)', 'photo-challenges' ); ?></span></label>
+									<input type="text" id="concursos-facebook" name="facebook" maxlength="100" placeholder="usuario">
+								</p>
+								<p class="pc-campo pc-campo--ancho">
+									<label for="concursos-foto"><?php esc_html_e( 'Profile photo', 'photo-challenges' ); ?> <span class="pc-campo__opcional"><?php esc_html_e( '(optional)', 'photo-challenges' ); ?></span></label>
+									<input type="file" id="concursos-foto" name="foto" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" aria-describedby="concursos-foto-ayuda">
+									<span class="pc-campo__ayuda" id="concursos-foto-ayuda">
+										<?php
+										/* translators: %s: maximum file size, such as 5 MB. */
+										echo esc_html( sprintf( __( 'JPG, PNG or WebP, up to %s.', 'photo-challenges' ), size_format( Concursos_Imagenes::limite() ) ) );
+										?>
+									</span>
+								</p>
+							</div>
+						</fieldset>
+
+						<fieldset class="pc-paso">
+							<legend class="pc-paso__titulo"><span class="pc-paso__numero" aria-hidden="true">03</span><?php esc_html_e( 'Confirm', 'photo-challenges' ); ?></legend>
+							<p class="pc-casilla concursos-casilla">
+								<input type="checkbox" id="concursos-privacidad" name="privacidad" value="1" required>
+								<label for="concursos-privacidad">
+									<?php esc_html_e( 'I agree that this data is stored to manage my participation, and that my name, photo and social networks are shown next to my photos.', 'photo-challenges' ); ?>
+									<?php
+									$politica = get_privacy_policy_url();
+									if ( $politica ) :
+										?>
+										<a href="<?php echo esc_url( $politica ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Privacy policy', 'photo-challenges' ); ?></a>
+									<?php endif; ?>
+								</label>
+							</p>
+							<p class="pc-acciones"><button type="submit" class="pc-boton pc-boton--principal"><?php esc_html_e( 'Register', 'photo-challenges' ); ?><?php echo Concursos_Vista::icono( 'flecha' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG fijo. ?></button></p>
+						</fieldset>
+					</form>
+				<?php endif; ?>
+			</div>
 		</div>
 		<?php
 		return ob_get_clean();

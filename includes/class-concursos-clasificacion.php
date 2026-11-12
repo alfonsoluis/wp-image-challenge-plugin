@@ -102,37 +102,47 @@ class Concursos_Clasificacion {
 
 		ob_start();
 		?>
-		<section class="concursos-resumen concursos-clasificacion">
-			<h2><?php echo esc_html( $titulo ); ?></h2>
-			<div class="concursos-tabla-marco">
-				<table class="concursos-tabla concursos-sm">
+		<section class="pc-seccion pc-clasificacion concursos-clasificacion" id="clasificacion" aria-labelledby="pc-clasificacion">
+			<div class="pc-clasificacion__intro">
+				<h2 class="pc-seccion__titulo" id="pc-clasificacion"><?php echo esc_html( $titulo ); ?></h2>
+				<p class="pc-texto-suave"><?php esc_html_e( 'Points are added up across the challenges finished during the year. With several votes per voter, a 1st is worth 3 points, a 2nd 2 and a 3rd 1; with a single vote, each vote is worth 1 point.', 'photo-challenges' ); ?></p>
+			</div>
+			<div class="pc-tabla-marco">
+				<table class="pc-tabla">
 					<thead>
 						<tr>
-							<th scope="col"><?php esc_html_e( 'Place', 'photo-challenges' ); ?></th>
+							<th scope="col" class="pc-tabla__puesto"><?php esc_html_e( 'Place', 'photo-challenges' ); ?></th>
 							<th scope="col"><?php esc_html_e( 'Participant', 'photo-challenges' ); ?></th>
-							<th scope="col" class="concursos-tabla__num"><?php esc_html_e( 'Challenges', 'photo-challenges' ); ?></th>
-							<th scope="col" class="concursos-tabla__num"><?php esc_html_e( 'Points', 'photo-challenges' ); ?></th>
+							<th scope="col" class="pc-tabla__num concursos-tabla__num"><?php esc_html_e( 'Challenges', 'photo-challenges' ); ?></th>
+							<th scope="col" class="pc-tabla__num concursos-tabla__num"><?php esc_html_e( 'Points', 'photo-challenges' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php foreach ( $filas as $fila ) : ?>
 							<tr>
-								<td><?php echo esc_html( number_format_i18n( $fila['lugar'] ) . ( $fila['empate'] ? ' ' . __( '(tie)', 'photo-challenges' ) : '' ) ); ?></td>
-								<td>
-									<?php if ( $fila['url'] ) : ?>
-										<a href="<?php echo esc_url( $fila['url'] ); ?>"><?php echo esc_html( $fila['nombre'] ); ?></a>
-									<?php else : ?>
-										<?php echo esc_html( $fila['nombre'] ); ?>
+								<td class="pc-tabla__puesto">
+									<?php echo esc_html( number_format_i18n( $fila['lugar'] ) ); ?>
+									<?php if ( $fila['empate'] ) : ?>
+										<span class="pc-etiqueta"><?php esc_html_e( '(tie)', 'photo-challenges' ); ?></span>
 									<?php endif; ?>
 								</td>
-								<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( $fila['retos'] ) ); ?></td>
-								<td class="concursos-tabla__num"><?php echo esc_html( number_format_i18n( $fila['puntos'] ) ); ?></td>
+								<td>
+									<span class="pc-persona">
+										<span class="pc-persona__ini" aria-hidden="true"><?php echo esc_html( Concursos_Vista::iniciales( $fila['nombre'] ) ); ?></span>
+										<?php if ( $fila['url'] ) : ?>
+											<a href="<?php echo esc_url( $fila['url'] ); ?>"><?php echo esc_html( $fila['nombre'] ); ?></a>
+										<?php else : ?>
+											<span><?php echo esc_html( $fila['nombre'] ); ?></span>
+										<?php endif; ?>
+									</span>
+								</td>
+								<td class="pc-tabla__num pc-texto-suave concursos-tabla__num"><?php echo esc_html( number_format_i18n( $fila['retos'] ) ); ?></td>
+								<td class="pc-tabla__num pc-tabla__fuerte concursos-tabla__num"><?php echo esc_html( number_format_i18n( $fila['puntos'] ) ); ?></td>
 							</tr>
 						<?php endforeach; ?>
 					</tbody>
 				</table>
 			</div>
-			<p class="concursos-xs"><?php esc_html_e( 'Points are added up across the challenges finished during the year. With several votes per voter, a 1st is worth 3 points, a 2nd 2 and a 3rd 1; with a single vote, each vote is worth 1 point.', 'photo-challenges' ); ?></p>
 		</section>
 		<?php
 		return ob_get_clean();

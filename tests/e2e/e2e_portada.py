@@ -37,16 +37,16 @@ check("título del documento",re.search(r"<title>Retos · Concursos Dev</title>"
 d=p[p.find("concursos-destacado"):p.find("concursos-destacado__datos")]
 check("destacado: el reto en curso más reciente","Reto de prueba: luz y sombra" in d)
 check("destacado: fase y acción","En votación" in d and "Ver las fotos y votar" in p)
-pos=[p.find(t) for t in ("concursos-destacado","Otros retos en curso","Retos anteriores")]
+pos=[p.find(t) for t in ("concursos-destacado","Próximamente","Retos anteriores")]
 check("orden de secciones",-1 not in pos and pos==sorted(pos),str(pos))
 ant=p[p.find("Retos anteriores"):]
-check("anteriores listados y finalizados","Reto anterior: reflejos" in ant and "calles vacías" in ant and "Finalizado el" in ant)
+check("anteriores listados y finalizados","Reto anterior: reflejos" in ant and "calles vacías" in ant and "Finalizado ·" in ant and "Foto ganadora" in ant)
 check("anteriores por fecha",ant.find("reflejos")<ant.find("calles vacías"))
 check("sin votar ni enviar en portada",'name="email"' not in p and "concursos-voto-form" not in p and 'type="file"' not in p)
-check("otros incluye Luz de otoño","Reto Luz de oto" in p[pos[1]:pos[2]])
+check("otros incluye Luz de otoño","Reto Luz de oto" in p[pos[0]:pos[2]])
 st,x=get(BASE+"/retos/feed/"); check("el feed sigue siendo feed",st==200 and "<rss" in x)
 st,r=get(BASE+"/retos/reto-anterior-reflejos/")
-check("reto pasado: finalizado sin opciones",st==200 and "Finalizado el" in r and 'name="email"' not in r and "concursos-voto-form" not in r and "Resultados</h2>" in r)
+check("reto pasado: finalizado sin opciones",st==200 and "pc-chip--finalizado" in r and 'name="email"' not in r and "concursos-voto-form" not in r and 'id="pc-ganadores"' in r)
 RET=rid("reto-de-prueba-luz-y-sombra")
 _,g=get(BASE+"/retos/reto-de-prueba-luz-y-sombra/")
 links=dict((H.unescape(n),u) for u,n in re.findall(r'<a href="([^"]*/participante/[^"]+)">([^<]+)</a>',g))
@@ -55,10 +55,11 @@ url=links["Marta López"]; print("    ",url)
 st,m=get(url)
 check("perfil 200",st==200,str(st))
 check("usa el tema","wp-site-blocks" in m)
-check("nombre y cifras","Marta López" in m and "3 retos" in m and "4 fotos" in m and "1 puesto" in m, str(re.findall(r'cifras">\s*([^<]+)',m)))
+cif=re.findall(r'<dd>([^<]+)</dd>',m)
+check("nombre y cifras","Marta López" in m and cif==["3","4","1"], str(cif))
 check("enlace a Instagram","https://www.instagram.com/martalopez.foto/" in m)
 check("sin email","participante1@example.com" not in m and "example.com" not in m)
-sec=dict((H.unescape(t),b) for t,b in re.findall(r'perfil__reto">\s*<h2><a[^>]*>([^<]+)</a></h2>(.*?)</section>',m,re.S))
+sec=dict((H.unescape(t),b) for t,b in re.findall(r'pc-historial__titulo"><a[^>]*>([^<]+)</a></h3>(.*?)</article>',m,re.S))
 check("tres retos",len(sec)==3,str(list(sec)))
 a=sec.get("Reto anterior: reflejos","")
 check("primer lugar y premio","Primer lugar" in a and "Una suscripción de fotografía" in a and a.count("<figure>")==1)
@@ -81,7 +82,7 @@ if pend:
 ids=wp("post","list","--post_type=concurso_inscrito","--s=Marta","--field=ID","--posts_per_page=10").split()
 ids=[i for i in ids if wp("post","get",i,"--field=post_title")=="Marta López"]
 wp("eval",f'Concursos_Participante::set_estado({ids[0]},"inactivo");')
-_,m2=get(url); check("desactivada en un reto: ese reto desaparece","2 retos" in m2,str(re.findall(r'cifras">\s*([^<]+)',m2)))
+_,m2=get(url); check("desactivada en un reto: ese reto desaparece",re.findall(r'<dd>([^<]+)</dd>',m2)[:1]==["2"],str(re.findall(r'<dd>([^<]+)</dd>',m2)))
 for i in ids[1:]: wp("eval",f'Concursos_Participante::set_estado({i},"inactivo");')
 st,_=get(url); check("desactivada en todos: 404",st==404,str(st))
 # Enlaces simples
@@ -94,7 +95,7 @@ st,_=get(u2); check("reglas restauradas",st==200,str(st))
 o=subprocess.run(["docker","compose","run","--rm","-q","wpcli","theme","install","twentytwentyone","--activate"],cwd=PROJECT,capture_output=True,text=True)
 if "twentytwentyone" in wp("theme","list","--status=active","--field=name"):
     st,cl=get(BASE+"/retos/"); check("tema clásico: portada",st==200 and "wp-site-blocks" not in cl and 'id="masthead"' in cl and "concursos-destacado" in cl and "site-footer" in cl.lower(),str(st))
-    st,cl=get(BASE+"/retos/reto-anterior-reflejos/"); check("tema clásico: reto",st==200 and 'id="masthead"' in cl and "concursos-cabecera" in cl and "Resultados</h2>" in cl,str(st))
+    st,cl=get(BASE+"/retos/reto-anterior-reflejos/"); check("tema clásico: reto",st==200 and 'id="masthead"' in cl and "pc-cabecera-reto" in cl and 'id="pc-ganadores"' in cl,str(st))
     st,cl=get(u2); check("tema clásico: perfil",st==200 and 'id="masthead"' in cl and "concursos-perfil" in cl,str(st))
     wp("theme","activate","twentytwentyfour"); wp("theme","delete","twentytwentyone")
 else:

@@ -358,8 +358,8 @@ class Concursos_Envio {
 	<title><?php echo esc_html( $title . ' · ' . get_bloginfo( 'name' ) ); ?></title>
 	<?php wp_print_styles( 'concursos-public' ); ?>
 </head>
-<body class="concursos-pagina concursos-disenado"<?php echo $s ? ' style="' . esc_attr( Concursos_Diseno::estilo( $s ) ) . '"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escapado. ?>>
-	<main class="concursos-pagina__contenido">
+<body class="concursos-pagina">
+	<main class="pc concursos-pagina__contenido"<?php echo Concursos_Diseno::atributos( $s ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escapado. ?>>
 		<p class="concursos-sitio"><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php bloginfo( 'name' ); ?></a></p>
 		<?php echo $body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado al construirlo. ?>
 	</main>

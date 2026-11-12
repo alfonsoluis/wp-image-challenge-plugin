@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Concursos_DB {
 
-	const VERSION = '2';
+	const VERSION = '3';
 	const OPTION  = 'concursos_db_version';
 
 	/**
@@ -50,6 +50,27 @@ class Concursos_DB {
 	public static function maybe_upgrade() {
 		if ( self::VERSION !== get_option( self::OPTION ) ) {
 			self::install();
+		}
+	}
+
+	/**
+	 * Pasa las paletas de la versión 1.0 a estilo y color de acento.
+	 */
+	private static function migrar_paletas() {
+		$metas = get_posts(
+			array(
+				'post_type'      => Concursos_Post_Types::RETO,
+				'post_status'    => 'any',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+				'meta_key'       => Concursos_Reto::META_PREFIX . 'paleta', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+			)
+		);
+		foreach ( $metas as $id ) {
+			list( $estilo, $acento ) = Concursos_Diseno::desde_paleta( get_post_meta( $id, Concursos_Reto::META_PREFIX . 'paleta', true ) );
+			update_post_meta( $id, Concursos_Reto::META_PREFIX . 'estilo', $estilo );
+			update_post_meta( $id, Concursos_Reto::META_PREFIX . 'acento', $acento );
+			delete_post_meta( $id, Concursos_Reto::META_PREFIX . 'paleta' );
 		}
 	}
 
@@ -95,6 +116,7 @@ class Concursos_DB {
 			) {$charset};"
 		);
 
+		self::migrar_paletas();
 		update_option( self::OPTION, self::VERSION );
 	}
 }

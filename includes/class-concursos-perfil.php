@@ -168,7 +168,8 @@ class Concursos_Perfil {
 			return;
 		}
 
-		Concursos_Plantilla::pagina( get_the_title( $inscripciones[0] ), self::render( $inscripciones ) );
+		$referencia = Concursos_Portada::reto_referencia();
+		Concursos_Plantilla::pagina( get_the_title( $inscripciones[0] ), self::render( $inscripciones ), 'concursos-publico--perfil', $referencia ? $referencia['settings'] : null );
 	}
 
 	/**
@@ -208,7 +209,7 @@ class Concursos_Perfil {
 		$redes = array();
 		foreach ( $inscripciones as $id ) {
 			if ( ! $foto && has_post_thumbnail( $id ) ) {
-				$foto = get_the_post_thumbnail( $id, 'medium', array( 'class' => 'concursos-perfil__foto' ) );
+				$foto = get_the_post_thumbnail( $id, 'medium', array( 'class' => 'pc-perfil__foto concursos-perfil__foto' ) );
 			}
 			if ( ! $redes ) {
 				$redes = Concursos_Participante::redes( Concursos_Participante::get( $id ) );
@@ -216,7 +217,6 @@ class Concursos_Perfil {
 		}
 
 		$nombre = get_the_title( $inscripciones[0] );
-		$labels = Concursos_Reto::status_labels();
 		$filas  = array();
 		$fotos  = 0;
 		$puestos = 0;
@@ -245,78 +245,112 @@ class Concursos_Perfil {
 			$filas[] = compact( 'reto_id', 'status', 'mias', 'puesto' );
 		}
 
+		// Mejor resultado: el puesto más alto, para destacarlo.
+		$logro = null;
+		foreach ( $filas as $fila ) {
+			if ( $fila['puesto'] && ( ! $logro || $fila['puesto']['lugar'] < $logro['puesto']['lugar'] ) ) {
+				$logro = $fila;
+			}
+		}
+		$pagina  = (int) get_option( Concursos_Portada::OPCION_PAGINA );
+		$portada = $pagina && 'publish' === get_post_status( $pagina ) ? get_permalink( $pagina ) : get_post_type_archive_link( Concursos_Post_Types::RETO );
+
 		ob_start();
 		?>
-		<header class="concursos-perfil">
-			<?php if ( $foto ) : ?>
-				<?php echo $foto; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- HTML de WordPress. ?>
-			<?php else : ?>
-				<span class="concursos-perfil__foto concursos-perfil__foto--vacia" aria-hidden="true"><?php echo esc_html( mb_strtoupper( mb_substr( $nombre, 0, 1 ) ) ); ?></span>
-			<?php endif; ?>
-			<div>
-				<h1><?php echo esc_html( $nombre ); ?></h1>
-				<p class="concursos-perfil__cifras">
-					<?php
-					echo esc_html(
-						implode(
-							' · ',
-							array(
-								/* translators: %d: number of challenges. */
-								sprintf( _n( '%d challenge', '%d challenges', count( $filas ), 'photo-challenges' ), count( $filas ) ),
-								/* translators: %d: number of photos. */
-								sprintf( _n( '%d photo', '%d photos', $fotos, 'photo-challenges' ), $fotos ),
-								/* translators: %d: number of places. */
-								sprintf( _n( '%d place', '%d places', $puestos, 'photo-challenges' ), $puestos ),
-							)
-						)
-					);
-					?>
-				</p>
-				<?php if ( $redes ) : ?>
-					<p class="concursos-perfil__redes">
-						<?php foreach ( $redes as $red => $url ) : ?>
-							<a href="<?php echo esc_url( $url ); ?>" target="_blank" rel="noopener nofollow"><?php echo esc_html( $red ); ?></a>
-						<?php endforeach; ?>
-					</p>
-				<?php endif; ?>
-			</div>
-		</header>
-
-		<?php foreach ( $filas as $fila ) : ?>
-			<section class="concursos-perfil__reto">
-				<h2><a href="<?php echo esc_url( get_permalink( $fila['reto_id'] ) ); ?>"><?php echo esc_html( get_the_title( $fila['reto_id'] ) ); ?></a></h2>
-				<p>
-					<span class="concursos-etiqueta"><?php echo esc_html( $labels[ $fila['status'] ] ); ?></span>
-					<?php if ( $fila['puesto'] ) : ?>
-						<strong class="concursos-perfil__puesto">
-							<?php echo esc_html( Concursos_Votos::nombre_lugar( $fila['puesto']['lugar'], $fila['puesto']['empate'] ) ); ?>
-						</strong>
+		<div class="pc-contenedor">
+			<nav class="pc-ruta" aria-label="<?php esc_attr_e( 'Breadcrumb', 'photo-challenges' ); ?>">
+				<a href="<?php echo esc_url( $portada ); ?>"><?php esc_html_e( 'Challenges', 'photo-challenges' ); ?></a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page"><?php echo esc_html( $nombre ); ?></span>
+			</nav>
+			<header class="pc-perfil concursos-perfil">
+				<div class="pc-perfil__persona">
+					<?php if ( $foto ) : ?>
+						<?php echo $foto; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- HTML de WordPress. ?>
+					<?php else : ?>
+						<span class="pc-perfil__foto pc-perfil__foto--vacia concursos-perfil__foto--vacia" aria-hidden="true"><?php echo esc_html( Concursos_Vista::iniciales( $nombre ) ); ?></span>
 					<?php endif; ?>
-				</p>
-				<?php if ( $fila['puesto'] && '' !== $fila['puesto']['premio'] ) : ?>
-					<p class="concursos-premio">
-						<?php
-						/* translators: %s: prize. */
-						echo esc_html( sprintf( __( 'Prize: %s', 'photo-challenges' ), $fila['puesto']['premio'] ) );
-						?>
-					</p>
-				<?php endif; ?>
-				<?php if ( $fila['mias'] ) : ?>
-					<ul class="concursos-galeria__rejilla">
-						<?php foreach ( $fila['mias'] as $entrada ) : ?>
-							<li>
-								<figure>
-									<?php echo Concursos_Entrada::miniatura( $entrada ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
-									<figcaption><strong><?php echo esc_html( get_the_title( $entrada ) ); ?></strong></figcaption>
-								</figure>
-							</li>
-						<?php endforeach; ?>
-					</ul>
-				<?php else : ?>
-					<p><?php esc_html_e( 'Their photos in this challenge cannot be shown yet.', 'photo-challenges' ); ?></p>
-				<?php endif; ?>
+					<div class="pc-perfil__texto">
+						<p class="pc-antetitulo"><?php esc_html_e( 'Participant', 'photo-challenges' ); ?></p>
+						<h1 class="pc-perfil__nombre"><?php echo esc_html( $nombre ); ?></h1>
+						<?php if ( $redes ) : ?>
+							<p class="pc-acciones concursos-perfil__redes">
+								<?php foreach ( $redes as $red => $url ) : ?>
+									<a class="pc-boton pc-boton--secundario pc-boton--pequeno" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="noopener nofollow"><?php echo esc_html( $red ); ?></a>
+								<?php endforeach; ?>
+							</p>
+						<?php endif; ?>
+					</div>
+				</div>
+				<dl class="pc-cifras concursos-perfil__cifras">
+					<div><dt class="pc-etiqueta"><?php esc_html_e( 'Challenges', 'photo-challenges' ); ?></dt><dd><?php echo esc_html( number_format_i18n( count( $filas ) ) ); ?></dd></div>
+					<div><dt class="pc-etiqueta"><?php esc_html_e( 'Photos', 'photo-challenges' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $fotos ) ); ?></dd></div>
+					<div><dt class="pc-etiqueta"><?php esc_html_e( 'Places', 'photo-challenges' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $puestos ) ); ?></dd></div>
+				</dl>
+			</header>
+
+			<?php
+			if ( $logro ) :
+				$imagen = get_the_post_thumbnail_url( $logro['mias'][0], 'large' );
+				?>
+				<section class="pc-logro" aria-labelledby="pc-logro">
+					<?php if ( $imagen ) : ?>
+						<span class="pc-logro__media"><img src="<?php echo esc_url( $imagen ); ?>" alt=""></span>
+					<?php endif; ?>
+					<div class="pc-logro__texto">
+						<span class="pc-sello pc-sello--<?php echo esc_attr( (string) min( 3, $logro['puesto']['lugar'] ) ); ?>"><?php echo Concursos_Vista::icono( 'medalla', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG fijo. ?><?php echo esc_html( Concursos_Votos::nombre_lugar( $logro['puesto']['lugar'], $logro['puesto']['empate'] ) ); ?></span>
+						<h2 class="pc-logro__titulo" id="pc-logro"><?php echo esc_html( get_the_title( $logro['mias'][0] ) ); ?></h2>
+						<p>
+							<?php esc_html_e( 'Challenge:', 'photo-challenges' ); ?>
+							<a href="<?php echo esc_url( get_permalink( $logro['reto_id'] ) ); ?>"><?php echo esc_html( get_the_title( $logro['reto_id'] ) ); ?></a><?php
+							if ( '' !== $logro['puesto']['premio'] ) {
+								/* translators: %s: prize. */
+								echo '. ' . esc_html( sprintf( __( 'Prize: %s', 'photo-challenges' ), $logro['puesto']['premio'] ) );
+							}
+							?>
+						</p>
+					</div>
+				</section>
+			<?php endif; ?>
+
+			<section class="pc-seccion" aria-labelledby="pc-historial">
+				<?php echo Concursos_Vista::cabecera_seccion( 'pc-historial', __( 'Challenges they took part in', 'photo-challenges' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+				<?php foreach ( $filas as $fila ) : ?>
+					<article class="pc-historial concursos-perfil__reto">
+						<div class="pc-historial__datos">
+							<span class="pc-etiqueta"><?php echo esc_html( Concursos_Reto::format_dia( Concursos_Reto::get_settings( $fila['reto_id'] )['cierre'] ) ); ?></span>
+							<h3 class="pc-historial__titulo"><a href="<?php echo esc_url( get_permalink( $fila['reto_id'] ) ); ?>"><?php echo esc_html( get_the_title( $fila['reto_id'] ) ); ?></a></h3>
+							<?php echo Concursos_Vista::chip( $fila['status'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+							<?php if ( $fila['puesto'] ) : ?>
+								<span class="pc-resultado concursos-perfil__puesto"><span class="pc-medalla pc-medalla--<?php echo esc_attr( (string) min( 3, $fila['puesto']['lugar'] ) ); ?>" aria-hidden="true"></span><?php echo esc_html( Concursos_Votos::nombre_lugar( $fila['puesto']['lugar'], $fila['puesto']['empate'] ) ); ?></span>
+								<?php if ( '' !== $fila['puesto']['premio'] ) : ?>
+									<span class="pc-texto-suave concursos-premio">
+										<?php
+										/* translators: %s: prize. */
+										echo esc_html( sprintf( __( 'Prize: %s', 'photo-challenges' ), $fila['puesto']['premio'] ) );
+										?>
+									</span>
+								<?php endif; ?>
+							<?php endif; ?>
+						</div>
+						<?php if ( $fila['mias'] ) : ?>
+							<ul class="pc-fotos-perfil concursos-galeria__rejilla">
+								<?php foreach ( $fila['mias'] as $entrada ) : ?>
+									<li class="pc-foto">
+										<figure>
+											<?php echo Concursos_Entrada::miniatura( $entrada ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+											<figcaption class="pc-foto__pie"><span class="pc-foto__titulo"><?php echo esc_html( get_the_title( $entrada ) ); ?></span></figcaption>
+										</figure>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						<?php else : ?>
+							<p class="pc-texto-suave pc-historial__vacio"><?php esc_html_e( 'Their photos in this challenge cannot be shown yet.', 'photo-challenges' ); ?></p>
+						<?php endif; ?>
+					</article>
+				<?php endforeach; ?>
 			</section>
-		<?php endforeach; ?>
+		</div>
 		<?php
 		return ob_get_clean();
 	}

@@ -231,7 +231,7 @@ class Concursos_Reto_Metabox {
 	}
 
 	/**
-	 * Caja de diseño: paleta y tamaño.
+	 * Caja de diseño: estilo, acento, tamaño y fondo.
 	 *
 	 * @param WP_Post $post Reto.
 	 */
@@ -240,23 +240,29 @@ class Concursos_Reto_Metabox {
 		?>
 		<table class="form-table concursos-form">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Colors', 'photo-challenges' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Style', 'photo-challenges' ); ?></th>
 				<td class="concursos-opciones">
-					<label class="concursos-opcion">
-						<input type="radio" name="concursos[paleta]" value="<?php echo esc_attr( Concursos_Diseno::TEMA ); ?>" <?php checked( $s['paleta'], Concursos_Diseno::TEMA ); ?>>
-						<span><?php esc_html_e( 'Theme colors', 'photo-challenges' ); ?></span>
-					</label>
-					<?php foreach ( Concursos_Diseno::paletas() as $clave => $p ) : ?>
+					<?php foreach ( Concursos_Diseno::estilos() as $clave => $nombre ) : ?>
 						<label class="concursos-opcion">
-							<input type="radio" name="concursos[paleta]" value="<?php echo esc_attr( $clave ); ?>" <?php checked( $s['paleta'], $clave ); ?>>
-							<span class="concursos-muestras" aria-hidden="true">
-								<?php foreach ( array( 'color', 'acento', 'suave', 'fondo' ) as $tono ) : ?>
-									<i style="background:<?php echo esc_attr( $p[ $tono ] ); ?>"></i>
-								<?php endforeach; ?>
-							</span>
-							<span><?php echo esc_html( $p['nombre'] ); ?></span>
+							<input type="radio" name="concursos[estilo]" value="<?php echo esc_attr( $clave ); ?>" <?php checked( $s['estilo'], $clave ); ?>>
+							<span><?php echo esc_html( $nombre ); ?></span>
 						</label>
 					<?php endforeach; ?>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Accent color', 'photo-challenges' ); ?></th>
+				<td class="concursos-opciones">
+					<?php foreach ( Concursos_Diseno::acentos() as $clave => $a ) : ?>
+						<label class="concursos-opcion">
+							<input type="radio" name="concursos[acento]" value="<?php echo esc_attr( $clave ); ?>" <?php checked( $s['acento'], $clave ); ?>>
+							<?php if ( $a['color'] ) : ?>
+								<span class="concursos-muestras" aria-hidden="true"><i style="background:<?php echo esc_attr( $a['color'] ); ?>"></i></span>
+							<?php endif; ?>
+							<span><?php echo esc_html( $a['nombre'] ); ?></span>
+						</label>
+					<?php endforeach; ?>
+					<p class="description"><?php esc_html_e( 'Used for the current phase, highlights and votes. Typography always comes from your theme.', 'photo-challenges' ); ?></p>
 				</td>
 			</tr>
 			<tr>

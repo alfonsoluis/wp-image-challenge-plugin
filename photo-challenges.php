@@ -35,6 +35,7 @@ require_once CONCURSOS_PATH . 'includes/class-concursos-votantes.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-votos.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-clasificacion.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-galeria.php';
+require_once CONCURSOS_PATH . 'includes/class-concursos-vista.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-plantilla.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-portada.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-perfil.php';

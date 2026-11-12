@@ -81,14 +81,16 @@ admin=session()
 fetch(admin,BASE+"/wp-login.php",urllib.parse.urlencode({"log":"admin","pwd":"admin","wp-submit":"Acceder","testcookie":"1"}).encode())
 pend=wp("post","list","--post_type=concurso_inscrito","--field=ID","--meta_key=_concursos_estado","--meta_value=pendiente","--posts_per_page=1")
 correo=wp("post","meta","get",pend,"_concursos_email")
-lista=fetch(admin,BASE+"/wp-admin/edit.php?post_type=concurso_inscrito")[2]
+# Se busca por nombre: con muchos inscritos, el pendiente puede no estar en la primera página.
+LISTA=BASE+"/wp-admin/edit.php?post_type=concurso_inscrito&s="+urllib.parse.quote(wp("post","get",pend,"--field=post_title"))
+lista=fetch(admin,LISTA)[2]
 url=re.search(r'href="([^"]*action=concursos_aprobar(?:&|&amp;|&#038;)post='+pend+r'(?:&|&amp;|&#038;)[^"]*)">Aprobar<',lista)
 check("participante pendiente tiene «Aprobar» en su fila", bool(url))
 activos=lista.count(">Aprobar<")
 antes=len(mails("Ya puedes participar",correo))
 st,final,h=fetch(admin,H.unescape(url.group(1)) if url else BASE)
 check("aprobar desde la fila: activo, aviso y email", wp("post","meta","get",pend,"_concursos_estado")=="activo" and "1 participante activado" in h and len(mails("Ya puedes participar",correo))==antes+1, final[-60:])
-lista=fetch(admin,BASE+"/wp-admin/edit.php?post_type=concurso_inscrito")[2]
+lista=fetch(admin,LISTA)[2]
 check("los activos no muestran «Aprobar»", lista.count(">Aprobar<")==activos-1, f"{activos}->{lista.count('>Aprobar<')}")
 fetch(admin,BASE+"/wp-admin/admin-post.php?action=concursos_aprobar&post="+pend+"&_wpnonce=malo")
 check("nonce falso no aprueba ni rompe", True)

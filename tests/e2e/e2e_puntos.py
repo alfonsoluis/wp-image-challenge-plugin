@@ -138,7 +138,7 @@ print(sh("make", "demo", "FASE=finalizado").splitlines()[-1])
 RETO = wp("post", "list", "--post_type=concurso_reto", "--name=reto-de-prueba-luz-y-sombra", "--field=ID")
 h = fetch(session(), RETO_URL)[2]
 check("resultados en puntos", "6 puntos" in h and "0 puntos" in h and "6 votos" not in h)
-check("resumen con columna Puntos", re.search(r'concursos-resumen.*?<th scope="col" class="concursos-tabla__num">Puntos</th>', h, re.S) is not None)
+check("resumen con columna Puntos", re.search(r'concursos-resumen.*?<th scope="col" class="[^"]*concursos-tabla__num">Puntos</th>', h, re.S) is not None)
 check("nota de la clasificación explica los puntos", "un 1.º vale 3 puntos" in h)
 
 # --- Votación anónima
@@ -157,7 +157,7 @@ check("anónima: ni títulos ni autores en la galería", not any(t in galeria fo
 check("anónima: la ventana ampliada no lleva datos", 'data-titulo=""' in galeria and 'data-autor=""' in galeria and 'data-autor="Marta' not in galeria)
 check("anónima: siguen las 9 fotos", galeria.count('class="concursos-foto"') == 9)
 st, _, hp = fetch(session(), perfil)
-seccion = next((x for x in hp.split('class="concursos-perfil__reto"') if "reto-de-prueba-luz-y-sombra" in x), "")
+seccion = next((x for x in hp.split('concursos-perfil__reto"') if "reto-de-prueba-luz-y-sombra" in x), "")
 check("anónima: el perfil no enseña las fotos de este reto", st == 200 and seccion != "" and "concursos-foto" not in seccion, str(st))
 fase("envios")
 h = fetch(session(), RETO_URL)[2]

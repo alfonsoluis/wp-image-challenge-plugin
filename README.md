@@ -34,7 +34,7 @@ Pensado para asociaciones de fotografía, escuelas y organizaciones que ya tiene
 | 👤 **Perfiles de participante** | Foto, redes, retos, fotos y puestos, sin mostrar nunca el email. Se pueden desactivar en **Retos → Ajustes**. |
 | 📣 **Avisos de nuevos retos** | Quien se suscribe recibe un email al publicarse un reto, y puede darse de baja cuando quiera. |
 | 🧬 **Duplicar retos** | Crea una nueva edición en un clic, copiando o no a sus participantes activos. |
-| 🎨 **Diseño por reto** | Los colores del tema o 10 paletas armónicas, y 3 tamaños de texto. La tipografía siempre es la de tu tema. |
+| 🎨 **Diseño por reto** | Dos estilos (los colores del tema o el editorial, de papel cálido y tinta oscura), 6 colores de acento y 3 tamaños de texto. La tipografía siempre es la de tu tema. |
 | 🖼️ **Fondo de iconos** | Un mosaico de 44 iconos de fotografía con el color del reto, que se funde con el fondo de la página. Se activa por reto en la portada, el detalle y la inscripción. |
 | 🌍 **Inglés y español** | Traducción completa, válida para cualquier variante regional del español. Las direcciones siguen el idioma del sitio: `/retos/` o `/challenges/`. |
 | 🔌 **REST API** | La configuración de cada reto se lee y se cambia en el campo `concursos` de `/wp-json/wp/v2/concurso_reto`, con un usuario que pueda editarlo (por ejemplo, con una contraseña de aplicación). |
@@ -57,11 +57,9 @@ Pensado para asociaciones de fotografía, escuelas y organizaciones que ya tiene
   </tr>
 </table>
 
-### Paletas
+### Un diseño que el tema no rompe
 
-Diez combinaciones tomadas de las más populares de [Coolors](https://coolors.co/palettes/popular/modern), todas con contraste AA.
-
-<p align="center"><img alt="Las diez paletas disponibles" src="docs/screenshots/paletas.jpg" width="640"></p>
+Las páginas públicas del plugin usan un sistema de diseño propio y aislado: todo su HTML va dentro de un contenedor `.pc`, y sus estilos neutralizan lo que los temas suelen aplicar a títulos, enlaces, botones o tablas, sin afectar al resto del sitio. Los colores, espacios y tamaños son variables CSS (`--pc-*`), así que un estilo nuevo solo cambia sus valores, sin tocar el HTML.
 
 ### Fondo de iconos
 
@@ -107,7 +105,8 @@ Los retos están en la REST API de WordPress, en `/wp-json/wp/v2/concurso_reto`,
 | `emails_participantes`, `emails_votantes` | Emails separados por comas |
 | `premios` | Hasta 3 textos, del 1.º al 3.º |
 | `reglas` | Texto |
-| `paleta` | `tema` o una paleta: `playa`, `brisa`, `otono`, `oro`, `intensos`, `baya`, `naturaleza`, `azul`, `tierra`, `naranja` |
+| `estilo` | `tema` o `editorial` |
+| `acento` | Vacío (color del tema), `teja`, `azul`, `verde`, `violeta`, `frambuesa` o `tinta` |
 | `tamano` | `pequeno`, `normal` o `grande` |
 | `fondo_iconos` | Páginas con fondo: `portada`, `detalle`, `inscripcion` |
 | `fase` | Solo lectura: la fase actual del reto |

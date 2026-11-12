@@ -58,7 +58,7 @@ def inscribir(nombre, email):
     url = BASE + "/inscripcion-retos/"
     page = fetch(op, url)[2]
     nonce = re.search(r'name="_wpnonce" value="([^"]+)"', page).group(1)
-    reto = re.search(r'<option value="(\d+)"[^>]*>Reto Luz de oto', page).group(1)
+    reto = re.search(r'name="reto" value="(\d+)"(?:(?!name="reto").)*?Reto Luz de oto', page, re.S).group(1)
     body, h = multipart({"action": "concursos_inscribir", "_wpnonce": nonce, "reto": reto, "nombre": nombre, "email": email,
                          "instagram": "", "facebook": "", "privacidad": "1"}, {"foto": ("", b"", "application/octet-stream")})
     h["Referer"] = url

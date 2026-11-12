@@ -53,7 +53,7 @@ def votar(op, foto, nonce):
 
 
 def fotos_visibles():
-    return fetch(session(), RETO_URL)[2].count("<figcaption>")
+    return fetch(session(), RETO_URL)[2].count("<figcaption")
 
 
 def votos_de(ids):
@@ -99,7 +99,7 @@ check("hay 1 voto en la tabla", votos_de(marta) == 1)
 
 print("   ", bulk("concursos_desactivar", pid))
 check("tras desactivar se ven 7 fotos", fotos_visibles() == 7, str(fotos_visibles()))
-titulos = re.findall(r"<figcaption><strong>[^<]*</strong><span>([^<]*)", fetch(session(), RETO_URL)[2])
+titulos = re.findall(r'class="pc-foto__autor"><a [^>]*>([^<]*)', fetch(session(), RETO_URL)[2])
 check("Marta ya no aparece", "Marta López" not in titulos, str(sorted(set(titulos))))
 check("sus votos se borraron", votos_de(marta) == 0)
 check("el votante recupera su voto", "Te quedan 3 de 3" in fetch(v, RETO_URL)[2])
@@ -128,7 +128,7 @@ check("resultados incluyen a Marta", "Marta López" in antes and "Empate en el p
 print("   ", bulk("concursos_desactivar", pid2))
 despues = fetch(session(), RETO_URL)[2]
 despues = despues[:despues.find("concursos-clasificacion")] if "concursos-clasificacion" in despues else despues
-check("resultados sin Marta", "Marta López" not in despues and despues.count("<figcaption>") == 7, str(despues.count("<figcaption>")))
+check("resultados sin Marta", "Marta López" not in despues and despues.count("<figcaption") == 7, str(despues.count("<figcaption")))
 check("el puesto se recalcula", "Primer lugar" in despues or "Empate en el primer lugar" in despues)
 
 print(sh("make", "demo", "FASE=votacion").splitlines()[-1])

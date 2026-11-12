@@ -68,8 +68,8 @@
 			avatar.src = datos.avatar;
 		}
 
-		// Dentro del reto, para heredar sus colores.
-		( boton.closest( '.concursos-disenado' ) || document.body ).appendChild( modal );
+		// Dentro del contenedor .pc, para heredar sus estilos y colores.
+		( boton.closest( '.pc' ) || document.body ).appendChild( modal );
 		modal.showModal();
 	}
 
