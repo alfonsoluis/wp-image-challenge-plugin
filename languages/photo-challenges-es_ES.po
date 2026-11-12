@@ -51,7 +51,7 @@ msgstr "Panel"
 #: includes/class-concursos-perfil.php:262
 #: includes/class-concursos-perfil.php:286
 #: includes/class-concursos-portada.php:40
-#: includes/class-concursos-portada.php:72
+#: includes/class-concursos-portada.php:71
 #: includes/class-concursos-post-types.php:54
 #: includes/class-concursos-post-types.php:56
 msgid "Challenges"
@@ -62,12 +62,12 @@ msgid "In progress"
 msgstr "En curso"
 
 #: includes/admin/class-concursos-admin.php:80
-#: includes/class-concursos-reto.php:340
+#: includes/class-concursos-reto.php:339
 msgid "Accepting photos"
 msgstr "Recibiendo fotos"
 
 #: includes/admin/class-concursos-admin.php:81
-#: includes/class-concursos-reto.php:341
+#: includes/class-concursos-reto.php:340
 msgid "Voting"
 msgstr "En votación"
 
@@ -320,14 +320,14 @@ msgid "All statuses"
 msgstr "Todos los estados"
 
 #: includes/admin/class-concursos-participantes-admin.php:115
-#: includes/class-concursos-inscripcion.php:261
+#: includes/class-concursos-inscripcion.php:267
 msgid "Name"
 msgstr "Nombre"
 
 #: includes/admin/class-concursos-participantes-admin.php:116
 #: includes/admin/class-concursos-participantes-admin.php:339
 #: includes/admin/class-concursos-votantes-admin.php:50
-#: includes/class-concursos-inscripcion.php:265
+#: includes/class-concursos-inscripcion.php:271
 #: includes/class-concursos-votantes.php:550
 msgid "Email"
 msgstr "Email"
@@ -344,7 +344,7 @@ msgid "Social networks"
 msgstr "Redes"
 
 #: includes/admin/class-concursos-participantes-admin.php:120
-#: includes/class-concursos-inscripcion.php:211
+#: includes/class-concursos-inscripcion.php:217
 msgid "Registration"
 msgstr "Inscripción"
 
@@ -550,22 +550,14 @@ msgstr "Se usa en la fase actual, los detalles destacados y los votos. La tipogr
 msgid "Text size"
 msgstr "Tamaño del texto"
 
-#: includes/admin/class-concursos-reto-metabox.php:280
-msgid "Icon background"
-msgstr "Fondo de iconos"
-
-#: includes/admin/class-concursos-reto-metabox.php:288
-msgid "Uncheck all of them to hide the background. The challenges and registration pages follow the featured challenge."
-msgstr "Desmárcalas todas para no mostrar el fondo. La página de retos y la de inscripción siguen al reto destacado."
-
 #. translators: %s: list of invalid email addresses.
-#: includes/admin/class-concursos-reto-metabox.php:322
-#: includes/class-concursos-api.php:120
+#: includes/admin/class-concursos-reto-metabox.php:310
+#: includes/class-concursos-api.php:118
 #, php-format
 msgid "These addresses are not valid and were ignored: %s"
 msgstr "Estas direcciones no son válidas y se ignoraron: %s"
 
-#: includes/admin/class-concursos-reto-metabox.php:342
+#: includes/admin/class-concursos-reto-metabox.php:330
 msgid "The challenge was saved, but check its settings:"
 msgstr "El reto se guardó, pero revisa su configuración:"
 
@@ -710,67 +702,53 @@ msgstr "Lugar"
 msgid "(tie)"
 msgstr "(empate)"
 
-#: includes/class-concursos-diseno.php:32
+#: includes/class-concursos-diseno.php:29
 msgid "Site theme: your theme colors"
 msgstr "Tema del sitio: los colores de tu tema"
 
-#: includes/class-concursos-diseno.php:33
+#: includes/class-concursos-diseno.php:30
 msgid "Editorial: warm paper background and dark ink"
 msgstr "Editorial: fondo de papel cálido y tinta oscura"
 
-#: includes/class-concursos-diseno.php:47
+#: includes/class-concursos-diseno.php:44
 msgid "Theme color"
 msgstr "Color del tema"
 
-#: includes/class-concursos-diseno.php:51
+#: includes/class-concursos-diseno.php:48
 msgid "Terracotta"
 msgstr "Teja"
 
-#: includes/class-concursos-diseno.php:55
+#: includes/class-concursos-diseno.php:52
 msgid "Blue"
 msgstr "Azul"
 
-#: includes/class-concursos-diseno.php:59
+#: includes/class-concursos-diseno.php:56
 msgid "Green"
 msgstr "Verde"
 
-#: includes/class-concursos-diseno.php:63
+#: includes/class-concursos-diseno.php:60
 msgid "Violet"
 msgstr "Violeta"
 
-#: includes/class-concursos-diseno.php:67
+#: includes/class-concursos-diseno.php:64
 msgid "Raspberry"
 msgstr "Frambuesa"
 
-#: includes/class-concursos-diseno.php:71
+#: includes/class-concursos-diseno.php:68
 msgid "Ink"
 msgstr "Tinta"
 
-#: includes/class-concursos-diseno.php:110
+#: includes/class-concursos-diseno.php:107
 msgid "Smaller"
 msgstr "Más pequeño"
 
-#: includes/class-concursos-diseno.php:114
+#: includes/class-concursos-diseno.php:111
 msgid "Theme default"
 msgstr "Estándar del tema"
 
-#: includes/class-concursos-diseno.php:118
+#: includes/class-concursos-diseno.php:115
 msgid "Larger"
 msgstr "Más grande"
-
-#: includes/class-concursos-diseno.php:131
-#: includes/class-concursos-portada.php:58
-msgid "Challenges page"
-msgstr "Portada de retos"
-
-#: includes/class-concursos-diseno.php:132
-msgid "Challenge details"
-msgstr "Detalle del reto"
-
-#: includes/class-concursos-diseno.php:133
-#: includes/class-concursos-inscripcion.php:74
-msgid "Registration page"
-msgstr "Página de inscripción"
 
 #: includes/class-concursos-entrada.php:37
 #: includes/class-concursos-entrada.php:39
@@ -837,7 +815,7 @@ msgstr "Ya enviaste el máximo de fotos de este reto."
 
 #. translators: %s: maximum file size, such as 5 MB.
 #: includes/class-concursos-envio.php:40
-#: includes/class-concursos-inscripcion.php:172
+#: includes/class-concursos-inscripcion.php:178
 #, php-format
 msgid "The photo must be a JPG, PNG or WebP of up to %s."
 msgstr "La foto debe ser JPG, PNG o WebP de %s como máximo."
@@ -919,7 +897,7 @@ msgstr "Enviar una foto"
 
 #. translators: %s: maximum file size, such as 5 MB.
 #: includes/class-concursos-envio.php:240
-#: includes/class-concursos-inscripcion.php:283
+#: includes/class-concursos-inscripcion.php:289
 #, php-format
 msgid "JPG, PNG or WebP, up to %s."
 msgstr "JPG, PNG o WebP, hasta %s."
@@ -950,7 +928,7 @@ msgstr "Ver todos los retos"
 
 #: includes/class-concursos-envio.php:327
 #: includes/class-concursos-galeria.php:145
-#: includes/class-concursos-portada.php:197
+#: includes/class-concursos-portada.php:196
 msgid "See the photos and vote"
 msgstr "Ver las fotos y votar"
 
@@ -959,7 +937,7 @@ msgid "See the results"
 msgstr "Ver los resultados"
 
 #: includes/class-concursos-envio.php:330
-#: includes/class-concursos-portada.php:197
+#: includes/class-concursos-portada.php:196
 msgid "See the challenge"
 msgstr "Ver el reto"
 
@@ -1020,8 +998,8 @@ msgstr "Calendario del reto"
 
 #. translators: %d: number of photos.
 #: includes/class-concursos-galeria.php:195
-#: includes/class-concursos-portada.php:213
-#: includes/class-concursos-portada.php:286
+#: includes/class-concursos-portada.php:212
+#: includes/class-concursos-portada.php:285
 #, php-format
 msgid "%d photo submitted"
 msgid_plural "%d photos submitted"
@@ -1155,111 +1133,115 @@ msgstr "Clasificación del reto"
 msgid "Total"
 msgstr "Total"
 
-#: includes/class-concursos-inscripcion.php:56
+#: includes/class-concursos-inscripcion.php:57
 msgid "Challenge registration"
 msgstr "Inscripción a retos"
 
-#: includes/class-concursos-inscripcion.php:165
+#: includes/class-concursos-inscripcion.php:109
+msgid "Registration page"
+msgstr "Página de inscripción"
+
+#: includes/class-concursos-inscripcion.php:171
 msgid "Thank you! We received your registration. We will write to you when it is approved."
 msgstr "¡Gracias! Recibimos tu inscripción. Te escribiremos cuando la aprobemos."
 
-#: includes/class-concursos-inscripcion.php:166
+#: includes/class-concursos-inscripcion.php:172
 msgid "Enter your name."
 msgstr "Escribe tu nombre."
 
-#: includes/class-concursos-inscripcion.php:167
+#: includes/class-concursos-inscripcion.php:173
 #: includes/class-concursos-votantes.php:136
 msgid "Enter a valid email address."
 msgstr "Escribe un email válido."
 
-#: includes/class-concursos-inscripcion.php:168
+#: includes/class-concursos-inscripcion.php:174
 msgid "Choose an open challenge."
 msgstr "Elige un reto abierto."
 
-#: includes/class-concursos-inscripcion.php:169
+#: includes/class-concursos-inscripcion.php:175
 msgid "That email is already registered for that challenge."
 msgstr "Ya hay una inscripción con ese email en ese reto."
 
-#: includes/class-concursos-inscripcion.php:175
+#: includes/class-concursos-inscripcion.php:181
 msgid "You must accept the use of your data to register."
 msgstr "Debes aceptar el uso de tus datos para inscribirte."
 
-#: includes/class-concursos-inscripcion.php:177
+#: includes/class-concursos-inscripcion.php:183
 msgid "We could not save your registration. Please try again."
 msgstr "No pudimos guardar tu inscripción. Inténtalo de nuevo."
 
-#: includes/class-concursos-inscripcion.php:212
+#: includes/class-concursos-inscripcion.php:218
 msgid "Take part with your photos"
 msgstr "Participa con tus fotos"
 
-#: includes/class-concursos-inscripcion.php:213
+#: includes/class-concursos-inscripcion.php:219
 msgid "Choose the challenge and tell us who you are. Once your registration is approved, we will email you a personal link to upload your photos."
 msgstr "Elige el reto y cuéntanos quién eres. Cuando se apruebe tu inscripción, te enviaremos por email un enlace personal para subir tus fotos."
 
-#: includes/class-concursos-inscripcion.php:223
+#: includes/class-concursos-inscripcion.php:229
 msgid "There are no challenges open for registration right now."
 msgstr "Ahora mismo no hay retos abiertos a inscripción."
 
-#: includes/class-concursos-inscripcion.php:230
+#: includes/class-concursos-inscripcion.php:236
 #: includes/class-concursos-votantes.php:548
 msgid "Do not fill in this field"
 msgstr "No rellenes este campo"
 
-#: includes/class-concursos-inscripcion.php:234
+#: includes/class-concursos-inscripcion.php:240
 msgid "Choose the challenge"
 msgstr "Elige el reto"
 
-#: includes/class-concursos-inscripcion.php:258
+#: includes/class-concursos-inscripcion.php:264
 msgid "About you"
 msgstr "Tus datos"
 
-#: includes/class-concursos-inscripcion.php:267
+#: includes/class-concursos-inscripcion.php:273
 msgid "Never published. We use it to send you the link for your photos."
 msgstr "No se publica. Lo usamos para enviarte el enlace de tus fotos."
 
-#: includes/class-concursos-inscripcion.php:270
+#: includes/class-concursos-inscripcion.php:276
 msgid "Instagram"
 msgstr "Instagram"
 
-#: includes/class-concursos-inscripcion.php:270
-#: includes/class-concursos-inscripcion.php:274
-#: includes/class-concursos-inscripcion.php:278
+#: includes/class-concursos-inscripcion.php:276
+#: includes/class-concursos-inscripcion.php:280
+#: includes/class-concursos-inscripcion.php:284
 msgid "(optional)"
 msgstr "(opcional)"
 
-#: includes/class-concursos-inscripcion.php:274
+#: includes/class-concursos-inscripcion.php:280
 msgid "Facebook"
 msgstr "Facebook"
 
-#: includes/class-concursos-inscripcion.php:278
+#: includes/class-concursos-inscripcion.php:284
 #: includes/class-concursos-participante.php:119
 msgid "Profile photo"
 msgstr "Foto de perfil"
 
-#: includes/class-concursos-inscripcion.php:291
+#: includes/class-concursos-inscripcion.php:297
 msgid "Confirm"
 msgstr "Confirmación"
 
-#: includes/class-concursos-inscripcion.php:295
+#: includes/class-concursos-inscripcion.php:301
 msgid "I agree that this data is stored to manage my participation, and that my name, photo and social networks are shown next to my photos."
 msgstr "Acepto que se guarden estos datos para gestionar mi participación, y que mi nombre, mi foto y mis redes se muestren junto a mis fotos."
 
-#: includes/class-concursos-inscripcion.php:300
+#: includes/class-concursos-inscripcion.php:306
 msgid "Privacy policy"
 msgstr "Política de privacidad"
 
-#: includes/class-concursos-inscripcion.php:304
+#: includes/class-concursos-inscripcion.php:310
 msgid "Register"
 msgstr "Inscribirme"
 
 #. translators: %s: challenge name.
-#: includes/class-concursos-inscripcion.php:505
+#: includes/class-concursos-inscripcion.php:511
 #, php-format
 msgid "We received your registration: %s"
 msgstr "Recibimos tu inscripción: %s"
 
 #. translators: 1: participant name, 2: challenge name, 3: site name.
-#: includes/class-concursos-inscripcion.php:508
+#: includes/class-concursos-inscripcion.php:514
 #, php-format
 msgid ""
 "Hello %1$s,\n"
@@ -1270,13 +1252,13 @@ msgid ""
 msgstr "Hola %1$s:\n\nRecibimos tu inscripción en el reto «%2$s». Te escribiremos cuando la revisemos y la aprobemos.\n\n%3$s"
 
 #. translators: %s: challenge name.
-#: includes/class-concursos-inscripcion.php:530
+#: includes/class-concursos-inscripcion.php:536
 #, php-format
 msgid "You can now take part in “%s”"
 msgstr "Ya puedes participar en «%s»"
 
 #. translators: 1: participant name, 2: challenge name, 3: personal link, 4: site name.
-#: includes/class-concursos-inscripcion.php:533
+#: includes/class-concursos-inscripcion.php:539
 #, php-format
 msgid ""
 "Hello %1$s,\n"
@@ -1342,59 +1324,63 @@ msgstr "Retos en los que participó"
 msgid "Their photos in this challenge cannot be shown yet."
 msgstr "Sus fotos en este reto todavía no se pueden ver."
 
-#: includes/class-concursos-portada.php:141
+#: includes/class-concursos-portada.php:58
+msgid "Challenges page"
+msgstr "Portada de retos"
+
+#: includes/class-concursos-portada.php:140
 msgid "No challenges have been published yet."
 msgstr "Todavía no hay retos publicados."
 
-#: includes/class-concursos-portada.php:147
+#: includes/class-concursos-portada.php:146
 msgid "Open for entries"
 msgstr "Abiertos a participar"
 
-#: includes/class-concursos-portada.php:150
+#: includes/class-concursos-portada.php:149
 msgid "Also in progress"
 msgstr "También en curso"
 
 #. translators: %d: year.
-#: includes/class-concursos-portada.php:175
+#: includes/class-concursos-portada.php:174
 #, php-format
 msgid "Photo challenges · %d"
 msgstr "Retos fotográficos · %d"
 
-#: includes/class-concursos-portada.php:178
+#: includes/class-concursos-portada.php:177
 msgid "One theme. One photo."
 msgstr "Un tema. Una foto."
 
-#: includes/class-concursos-portada.php:178
+#: includes/class-concursos-portada.php:177
 msgid "Your eye."
 msgstr "Tu mirada."
 
-#: includes/class-concursos-portada.php:181
+#: includes/class-concursos-portada.php:180
 msgid "Take part with your photos, vote for the community’s favourites and find out who won each challenge."
 msgstr "Participa con tus fotos, vota las de la comunidad y descubre quién ganó cada reto."
 
-#: includes/class-concursos-portada.php:183
+#: includes/class-concursos-portada.php:182
 msgid "Join a challenge"
 msgstr "Inscribirme en un reto"
 
-#: includes/class-concursos-portada.php:197
+#: includes/class-concursos-portada.php:196
 msgid "Take part in the challenge"
 msgstr "Participar en el reto"
 
-#: includes/class-concursos-portada.php:216
+#: includes/class-concursos-portada.php:215
 msgid "choose your 1st, 2nd and 3rd"
 msgstr "elige tu 1.º, 2.º y 3.º"
 
-#: includes/class-concursos-portada.php:216
+#: includes/class-concursos-portada.php:215
 msgid "choose your 1st and 2nd"
 msgstr "elige tu 1.º y 2.º"
 
-#: includes/class-concursos-portada.php:243
+#: includes/class-concursos-portada.php:242
 msgid "Rules and prizes"
 msgstr "Reglas y premios"
 
 #. translators: %d: number of challenges.
-#: includes/class-concursos-portada.php:262
-#: includes/class-concursos-portada.php:305
+#: includes/class-concursos-portada.php:261
+#: includes/class-concursos-portada.php:304
 #, php-format
 msgid "%d challenge"
 msgid_plural "%d challenges"
@@ -1402,32 +1388,32 @@ msgstr[0] "%d reto"
 msgstr[1] "%d retos"
 
 #. translators: %d: number of challenges.
-#: includes/class-concursos-portada.php:305
+#: includes/class-concursos-portada.php:304
 msgid "Coming soon"
 msgstr "Próximamente"
 
 #. translators: %s: short date.
-#: includes/class-concursos-portada.php:322
+#: includes/class-concursos-portada.php:321
 #, php-format
 msgid "Opens %s"
 msgstr "Abre el %s"
 
-#: includes/class-concursos-portada.php:338
+#: includes/class-concursos-portada.php:337
 msgid "Past challenges"
 msgstr "Retos anteriores"
 
-#: includes/class-concursos-portada.php:354
+#: includes/class-concursos-portada.php:353
 msgid "Winning photo"
 msgstr "Foto ganadora"
 
 #. translators: %s: date.
-#: includes/class-concursos-portada.php:360
+#: includes/class-concursos-portada.php:359
 #, php-format
 msgid "Finished · %s"
 msgstr "Finalizado · %s"
 
 #. translators: 1: photo title, 2: author name.
-#: includes/class-concursos-portada.php:368
+#: includes/class-concursos-portada.php:367
 #, php-format
 msgid "“%1$s” by %2$s"
 msgstr "«%1$s» de %2$s"
@@ -1480,75 +1466,75 @@ msgid_plural "Archived <span class=\"count\">(%s)</span>"
 msgstr[0] "Archivado <span class=\"count\">(%s)</span>"
 msgstr[1] "Archivados <span class=\"count\">(%s)</span>"
 
-#: includes/class-concursos-reto.php:88
+#: includes/class-concursos-reto.php:87
 msgid "Open: photos are shown as they are submitted"
 msgstr "Abierto: las fotos se ven al enviarse"
 
-#: includes/class-concursos-reto.php:89
+#: includes/class-concursos-reto.php:88
 msgid "Closed: photos are shown when submissions end"
 msgstr "Cerrado: las fotos se ven al terminar los envíos"
 
-#: includes/class-concursos-reto.php:92
+#: includes/class-concursos-reto.php:91
 msgid "A single winner"
 msgstr "Un solo ganador"
 
-#: includes/class-concursos-reto.php:93
+#: includes/class-concursos-reto.php:92
 msgid "Three places"
 msgstr "Tres lugares"
 
 #. translators: %s: date name.
-#: includes/class-concursos-reto.php:184
+#: includes/class-concursos-reto.php:183
 #, php-format
 msgid "Missing date: %s."
 msgstr "Falta la fecha: %s."
 
-#: includes/class-concursos-reto.php:188
+#: includes/class-concursos-reto.php:187
 msgid "Participation is private but the list of emails is empty: nobody will be able to register."
 msgstr "La participación es privada, pero la lista de emails está vacía: nadie podrá inscribirse."
 
-#: includes/class-concursos-reto.php:191
+#: includes/class-concursos-reto.php:190
 msgid "Voting is private but the list of emails is empty: nobody will be able to vote."
 msgstr "La votación es privada, pero la lista de emails está vacía: nadie podrá votar."
 
 #. translators: 1: later date, 2: earlier date.
-#: includes/class-concursos-reto.php:202
+#: includes/class-concursos-reto.php:201
 #, php-format
 msgid "“%1$s” cannot be before “%2$s”."
 msgstr "«%1$s» no puede ser antes de «%2$s»."
 
-#: includes/class-concursos-reto.php:280
+#: includes/class-concursos-reto.php:279
 msgid "This challenge is private. Contact the organizers for more information."
 msgstr "Este concurso es privado, comunícate con los organizadores para más información."
 
-#: includes/class-concursos-reto.php:338
+#: includes/class-concursos-reto.php:337
 msgid "No dates"
 msgstr "Sin fechas"
 
-#: includes/class-concursos-reto.php:339
+#: includes/class-concursos-reto.php:338
 msgid "Upcoming"
 msgstr "Próximo"
 
-#: includes/class-concursos-reto.php:342
+#: includes/class-concursos-reto.php:341
 msgid "Under review"
 msgstr "En evaluación"
 
-#: includes/class-concursos-reto.php:343
+#: includes/class-concursos-reto.php:342
 msgid "Finished"
 msgstr "Finalizado"
 
-#: includes/class-concursos-reto.php:354
+#: includes/class-concursos-reto.php:353
 msgid "Challenge start"
 msgstr "Inicio del reto"
 
-#: includes/class-concursos-reto.php:355
+#: includes/class-concursos-reto.php:354
 msgid "End of submissions"
 msgstr "Fin de los envíos"
 
-#: includes/class-concursos-reto.php:356
+#: includes/class-concursos-reto.php:355
 msgid "End of voting"
 msgstr "Fin de la votación"
 
-#: includes/class-concursos-reto.php:357
+#: includes/class-concursos-reto.php:356
 msgid "Publication of results"
 msgstr "Publicación de resultados"
 

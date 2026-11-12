@@ -231,7 +231,7 @@ class Concursos_Reto_Metabox {
 	}
 
 	/**
-	 * Caja de diseño: estilo, acento, tamaño y fondo.
+	 * Caja de diseño: estilo, acento y tamaño.
 	 *
 	 * @param WP_Post $post Reto.
 	 */
@@ -274,18 +274,6 @@ class Concursos_Reto_Metabox {
 							<?php echo esc_html( $t['nombre'] ); ?>
 						</label>
 					<?php endforeach; ?>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Icon background', 'photo-challenges' ); ?></th>
-				<td>
-					<?php foreach ( Concursos_Diseno::paginas_fondo() as $clave => $nombre ) : ?>
-						<label class="concursos-radio">
-							<input type="checkbox" name="concursos[fondo_iconos][]" value="<?php echo esc_attr( $clave ); ?>" <?php checked( Concursos_Diseno::muestra_fondo( $s, $clave ) ); ?>>
-							<?php echo esc_html( $nombre ); ?>
-						</label>
-					<?php endforeach; ?>
-					<p class="description"><?php esc_html_e( 'Uncheck all of them to hide the background. The challenges and registration pages follow the featured challenge.', 'photo-challenges' ); ?></p>
 				</td>
 			</tr>
 		</table>

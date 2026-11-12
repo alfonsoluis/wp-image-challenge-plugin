@@ -35,7 +35,6 @@ Pensado para asociaciones de fotografía, escuelas y organizaciones que ya tiene
 | 📣 **Avisos de nuevos retos** | Quien se suscribe recibe un email al publicarse un reto, y puede darse de baja cuando quiera. |
 | 🧬 **Duplicar retos** | Crea una nueva edición en un clic, copiando o no a sus participantes activos. |
 | 🎨 **Diseño por reto** | Dos estilos (los colores del tema o el editorial, de papel cálido y tinta oscura), 6 colores de acento y 3 tamaños de texto. La tipografía siempre es la de tu tema. |
-| 🖼️ **Fondo de iconos** | Un mosaico de 44 iconos de fotografía con el color del reto, que se funde con el fondo de la página. Se activa por reto en la portada, el detalle y la inscripción. |
 | 🌍 **Inglés y español** | Traducción completa, válida para cualquier variante regional del español. Las direcciones siguen el idioma del sitio: `/retos/` o `/challenges/`. |
 | 🔌 **REST API** | La configuración de cada reto se lee y se cambia en el campo `concursos` de `/wp-json/wp/v2/concurso_reto`, con un usuario que pueda editarlo (por ejemplo, con una contraseña de aplicación). |
 | 🧹 **Desinstalación limpia** | Al borrar el plugin desde WordPress se eliminan sus retos, participantes, fotos, votos y ajustes. |
@@ -60,12 +59,6 @@ Pensado para asociaciones de fotografía, escuelas y organizaciones que ya tiene
 ### Un diseño que el tema no rompe
 
 Las páginas públicas del plugin usan un sistema de diseño propio y aislado: todo su HTML va dentro de un contenedor `.pc`, y sus estilos neutralizan lo que los temas suelen aplicar a títulos, enlaces, botones o tablas, sin afectar al resto del sitio. Los colores, espacios y tamaños son variables CSS (`--pc-*`), así que un estilo nuevo solo cambia sus valores, sin tocar el HTML.
-
-### Fondo de iconos
-
-Cada reto decide en qué páginas aparece: portada de retos, detalle del reto o inscripción. Si se desmarcan todas, no se muestra. La portada y la inscripción siguen al reto destacado.
-
-<p align="center"><img alt="Página de inscripción con el fondo de iconos" src="docs/screenshots/inscripcion.jpg" width="820"></p>
 
 ## Instalación
 
@@ -108,7 +101,6 @@ Los retos están en la REST API de WordPress, en `/wp-json/wp/v2/concurso_reto`,
 | `estilo` | `tema` o `editorial` |
 | `acento` | Vacío (color del tema), `teja`, `azul`, `verde`, `violeta`, `frambuesa` o `tinta` |
 | `tamano` | `pequeno`, `normal` o `grande` |
-| `fondo_iconos` | Páginas con fondo: `portada`, `detalle`, `inscripcion` |
 | `fase` | Solo lectura: la fase actual del reto |
 
 - El campo solo se muestra y se acepta para usuarios que pueden editar el reto, con `context=edit`, porque incluye las listas de emails de los retos privados.
@@ -178,4 +170,4 @@ La raíz del repositorio es el plugin y está montada en `wp-content/plugins/pho
 
 ## Licencia
 
-[GPL-2.0 o posterior](LICENSE). Las fotos de las capturas y de la demo son de muestra, servidas por [Lorem Picsum](https://picsum.photos) bajo la [licencia de Unsplash](https://unsplash.com/license). Los iconos del fondo son [Material Symbols](https://fonts.google.com/icons) de Google, bajo la [licencia Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+[GPL-2.0 o posterior](LICENSE). Las fotos de las capturas y de la demo son de muestra, servidas por [Lorem Picsum](https://picsum.photos) bajo la [licencia de Unsplash](https://unsplash.com/license).

@@ -73,7 +73,6 @@ class Concursos_Reto {
 			'estilo'            => Concursos_Diseno::TEMA,
 			'acento'            => '',
 			'tamano'            => Concursos_Diseno::NORMAL,
-			'fondo_iconos'      => Concursos_Diseno::PAGINAS_FONDO,
 		);
 	}
 

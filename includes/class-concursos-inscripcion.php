@@ -27,8 +27,9 @@ class Concursos_Inscripcion {
 		add_action( 'admin_post_nopriv_' . self::ACTION, array( __CLASS__, 'handle' ) );
 		add_action( 'admin_post_' . self::ACTION, array( __CLASS__, 'handle' ) );
 		add_action( 'wp_after_insert_post', array( __CLASS__, 'enlaces_al_publicar' ), 10, 4 );
-		add_filter( 'body_class', array( __CLASS__, 'clase_fondo' ) );
 		add_action( 'init', array( __CLASS__, 'asegurar_pagina' ), 21 );
+		add_filter( 'the_title', array( __CLASS__, 'sin_titulo' ), 10, 2 );
+		add_filter( 'body_class', array( __CLASS__, 'clase_pagina' ) );
 		add_filter( 'display_post_states', array( __CLASS__, 'estado_pagina' ), 10, 2 );
 	}
 
@@ -63,6 +64,40 @@ class Concursos_Inscripcion {
 	}
 
 	/**
+	 * Quita el título de la página con el formulario, que ya se explica solo.
+	 * Solo afecta al título principal de esa página; los menús y la pestaña del
+	 * navegador lo conservan.
+	 *
+	 * @param string $titulo  Título.
+	 * @param int    $post_id Entrada.
+	 * @return string
+	 */
+	public static function sin_titulo( $titulo, $post_id = 0 ) {
+		if ( is_admin() || ! is_page() || ! in_the_loop() || (int) $post_id !== get_queried_object_id() ) {
+			return $titulo;
+		}
+		$post = get_post( $post_id );
+
+		return $post && has_shortcode( $post->post_content, self::SHORTCODE ) ? '' : $titulo;
+	}
+
+	/**
+	 * Clase en el body de la página con el formulario, para recoger el hueco
+	 * que deja el título quitado.
+	 *
+	 * @param string[] $clases Clases del body.
+	 * @return string[]
+	 */
+	public static function clase_pagina( $clases ) {
+		$post = get_post();
+		if ( is_page() && $post && has_shortcode( $post->post_content, self::SHORTCODE ) ) {
+			$clases[] = 'concursos-pagina-inscripcion';
+		}
+
+		return $clases;
+	}
+
+	/**
 	 * Marca en la lista de páginas las que tienen el formulario de inscripción.
 	 *
 	 * @param string[] $states Estados.
@@ -75,35 +110,6 @@ class Concursos_Inscripcion {
 		}
 
 		return $states;
-	}
-
-	/**
-	 * Activa el fondo de iconos en la página con el formulario. Sigue al reto
-	 * preseleccionado en el enlace o, si no hay, al mismo que la portada.
-	 *
-	 * @param string[] $clases Clases del body.
-	 * @return string[]
-	 */
-	public static function clase_fondo( $clases ) {
-		$post = get_post();
-		if ( ! is_page() || ! $post || ! has_shortcode( $post->post_content, self::SHORTCODE ) ) {
-			return $clases;
-		}
-
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- solo decide un estilo.
-		$elegido = isset( $_GET['reto'] ) ? absint( $_GET['reto'] ) : 0;
-		$reto    = Concursos_Portada::reto_referencia();
-		foreach ( self::retos_abiertos() as $abierto ) {
-			if ( $abierto['post']->ID === $elegido ) {
-				$reto = $abierto;
-			}
-		}
-
-		if ( $reto && Concursos_Diseno::muestra_fondo( $reto['settings'], 'inscripcion' ) ) {
-			$clases[] = 'concursos-fondo-pagina';
-		}
-
-		return $clases;
 	}
 
 	/**

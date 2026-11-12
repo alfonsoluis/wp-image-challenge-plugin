@@ -1861,30 +1861,12 @@
 	text-align: right;
 }
 
-/* Fondo de iconos: mosaico que se funde hacia abajo con el fondo de la página. */
+/* Página de inscripción sin título: se recoge el hueco que deja en el tema
+   (un grupo con solo separadores en los temas de bloques, el h1 vacío en los clásicos). */
 
-.pc .concursos-con-fondo,
-.pc.concursos-con-fondo {
-	position: relative;
-	isolation: isolate;
-}
-
-.pc .concursos-con-fondo::before,
-.pc.concursos-con-fondo::before,
-body.concursos-fondo-pagina::before {
-	content: "";
-	position: absolute;
-	inset: 0 0 auto;
-	z-index: -1;
-	height: min(100%, 900px);
-	pointer-events: none;
-	background: linear-gradient(to bottom, color-mix(in srgb, var(--pc-tinta, #1d2327) 16%, transparent), transparent);
-	-webkit-mask: url(../img/fondo-iconos.svg) top center / 1380px 800px repeat;
-	mask: url(../img/fondo-iconos.svg) top center / 1380px 800px repeat;
-}
-
-body.concursos-fondo-pagina {
-	position: relative;
+.concursos-pagina-inscripcion main > .wp-block-group:not(:has(:not(.wp-block-spacer))),
+.concursos-pagina-inscripcion .entry-title:empty {
+	display: none;
 }
 
 /* Foto ampliada */

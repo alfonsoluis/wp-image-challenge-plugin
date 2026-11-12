@@ -57,7 +57,6 @@ class Concursos_API {
 						'estilo'                => array( 'type' => 'string', 'enum' => array_keys( Concursos_Diseno::estilos() ) ),
 						'acento'                => array( 'type' => 'string', 'enum' => array_map( 'strval', array_keys( Concursos_Diseno::acentos() ) ) ),
 						'tamano'                => array( 'type' => 'string', 'enum' => array_keys( Concursos_Diseno::tamanos() ) ),
-						'fondo_iconos'          => array( 'type' => 'array', 'items' => array( 'type' => 'string', 'enum' => Concursos_Diseno::PAGINAS_FONDO ) ),
 						'fase'                  => array( 'type' => 'string', 'readonly' => true ),
 					),
 				),
@@ -94,7 +93,6 @@ class Concursos_API {
 		foreach ( array( 'anonimo', 'privado_participantes', 'privado_votantes' ) as $key ) {
 			$s[ $key ] = (bool) $s[ $key ];
 		}
-		$s['fondo_iconos'] = array_values( (array) $s['fondo_iconos'] );
 		$s['fase']         = Concursos_Reto::status( Concursos_Reto::get_settings( $post['id'] ) );
 
 		return $s;

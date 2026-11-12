@@ -54,7 +54,8 @@ class Concursos_DB {
 	}
 
 	/**
-	 * Pasa las paletas de la versión 1.0 a estilo y color de acento.
+	 * Pasa las paletas de la versión 1.0 a estilo y color de acento y borra el
+	 * antiguo fondo de iconos.
 	 */
 	private static function migrar_paletas() {
 		$metas = get_posts(
@@ -72,6 +73,7 @@ class Concursos_DB {
 			update_post_meta( $id, Concursos_Reto::META_PREFIX . 'acento', $acento );
 			delete_post_meta( $id, Concursos_Reto::META_PREFIX . 'paleta' );
 		}
+		delete_post_meta_by_key( Concursos_Reto::META_PREFIX . 'fondo_iconos' );
 	}
 
 	/**

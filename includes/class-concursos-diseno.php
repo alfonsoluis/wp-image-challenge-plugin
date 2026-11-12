@@ -19,9 +19,6 @@ class Concursos_Diseno {
 	const EDITORIAL = 'editorial';
 	const NORMAL    = 'normal';
 
-	/** Páginas que pueden llevar el fondo de iconos. */
-	const PAGINAS_FONDO = array( 'portada', 'detalle', 'inscripcion' );
-
 	/**
 	 * Estilos disponibles.
 	 *
@@ -122,46 +119,20 @@ class Concursos_Diseno {
 	}
 
 	/**
-	 * Nombres de las páginas que pueden llevar el fondo de iconos.
-	 *
-	 * @return string[] clave => nombre.
-	 */
-	public static function paginas_fondo() {
-		return array(
-			'portada'     => __( 'Challenges page', 'photo-challenges' ),
-			'detalle'     => __( 'Challenge details', 'photo-challenges' ),
-			'inscripcion' => __( 'Registration page', 'photo-challenges' ),
-		);
-	}
-
-	/**
-	 * Indica si un reto activa el fondo de iconos en una página.
-	 *
-	 * @param array  $s      Configuración del reto.
-	 * @param string $pagina Clave de PAGINAS_FONDO.
-	 * @return bool
-	 */
-	public static function muestra_fondo( array $s, $pagina ) {
-		return in_array( $pagina, (array) $s['fondo_iconos'], true );
-	}
-
-	/**
 	 * Valida las opciones de diseño recibidas.
 	 *
 	 * @param array $raw Datos sin sanear.
-	 * @return array estilo, acento, tamano, fondo_iconos.
+	 * @return array estilo, acento y tamano.
 	 */
 	public static function sanitize( array $raw ) {
 		$estilo = isset( $raw['estilo'] ) ? sanitize_key( $raw['estilo'] ) : '';
 		$acento = isset( $raw['acento'] ) ? sanitize_key( $raw['acento'] ) : '';
 		$tamano = isset( $raw['tamano'] ) ? sanitize_key( $raw['tamano'] ) : '';
-		$fondo  = isset( $raw['fondo_iconos'] ) ? array_map( 'sanitize_key', (array) $raw['fondo_iconos'] ) : array();
 
 		return array(
-			'estilo'       => isset( self::estilos()[ $estilo ] ) ? $estilo : self::TEMA,
-			'acento'       => isset( self::acentos()[ $acento ] ) ? $acento : '',
-			'tamano'       => isset( self::tamanos()[ $tamano ] ) ? $tamano : self::NORMAL,
-			'fondo_iconos' => array_values( array_intersect( self::PAGINAS_FONDO, $fondo ) ),
+			'estilo' => isset( self::estilos()[ $estilo ] ) ? $estilo : self::TEMA,
+			'acento' => isset( self::acentos()[ $acento ] ) ? $acento : '',
+			'tamano' => isset( self::tamanos()[ $tamano ] ) ? $tamano : self::NORMAL,
 		);
 	}
 

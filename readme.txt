@@ -42,16 +42,11 @@ Create a challenge, open registration, approve participants, collect their photo
 * Enlarged photos with their description, author and challenge.
 * Each challenge can use your theme colors or an editorial style, one of 6 accent colors and 3 text sizes. Typography always comes from your theme.
 * The public pages use their own isolated design system, so your theme's styles do not break them.
-* An optional background of photography icons that fades into the page. Each challenge chooses whether it appears on the challenges page, the challenge details and the registration page.
 * Available in English and Spanish.
 
 = Privacy =
 
 The plugin stores the names, email addresses, social network names and photos that people submit, in your own WordPress site. It does not send this data to any external service. Emails are sent through your site's normal mail system. Deleting the plugin from WordPress removes all of this data.
-
-= Credits =
-
-The background icons are Material Symbols by Google, used under the Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).
 
 == Installation ==
 

@@ -68,8 +68,7 @@ class Concursos_Portada {
 		$pagina = (int) get_option( self::OPCION_PAGINA );
 		if ( ( is_post_type_archive( Concursos_Post_Types::RETO ) || ( $pagina && is_page( $pagina ) ) ) && ! is_feed() ) {
 			$referencia = self::reto_referencia();
-			$con_fondo  = $referencia && Concursos_Diseno::muestra_fondo( $referencia['settings'], 'portada' );
-			Concursos_Plantilla::pagina( __( 'Challenges', 'photo-challenges' ), self::render(), 'concursos-publico--portada' . ( $con_fondo ? ' concursos-con-fondo' : '' ), $referencia ? $referencia['settings'] : null );
+			Concursos_Plantilla::pagina( __( 'Challenges', 'photo-challenges' ), self::render(), 'concursos-publico--portada', $referencia ? $referencia['settings'] : null );
 		}
 	}
 

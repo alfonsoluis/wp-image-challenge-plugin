@@ -205,7 +205,7 @@ class Concursos_Galeria {
 
 		ob_start();
 		?>
-		<div class="pc-contenedor concursos-reto<?php echo Concursos_Diseno::muestra_fondo( $s, 'detalle' ) ? ' concursos-con-fondo' : ''; ?>">
+		<div class="pc-contenedor concursos-reto">
 			<nav class="pc-ruta" aria-label="<?php esc_attr_e( 'Breadcrumb', 'photo-challenges' ); ?>">
 				<a href="<?php echo esc_url( $portada ); ?>"><?php esc_html_e( 'Challenges', 'photo-challenges' ); ?></a>
 				<span aria-hidden="true">/</span>
