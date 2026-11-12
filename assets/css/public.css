@@ -1869,6 +1869,17 @@
 	display: none;
 }
 
+/* El formulario va dentro del contenido de la página, en una columna. Para que
+   se vea como la portada, el fondo del estilo pasa al main del tema, de lado a
+   lado y pegado a la cabecera. */
+.concursos-pagina-inscripcion main:has(.pc.concursos-inscripcion) {
+	margin-top: 0 !important; /* Twenty Twenty-Five pone el margen en el atributo style. */
+}
+
+.concursos-pagina-inscripcion main:has(.pc.concursos-inscripcion[data-pc-estilo="editorial"]) {
+	background: #f5f3ee;
+}
+
 /* Foto ampliada */
 
 .pc .concursos-modal {
