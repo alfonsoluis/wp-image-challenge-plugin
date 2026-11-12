@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-11T17:26:04+00:00\n"
+"POT-Creation-Date: 2026-11-12T10:35:42+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: photo-challenges\n"
@@ -549,6 +549,7 @@ msgstr ""
 
 #. translators: %s: list of invalid email addresses.
 #: includes/admin/class-concursos-reto-metabox.php:316
+#: includes/class-concursos-api.php:119
 #, php-format
 msgid "These addresses are not valid and were ignored: %s"
 msgstr ""
@@ -666,6 +667,10 @@ msgstr ""
 
 #: includes/admin/class-concursos-votantes-admin.php:454
 msgid "Search by email"
+msgstr ""
+
+#: includes/class-concursos-api.php:38
+msgid "Challenge settings. Dates use the site time zone, in the format YYYY-MM-DDTHH:MM."
 msgstr ""
 
 #. translators: %d: year.

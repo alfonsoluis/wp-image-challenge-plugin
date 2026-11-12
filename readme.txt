@@ -68,6 +68,10 @@ Two normal WordPress pages. The Challenges page (/challenges/, or /retos/ on Spa
 
 The "Join a challenge" buttons appear when a published page contains the `[concursos_inscripcion]` shortcode and at least one challenge is upcoming or accepting photos. The form to register as a voter needs no page: it appears on the challenge page during voting.
 
+= Can I manage challenges through the REST API? =
+
+Yes. Challenges are available at /wp-json/wp/v2/concurso_reto, and their settings are in the `concursos` field, which is only shown and accepted for users who can edit the challenge (for example, with an application password). Dates use the site time zone, in the format YYYY-MM-DDTHH:MM.
+
 = Do participants need a WordPress account? =
 
 No. Once approved, each participant receives a personal link by email to submit photos.

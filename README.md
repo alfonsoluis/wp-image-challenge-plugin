@@ -37,6 +37,7 @@ Pensado para asociaciones de fotografía, escuelas y organizaciones que ya tiene
 | 🎨 **Diseño por reto** | Los colores del tema o 10 paletas armónicas, y 3 tamaños de texto. La tipografía siempre es la de tu tema. |
 | 🖼️ **Fondo de iconos** | Un mosaico de 44 iconos de fotografía con el color del reto, que se funde con el fondo de la página. Se activa por reto en la portada, el detalle y la inscripción. |
 | 🌍 **Inglés y español** | Traducción completa, válida para cualquier variante regional del español. Las direcciones siguen el idioma del sitio: `/retos/` o `/challenges/`. |
+| 🔌 **REST API** | La configuración de cada reto se lee y se cambia en el campo `concursos` de `/wp-json/wp/v2/concurso_reto`, con un usuario que pueda editarlo (por ejemplo, con una contraseña de aplicación). |
 | 🧹 **Desinstalación limpia** | Al borrar el plugin desde WordPress se eliminan sus retos, participantes, fotos, votos y ajustes. |
 
 ## Capturas

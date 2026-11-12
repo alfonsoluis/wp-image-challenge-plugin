@@ -551,6 +551,7 @@ msgstr "Desmárcalas todas para no mostrar el fondo. La página de retos y la de
 
 #. translators: %s: list of invalid email addresses.
 #: includes/admin/class-concursos-reto-metabox.php:316
+#: includes/class-concursos-api.php:119
 #, php-format
 msgid "These addresses are not valid and were ignored: %s"
 msgstr "Estas direcciones no son válidas y se ignoraron: %s"
@@ -669,6 +670,10 @@ msgstr "¿Eliminar los votantes seleccionados y todos sus votos? Los resultados 
 #: includes/admin/class-concursos-votantes-admin.php:454
 msgid "Search by email"
 msgstr "Buscar por email"
+
+#: includes/class-concursos-api.php:38
+msgid "Challenge settings. Dates use the site time zone, in the format YYYY-MM-DDTHH:MM."
+msgstr "Configuración del reto. Las fechas usan la zona horaria del sitio, con el formato AAAA-MM-DDTHH:MM."
 
 #. translators: %d: year.
 #: includes/class-concursos-clasificacion.php:99

@@ -38,6 +38,7 @@ require_once CONCURSOS_PATH . 'includes/class-concursos-galeria.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-plantilla.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-portada.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-perfil.php';
+require_once CONCURSOS_PATH . 'includes/class-concursos-api.php';
 
 add_action(
 	'init',
@@ -61,6 +62,7 @@ Concursos_Votos::init();
 Concursos_Galeria::init();
 Concursos_Portada::init();
 Concursos_Perfil::init();
+Concursos_API::init();
 
 if ( is_admin() ) {
 	require_once CONCURSOS_PATH . 'includes/admin/class-concursos-reto-metabox.php';
