@@ -92,6 +92,53 @@ Al activarse, el plugin crea dos páginas normales de WordPress. En **Páginas**
 - Si borras una de estas páginas, el plugin no la vuelve a crear. Para recuperar la inscripción, crea una página con el bloque **Shortcode** y escribe `[concursos_inscripcion]`. Sin la página Retos, la lista sigue disponible en `/retos/`.
 - Si ya tenías una página con el shortcode antes de activar el plugin, se usa esa y no se crea otra.
 
+## REST API
+
+Los retos están en la REST API de WordPress, en `/wp-json/wp/v2/concurso_reto`, con su título, contenido, estado e imagen. La configuración de cada reto va en el campo `concursos`:
+
+| Campo | Valores |
+|---|---|
+| `inicio`, `fin_envios`, `fin_votacion`, `cierre` | Fechas en la zona horaria del sitio, con el formato `AAAA-MM-DDTHH:MM` |
+| `modo` | `abierto` o `cerrado` |
+| `votos_por_votante` | De 1 a 3 |
+| `lugares` | 1 o 3 |
+| `max_fotos` | De 1 a 20 |
+| `anonimo`, `privado_participantes`, `privado_votantes` | `true` o `false` |
+| `emails_participantes`, `emails_votantes` | Emails separados por comas |
+| `premios` | Hasta 3 textos, del 1.º al 3.º |
+| `reglas` | Texto |
+| `paleta` | `tema` o una paleta: `playa`, `brisa`, `otono`, `oro`, `intensos`, `baya`, `naturaleza`, `azul`, `tierra`, `naranja` |
+| `tamano` | `pequeno`, `normal` o `grande` |
+| `fondo_iconos` | Páginas con fondo: `portada`, `detalle`, `inscripcion` |
+| `fase` | Solo lectura: la fase actual del reto |
+
+- El campo solo se muestra y se acepta para usuarios que pueden editar el reto, con `context=edit`, porque incluye las listas de emails de los retos privados.
+- Al cambiar un reto, los valores que no se envían se conservan. Si las fechas no tienen sentido, el cambio se rechaza con el mismo mensaje que en el panel.
+- Para listar también borradores y archivados, añade `status=any`.
+- Publicar un reto envía el aviso por email a los suscritos. Si lo creas por la API, créalo como borrador y publícalo cuando esté listo.
+
+### Crear una contraseña de aplicación
+
+La API necesita un usuario con permiso para editar retos, normalmente un administrador. En lugar de su contraseña normal se usa una contraseña de aplicación, que se puede revocar en cualquier momento:
+
+1. Entra en el administrador de WordPress con ese usuario y ve a **Usuarios → Perfil**.
+2. Baja hasta **Contraseñas de aplicación**. El sitio tiene que usar HTTPS para que aparezca.
+3. Escribe un nombre que la identifique, por ejemplo «API retos», y pulsa **Añadir nueva contraseña de aplicación**.
+4. Copia la contraseña que aparece: solo se muestra una vez. Los espacios son opcionales.
+5. Úsala con el nombre de usuario en autenticación básica:
+
+```bash
+curl -u "usuario:xxxx xxxx xxxx xxxx xxxx xxxx" \
+  "https://tu-sitio/wp-json/wp/v2/concurso_reto?context=edit&status=any"
+
+curl -u "usuario:xxxx xxxx xxxx xxxx xxxx xxxx" -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Nuevo reto","status":"draft","concursos":{"inicio":"2027-03-01T10:00","fin_envios":"2027-03-10T23:59","fin_votacion":"2027-03-15T23:59","cierre":"2027-03-16T10:00","votos_por_votante":3}}' \
+  "https://tu-sitio/wp-json/wp/v2/concurso_reto"
+```
+
+Para revocarla, vuelve a **Usuarios → Perfil → Contraseñas de aplicación** y pulsa **Revocar** junto a su nombre.
+
 ## Cómo funciona un reto
 
 ```mermaid
