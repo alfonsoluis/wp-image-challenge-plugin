@@ -26,7 +26,7 @@ if ( ! isset( $fechas[ $fase ] ) ) {
 }
 
 /**
- * Imagen de prueba: degradado con círculos de color, distinta según la semilla.
+ * Imagen de prueba: una foto de Unsplash o, sin conexión, un degradado con círculos de color.
  *
  * @param int $seed Semilla.
  * @return string JPEG.
@@ -36,15 +36,38 @@ function concursos_demo_imagen( $seed ) {
 	$w       = $medidas[ $seed % count( $medidas ) ][0];
 	$h       = $medidas[ $seed % count( $medidas ) ][1];
 
-	// Fotos reales de muestra (licencia Unsplash), guardadas en disco tras la
+	// Fotos reales de muestra de Unsplash (licencia Unsplash), guardadas en disco tras la
 	// primera descarga para que las pruebas no dependan de la red; sin conexión, un degradado.
+	$fotos = array(
+		'1506744038136-46273834b3fb',
+		'1501785888041-af3ef285b470',
+		'1470071459604-3b5ec3a7fe05',
+		'1441974231531-c6227db76b6e',
+		'1500530855697-b586d89ba3ee',
+		'1472214103451-9374bd1c798e',
+		'1469474968028-56623f02e42e',
+		'1507525428034-b723cf961d3e',
+		'1519681393784-d120267933ba',
+		'1493246507139-91e8fad9978e',
+		'1477959858617-67f85cf4f1df',
+		'1449824913935-59a10b8d2000',
+		'1514565131-fce0801e5785',
+		'1480714378408-67cf0d13bc1b',
+		'1473448912268-2022ce9509d8',
+		'1465146344425-f00d5f5c8f07',
+		'1500534314209-a25ddb2bd429',
+		'1494526585095-c41746248156',
+		'1502082553048-f009c37129b9',
+		'1426604966848-d7adac402bff',
+	);
+	$foto  = $fotos[ $seed % count( $fotos ) ];
 	$cache = WP_CONTENT_DIR . '/uploads/concursos-demo-cache';
-	$copia = sprintf( '%s/%d-%dx%d.jpg', $cache, $seed, $w, $h );
+	$copia = sprintf( '%s/%s-%dx%d.jpg', $cache, $foto, $w, $h );
 	if ( is_readable( $copia ) ) {
 		return file_get_contents( $copia ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 	}
 	static $sin_red = false;
-	$respuesta      = $sin_red ? null : wp_remote_get( sprintf( 'https://picsum.photos/seed/concursos%d/%d/%d', $seed, $w, $h ), array( 'timeout' => 8 ) );
+	$respuesta      = $sin_red ? null : wp_remote_get( sprintf( 'https://images.unsplash.com/photo-%s?w=%d&h=%d&fit=crop&q=80&fm=jpg', $foto, $w, $h ), array( 'timeout' => 8 ) );
 	$sin_red        = $sin_red || is_wp_error( $respuesta );
 	if ( $respuesta && 200 === wp_remote_retrieve_response_code( $respuesta ) && 0 === strpos( wp_remote_retrieve_body( $respuesta ), "\xFF\xD8" ) ) {
 		wp_mkdir_p( $cache );

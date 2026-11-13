@@ -23,6 +23,7 @@ Create a challenge, open registration, approve participants, collect their photo
 * Private challenges: restrict participants and, optionally, voters to a list of email addresses.
 * One winner or three places, with an optional prize for each.
 * A dashboard with the status of every challenge, bulk approval of participants, a table or grid of submitted photos, and a list of voters with filters.
+* A Stats screen with the activity of the last 7 or 30 days or the year, upcoming stage changes and a summary of each challenge, with CSV export that never includes email addresses.
 * Duplicate a challenge to start a new edition, with or without its participants.
 * Published, draft and archived challenges. Only published ones appear on your site.
 
@@ -31,6 +32,7 @@ Create a challenge, open registration, approve participants, collect their photo
 * Public registration form with profile photo and social networks.
 * A personal link by email to submit photos: no passwords and no WordPress account.
 * Email-verified voting, with 1 to 3 votes per challenge. With several votes, each voter picks a 1st, 2nd and 3rd, worth 3, 2 and 1 points.
+* Participants can also vote with the same email address, but never for their own photos.
 * Optional anonymous voting: photo titles and authors stay hidden until voting ends.
 * Optional email notifications about new challenges, with one-click unsubscribe.
 

@@ -27,12 +27,13 @@ Pensado para asociaciones de fotografía, escuelas y organizaciones que ya tiene
 | 🔒 **Retos privados** | Limita participantes y, si quieres, votantes a una lista de emails. |
 | 🙋 **Inscripción y aprobación** | Formulario público con foto y redes sociales. Filtra, aprueba o desactiva en bloque desde el panel. |
 | 🔗 **Enlace personal** | Cada participante aprobado recibe por email un enlace para subir sus fotos, sin contraseñas. |
-| 🗳️ **Votación con email confirmado** | De 1 a 3 votos por reto. Con varios, cada votante elige su 1.º, 2.º y 3.º, que valen 3, 2 y 1 puntos, y puede cambiarlos mientras dure la votación. |
+| 🗳️ **Votación con email confirmado** | De 1 a 3 votos por reto. Con varios, cada votante elige su 1.º, 2.º y 3.º, que valen 3, 2 y 1 puntos, y puede cambiarlos mientras dure la votación. Quien participa queda registrado como votante al abrir su enlace personal, y nadie puede votar su propia foto. |
 | 🕶️ **Votación anónima** | Opción por reto para ocultar el título y el autor de las fotos hasta que termina la votación. |
 | 🥇 **Resultados con empates** | Uno o tres lugares, premios opcionales y empates con la misma prominencia. |
 | 🏅 **Clasificación anual** | Suma los votos de cada persona en los retos terminados del año, en la portada y en cada reto. |
 | 👤 **Perfiles de participante** | Foto, redes, retos, fotos y puestos, sin mostrar nunca el email. Se pueden desactivar en **Retos → Ajustes**. |
 | 📣 **Avisos de nuevos retos** | Quien se suscribe recibe un email al publicarse un reto, y puede darse de baja cuando quiera. |
+| 📊 **Stats** | En **Retos → Stats**: participantes, fotos, votantes y votos de los últimos 7 o 30 días o del año, comparados con el periodo anterior; los próximos cambios de etapa; y el resumen de cada reto, con su cuenta atrás, la clasificación provisional y los últimos votos. Exporta CSV sin emails. |
 | 🧬 **Duplicar retos** | Crea una nueva edición en un clic, copiando o no a sus participantes activos. |
 | 🎨 **Diseño por reto** | Dos estilos (los colores del tema o el editorial, de papel cálido y tinta oscura), 6 colores de acento y 3 tamaños de texto. La tipografía siempre es la de tu tema. |
 | 🌍 **Inglés y español** | Traducción completa al español en `languages/`, para aportarla a translate.wordpress.org, que es quien la distribuye (el ZIP del plugin no incluye traducciones). Las direcciones siguen el idioma del sitio: `/retos/` o `/challenges/`. |
@@ -47,12 +48,16 @@ Pensado para asociaciones de fotografía, escuelas y organizaciones que ya tiene
     <td width="50%"><img alt="Resultados de un reto con empates" src="docs/screenshots/resultados.jpg"><p align="center"><sub>Resultados con premios y empates</sub></p></td>
   </tr>
   <tr>
-    <td><img alt="Panel de retos en la administración" src="docs/screenshots/panel.jpg"><p align="center"><sub>Panel de retos</sub></p></td>
-    <td><img alt="Lista de votantes en la administración" src="docs/screenshots/votantes.jpg"><p align="center"><sub>Votantes y en qué retos votaron</sub></p></td>
+    <td><img alt="Formulario de inscripción a un reto" src="docs/screenshots/inscripcion.jpg"><p align="center"><sub>Inscripción en tres pasos</sub></p></td>
+    <td><img alt="Perfil público de un participante" src="docs/screenshots/perfil.jpg"><p align="center"><sub>Perfil de participante</sub></p></td>
   </tr>
   <tr>
+    <td><img alt="Pantalla Stats con la actividad de los retos" src="docs/screenshots/stats.jpg"><p align="center"><sub>Stats: actividad y resumen de cada reto</sub></p></td>
     <td><img alt="Opciones de participación y diseño de un reto" src="docs/screenshots/formulario.jpg"><p align="center"><sub>Participación, premios y diseño</sub></p></td>
-    <td><img alt="Perfil público de un participante" src="docs/screenshots/perfil.jpg"><p align="center"><sub>Perfil de participante</sub></p></td>
+  </tr>
+  <tr>
+    <td><img alt="Panel de retos en la administración" src="docs/screenshots/panel.jpg"><p align="center"><sub>Panel de retos</sub></p></td>
+    <td><img alt="Lista de votantes en la administración" src="docs/screenshots/votantes.jpg"><p align="center"><sub>Votantes y en qué retos votaron</sub></p></td>
   </tr>
 </table>
 
@@ -170,4 +175,4 @@ La raíz del repositorio es el plugin y está montada en `wp-content/plugins/fon
 
 ## Licencia
 
-[GPL-2.0 o posterior](LICENSE). Las fotos de las capturas y de la demo son de muestra, servidas por [Lorem Picsum](https://picsum.photos) bajo la [licencia de Unsplash](https://unsplash.com/license).
+[GPL-2.0 o posterior](LICENSE). Las fotos de las capturas y de la demo son de muestra, de [Unsplash](https://unsplash.com) bajo la [licencia de Unsplash](https://unsplash.com/license).
