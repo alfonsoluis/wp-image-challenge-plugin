@@ -40,6 +40,7 @@ require_once CONCURSOS_PATH . 'includes/class-concursos-plantilla.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-portada.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-perfil.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-api.php';
+require_once CONCURSOS_PATH . 'includes/class-concursos-stats.php';
 
 Concursos_DB::init();
 Concursos_Post_Types::init();
@@ -61,6 +62,7 @@ if ( is_admin() ) {
 	require_once CONCURSOS_PATH . 'includes/admin/class-concursos-entradas-admin.php';
 	require_once CONCURSOS_PATH . 'includes/admin/class-concursos-duplicar.php';
 	require_once CONCURSOS_PATH . 'includes/admin/class-concursos-votantes-admin.php';
+	require_once CONCURSOS_PATH . 'includes/admin/class-concursos-stats-admin.php';
 	require_once CONCURSOS_PATH . 'includes/admin/class-concursos-ajustes.php';
 
 	Concursos_Reto_Metabox::init();
@@ -69,6 +71,7 @@ if ( is_admin() ) {
 	Concursos_Entradas_Admin::init();
 	Concursos_Duplicar::init();
 	Concursos_Votantes_Admin::init();
+	Concursos_Stats_Admin::init();
 	Concursos_Ajustes::init();
 }
 

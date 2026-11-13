@@ -311,6 +311,24 @@ class Concursos_Reto {
 	}
 
 	/**
+	 * Fecha en que termina la etapa actual: la próxima que va a cambiar.
+	 *
+	 * @param string $status Fase.
+	 * @param array  $s      Configuración.
+	 * @return array|null Clave de la fecha y su marca de tiempo, o null si ya no queda ninguna.
+	 */
+	public static function proxima_etapa( $status, array $s ) {
+		$claves = array(
+			'proximo'    => 'inicio',
+			'envios'     => 'fin_envios',
+			'votacion'   => 'fin_votacion',
+			'evaluacion' => 'cierre',
+		);
+
+		return isset( $claves[ $status ] ) ? array( $claves[ $status ], (int) $s[ $claves[ $status ] ] ) : null;
+	}
+
+		/**
 	 * ¿Se muestran ya las fotos al público?
 	 *
 	 * Abierto: desde que empiezan los envíos. Cerrado: desde que terminan.

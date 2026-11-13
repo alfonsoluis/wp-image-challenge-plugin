@@ -39,5 +39,31 @@
 		} );
 	}
 
+	// Stats: el periodo se aplica al elegirlo, y al cambiar de reto se mantiene el scroll.
+	var periodo = document.querySelector( 'select[data-autoenviar]' );
+	if ( periodo ) {
+		periodo.addEventListener( 'change', function () {
+			periodo.form.submit();
+		} );
+	}
+
+	var CLAVE = 'concursos-stats-scroll';
+	document.querySelectorAll( '.concursos-stats-reto a' ).forEach( function ( enlace ) {
+		enlace.addEventListener( 'click', function () {
+			try {
+				window.sessionStorage.setItem( CLAVE, String( window.scrollY ) );
+			} catch ( e ) {}
+		} );
+	} );
+	if ( document.querySelector( '.concursos-stats-pagina' ) ) {
+		try {
+			var y = window.sessionStorage.getItem( CLAVE );
+			if ( y !== null ) {
+				window.sessionStorage.removeItem( CLAVE );
+				window.scrollTo( 0, parseInt( y, 10 ) || 0 );
+			}
+		} catch ( e ) {}
+	}
+
 	update();
 } )();

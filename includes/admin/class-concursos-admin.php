@@ -49,7 +49,7 @@ class Concursos_Admin {
 	public static function assets( $hook ) {
 		$screen = get_current_screen();
 		$types  = array( Concursos_Post_Types::RETO, Concursos_Participante::POST_TYPE, Concursos_Entrada::POST_TYPE );
-		$ours   = ( $screen && in_array( $screen->post_type, $types, true ) ) || false !== strpos( $hook, self::PANEL ) || false !== strpos( $hook, Concursos_Votantes_Admin::PAGE );
+		$ours   = ( $screen && in_array( $screen->post_type, $types, true ) ) || false !== strpos( $hook, self::PANEL ) || false !== strpos( $hook, Concursos_Votantes_Admin::PAGE ) || false !== strpos( $hook, Concursos_Stats_Admin::PAGE );
 		if ( ! $ours ) {
 			return;
 		}

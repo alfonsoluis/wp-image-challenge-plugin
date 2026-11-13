@@ -304,6 +304,7 @@ class Concursos_Votos {
 				),
 				array( '%d', '%d', '%d', '%d', '%d' )
 			);
+			Concursos_Stats::limpiar_cache();
 			Concursos_Votantes::volver( $reto, 'votado' );
 		}
 
@@ -316,6 +317,7 @@ class Concursos_Votos {
 				),
 				array( '%d', '%d' )
 			);
+			Concursos_Stats::limpiar_cache();
 			Concursos_Votantes::volver( $reto, 'quitado' );
 		}
 
@@ -336,6 +338,7 @@ class Concursos_Votos {
 		);
 
 		if ( $insertados ) {
+			Concursos_Stats::limpiar_cache();
 			Concursos_Votantes::volver( $reto, 'votado' );
 		}
 		$ya_votada = in_array( $entrada, self::de_votante( (int) $votante->id, $reto ), true );

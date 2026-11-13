@@ -137,18 +137,19 @@ class Concursos_Vista {
 	 * @return array|null Fecha y frase, o null si no queda ninguna.
 	 */
 	private static function proxima( $status, array $s ) {
-		$etapas = array(
+		$frases = array(
 			/* translators: %s: date. */
-			'proximo'    => array( 'inicio', __( 'until the challenge opens · on %s', 'foncholuis-art-challenge-manager' ) ),
+			'proximo'    => __( 'until the challenge opens · on %s', 'foncholuis-art-challenge-manager' ),
 			/* translators: %s: date. */
-			'envios'     => array( 'fin_envios', __( 'to submit your photo · closes on %s', 'foncholuis-art-challenge-manager' ) ),
+			'envios'     => __( 'to submit your photo · closes on %s', 'foncholuis-art-challenge-manager' ),
 			/* translators: %s: date. */
-			'votacion'   => array( 'fin_votacion', __( 'to vote · voting ends on %s', 'foncholuis-art-challenge-manager' ) ),
+			'votacion'   => __( 'to vote · voting ends on %s', 'foncholuis-art-challenge-manager' ),
 			/* translators: %s: date. */
-			'evaluacion' => array( 'cierre', __( 'until the results · published on %s', 'foncholuis-art-challenge-manager' ) ),
+			'evaluacion' => __( 'until the results · published on %s', 'foncholuis-art-challenge-manager' ),
 		);
+		$etapa  = Concursos_Reto::proxima_etapa( $status, $s );
 
-		return isset( $etapas[ $status ] ) ? array( (int) $s[ $etapas[ $status ][0] ], $etapas[ $status ][1] ) : null;
+		return $etapa ? array( $etapa[1], $frases[ $status ] ) : null;
 	}
 
 	/**

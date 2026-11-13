@@ -88,6 +88,7 @@ class Concursos_Entrada {
 		update_post_meta( $id, self::META . 'reto', $participante['reto'] );
 		update_post_meta( $id, self::META . 'participante', $participante['id'] );
 		set_post_thumbnail( $id, $attachment_id );
+		Concursos_Stats::limpiar_cache();
 		wp_update_post(
 			array(
 				'ID'          => $attachment_id,
