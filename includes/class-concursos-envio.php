@@ -78,6 +78,9 @@ class Concursos_Envio {
 			self::render_message( 403, __( 'Private challenge', 'foncholuis-art-challenge-manager' ), Concursos_Reto::mensaje_privado(), self::enlace_reto( $p['reto'] ) );
 		}
 
+		// Quien participa también puede votar con el mismo email, ya comprobado por este enlace.
+		Concursos_Votantes::desde_participante( $p['email'] );
+
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ) {
 			$code = self::handle_post( $p );
 			wp_safe_redirect( add_query_arg( self::RESULT_PARAM, $code, Concursos_Inscripcion::personal_link( $token ) ) );
@@ -202,6 +205,17 @@ class Concursos_Envio {
 			?>
 		</p>
 		<?php echo $abierto ? '' : self::enlace_reto( $p['reto'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+		<?php if ( in_array( $status, array( 'proximo', 'envios', 'votacion' ), true ) && Concursos_Reto::permite_email( $reto, 'votantes', $p['email'] ) ) : ?>
+			<p class="concursos-aviso concursos-aviso--info concursos-voto-aviso">
+				<?php
+				echo esc_html(
+					'votacion' === $status
+						? __( 'You can also vote in this challenge with this email. This browser is already identified, so the voting buttons appear on the challenge page.', 'foncholuis-art-challenge-manager' )
+						: __( 'With this email you can also vote when voting opens. This browser is already identified, so you will see the voting buttons on the challenge page.', 'foncholuis-art-challenge-manager' )
+				);
+				?>
+			</p>
+		<?php endif; ?>
 
 		<h2>
 			<?php

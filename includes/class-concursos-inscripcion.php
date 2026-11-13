@@ -540,7 +540,9 @@ class Concursos_Inscripcion {
 				$p['nombre'],
 				$reto,
 				self::personal_link( $token ),
-				get_bloginfo( 'name' )
+				( Concursos_Reto::permite_email( Concursos_Reto::get_settings( $p['reto'] ), 'votantes', $p['email'] )
+					? __( 'With this email you can also vote when voting opens: open this link once on each device where you want to vote.', 'foncholuis-art-challenge-manager' ) . "\n\n"
+					: '' ) . get_bloginfo( 'name' )
 			)
 		);
 	}

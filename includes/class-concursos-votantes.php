@@ -105,6 +105,50 @@ class Concursos_Votantes {
 	}
 
 	/**
+	 * Registra como votante confirmado a un participante que abre su enlace
+	 * personal, y deja este navegador identificado para votar. El enlace llega a
+	 * su email, así que el email ya está comprobado. No activa los avisos de
+	 * nuevos retos: siguen necesitando que la persona los pida.
+	 *
+	 * @param string $email Email del participante.
+	 */
+	public static function desde_participante( $email ) {
+		global $wpdb;
+
+		$email = strtolower( (string) $email );
+		if ( ! is_email( $email ) || strlen( $email ) > 190 ) {
+			return;
+		}
+
+		$t       = Concursos_DB::votantes();
+		$votante = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE email = %s', $t, $email ) );
+		if ( ! $votante ) {
+			$wpdb->insert(
+				$t,
+				array(
+					'email'  => $email,
+					'estado' => self::CONFIRMADO,
+					'creado' => time(),
+				),
+				array( '%s', '%s', '%d' )
+			);
+			$votante = self::by_id( (int) $wpdb->insert_id );
+		} elseif ( self::CONFIRMADO !== $votante->estado ) {
+			$wpdb->update( $t, array( 'estado' => self::CONFIRMADO ), array( 'id' => (int) $votante->id ), array( '%s' ), array( '%d' ) );
+			$votante->estado = self::CONFIRMADO;
+		}
+		if ( ! $votante ) {
+			return;
+		}
+
+		$actual = self::actual();
+		if ( ! $actual || (int) $actual->id !== (int) $votante->id ) {
+			self::set_cookie( self::firma( $votante, 'sesion' ), time() + self::COOKIE_VIDA );
+			self::$actual = $votante;
+		}
+	}
+
+	/**
 	 * Vuelve a la página del reto con un aviso.
 	 *
 	 * @param int    $reto_id Reto.
