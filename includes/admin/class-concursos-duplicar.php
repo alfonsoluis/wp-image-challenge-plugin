@@ -53,7 +53,7 @@ class Concursos_Duplicar {
 	 */
 	public static function row_action( $actions, $post ) {
 		if ( Concursos_Post_Types::RETO === $post->post_type && current_user_can( 'edit_post', $post->ID ) ) {
-			$actions['concursos_duplicar'] = sprintf( '<a href="%s">%s</a>', esc_url( self::url( $post->ID ) ), esc_html__( 'Duplicate', 'photo-challenges' ) );
+			$actions['concursos_duplicar'] = sprintf( '<a href="%s">%s</a>', esc_url( self::url( $post->ID ) ), esc_html__( 'Duplicate', 'foncholuis-art-challenge-manager' ) );
 		}
 
 		return $actions;
@@ -63,7 +63,7 @@ class Concursos_Duplicar {
 	 * Registra la pantalla, fuera del menú: se llega desde cada reto.
 	 */
 	public static function menu() {
-		add_submenu_page( 'options.php', __( 'Duplicate challenge', 'photo-challenges' ), __( 'Duplicate challenge', 'photo-challenges' ), 'edit_posts', self::PAGE, array( __CLASS__, 'render' ) );
+		add_submenu_page( 'options.php', __( 'Duplicate challenge', 'foncholuis-art-challenge-manager' ), __( 'Duplicate challenge', 'foncholuis-art-challenge-manager' ), 'edit_posts', self::PAGE, array( __CLASS__, 'render' ) );
 	}
 
 	/**
@@ -112,7 +112,7 @@ class Concursos_Duplicar {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- solo elige qué reto mostrar.
 		$id = isset( $_GET['reto'] ) ? absint( $_GET['reto'] ) : 0;
 		if ( ! self::puede( $id ) ) {
-			wp_die( esc_html__( 'You cannot duplicate this challenge.', 'photo-challenges' ) );
+			wp_die( esc_html__( 'You cannot duplicate this challenge.', 'foncholuis-art-challenge-manager' ) );
 		}
 		$activos = count( self::activos( $id ) );
 		?>
@@ -120,11 +120,11 @@ class Concursos_Duplicar {
 			<h1>
 				<?php
 				/* translators: %s: challenge name. */
-				echo esc_html( sprintf( __( 'Duplicate “%s”', 'photo-challenges' ), get_the_title( $id ) ) );
+				echo esc_html( sprintf( __( 'Duplicate “%s”', 'foncholuis-art-challenge-manager' ), get_the_title( $id ) ) );
 				?>
 			</h1>
-			<p><?php esc_html_e( 'This creates a draft with the same description, image, rules, prizes, settings and design. The dates are left empty so you can choose new ones. Photos and votes are not copied.', 'photo-challenges' ); ?></p>
-			<p><?php esc_html_e( 'Confirmed voters can vote in the new challenge without doing anything.', 'photo-challenges' ); ?></p>
+			<p><?php esc_html_e( 'This creates a draft with the same description, image, rules, prizes, settings and design. The dates are left empty so you can choose new ones. Photos and votes are not copied.', 'foncholuis-art-challenge-manager' ); ?></p>
+			<p><?php esc_html_e( 'Confirmed voters can vote in the new challenge without doing anything.', 'foncholuis-art-challenge-manager' ); ?></p>
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<input type="hidden" name="action" value="<?php echo esc_attr( self::ACTION ); ?>">
 				<input type="hidden" name="reto" value="<?php echo esc_attr( $id ); ?>">
@@ -134,12 +134,12 @@ class Concursos_Duplicar {
 						<input type="checkbox" name="participantes" value="1" <?php disabled( 0, $activos ); ?>>
 						<?php
 						/* translators: %d: number of active participants. */
-						echo esc_html( sprintf( _n( 'Also copy its %d active participant', 'Also copy its %d active participants', $activos, 'photo-challenges' ), $activos ) );
+						echo esc_html( sprintf( _n( 'Also copy its %d active participant', 'Also copy its %d active participants', $activos, 'foncholuis-art-challenge-manager' ), $activos ) );
 						?>
 					</label>
 				</p>
-				<p class="description"><?php esc_html_e( 'They will be active in the new challenge and will receive their personal link by email when you publish it, not before.', 'photo-challenges' ); ?></p>
-				<?php submit_button( __( 'Create the copy', 'photo-challenges' ) ); ?>
+				<p class="description"><?php esc_html_e( 'They will be active in the new challenge and will receive their personal link by email when you publish it, not before.', 'foncholuis-art-challenge-manager' ); ?></p>
+				<?php submit_button( __( 'Create the copy', 'foncholuis-art-challenge-manager' ) ); ?>
 			</form>
 		</div>
 		<?php
@@ -152,7 +152,7 @@ class Concursos_Duplicar {
 		$id = isset( $_POST['reto'] ) ? absint( $_POST['reto'] ) : 0;
 		check_admin_referer( self::ACTION . '_' . $id );
 		if ( ! self::puede( $id ) ) {
-			wp_die( esc_html__( 'You cannot duplicate this challenge.', 'photo-challenges' ) );
+			wp_die( esc_html__( 'You cannot duplicate this challenge.', 'foncholuis-art-challenge-manager' ) );
 		}
 
 		$original = get_post( $id );
@@ -161,7 +161,7 @@ class Concursos_Duplicar {
 				'post_type'    => Concursos_Post_Types::RETO,
 				'post_status'  => 'draft',
 				/* translators: %s: challenge name. */
-				'post_title'   => sprintf( __( '%s (copy)', 'photo-challenges' ), $original->post_title ),
+				'post_title'   => sprintf( __( '%s (copy)', 'foncholuis-art-challenge-manager' ), $original->post_title ),
 				'post_content' => $original->post_content,
 			),
 			true
@@ -250,8 +250,8 @@ class Concursos_Duplicar {
 			esc_html(
 				$n
 					/* translators: %d: number of copied participants. */
-					? sprintf( _n( 'Copy created with %d participant. Choose the dates and publish it: they will then receive their personal link.', 'Copy created with %d participants. Choose the dates and publish it: they will then receive their personal links.', $n, 'photo-challenges' ), $n )
-					: __( 'Copy created. Choose the dates and publish it.', 'photo-challenges' )
+					? sprintf( _n( 'Copy created with %d participant. Choose the dates and publish it: they will then receive their personal link.', 'Copy created with %d participants. Choose the dates and publish it: they will then receive their personal links.', $n, 'foncholuis-art-challenge-manager' ), $n )
+					: __( 'Copy created. Choose the dates and publish it.', 'foncholuis-art-challenge-manager' )
 			)
 		);
 	}

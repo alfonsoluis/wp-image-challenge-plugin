@@ -123,22 +123,22 @@ class Concursos_Votantes {
 	 */
 	private static function avisos() {
 		return array(
-			'revisa'      => array( 'success', __( 'We sent you an email: open its link to confirm your address and be able to vote.', 'photo-challenges' ) ),
-			'espera'      => array( 'success', __( 'We already sent a link to that email a few minutes ago. Check your inbox and spam folder. If it does not arrive, request it again in 5 minutes.', 'photo-challenges' ) ),
-			'confirmado'  => array( 'success', __( 'Email confirmed! You can now vote.', 'photo-challenges' ) ),
-			'confirmado_antes' => array( 'success', __( 'Email confirmed! Voting has not started yet: you can vote once photo submissions close.', 'photo-challenges' ) ),
-			'confirmado_tarde' => array( 'success', __( 'Email confirmed, but voting for this challenge has already ended.', 'photo-challenges' ) ),
-			'votado'      => array( 'success', __( 'Vote recorded.', 'photo-challenges' ) ),
-			'quitado'     => array( 'success', __( 'Vote removed.', 'photo-challenges' ) ),
-			'suscrito'    => array( 'success', __( 'We will let you know when there is a new challenge.', 'photo-challenges' ) ),
-			'desuscrito'  => array( 'success', __( 'You will no longer receive notifications about new challenges.', 'photo-challenges' ) ),
-			'salida'      => array( 'success', __( 'You have signed out as a voter in this browser.', 'photo-challenges' ) ),
-			'email'       => array( 'error', __( 'Enter a valid email address.', 'photo-challenges' ) ),
-			'limite'      => array( 'error', __( 'You have used all your votes in this challenge. Remove one to vote for another photo.', 'photo-challenges' ) ),
+			'revisa'      => array( 'success', __( 'We sent you an email: open its link to confirm your address and be able to vote.', 'foncholuis-art-challenge-manager' ) ),
+			'espera'      => array( 'success', __( 'We already sent a link to that email a few minutes ago. Check your inbox and spam folder. If it does not arrive, request it again in 5 minutes.', 'foncholuis-art-challenge-manager' ) ),
+			'confirmado'  => array( 'success', __( 'Email confirmed! You can now vote.', 'foncholuis-art-challenge-manager' ) ),
+			'confirmado_antes' => array( 'success', __( 'Email confirmed! Voting has not started yet: you can vote once photo submissions close.', 'foncholuis-art-challenge-manager' ) ),
+			'confirmado_tarde' => array( 'success', __( 'Email confirmed, but voting for this challenge has already ended.', 'foncholuis-art-challenge-manager' ) ),
+			'votado'      => array( 'success', __( 'Vote recorded.', 'foncholuis-art-challenge-manager' ) ),
+			'quitado'     => array( 'success', __( 'Vote removed.', 'foncholuis-art-challenge-manager' ) ),
+			'suscrito'    => array( 'success', __( 'We will let you know when there is a new challenge.', 'foncholuis-art-challenge-manager' ) ),
+			'desuscrito'  => array( 'success', __( 'You will no longer receive notifications about new challenges.', 'foncholuis-art-challenge-manager' ) ),
+			'salida'      => array( 'success', __( 'You have signed out as a voter in this browser.', 'foncholuis-art-challenge-manager' ) ),
+			'email'       => array( 'error', __( 'Enter a valid email address.', 'foncholuis-art-challenge-manager' ) ),
+			'limite'      => array( 'error', __( 'You have used all your votes in this challenge. Remove one to vote for another photo.', 'foncholuis-art-challenge-manager' ) ),
 			'privado'     => array( 'error', Concursos_Reto::mensaje_privado() ),
-			'cerrado'     => array( 'error', __( 'Voting for this challenge is not open.', 'photo-challenges' ) ),
-			'identificate' => array( 'error', __( 'Confirm your email to be able to vote.', 'photo-challenges' ) ),
-			'error'       => array( 'error', __( 'We could not complete the action. Please try again.', 'photo-challenges' ) ),
+			'cerrado'     => array( 'error', __( 'Voting for this challenge is not open.', 'foncholuis-art-challenge-manager' ) ),
+			'identificate' => array( 'error', __( 'Confirm your email to be able to vote.', 'foncholuis-art-challenge-manager' ) ),
+			'error'       => array( 'error', __( 'We could not complete the action. Please try again.', 'foncholuis-art-challenge-manager' ) ),
 		);
 	}
 
@@ -247,10 +247,10 @@ class Concursos_Votantes {
 		wp_mail(
 			$votante->email,
 			/* translators: %s: site name. */
-			sprintf( __( 'Confirm your email to vote on %s', 'photo-challenges' ), get_bloginfo( 'name' ) ),
+			sprintf( __( 'Confirm your email to vote on %s', 'foncholuis-art-challenge-manager' ), get_bloginfo( 'name' ) ),
 			sprintf(
 				/* translators: 1: challenge name, 2: link, 3: site name. */
-				__( "Hello,\n\nOpen this link to confirm your email and vote in “%1\$s”:\n\n%2\$s\n\nThe link expires in 7 days. If this was not you, ignore this message.\n\n%3\$s", 'photo-challenges' ),
+				__( "Hello,\n\nOpen this link to confirm your email and vote in “%1\$s”:\n\n%2\$s\n\nThe link expires in 7 days. If this was not you, ignore this message.\n\n%3\$s", 'foncholuis-art-challenge-manager' ),
 				get_the_title( $reto_id ),
 				add_query_arg( $args, home_url( '/' ) ),
 				get_bloginfo( 'name' )
@@ -303,10 +303,10 @@ class Concursos_Votantes {
 		if ( ! $votante || (int) $votante->confirm_expira < time() ) {
 			Concursos_Envio::render_message(
 				404,
-				__( 'Invalid link', 'photo-challenges' ),
+				__( 'Invalid link', 'foncholuis-art-challenge-manager' ),
 				$terminada
-					? __( 'This link is not valid or has expired, and voting for this challenge has already ended.', 'photo-challenges' )
-					: __( 'This link is not valid or has expired. Register your email again to receive a new one.', 'photo-challenges' ),
+					? __( 'This link is not valid or has expired, and voting for this challenge has already ended.', 'foncholuis-art-challenge-manager' )
+					: __( 'This link is not valid or has expired. Register your email again to receive a new one.', 'foncholuis-art-challenge-manager' ),
 				Concursos_Envio::enlace_reto( $reto_id )
 			);
 		}
@@ -448,14 +448,14 @@ class Concursos_Votantes {
 
 		$votante = self::desde_firma( $valor, 'baja' );
 		if ( ! $votante ) {
-			Concursos_Envio::render_message( 404, __( 'Invalid link', 'photo-challenges' ), __( 'This unsubscribe link is not valid.', 'photo-challenges' ), Concursos_Envio::enlace_reto( 0 ) );
+			Concursos_Envio::render_message( 404, __( 'Invalid link', 'foncholuis-art-challenge-manager' ), __( 'This unsubscribe link is not valid.', 'foncholuis-art-challenge-manager' ), Concursos_Envio::enlace_reto( 0 ) );
 		}
 
-		$titulo = __( 'New challenge notifications', 'photo-challenges' );
+		$titulo = __( 'New challenge notifications', 'foncholuis-art-challenge-manager' );
 
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ) {
 			self::set_suscrito( $votante, false );
-			Concursos_Envio::render_message( 200, $titulo, __( 'Done: you will no longer receive notifications about new challenges.', 'photo-challenges' ) );
+			Concursos_Envio::render_message( 200, $titulo, __( 'Done: you will no longer receive notifications about new challenges.', 'foncholuis-art-challenge-manager' ) );
 		}
 
 		Concursos_Envio::layout(
@@ -465,8 +465,8 @@ class Concursos_Votantes {
 				'<h1>%1$s</h1><p>%2$s</p><form method="post"><button type="submit">%3$s</button></form>',
 				esc_html( $titulo ),
 				/* translators: %s: voter email. */
-				esc_html( sprintf( __( 'Stop sending new challenge notifications to %s?', 'photo-challenges' ), $votante->email ) ),
-				esc_html__( 'Unsubscribe me', 'photo-challenges' )
+				esc_html( sprintf( __( 'Stop sending new challenge notifications to %s?', 'foncholuis-art-challenge-manager' ), $votante->email ) ),
+				esc_html__( 'Unsubscribe me', 'foncholuis-art-challenge-manager' )
 			)
 		);
 	}
@@ -507,10 +507,10 @@ class Concursos_Votantes {
 			wp_mail(
 				$votante->email,
 				/* translators: %s: challenge name. */
-				sprintf( __( 'New challenge: %s', 'photo-challenges' ), get_the_title( $post ) ),
+				sprintf( __( 'New challenge: %s', 'foncholuis-art-challenge-manager' ), get_the_title( $post ) ),
 				sprintf(
 					/* translators: 1: challenge name, 2: challenge link, 3: unsubscribe link, 4: site name. */
-					__( "Hello,\n\nThere is a new challenge: “%1\$s”.\n\n%2\$s\n\n%4\$s\n\nTo stop receiving these notifications: %3\$s", 'photo-challenges' ),
+					__( "Hello,\n\nThere is a new challenge: “%1\$s”.\n\n%2\$s\n\n%4\$s\n\nTo stop receiving these notifications: %3\$s", 'foncholuis-art-challenge-manager' ),
 					get_the_title( $post ),
 					get_permalink( $post ),
 					$baja,
@@ -537,23 +537,23 @@ class Concursos_Votantes {
 		if ( ! $votante ) {
 			?>
 			<div class="concursos-panel-voto__intro">
-				<h3><?php esc_html_e( 'Register your email to vote', 'photo-challenges' ); ?></h3>
-				<p class="concursos-xs"><?php esc_html_e( 'We only use your email to confirm that you are a real person and, if you tick the box, to tell you about new challenges. You can unsubscribe at any time.', 'photo-challenges' ); ?></p>
+				<h3><?php esc_html_e( 'Register your email to vote', 'foncholuis-art-challenge-manager' ); ?></h3>
+				<p class="concursos-xs"><?php esc_html_e( 'We only use your email to confirm that you are a real person and, if you tick the box, to tell you about new challenges. You can unsubscribe at any time.', 'foncholuis-art-challenge-manager' ); ?></p>
 			</div>
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="concursos-form-publico">
 				<input type="hidden" name="action" value="<?php echo esc_attr( self::REGISTRO ); ?>">
 				<input type="hidden" name="reto" value="<?php echo esc_attr( $reto_id ); ?>">
 				<?php wp_nonce_field( self::REGISTRO ); ?>
 				<p class="concursos-hp" aria-hidden="true">
-					<label><?php esc_html_e( 'Do not fill in this field', 'photo-challenges' ); ?> <input type="text" name="web" tabindex="-1" autocomplete="off"></label>
+					<label><?php esc_html_e( 'Do not fill in this field', 'foncholuis-art-challenge-manager' ); ?> <input type="text" name="web" tabindex="-1" autocomplete="off"></label>
 				</p>
-				<label for="concursos-votante-email"><?php esc_html_e( 'Email', 'photo-challenges' ); ?></label>
+				<label for="concursos-votante-email"><?php esc_html_e( 'Email', 'foncholuis-art-challenge-manager' ); ?></label>
 				<div class="concursos-panel-voto__fila">
 					<input type="email" id="concursos-votante-email" name="email" required autocomplete="email">
-					<button type="submit"><?php esc_html_e( 'Send me the link', 'photo-challenges' ); ?></button>
+					<button type="submit"><?php esc_html_e( 'Send me the link', 'foncholuis-art-challenge-manager' ); ?></button>
 				</div>
 				<p class="concursos-casilla concursos-sm">
-					<label><input type="checkbox" name="suscribir" value="1"> <?php esc_html_e( 'Email me when there is a new challenge', 'photo-challenges' ); ?></label>
+					<label><input type="checkbox" name="suscribir" value="1"> <?php esc_html_e( 'Email me when there is a new challenge', 'foncholuis-art-challenge-manager' ); ?></label>
 				</p>
 			</form>
 			<?php
@@ -567,21 +567,21 @@ class Concursos_Votantes {
 				<strong>
 					<?php
 					/* translators: %s: voter email. */
-					echo esc_html( sprintf( __( 'Voting as %s', 'photo-challenges' ), $votante->email ) );
+					echo esc_html( sprintf( __( 'Voting as %s', 'foncholuis-art-challenge-manager' ), $votante->email ) );
 					?>
 				</strong><br>
 				<?php
 				if ( $permitido && 3 === $total ) {
-					echo esc_html__( 'Choose your 1st, 2nd and 3rd: they are worth 3, 2 and 1 points.', 'photo-challenges' ) . '<br>';
+					echo esc_html__( 'Choose your 1st, 2nd and 3rd: they are worth 3, 2 and 1 points.', 'foncholuis-art-challenge-manager' ) . '<br>';
 				} elseif ( $permitido && 2 === $total ) {
-					echo esc_html__( 'Choose your 1st and 2nd: they are worth 3 and 2 points.', 'photo-challenges' ) . '<br>';
+					echo esc_html__( 'Choose your 1st and 2nd: they are worth 3 and 2 points.', 'foncholuis-art-challenge-manager' ) . '<br>';
 				}
 				?>
 				<?php
 				echo esc_html(
 					$permitido
 						/* translators: 1: votes left, 2: total votes. */
-						? sprintf( __( 'You have %1$d of %2$d votes left.', 'photo-challenges' ), $quedan, $total )
+						? sprintf( __( 'You have %1$d of %2$d votes left.', 'foncholuis-art-challenge-manager' ), $quedan, $total )
 						: Concursos_Reto::mensaje_privado()
 				);
 				?>
@@ -592,13 +592,13 @@ class Concursos_Votantes {
 					<input type="hidden" name="reto" value="<?php echo esc_attr( $reto_id ); ?>">
 					<input type="hidden" name="suscribir" value="<?php echo $votante->suscrito ? '' : '1'; ?>">
 					<?php wp_nonce_field( self::SUSCRIPCION, '_wpnonce', false ); ?>
-					<button type="submit" class="concursos-enlace"><?php echo $votante->suscrito ? esc_html__( 'Stop receiving new challenge notifications', 'photo-challenges' ) : esc_html__( 'Notify me about new challenges', 'photo-challenges' ); ?></button>
+					<button type="submit" class="concursos-enlace"><?php echo $votante->suscrito ? esc_html__( 'Stop receiving new challenge notifications', 'foncholuis-art-challenge-manager' ) : esc_html__( 'Notify me about new challenges', 'foncholuis-art-challenge-manager' ); ?></button>
 				</form>
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 					<input type="hidden" name="action" value="<?php echo esc_attr( self::SALIR ); ?>">
 					<input type="hidden" name="reto" value="<?php echo esc_attr( $reto_id ); ?>">
 					<?php wp_nonce_field( self::SALIR, '_wpnonce', false ); ?>
-					<button type="submit" class="concursos-enlace"><?php esc_html_e( 'Sign out', 'photo-challenges' ); ?></button>
+					<button type="submit" class="concursos-enlace"><?php esc_html_e( 'Sign out', 'foncholuis-art-challenge-manager' ); ?></button>
 				</form>
 			</div>
 			<?php

@@ -61,9 +61,9 @@ class Concursos_Entradas_Admin {
 		$vista = self::vista();
 		$url   = remove_query_arg( 'vista' );
 		?>
-		<span class="concursos-vistas" role="group" aria-label="<?php esc_attr_e( 'View', 'photo-challenges' ); ?>">
-			<a href="<?php echo esc_url( add_query_arg( 'vista', 'tabla', $url ) ); ?>" class="button<?php echo 'tabla' === $vista ? ' button-primary' : ''; ?>" aria-pressed="<?php echo 'tabla' === $vista ? 'true' : 'false'; ?>"><?php esc_html_e( 'Table', 'photo-challenges' ); ?></a>
-			<a href="<?php echo esc_url( add_query_arg( 'vista', 'rejilla', $url ) ); ?>" class="button<?php echo 'rejilla' === $vista ? ' button-primary' : ''; ?>" aria-pressed="<?php echo 'rejilla' === $vista ? 'true' : 'false'; ?>"><?php esc_html_e( 'Grid', 'photo-challenges' ); ?></a>
+		<span class="concursos-vistas" role="group" aria-label="<?php esc_attr_e( 'View', 'foncholuis-art-challenge-manager' ); ?>">
+			<a href="<?php echo esc_url( add_query_arg( 'vista', 'tabla', $url ) ); ?>" class="button<?php echo 'tabla' === $vista ? ' button-primary' : ''; ?>" aria-pressed="<?php echo 'tabla' === $vista ? 'true' : 'false'; ?>"><?php esc_html_e( 'Table', 'foncholuis-art-challenge-manager' ); ?></a>
+			<a href="<?php echo esc_url( add_query_arg( 'vista', 'rejilla', $url ) ); ?>" class="button<?php echo 'rejilla' === $vista ? ' button-primary' : ''; ?>" aria-pressed="<?php echo 'rejilla' === $vista ? 'true' : 'false'; ?>"><?php esc_html_e( 'Grid', 'foncholuis-art-challenge-manager' ); ?></a>
 		</span>
 		<?php
 	}
@@ -104,9 +104,9 @@ class Concursos_Entradas_Admin {
 		}
 		$reto = self::selected_reto();
 		?>
-		<label class="screen-reader-text" for="concursos-filtro-reto"><?php esc_html_e( 'Filter by challenge', 'photo-challenges' ); ?></label>
+		<label class="screen-reader-text" for="concursos-filtro-reto"><?php esc_html_e( 'Filter by challenge', 'foncholuis-art-challenge-manager' ); ?></label>
 		<select name="concursos_reto" id="concursos-filtro-reto">
-			<option value=""><?php esc_html_e( 'All challenges', 'photo-challenges' ); ?></option>
+			<option value=""><?php esc_html_e( 'All challenges', 'foncholuis-art-challenge-manager' ); ?></option>
 			<?php foreach ( Concursos_Reto::all() as $r ) : ?>
 				<option value="<?php echo esc_attr( $r['post']->ID ); ?>" <?php selected( $reto, $r['post']->ID ); ?>><?php echo esc_html( get_the_title( $r['post'] ) ); ?></option>
 			<?php endforeach; ?>
@@ -146,12 +146,12 @@ class Concursos_Entradas_Admin {
 	public static function columns( $columns ) {
 		return array(
 			'cb'                     => $columns['cb'],
-			'concursos_foto'         => __( 'Photo', 'photo-challenges' ),
-			'title'                  => __( 'Title', 'photo-challenges' ),
-			'concursos_participante' => __( 'Participant', 'photo-challenges' ),
-			'concursos_reto'         => __( 'Challenge', 'photo-challenges' ),
-			'concursos_votos'        => __( 'Points', 'photo-challenges' ),
-			'date'                   => __( 'Submitted', 'photo-challenges' ),
+			'concursos_foto'         => __( 'Photo', 'foncholuis-art-challenge-manager' ),
+			'title'                  => __( 'Title', 'foncholuis-art-challenge-manager' ),
+			'concursos_participante' => __( 'Participant', 'foncholuis-art-challenge-manager' ),
+			'concursos_reto'         => __( 'Challenge', 'foncholuis-art-challenge-manager' ),
+			'concursos_votos'        => __( 'Points', 'foncholuis-art-challenge-manager' ),
+			'date'                   => __( 'Submitted', 'foncholuis-art-challenge-manager' ),
 		);
 	}
 

@@ -108,18 +108,18 @@ class Concursos_Participante {
 			self::POST_TYPE,
 			array(
 				'labels'              => array(
-					'name'                  => __( 'Participants', 'photo-challenges' ),
-					'singular_name'         => __( 'Participant', 'photo-challenges' ),
-					'menu_name'             => __( 'Participants', 'photo-challenges' ),
-					'all_items'             => __( 'Participants', 'photo-challenges' ),
-					'edit_item'             => __( 'Edit participant', 'photo-challenges' ),
-					'search_items'          => __( 'Search participants', 'photo-challenges' ),
-					'not_found'             => __( 'No participants.', 'photo-challenges' ),
-					'not_found_in_trash'    => __( 'No participants in the trash.', 'photo-challenges' ),
-					'featured_image'        => __( 'Profile photo', 'photo-challenges' ),
-					'set_featured_image'    => __( 'Choose profile photo', 'photo-challenges' ),
-					'remove_featured_image' => __( 'Remove profile photo', 'photo-challenges' ),
-					'use_featured_image'    => __( 'Use as profile photo', 'photo-challenges' ),
+					'name'                  => __( 'Participants', 'foncholuis-art-challenge-manager' ),
+					'singular_name'         => __( 'Participant', 'foncholuis-art-challenge-manager' ),
+					'menu_name'             => __( 'Participants', 'foncholuis-art-challenge-manager' ),
+					'all_items'             => __( 'Participants', 'foncholuis-art-challenge-manager' ),
+					'edit_item'             => __( 'Edit participant', 'foncholuis-art-challenge-manager' ),
+					'search_items'          => __( 'Search participants', 'foncholuis-art-challenge-manager' ),
+					'not_found'             => __( 'No participants.', 'foncholuis-art-challenge-manager' ),
+					'not_found_in_trash'    => __( 'No participants in the trash.', 'foncholuis-art-challenge-manager' ),
+					'featured_image'        => __( 'Profile photo', 'foncholuis-art-challenge-manager' ),
+					'set_featured_image'    => __( 'Choose profile photo', 'foncholuis-art-challenge-manager' ),
+					'remove_featured_image' => __( 'Remove profile photo', 'foncholuis-art-challenge-manager' ),
+					'use_featured_image'    => __( 'Use as profile photo', 'foncholuis-art-challenge-manager' ),
 				),
 				'public'              => false,
 				'show_ui'             => true,
@@ -141,9 +141,9 @@ class Concursos_Participante {
 	 */
 	public static function estado_labels() {
 		return array(
-			self::PENDIENTE => __( 'Pending', 'photo-challenges' ),
-			self::ACTIVO    => __( 'Active', 'photo-challenges' ),
-			self::INACTIVO  => __( 'Inactive', 'photo-challenges' ),
+			self::PENDIENTE => __( 'Pending', 'foncholuis-art-challenge-manager' ),
+			self::ACTIVO    => __( 'Active', 'foncholuis-art-challenge-manager' ),
+			self::INACTIVO  => __( 'Inactive', 'foncholuis-art-challenge-manager' ),
 		);
 	}
 

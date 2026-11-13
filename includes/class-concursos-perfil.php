@@ -262,11 +262,11 @@ class Concursos_Perfil {
 							' · ',
 							array(
 								/* translators: %d: number of challenges. */
-								sprintf( _n( '%d challenge', '%d challenges', count( $filas ), 'photo-challenges' ), count( $filas ) ),
+								sprintf( _n( '%d challenge', '%d challenges', count( $filas ), 'foncholuis-art-challenge-manager' ), count( $filas ) ),
 								/* translators: %d: number of photos. */
-								sprintf( _n( '%d photo', '%d photos', $fotos, 'photo-challenges' ), $fotos ),
+								sprintf( _n( '%d photo', '%d photos', $fotos, 'foncholuis-art-challenge-manager' ), $fotos ),
 								/* translators: %d: number of places. */
-								sprintf( _n( '%d place', '%d places', $puestos, 'photo-challenges' ), $puestos ),
+								sprintf( _n( '%d place', '%d places', $puestos, 'foncholuis-art-challenge-manager' ), $puestos ),
 							)
 						)
 					);
@@ -297,7 +297,7 @@ class Concursos_Perfil {
 					<p class="concursos-premio">
 						<?php
 						/* translators: %s: prize. */
-						echo esc_html( sprintf( __( 'Prize: %s', 'photo-challenges' ), $fila['puesto']['premio'] ) );
+						echo esc_html( sprintf( __( 'Prize: %s', 'foncholuis-art-challenge-manager' ), $fila['puesto']['premio'] ) );
 						?>
 					</p>
 				<?php endif; ?>
@@ -313,7 +313,7 @@ class Concursos_Perfil {
 						<?php endforeach; ?>
 					</ul>
 				<?php else : ?>
-					<p><?php esc_html_e( 'Their photos in this challenge cannot be shown yet.', 'photo-challenges' ); ?></p>
+					<p><?php esc_html_e( 'Their photos in this challenge cannot be shown yet.', 'foncholuis-art-challenge-manager' ); ?></p>
 				<?php endif; ?>
 			</section>
 		<?php endforeach; ?>

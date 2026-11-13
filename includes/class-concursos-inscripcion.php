@@ -53,7 +53,7 @@ class Concursos_Inscripcion {
 			array(
 				'post_type'    => 'page',
 				'post_status'  => 'publish',
-				'post_title'   => __( 'Challenge registration', 'photo-challenges' ),
+				'post_title'   => __( 'Challenge registration', 'foncholuis-art-challenge-manager' ),
 				'post_content' => '<!-- wp:shortcode -->[' . self::SHORTCODE . ']<!-- /wp:shortcode -->',
 			)
 		);
@@ -71,7 +71,7 @@ class Concursos_Inscripcion {
 	 */
 	public static function estado_pagina( $states, $post ) {
 		if ( 'page' === $post->post_type && has_shortcode( $post->post_content, self::SHORTCODE ) ) {
-			$states['concursos_inscripcion'] = __( 'Registration page', 'photo-challenges' );
+			$states['concursos_inscripcion'] = __( 'Registration page', 'foncholuis-art-challenge-manager' );
 		}
 
 		return $states;
@@ -162,19 +162,19 @@ class Concursos_Inscripcion {
 	 */
 	private static function messages() {
 		return array(
-			'ok'        => array( 'success', __( 'Thank you! We received your registration. We will write to you when it is approved.', 'photo-challenges' ) ),
-			'nombre'    => array( 'error', __( 'Enter your name.', 'photo-challenges' ) ),
-			'email'     => array( 'error', __( 'Enter a valid email address.', 'photo-challenges' ) ),
-			'reto'      => array( 'error', __( 'Choose an open challenge.', 'photo-challenges' ) ),
-			'duplicado' => array( 'error', __( 'That email is already registered for that challenge.', 'photo-challenges' ) ),
+			'ok'        => array( 'success', __( 'Thank you! We received your registration. We will write to you when it is approved.', 'foncholuis-art-challenge-manager' ) ),
+			'nombre'    => array( 'error', __( 'Enter your name.', 'foncholuis-art-challenge-manager' ) ),
+			'email'     => array( 'error', __( 'Enter a valid email address.', 'foncholuis-art-challenge-manager' ) ),
+			'reto'      => array( 'error', __( 'Choose an open challenge.', 'foncholuis-art-challenge-manager' ) ),
+			'duplicado' => array( 'error', __( 'That email is already registered for that challenge.', 'foncholuis-art-challenge-manager' ) ),
 			'foto'      => array( 'error', sprintf(
 				/* translators: %s: maximum file size, such as 5 MB. */
-				__( 'The photo must be a JPG, PNG or WebP of up to %s.', 'photo-challenges' ),
+				__( 'The photo must be a JPG, PNG or WebP of up to %s.', 'foncholuis-art-challenge-manager' ),
 				size_format( Concursos_Imagenes::limite() )
 			) ),
-			'privacidad' => array( 'error', __( 'You must accept the use of your data to register.', 'photo-challenges' ) ),
+			'privacidad' => array( 'error', __( 'You must accept the use of your data to register.', 'foncholuis-art-challenge-manager' ) ),
 			'privado'    => array( 'error', Concursos_Reto::mensaje_privado() ),
-			'error'     => array( 'error', __( 'We could not save your registration. Please try again.', 'photo-challenges' ) ),
+			'error'     => array( 'error', __( 'We could not save your registration. Please try again.', 'foncholuis-art-challenge-manager' ) ),
 		);
 	}
 
@@ -203,29 +203,29 @@ class Concursos_Inscripcion {
 			<?php endif; ?>
 
 			<?php if ( ! $retos ) : ?>
-				<p><?php esc_html_e( 'There are no challenges open for registration right now.', 'photo-challenges' ); ?></p>
+				<p><?php esc_html_e( 'There are no challenges open for registration right now.', 'foncholuis-art-challenge-manager' ); ?></p>
 			<?php elseif ( 'ok' !== $code ) : ?>
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data" class="concursos-form-publico">
 					<input type="hidden" name="action" value="<?php echo esc_attr( self::ACTION ); ?>">
 					<?php wp_nonce_field( self::ACTION ); ?>
 
 					<p class="concursos-hp" aria-hidden="true">
-						<label><?php esc_html_e( 'Do not fill in this field', 'photo-challenges' ); ?> <input type="text" name="web" tabindex="-1" autocomplete="off"></label>
+						<label><?php esc_html_e( 'Do not fill in this field', 'foncholuis-art-challenge-manager' ); ?> <input type="text" name="web" tabindex="-1" autocomplete="off"></label>
 					</p>
 
 					<p>
-						<label for="concursos-nombre"><?php esc_html_e( 'Name', 'photo-challenges' ); ?> *</label>
+						<label for="concursos-nombre"><?php esc_html_e( 'Name', 'foncholuis-art-challenge-manager' ); ?> *</label>
 						<input type="text" id="concursos-nombre" name="nombre" required maxlength="100" autocomplete="name">
 					</p>
 					<p>
-						<label for="concursos-email"><?php esc_html_e( 'Email', 'photo-challenges' ); ?> *</label>
+						<label for="concursos-email"><?php esc_html_e( 'Email', 'foncholuis-art-challenge-manager' ); ?> *</label>
 						<input type="email" id="concursos-email" name="email" required autocomplete="email">
 					</p>
 					<p>
-						<label for="concursos-reto"><?php esc_html_e( 'Challenge', 'photo-challenges' ); ?> *</label>
+						<label for="concursos-reto"><?php esc_html_e( 'Challenge', 'foncholuis-art-challenge-manager' ); ?> *</label>
 						<select id="concursos-reto" name="reto" required>
 							<?php if ( count( $retos ) > 1 ) : ?>
-								<option value=""><?php esc_html_e( 'Choose a challenge', 'photo-challenges' ); ?></option>
+								<option value=""><?php esc_html_e( 'Choose a challenge', 'foncholuis-art-challenge-manager' ); ?></option>
 							<?php endif; ?>
 							<?php foreach ( $retos as $reto ) : ?>
 								<option value="<?php echo esc_attr( $reto['post']->ID ); ?>" <?php selected( $elegido, $reto['post']->ID ); ?>><?php echo esc_html( get_the_title( $reto['post'] ) ); ?></option>
@@ -233,34 +233,34 @@ class Concursos_Inscripcion {
 						</select>
 					</p>
 					<p>
-						<label for="concursos-foto"><?php esc_html_e( 'Profile photo (optional)', 'photo-challenges' ); ?></label>
+						<label for="concursos-foto"><?php esc_html_e( 'Profile photo (optional)', 'foncholuis-art-challenge-manager' ); ?></label>
 						<input type="file" id="concursos-foto" name="foto" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
 						<small><?php 
 						/* translators: %s: maximum file size, such as 5 MB. */
-						echo esc_html( sprintf( __( 'JPG, PNG or WebP, up to %s.', 'photo-challenges' ), size_format( Concursos_Imagenes::limite() ) ) );
+						echo esc_html( sprintf( __( 'JPG, PNG or WebP, up to %s.', 'foncholuis-art-challenge-manager' ), size_format( Concursos_Imagenes::limite() ) ) );
 						 ?></small>
 					</p>
 					<p>
-						<label for="concursos-instagram"><?php esc_html_e( 'Instagram (optional)', 'photo-challenges' ); ?></label>
+						<label for="concursos-instagram"><?php esc_html_e( 'Instagram (optional)', 'foncholuis-art-challenge-manager' ); ?></label>
 						<input type="text" id="concursos-instagram" name="instagram" maxlength="100" placeholder="@usuario">
 					</p>
 					<p>
-						<label for="concursos-facebook"><?php esc_html_e( 'Facebook (optional)', 'photo-challenges' ); ?></label>
+						<label for="concursos-facebook"><?php esc_html_e( 'Facebook (optional)', 'foncholuis-art-challenge-manager' ); ?></label>
 						<input type="text" id="concursos-facebook" name="facebook" maxlength="100" placeholder="usuario">
 					</p>
 					<p class="concursos-casilla">
 						<label>
 							<input type="checkbox" name="privacidad" value="1" required>
-							<?php esc_html_e( 'I agree that this data is stored to manage my participation, and that my name, photo and social networks are shown next to my photos.', 'photo-challenges' ); ?>
+							<?php esc_html_e( 'I agree that this data is stored to manage my participation, and that my name, photo and social networks are shown next to my photos.', 'foncholuis-art-challenge-manager' ); ?>
 							<?php
 							$politica = get_privacy_policy_url();
 							if ( $politica ) :
 								?>
-								<a href="<?php echo esc_url( $politica ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Privacy policy', 'photo-challenges' ); ?></a>
+								<a href="<?php echo esc_url( $politica ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Privacy policy', 'foncholuis-art-challenge-manager' ); ?></a>
 							<?php endif; ?>
 						</label>
 					</p>
-					<p><button type="submit"><?php esc_html_e( 'Register', 'photo-challenges' ); ?></button></p>
+					<p><button type="submit"><?php esc_html_e( 'Register', 'foncholuis-art-challenge-manager' ); ?></button></p>
 				</form>
 			<?php endif; ?>
 		</div>
@@ -459,10 +459,10 @@ class Concursos_Inscripcion {
 		return wp_mail(
 			$p['email'],
 			/* translators: %s: challenge name. */
-			sprintf( __( 'We received your registration: %s', 'photo-challenges' ), $reto ),
+			sprintf( __( 'We received your registration: %s', 'foncholuis-art-challenge-manager' ), $reto ),
 			sprintf(
 				/* translators: 1: participant name, 2: challenge name, 3: site name. */
-				__( "Hello %1\$s,\n\nWe received your registration for the challenge “%2\$s”. We will write to you once we have reviewed and approved it.\n\n%3\$s", 'photo-challenges' ),
+				__( "Hello %1\$s,\n\nWe received your registration for the challenge “%2\$s”. We will write to you once we have reviewed and approved it.\n\n%3\$s", 'foncholuis-art-challenge-manager' ),
 				$p['nombre'],
 				$reto,
 				get_bloginfo( 'name' )
@@ -484,10 +484,10 @@ class Concursos_Inscripcion {
 		return wp_mail(
 			$p['email'],
 			/* translators: %s: challenge name. */
-			sprintf( __( 'You can now take part in “%s”', 'photo-challenges' ), $reto ),
+			sprintf( __( 'You can now take part in “%s”', 'foncholuis-art-challenge-manager' ), $reto ),
 			sprintf(
 				/* translators: 1: participant name, 2: challenge name, 3: personal link, 4: site name. */
-				__( "Hello %1\$s,\n\nWe approved your registration for the challenge “%2\$s”.\n\nThis is your personal link to submit your photos. Do not share it: anyone who has it can submit photos in your name.\n\n%3\$s\n\n%4\$s", 'photo-challenges' ),
+				__( "Hello %1\$s,\n\nWe approved your registration for the challenge “%2\$s”.\n\nThis is your personal link to submit your photos. Do not share it: anyone who has it can submit photos in your name.\n\n%3\$s\n\n%4\$s", 'foncholuis-art-challenge-manager' ),
 				$p['nombre'],
 				$reto,
 				self::personal_link( $token ),

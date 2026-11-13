@@ -46,12 +46,12 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 	public function get_columns() {
 		return array(
 			'cb'     => '<input type="checkbox">',
-			'creado' => __( 'Registration date', 'photo-challenges' ),
-			'email'  => __( 'Email', 'photo-challenges' ),
-			'estado' => __( 'Status', 'photo-challenges' ),
-			'avisos' => __( 'Notifications', 'photo-challenges' ),
-			'votos'  => __( 'Votes', 'photo-challenges' ),
-			'retos'  => __( 'Challenges voted in', 'photo-challenges' ),
+			'creado' => __( 'Registration date', 'foncholuis-art-challenge-manager' ),
+			'email'  => __( 'Email', 'foncholuis-art-challenge-manager' ),
+			'estado' => __( 'Status', 'foncholuis-art-challenge-manager' ),
+			'avisos' => __( 'Notifications', 'foncholuis-art-challenge-manager' ),
+			'votos'  => __( 'Votes', 'foncholuis-art-challenge-manager' ),
+			'retos'  => __( 'Challenges voted in', 'foncholuis-art-challenge-manager' ),
 		);
 	}
 
@@ -193,16 +193,16 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 		$reto = self::filtro_reto();
 		?>
 		<div class="alignleft actions concursos-filtros">
-			<label class="screen-reader-text" for="concursos-filtro-reto"><?php esc_html_e( 'Filter by challenge', 'photo-challenges' ); ?></label>
+			<label class="screen-reader-text" for="concursos-filtro-reto"><?php esc_html_e( 'Filter by challenge', 'foncholuis-art-challenge-manager' ); ?></label>
 			<select name="concursos_reto" id="concursos-filtro-reto">
-				<option value=""><?php esc_html_e( 'All challenges', 'photo-challenges' ); ?></option>
+				<option value=""><?php esc_html_e( 'All challenges', 'foncholuis-art-challenge-manager' ); ?></option>
 				<?php foreach ( Concursos_Reto::all() as $r ) : ?>
 					<option value="<?php echo esc_attr( $r['post']->ID ); ?>" <?php selected( $reto, $r['post']->ID ); ?>><?php echo esc_html( get_the_title( $r['post'] ) ); ?></option>
 				<?php endforeach; ?>
 			</select>
-			<label><?php esc_html_e( 'From', 'photo-challenges' ); ?> <input type="date" name="desde" value="<?php echo esc_attr( self::fecha_escrita( 'desde' ) ); ?>"></label>
-			<label><?php esc_html_e( 'To', 'photo-challenges' ); ?> <input type="date" name="hasta" value="<?php echo esc_attr( self::fecha_escrita( 'hasta' ) ); ?>"></label>
-			<?php submit_button( __( 'Filter', 'photo-challenges' ), '', 'filter_action', false ); ?>
+			<label><?php esc_html_e( 'From', 'foncholuis-art-challenge-manager' ); ?> <input type="date" name="desde" value="<?php echo esc_attr( self::fecha_escrita( 'desde' ) ); ?>"></label>
+			<label><?php esc_html_e( 'To', 'foncholuis-art-challenge-manager' ); ?> <input type="date" name="hasta" value="<?php echo esc_attr( self::fecha_escrita( 'hasta' ) ); ?>"></label>
+			<?php submit_button( __( 'Filter', 'foncholuis-art-challenge-manager' ), '', 'filter_action', false ); ?>
 		</div>
 		<?php
 	}
@@ -214,9 +214,9 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 	 */
 	protected function get_bulk_actions() {
 		return array(
-			'concursos_reenviar' => __( 'Resend confirmation link', 'photo-challenges' ),
-			'concursos_baja'     => __( 'Unsubscribe from notifications', 'photo-challenges' ),
-			'concursos_eliminar' => __( 'Delete', 'photo-challenges' ),
+			'concursos_reenviar' => __( 'Resend confirmation link', 'foncholuis-art-challenge-manager' ),
+			'concursos_baja'     => __( 'Unsubscribe from notifications', 'foncholuis-art-challenge-manager' ),
+			'concursos_eliminar' => __( 'Delete', 'foncholuis-art-challenge-manager' ),
 		);
 	}
 
@@ -234,7 +234,7 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 	 * Mensaje sin resultados.
 	 */
 	public function no_items() {
-		esc_html_e( 'There are no voters yet.', 'photo-challenges' );
+		esc_html_e( 'There are no voters yet.', 'foncholuis-art-challenge-manager' );
 	}
 
 	/**
@@ -263,7 +263,7 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 						),
 						'bulk-votantes'
 					);
-					$html .= $this->row_actions( array( 'reenviar' => sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html__( 'Resend confirmation link', 'photo-challenges' ) ) ) );
+					$html .= $this->row_actions( array( 'reenviar' => sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html__( 'Resend confirmation link', 'foncholuis-art-challenge-manager' ) ) ) );
 				}
 
 				return $html;
@@ -273,10 +273,10 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 				return sprintf(
 					'<span class="concursos-badge concursos-badge--%s">%s</span>',
 					esc_attr( $item->estado ),
-					$confirmado ? esc_html__( 'Confirmed', 'photo-challenges' ) : esc_html__( 'Unconfirmed', 'photo-challenges' )
+					$confirmado ? esc_html__( 'Confirmed', 'foncholuis-art-challenge-manager' ) : esc_html__( 'Unconfirmed', 'foncholuis-art-challenge-manager' )
 				);
 			case 'avisos':
-				return $item->suscrito ? esc_html__( 'Yes', 'photo-challenges' ) : esc_html__( 'No', 'photo-challenges' );
+				return $item->suscrito ? esc_html__( 'Yes', 'foncholuis-art-challenge-manager' ) : esc_html__( 'No', 'foncholuis-art-challenge-manager' );
 			case 'votos':
 				return esc_html( number_format_i18n( (int) $item->votos ) );
 			case 'retos':
@@ -303,7 +303,7 @@ class Concursos_Votantes_Tabla extends WP_List_Table {
 			$enlace = get_edit_post_link( $reto );
 			if ( ! $titulo ) {
 				/* translators: %d: votes in a deleted challenge. */
-				$retos[] = esc_html( sprintf( __( 'Deleted challenge (%d)', 'photo-challenges' ), $n ) );
+				$retos[] = esc_html( sprintf( __( 'Deleted challenge (%d)', 'foncholuis-art-challenge-manager' ), $n ) );
 				continue;
 			}
 			$retos[] = sprintf(
@@ -338,8 +338,8 @@ class Concursos_Votantes_Admin {
 	public static function menu() {
 		$hook = add_submenu_page(
 			'edit.php?post_type=' . Concursos_Post_Types::RETO,
-			__( 'Voters', 'photo-challenges' ),
-			__( 'Voters', 'photo-challenges' ),
+			__( 'Voters', 'foncholuis-art-challenge-manager' ),
+			__( 'Voters', 'foncholuis-art-challenge-manager' ),
 			self::CAPABILITY,
 			self::PAGE,
 			array( __CLASS__, 'render' )
@@ -373,7 +373,7 @@ class Concursos_Votantes_Admin {
 
 		check_admin_referer( 'bulk-votantes' );
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_die( esc_html__( 'You cannot do this.', 'photo-challenges' ) );
+			wp_die( esc_html__( 'You cannot do this.', 'foncholuis-art-challenge-manager' ) );
 		}
 
 		global $wpdb;
@@ -418,19 +418,19 @@ class Concursos_Votantes_Admin {
 		$n     = isset( $_GET['concursos_n'] ) ? absint( $_GET['concursos_n'] ) : 0;
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		if ( 'reenviados' === $hecho && ! $n ) {
-			printf( '<div class="notice notice-warning is-dismissible"><p>%s</p></div>', esc_html__( 'No link was sent: only unconfirmed voters can receive one, and there must be a published challenge.', 'photo-challenges' ) );
+			printf( '<div class="notice notice-warning is-dismissible"><p>%s</p></div>', esc_html__( 'No link was sent: only unconfirmed voters can receive one, and there must be a published challenge.', 'foncholuis-art-challenge-manager' ) );
 
 			return;
 		}
 		if ( 'reenviados' === $hecho ) {
 			/* translators: %d: number of voters. */
-			$texto = sprintf( _n( '%d confirmation link sent.', '%d confirmation links sent.', $n, 'photo-challenges' ), $n );
+			$texto = sprintf( _n( '%d confirmation link sent.', '%d confirmation links sent.', $n, 'foncholuis-art-challenge-manager' ), $n );
 		} elseif ( 'eliminados' === $hecho ) {
 			/* translators: %d: number of voters. */
-			$texto = sprintf( _n( '%d voter and their votes deleted.', '%d voters and their votes deleted.', $n, 'photo-challenges' ), $n );
+			$texto = sprintf( _n( '%d voter and their votes deleted.', '%d voters and their votes deleted.', $n, 'foncholuis-art-challenge-manager' ), $n );
 		} elseif ( 'bajas' === $hecho ) {
 			/* translators: %d: number of voters. */
-			$texto = sprintf( _n( '%d voter will no longer receive notifications.', '%d voters will no longer receive notifications.', $n, 'photo-challenges' ), $n );
+			$texto = sprintf( _n( '%d voter will no longer receive notifications.', '%d voters will no longer receive notifications.', $n, 'foncholuis-art-challenge-manager' ), $n );
 		} else {
 			return;
 		}
@@ -445,13 +445,13 @@ class Concursos_Votantes_Admin {
 		$tabla->prepare_items();
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'Voters', 'photo-challenges' ); ?></h1>
+			<h1><?php esc_html_e( 'Voters', 'foncholuis-art-challenge-manager' ); ?></h1>
 			<?php self::aviso(); ?>
-			<form method="get" id="concursos-votantes-form" data-confirmar="<?php esc_attr_e( 'Delete the selected voters and all their votes? Results may change and this cannot be undone.', 'photo-challenges' ); ?>">
+			<form method="get" id="concursos-votantes-form" data-confirmar="<?php esc_attr_e( 'Delete the selected voters and all their votes? Results may change and this cannot be undone.', 'foncholuis-art-challenge-manager' ); ?>">
 				<input type="hidden" name="post_type" value="<?php echo esc_attr( Concursos_Post_Types::RETO ); ?>">
 				<input type="hidden" name="page" value="<?php echo esc_attr( self::PAGE ); ?>">
 				<?php
-				$tabla->search_box( __( 'Search by email', 'photo-challenges' ), 'concursos-votantes' );
+				$tabla->search_box( __( 'Search by email', 'foncholuis-art-challenge-manager' ), 'concursos-votantes' );
 				$tabla->display();
 				?>
 			</form>

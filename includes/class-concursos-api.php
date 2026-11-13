@@ -35,7 +35,7 @@ class Concursos_API {
 				'get_callback'    => array( __CLASS__, 'leer' ),
 				'update_callback' => array( __CLASS__, 'guardar' ),
 				'schema'          => array(
-					'description' => __( 'Challenge settings. Dates use the site time zone, in the format YYYY-MM-DDTHH:MM.', 'photo-challenges' ),
+					'description' => __( 'Challenge settings. Dates use the site time zone, in the format YYYY-MM-DDTHH:MM.', 'foncholuis-art-challenge-manager' ),
 					'type'        => 'object',
 					'context'     => array( 'edit' ),
 					'properties'  => array(
@@ -116,7 +116,7 @@ class Concursos_API {
 			$invalidos = Concursos_Reto::emails_invalidos( (string) $raw[ 'emails_' . $grupo ] );
 			if ( $invalidos ) {
 				/* translators: %s: list of invalid email addresses. */
-				$errores[] = sprintf( __( 'These addresses are not valid and were ignored: %s', 'photo-challenges' ), implode( ', ', $invalidos ) );
+				$errores[] = sprintf( __( 'These addresses are not valid and were ignored: %s', 'foncholuis-art-challenge-manager' ), implode( ', ', $invalidos ) );
 			}
 		}
 		if ( $errores ) {

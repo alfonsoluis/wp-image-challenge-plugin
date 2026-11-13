@@ -31,16 +31,16 @@ class Concursos_Envio {
 	 */
 	private static function messages() {
 		return array(
-			'subida'    => array( 'success', __( 'Photo submitted!', 'photo-challenges' ) ),
-			'eliminada' => array( 'success', __( 'Photo deleted.', 'photo-challenges' ) ),
-			'cerrado'   => array( 'error', __( 'The submission period is not open.', 'photo-challenges' ) ),
-			'limite'    => array( 'error', __( 'You have already submitted the maximum number of photos for this challenge.', 'photo-challenges' ) ),
+			'subida'    => array( 'success', __( 'Photo submitted!', 'foncholuis-art-challenge-manager' ) ),
+			'eliminada' => array( 'success', __( 'Photo deleted.', 'foncholuis-art-challenge-manager' ) ),
+			'cerrado'   => array( 'error', __( 'The submission period is not open.', 'foncholuis-art-challenge-manager' ) ),
+			'limite'    => array( 'error', __( 'You have already submitted the maximum number of photos for this challenge.', 'foncholuis-art-challenge-manager' ) ),
 			'foto'      => array( 'error', sprintf(
 				/* translators: %s: maximum file size, such as 5 MB. */
-				__( 'The photo must be a JPG, PNG or WebP of up to %s.', 'photo-challenges' ),
+				__( 'The photo must be a JPG, PNG or WebP of up to %s.', 'foncholuis-art-challenge-manager' ),
 				size_format( Concursos_Imagenes::limite() )
 			) ),
-			'error'     => array( 'error', __( 'We could not complete the action. Please try again.', 'photo-challenges' ) ),
+			'error'     => array( 'error', __( 'We could not complete the action. Please try again.', 'foncholuis-art-challenge-manager' ) ),
 		);
 	}
 
@@ -62,20 +62,20 @@ class Concursos_Envio {
 		$token = sanitize_text_field( wp_unslash( $_GET[ Concursos_Inscripcion::LINK_PARAM ] ) );
 		$id    = Concursos_Participante::find_by_token( $token );
 		if ( ! $id ) {
-			self::render_message( 404, __( 'Invalid link', 'photo-challenges' ), __( 'This link is not valid. Check that you copied all of it.', 'photo-challenges' ), self::enlace_reto( 0 ) );
+			self::render_message( 404, __( 'Invalid link', 'foncholuis-art-challenge-manager' ), __( 'This link is not valid. Check that you copied all of it.', 'foncholuis-art-challenge-manager' ), self::enlace_reto( 0 ) );
 		}
 
 		$p = Concursos_Participante::get( $id );
 		if ( '' === self::estado_reto( $p['reto'] ) ) {
-			self::render_message( 404, __( 'Challenge not available', 'photo-challenges' ), __( 'This challenge is no longer available.', 'photo-challenges' ), self::enlace_reto( 0 ) );
+			self::render_message( 404, __( 'Challenge not available', 'foncholuis-art-challenge-manager' ), __( 'This challenge is no longer available.', 'foncholuis-art-challenge-manager' ), self::enlace_reto( 0 ) );
 		}
 
 		if ( Concursos_Participante::ACTIVO !== $p['estado'] ) {
-			self::render_message( 403, __( 'Registration not active', 'photo-challenges' ), __( 'Your registration is not active. If you think this is a mistake, contact us.', 'photo-challenges' ), self::enlace_reto( $p['reto'] ) );
+			self::render_message( 403, __( 'Registration not active', 'foncholuis-art-challenge-manager' ), __( 'Your registration is not active. If you think this is a mistake, contact us.', 'foncholuis-art-challenge-manager' ), self::enlace_reto( $p['reto'] ) );
 		}
 
 		if ( ! Concursos_Reto::permite_email( Concursos_Reto::get_settings( $p['reto'] ), 'participantes', $p['email'] ) ) {
-			self::render_message( 403, __( 'Private challenge', 'photo-challenges' ), Concursos_Reto::mensaje_privado(), self::enlace_reto( $p['reto'] ) );
+			self::render_message( 403, __( 'Private challenge', 'foncholuis-art-challenge-manager' ), Concursos_Reto::mensaje_privado(), self::enlace_reto( $p['reto'] ) );
 		}
 
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ) {
@@ -178,7 +178,7 @@ class Concursos_Envio {
 		<h1>
 			<?php
 			/* translators: %s: participant name. */
-			echo esc_html( sprintf( __( 'Hello, %s', 'photo-challenges' ), $p['nombre'] ) );
+			echo esc_html( sprintf( __( 'Hello, %s', 'foncholuis-art-challenge-manager' ), $p['nombre'] ) );
 			?>
 		</h1>
 		<p class="concursos-reto-nombre"><?php echo esc_html( get_the_title( $p['reto'] ) ); ?></p>
@@ -191,13 +191,13 @@ class Concursos_Envio {
 			<?php
 			if ( $abierto ) {
 				/* translators: %s: submission end date. */
-				echo esc_html( sprintf( __( 'You can submit photos until %s.', 'photo-challenges' ), Concursos_Reto::format_dia( $reto['fin_envios'] ) ) );
+				echo esc_html( sprintf( __( 'You can submit photos until %s.', 'foncholuis-art-challenge-manager' ), Concursos_Reto::format_dia( $reto['fin_envios'] ) ) );
 			} elseif ( 'proximo' === $status ) {
 				/* translators: %s: challenge start date. */
-				echo esc_html( sprintf( __( 'Photo submissions start on %s.', 'photo-challenges' ), Concursos_Reto::format_dia( $reto['inicio'] ) ) );
+				echo esc_html( sprintf( __( 'Photo submissions start on %s.', 'foncholuis-art-challenge-manager' ), Concursos_Reto::format_dia( $reto['inicio'] ) ) );
 			} else {
 				// Cerrado: se dice además en qué fase está y su fecha (votación, resultados).
-				echo esc_html( trim( __( 'The submission period for this challenge is closed.', 'photo-challenges' ) . ' ' . Concursos_Galeria::frase_estado( $status, $reto ) ) );
+				echo esc_html( trim( __( 'The submission period for this challenge is closed.', 'foncholuis-art-challenge-manager' ) . ' ' . Concursos_Galeria::frase_estado( $status, $reto ) ) );
 			}
 			?>
 		</p>
@@ -206,7 +206,7 @@ class Concursos_Envio {
 		<h2>
 			<?php
 			/* translators: 1: photos submitted, 2: maximum photos. */
-			echo esc_html( sprintf( __( 'Your photos (%1$d of %2$d)', 'photo-challenges' ), count( $enviadas ), $max ) );
+			echo esc_html( sprintf( __( 'Your photos (%1$d of %2$d)', 'foncholuis-art-challenge-manager' ), count( $enviadas ), $max ) );
 			?>
 		</h2>
 		<?php if ( $enviadas ) : ?>
@@ -216,39 +216,39 @@ class Concursos_Envio {
 						<?php echo get_the_post_thumbnail( $entrada, 'medium' ); ?>
 						<span><?php echo esc_html( get_the_title( $entrada ) ); ?></span>
 						<?php if ( $abierto ) : ?>
-							<form method="post" data-confirmar="<?php esc_attr_e( 'Delete this photo?', 'photo-challenges' ); ?>">
+							<form method="post" data-confirmar="<?php esc_attr_e( 'Delete this photo?', 'foncholuis-art-challenge-manager' ); ?>">
 								<input type="hidden" name="_wpnonce" value="<?php echo esc_attr( $nonce ); ?>">
-								<button type="submit" name="eliminar" value="<?php echo esc_attr( $entrada->ID ); ?>" class="concursos-boton-secundario"><?php esc_html_e( 'Delete', 'photo-challenges' ); ?></button>
+								<button type="submit" name="eliminar" value="<?php echo esc_attr( $entrada->ID ); ?>" class="concursos-boton-secundario"><?php esc_html_e( 'Delete', 'foncholuis-art-challenge-manager' ); ?></button>
 							</form>
 						<?php endif; ?>
 					</li>
 				<?php endforeach; ?>
 			</ul>
 		<?php else : ?>
-			<p><?php esc_html_e( 'You have not submitted any photos yet.', 'photo-challenges' ); ?></p>
+			<p><?php esc_html_e( 'You have not submitted any photos yet.', 'foncholuis-art-challenge-manager' ); ?></p>
 		<?php endif; ?>
 
 		<?php if ( $abierto && $quedan > 0 ) : ?>
-			<h2><?php esc_html_e( 'Submit a photo', 'photo-challenges' ); ?></h2>
+			<h2><?php esc_html_e( 'Submit a photo', 'foncholuis-art-challenge-manager' ); ?></h2>
 			<form method="post" enctype="multipart/form-data" class="concursos-form-publico">
 				<input type="hidden" name="_wpnonce" value="<?php echo esc_attr( $nonce ); ?>">
 				<p>
-					<label for="concursos-foto"><?php esc_html_e( 'Photo', 'photo-challenges' ); ?> *</label>
+					<label for="concursos-foto"><?php esc_html_e( 'Photo', 'foncholuis-art-challenge-manager' ); ?> *</label>
 					<input type="file" id="concursos-foto" name="foto" required accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
 					<small><?php 
 						/* translators: %s: maximum file size, such as 5 MB. */
-						echo esc_html( sprintf( __( 'JPG, PNG or WebP, up to %s.', 'photo-challenges' ), size_format( Concursos_Imagenes::limite() ) ) );
+						echo esc_html( sprintf( __( 'JPG, PNG or WebP, up to %s.', 'foncholuis-art-challenge-manager' ), size_format( Concursos_Imagenes::limite() ) ) );
 						 ?></small>
 				</p>
 				<p>
-					<label for="concursos-titulo"><?php esc_html_e( 'Title (optional)', 'photo-challenges' ); ?></label>
+					<label for="concursos-titulo"><?php esc_html_e( 'Title (optional)', 'foncholuis-art-challenge-manager' ); ?></label>
 					<input type="text" id="concursos-titulo" name="titulo" maxlength="100">
 				</p>
 				<p>
-					<label for="concursos-descripcion"><?php esc_html_e( 'Description (optional)', 'photo-challenges' ); ?></label>
+					<label for="concursos-descripcion"><?php esc_html_e( 'Description (optional)', 'foncholuis-art-challenge-manager' ); ?></label>
 					<textarea id="concursos-descripcion" name="descripcion" rows="3" maxlength="<?php echo esc_attr( Concursos_Entrada::DESCRIPCION_MAX ); ?>"></textarea>
 				</p>
-				<p><button type="submit"><?php esc_html_e( 'Submit photo', 'photo-challenges' ); ?></button></p>
+				<p><button type="submit"><?php esc_html_e( 'Submit photo', 'foncholuis-art-challenge-manager' ); ?></button></p>
 			</form>
 		<?php endif; ?>
 
@@ -256,16 +256,16 @@ class Concursos_Envio {
 		$rules = Concursos_Reto::rules_list( $reto['reglas'] );
 		if ( $rules ) :
 			?>
-			<h2><?php esc_html_e( 'Rules', 'photo-challenges' ); ?></h2>
+			<h2><?php esc_html_e( 'Rules', 'foncholuis-art-challenge-manager' ); ?></h2>
 			<ul>
 				<?php foreach ( $rules as $rule ) : ?>
 					<li><?php echo esc_html( $rule ); ?></li>
 				<?php endforeach; ?>
 			</ul>
 		<?php endif; ?>
-		<p class="concursos-privado"><?php esc_html_e( 'This page is personal: do not share its link.', 'photo-challenges' ); ?></p>
+		<p class="concursos-privado"><?php esc_html_e( 'This page is personal: do not share its link.', 'foncholuis-art-challenge-manager' ); ?></p>
 		<?php
-		self::layout( 200, __( 'Your photos', 'photo-challenges' ), ob_get_clean(), $reto );
+		self::layout( 200, __( 'Your photos', 'foncholuis-art-challenge-manager' ), ob_get_clean(), $reto );
 	}
 
 	/**
@@ -320,14 +320,14 @@ class Concursos_Envio {
 		$estado = self::estado_reto( $reto_id );
 		if ( '' === $estado ) {
 			$url   = self::url_retos();
-			$texto = __( 'See all challenges', 'photo-challenges' );
+			$texto = __( 'See all challenges', 'foncholuis-art-challenge-manager' );
 		} else {
 			$url    = get_permalink( $reto_id );
 			$textos = array(
-				'votacion'   => __( 'See the photos and vote', 'photo-challenges' ),
-				'finalizado' => __( 'See the results', 'photo-challenges' ),
+				'votacion'   => __( 'See the photos and vote', 'foncholuis-art-challenge-manager' ),
+				'finalizado' => __( 'See the results', 'foncholuis-art-challenge-manager' ),
 			);
-			$texto  = isset( $textos[ $estado ] ) ? $textos[ $estado ] : __( 'See the challenge', 'photo-challenges' );
+			$texto  = isset( $textos[ $estado ] ) ? $textos[ $estado ] : __( 'See the challenge', 'foncholuis-art-challenge-manager' );
 		}
 
 		return sprintf( '<p><a class="concursos-boton" href="%s">%s</a></p>', esc_url( $url ), esc_html( $texto ) );

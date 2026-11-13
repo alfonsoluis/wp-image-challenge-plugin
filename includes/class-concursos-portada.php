@@ -37,7 +37,7 @@ class Concursos_Portada {
 			array(
 				'post_type'   => 'page',
 				'post_status' => 'publish',
-				'post_title'  => __( 'Challenges', 'photo-challenges' ),
+				'post_title'  => __( 'Challenges', 'foncholuis-art-challenge-manager' ),
 				'post_name'   => Concursos_Post_Types::base_url(),
 			)
 		);
@@ -55,7 +55,7 @@ class Concursos_Portada {
 	 */
 	public static function estado_pagina( $states, $post ) {
 		if ( (int) get_option( self::OPCION_PAGINA ) === $post->ID ) {
-			$states['concursos_retos'] = __( 'Challenges page', 'photo-challenges' );
+			$states['concursos_retos'] = __( 'Challenges page', 'foncholuis-art-challenge-manager' );
 		}
 
 		return $states;
@@ -69,7 +69,7 @@ class Concursos_Portada {
 		if ( ( is_post_type_archive( Concursos_Post_Types::RETO ) || ( $pagina && is_page( $pagina ) ) ) && ! is_feed() ) {
 			$referencia = self::reto_referencia();
 			$con_fondo  = $referencia && Concursos_Diseno::muestra_fondo( $referencia['settings'], 'portada' );
-			Concursos_Plantilla::pagina( __( 'Challenges', 'photo-challenges' ), self::render(), 'concursos-publico--portada' . ( $con_fondo ? ' concursos-con-fondo' : '' ) );
+			Concursos_Plantilla::pagina( __( 'Challenges', 'foncholuis-art-challenge-manager' ), self::render(), 'concursos-publico--portada' . ( $con_fondo ? ' concursos-con-fondo' : '' ) );
 		}
 	}
 
@@ -125,25 +125,25 @@ class Concursos_Portada {
 		$otros     = array_merge( $en_curso, array_reverse( (array) $proximos ) );
 
 		ob_start();
-		echo '<div class="concursos-publico__cabecera"><h1 class="concursos-publico__titulo">' . esc_html__( 'Challenges', 'photo-challenges' ) . '</h1>';
+		echo '<div class="concursos-publico__cabecera"><h1 class="concursos-publico__titulo">' . esc_html__( 'Challenges', 'foncholuis-art-challenge-manager' ) . '</h1>';
 		$inscripcion = Concursos_Inscripcion::url();
 		if ( $inscripcion && Concursos_Inscripcion::retos_abiertos() ) {
-			echo '<a class="concursos-boton" href="' . esc_url( $inscripcion ) . '">' . esc_html__( 'Join a challenge', 'photo-challenges' ) . '</a>';
+			echo '<a class="concursos-boton" href="' . esc_url( $inscripcion ) . '">' . esc_html__( 'Join a challenge', 'foncholuis-art-challenge-manager' ) . '</a>';
 		}
 		echo '</div>';
 
 		if ( ! $destacado && ! $pasados ) {
-			echo '<p>' . esc_html__( 'No challenges have been published yet.', 'photo-challenges' ) . '</p>';
+			echo '<p>' . esc_html__( 'No challenges have been published yet.', 'foncholuis-art-challenge-manager' ) . '</p>';
 		}
 		if ( $destacado ) {
 			self::destacado( $destacado );
 		}
 		if ( $otros ) {
-			echo '<h2>' . esc_html__( 'Other current and upcoming challenges', 'photo-challenges' ) . '</h2>';
+			echo '<h2>' . esc_html__( 'Other current and upcoming challenges', 'foncholuis-art-challenge-manager' ) . '</h2>';
 			self::lista( $otros );
 		}
 		if ( $pasados ) {
-			echo '<h2>' . esc_html__( 'Past challenges', 'photo-challenges' ) . '</h2>';
+			echo '<h2>' . esc_html__( 'Past challenges', 'foncholuis-art-challenge-manager' ) . '</h2>';
 			self::lista( $pasados );
 		}
 		echo Concursos_Clasificacion::html( (int) wp_date( 'Y' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
@@ -183,14 +183,14 @@ class Concursos_Portada {
 	private static function destacado( array $reto ) {
 		$texto  = wp_trim_words( wp_strip_all_tags( strip_shortcodes( $reto['post']->post_content ) ), 24 );
 		$fotos  = count( Concursos_Entrada::find( array( 'reto' => $reto['post']->ID ) ) );
-		$accion = 'votacion' === $reto['status'] ? __( 'See the photos and vote', 'photo-challenges' ) : __( 'See the challenge', 'photo-challenges' );
+		$accion = 'votacion' === $reto['status'] ? __( 'See the photos and vote', 'foncholuis-art-challenge-manager' ) : __( 'See the challenge', 'foncholuis-art-challenge-manager' );
 		$url    = get_permalink( $reto['post'] );
 
 		Concursos_Diseno::aplicar( $reto['settings'] );
 
 		$extra = ( $texto ? '<p>' . esc_html( $texto ) . '</p>' : '' )
 			/* translators: %d: number of photos. */
-			. '<p class="concursos-destacado__datos concursos-xs">' . esc_html( sprintf( _n( '%d photo submitted', '%d photos submitted', $fotos, 'photo-challenges' ), $fotos ) ) . '</p>'
+			. '<p class="concursos-destacado__datos concursos-xs">' . esc_html( sprintf( _n( '%d photo submitted', '%d photos submitted', $fotos, 'foncholuis-art-challenge-manager' ), $fotos ) ) . '</p>'
 			. '<p><a class="concursos-boton" href="' . esc_url( $url ) . '">' . esc_html( $accion ) . '</a></p>';
 
 		printf(

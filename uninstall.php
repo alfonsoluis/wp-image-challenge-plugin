@@ -2,7 +2,7 @@
 /**
  * Elimina todos los datos del plugin al borrarlo desde WordPress.
  *
- * @package PhotoChallenges
+ * @package FoncholuisArtChallengeManager
  */
 
 defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
@@ -10,7 +10,7 @@ defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 /**
  * Borra los datos del sitio actual.
  */
-function photo_challenges_borrar_datos() {
+function concursos_borrar_datos() {
 	global $wpdb;
 
 	// Se consulta directamente porque aquí los tipos y estados propios no están registrados.
@@ -53,13 +53,13 @@ function photo_challenges_borrar_datos() {
 }
 
 if ( is_multisite() ) {
-	foreach ( get_sites( array( 'fields' => 'ids' ) ) as $photo_challenges_sitio ) {
-		switch_to_blog( $photo_challenges_sitio );
-		photo_challenges_borrar_datos();
+	foreach ( get_sites( array( 'fields' => 'ids' ) ) as $concursos_sitio ) {
+		switch_to_blog( $concursos_sitio );
+		concursos_borrar_datos();
 		restore_current_blog();
 	}
 } else {
-	photo_challenges_borrar_datos();
+	concursos_borrar_datos();
 }
 
 delete_metadata( 'user', 0, 'concursos_vista_fotos', '', true );

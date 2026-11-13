@@ -36,9 +36,19 @@ function concursos_demo_imagen( $seed ) {
 	$w       = $medidas[ $seed % count( $medidas ) ][0];
 	$h       = $medidas[ $seed % count( $medidas ) ][1];
 
-	// Fotos reales de muestra (licencia Unsplash); sin conexión, un degradado.
-	$respuesta = wp_remote_get( sprintf( 'https://picsum.photos/seed/concursos%d/%d/%d', $seed, $w, $h ), array( 'timeout' => 20 ) );
-	if ( 200 === wp_remote_retrieve_response_code( $respuesta ) && 0 === strpos( wp_remote_retrieve_body( $respuesta ), "\xFF\xD8" ) ) {
+	// Fotos reales de muestra (licencia Unsplash), guardadas en disco tras la
+	// primera descarga para que las pruebas no dependan de la red; sin conexión, un degradado.
+	$cache = WP_CONTENT_DIR . '/uploads/concursos-demo-cache';
+	$copia = sprintf( '%s/%d-%dx%d.jpg', $cache, $seed, $w, $h );
+	if ( is_readable( $copia ) ) {
+		return file_get_contents( $copia ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+	}
+	static $sin_red = false;
+	$respuesta      = $sin_red ? null : wp_remote_get( sprintf( 'https://picsum.photos/seed/concursos%d/%d/%d', $seed, $w, $h ), array( 'timeout' => 8 ) );
+	$sin_red        = $sin_red || is_wp_error( $respuesta );
+	if ( $respuesta && 200 === wp_remote_retrieve_response_code( $respuesta ) && 0 === strpos( wp_remote_retrieve_body( $respuesta ), "\xFF\xD8" ) ) {
+		wp_mkdir_p( $cache );
+		file_put_contents( $copia, wp_remote_retrieve_body( $respuesta ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
 		return wp_remote_retrieve_body( $respuesta );
 	}
 

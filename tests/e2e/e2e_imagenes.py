@@ -13,8 +13,9 @@ def fetch(u,d=None,h=None):
         r=urllib.request.urlopen(urllib.request.Request(u,data=d,headers=h or {})); return r.status,r.geturl(),r.read().decode(errors="replace")
     except urllib.error.HTTPError as e: return e.code,u,e.read().decode(errors="replace")
 def generar(nombre,objetivo):
-    """Foto real recomprimida hasta acercarse al peso objetivo, o ruido si hace falta superarlo."""
-    php=f'''$r=wp_remote_get("https://picsum.photos/id/1018/5000/3333",array("timeout"=>90));$im=imagecreatefromstring(wp_remote_retrieve_body($r));
+    """Foto real (o degradado sin conexión) recomprimida hasta acercarse al peso objetivo, o ruido si hace falta superarlo."""
+    php=f'''$r=wp_remote_get("https://picsum.photos/id/1018/5000/3333",array("timeout"=>20));$b=wp_remote_retrieve_body($r);$im=$b?@imagecreatefromstring($b):false;
+if(!$im){{$im=imagecreatetruecolor(5000,3333);for($y=0;$y<3333;$y++){{imageline($im,0,$y,4999,$y,imagecolorallocate($im,(int)(40+$y/20),90,(int)(200-$y/20)));}}}}
 $p="/var/www/html/wp-content/uploads/{nombre}";$obj={objetivo};
 foreach(array(100,98,96,94,92,90,86,82) as $q){{imagejpeg($im,$p,$q);clearstatcache();if(filesize($p)<=$obj)break;}}
 if(filesize($p)<$obj*0.55){{$w=imagesx($im);$h=imagesy($im);for($i=0;$i<900000;$i++){{imagesetpixel($im,mt_rand(0,$w-1),mt_rand(0,$h-1),mt_rand(0,16777215));}}foreach(array(100,98,96,94,92,90,86,82,76,70) as $q){{imagejpeg($im,$p,$q);clearstatcache();if(filesize($p)<=$obj)break;}}}}

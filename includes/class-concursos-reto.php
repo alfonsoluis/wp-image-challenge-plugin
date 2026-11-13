@@ -84,12 +84,12 @@ class Concursos_Reto {
 	public static function choices() {
 		return array(
 			'modo'       => array(
-				'abierto' => __( 'Open: photos are shown as they are submitted', 'photo-challenges' ),
-				'cerrado' => __( 'Closed: photos are shown when submissions end', 'photo-challenges' ),
+				'abierto' => __( 'Open: photos are shown as they are submitted', 'foncholuis-art-challenge-manager' ),
+				'cerrado' => __( 'Closed: photos are shown when submissions end', 'foncholuis-art-challenge-manager' ),
 			),
 			'lugares'    => array(
-				1 => __( 'A single winner', 'photo-challenges' ),
-				3 => __( 'Three places', 'photo-challenges' ),
+				1 => __( 'A single winner', 'foncholuis-art-challenge-manager' ),
+				3 => __( 'Three places', 'foncholuis-art-challenge-manager' ),
 			),
 		);
 	}
@@ -180,14 +180,14 @@ class Concursos_Reto {
 		foreach ( self::FECHAS as $key ) {
 			if ( ! $s[ $key ] ) {
 				/* translators: %s: date name. */
-				$errors[] = sprintf( __( 'Missing date: %s.', 'photo-challenges' ), $labels[ $key ] );
+				$errors[] = sprintf( __( 'Missing date: %s.', 'foncholuis-art-challenge-manager' ), $labels[ $key ] );
 			}
 		}
 		if ( ! empty( $s['privado_participantes'] ) && '' === $s['emails_participantes'] ) {
-			$errors[] = __( 'Participation is private but the list of emails is empty: nobody will be able to register.', 'photo-challenges' );
+			$errors[] = __( 'Participation is private but the list of emails is empty: nobody will be able to register.', 'foncholuis-art-challenge-manager' );
 		}
 		if ( ! empty( $s['privado_votantes'] ) && '' === $s['emails_votantes'] ) {
-			$errors[] = __( 'Voting is private but the list of emails is empty: nobody will be able to vote.', 'photo-challenges' );
+			$errors[] = __( 'Voting is private but the list of emails is empty: nobody will be able to vote.', 'foncholuis-art-challenge-manager' );
 		}
 		if ( $errors ) {
 			return $errors;
@@ -198,7 +198,7 @@ class Concursos_Reto {
 			$curr = self::FECHAS[ $i ];
 			if ( $s[ $curr ] < $s[ $prev ] ) {
 				/* translators: 1: later date, 2: earlier date. */
-				$errors[] = sprintf( __( '“%1$s” cannot be before “%2$s”.', 'photo-challenges' ), $labels[ $curr ], $labels[ $prev ] );
+				$errors[] = sprintf( __( '“%1$s” cannot be before “%2$s”.', 'foncholuis-art-challenge-manager' ), $labels[ $curr ], $labels[ $prev ] );
 			}
 		}
 
@@ -276,7 +276,7 @@ class Concursos_Reto {
 	 * @return string
 	 */
 	public static function mensaje_privado() {
-		return __( 'This challenge is private. Contact the organizers for more information.', 'photo-challenges' );
+		return __( 'This challenge is private. Contact the organizers for more information.', 'foncholuis-art-challenge-manager' );
 	}
 
 	/**
@@ -334,12 +334,12 @@ class Concursos_Reto {
 	 */
 	public static function status_labels() {
 		return array(
-			'sin_fechas' => __( 'No dates', 'photo-challenges' ),
-			'proximo'    => __( 'Upcoming', 'photo-challenges' ),
-			'envios'     => __( 'Accepting photos', 'photo-challenges' ),
-			'votacion'   => __( 'Voting', 'photo-challenges' ),
-			'evaluacion' => __( 'Under review', 'photo-challenges' ),
-			'finalizado' => __( 'Finished', 'photo-challenges' ),
+			'sin_fechas' => __( 'No dates', 'foncholuis-art-challenge-manager' ),
+			'proximo'    => __( 'Upcoming', 'foncholuis-art-challenge-manager' ),
+			'envios'     => __( 'Accepting photos', 'foncholuis-art-challenge-manager' ),
+			'votacion'   => __( 'Voting', 'foncholuis-art-challenge-manager' ),
+			'evaluacion' => __( 'Under review', 'foncholuis-art-challenge-manager' ),
+			'finalizado' => __( 'Finished', 'foncholuis-art-challenge-manager' ),
 		);
 	}
 
@@ -350,10 +350,10 @@ class Concursos_Reto {
 	 */
 	public static function date_labels() {
 		return array(
-			'inicio'       => __( 'Challenge start', 'photo-challenges' ),
-			'fin_envios'   => __( 'End of submissions', 'photo-challenges' ),
-			'fin_votacion' => __( 'End of voting', 'photo-challenges' ),
-			'cierre'       => __( 'Publication of results', 'photo-challenges' ),
+			'inicio'       => __( 'Challenge start', 'foncholuis-art-challenge-manager' ),
+			'fin_envios'   => __( 'End of submissions', 'foncholuis-art-challenge-manager' ),
+			'fin_votacion' => __( 'End of voting', 'foncholuis-art-challenge-manager' ),
+			'cierre'       => __( 'Publication of results', 'foncholuis-art-challenge-manager' ),
 		);
 	}
 

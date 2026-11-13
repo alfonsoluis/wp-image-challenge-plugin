@@ -96,9 +96,9 @@ class Concursos_Clasificacion {
 
 		$titulo = null === $hasta
 			/* translators: %d: year. */
-			? sprintf( __( 'General ranking %d', 'photo-challenges' ), $anio )
+			? sprintf( __( 'General ranking %d', 'foncholuis-art-challenge-manager' ), $anio )
 			/* translators: %d: year. */
-			: sprintf( __( 'General ranking %d after this challenge', 'photo-challenges' ), $anio );
+			: sprintf( __( 'General ranking %d after this challenge', 'foncholuis-art-challenge-manager' ), $anio );
 
 		ob_start();
 		?>
@@ -108,16 +108,16 @@ class Concursos_Clasificacion {
 				<table class="concursos-tabla concursos-sm">
 					<thead>
 						<tr>
-							<th scope="col"><?php esc_html_e( 'Place', 'photo-challenges' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Participant', 'photo-challenges' ); ?></th>
-							<th scope="col" class="concursos-tabla__num"><?php esc_html_e( 'Challenges', 'photo-challenges' ); ?></th>
-							<th scope="col" class="concursos-tabla__num"><?php esc_html_e( 'Points', 'photo-challenges' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Place', 'foncholuis-art-challenge-manager' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Participant', 'foncholuis-art-challenge-manager' ); ?></th>
+							<th scope="col" class="concursos-tabla__num"><?php esc_html_e( 'Challenges', 'foncholuis-art-challenge-manager' ); ?></th>
+							<th scope="col" class="concursos-tabla__num"><?php esc_html_e( 'Points', 'foncholuis-art-challenge-manager' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php foreach ( $filas as $fila ) : ?>
 							<tr>
-								<td><?php echo esc_html( number_format_i18n( $fila['lugar'] ) . ( $fila['empate'] ? ' ' . __( '(tie)', 'photo-challenges' ) : '' ) ); ?></td>
+								<td><?php echo esc_html( number_format_i18n( $fila['lugar'] ) . ( $fila['empate'] ? ' ' . __( '(tie)', 'foncholuis-art-challenge-manager' ) : '' ) ); ?></td>
 								<td>
 									<?php if ( $fila['url'] ) : ?>
 										<a href="<?php echo esc_url( $fila['url'] ); ?>"><?php echo esc_html( $fila['nombre'] ); ?></a>
@@ -132,7 +132,7 @@ class Concursos_Clasificacion {
 					</tbody>
 				</table>
 			</div>
-			<p class="concursos-xs"><?php esc_html_e( 'Points are added up across the challenges finished during the year. With several votes per voter, a 1st is worth 3 points, a 2nd 2 and a 3rd 1; with a single vote, each vote is worth 1 point.', 'photo-challenges' ); ?></p>
+			<p class="concursos-xs"><?php esc_html_e( 'Points are added up across the challenges finished during the year. With several votes per voter, a 1st is worth 3 points, a 2nd 2 and a 3rd 1; with a single vote, each vote is worth 1 point.', 'foncholuis-art-challenge-manager' ); ?></p>
 		</section>
 		<?php
 		return ob_get_clean();
