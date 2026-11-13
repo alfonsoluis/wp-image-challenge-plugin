@@ -178,6 +178,7 @@ class Concursos_Votantes {
 			'desuscrito'  => array( 'success', __( 'You will no longer receive notifications about new challenges.', 'foncholuis-art-challenge-manager' ) ),
 			'salida'      => array( 'success', __( 'You have signed out as a voter in this browser.', 'foncholuis-art-challenge-manager' ) ),
 			'email'       => array( 'error', __( 'Enter a valid email address.', 'foncholuis-art-challenge-manager' ) ),
+			'propia'      => array( 'error', __( 'You cannot vote for your own photo.', 'foncholuis-art-challenge-manager' ) ),
 			'limite'      => array( 'error', __( 'You have used all your votes in this challenge. Remove one to vote for another photo.', 'foncholuis-art-challenge-manager' ) ),
 			'privado'     => array( 'error', Concursos_Reto::mensaje_privado() ),
 			'cerrado'     => array( 'error', __( 'Voting for this challenge is not open.', 'foncholuis-art-challenge-manager' ) ),

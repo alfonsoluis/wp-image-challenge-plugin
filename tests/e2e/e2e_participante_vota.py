@@ -6,6 +6,7 @@ import re
 import subprocess
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 import uuid
 
@@ -45,13 +46,22 @@ def fetch(op, url):
         return e.code, e.read().decode()
 
 
+def votar(op, nonce, entrada, puesto):
+    data = urllib.parse.urlencode({"action": "concursos_votar", "_wpnonce": nonce, "reto": reto, "entrada": entrada, "op": "votar", "puesto": puesto}).encode()
+    r = op.open(urllib.request.Request(BASE + "/wp-admin/admin-post.php", data=data))
+    return urllib.parse.parse_qs(urllib.parse.urlparse(r.geturl()).query).get("concursos_voto", ["?"])[0]
+
+
 def votante(email):
     return wp("db", "query", f"SELECT estado, suscrito FROM wp_concursos_votantes WHERE email='{email}'", "--skip-column-names").split()
 
 
 print(sh("make", "demo", "FASE=votacion").splitlines()[-1])
 reto = wp("post", "list", "--post_type=concurso_reto", "--name=reto-de-prueba-luz-y-sombra", "--field=ID")
-pid = wp("post", "list", "--post_type=concurso_inscrito", "--field=ID", "--meta_key=_concursos_reto", f"--meta_value={reto}", "--posts_per_page=1")
+# Un participante con fotos en el reto: el dueño de la primera.
+propias = wp("eval", f"$f = Concursos_Entrada::find( array( 'reto' => {reto} ) ); echo Concursos_Entrada::owner( $f[0]->ID ) . ' ' . implode( ',', wp_list_pluck( Concursos_Entrada::find( array( 'reto' => {reto}, 'participante' => Concursos_Entrada::owner( $f[0]->ID ) ) ), 'ID' ) );").split()
+pid, propias = propias[0], propias[1].split(",")
+otra = wp("eval", f"foreach ( Concursos_Entrada::find( array( 'reto' => {reto} ) ) as $e ) {{ if ( ! in_array( (string) $e->ID, explode( ',', '{','.join(propias)}' ), true ) ) {{ echo $e->ID; break; }} }}")
 
 # Un email nuevo para el participante, y otro que ya era votante pendiente.
 email = f"p{uuid.uuid4().hex[:6]}@example.com"
@@ -68,6 +78,12 @@ check("deja la cookie de votante", any(c.name == "concursos_votante" for c in op
 _, h = fetch(op, RETO_URL)
 check("en el reto ve los botones de votar", "Te quedan 3 de 3" in h and "concursos-voto-form" in h)
 check("en otro navegador no", "concursos-voto-form" not in fetch(session(), RETO_URL)[1])
+
+# No puede votar su propia foto: sin botones en ella, y el voto directo se rechaza.
+check("en sus fotos pone «Tu foto» y no hay botones", h.count("concursos-propia") == len(propias) and all(f'name="entrada" value="{e}"' not in h for e in propias), str(propias))
+nonce = re.search(r'value="concursos_votar"><input type="hidden" name="_wpnonce" value="([^"]+)"', h).group(1)
+check("votar su propia foto se rechaza", votar(op, nonce, propias[0], 1) == "propia")
+check("votar otra foto sí", votar(op, nonce, otra, 1) == "votado")
 
 # Abrir otra vez el enlace no duplica el votante.
 fetch(session(), link)

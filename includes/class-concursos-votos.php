@@ -218,6 +218,20 @@ class Concursos_Votos {
 	}
 
 	/**
+	 * Si una foto es del propio votante: el email de quien la envió es el suyo.
+	 *
+	 * @param int    $entrada_id Foto.
+	 * @param object $votante    Votante.
+	 * @return bool
+	 */
+	public static function es_propia( $entrada_id, $votante ) {
+		$autor = Concursos_Entrada::owner( $entrada_id );
+		$email = $autor ? (string) get_post_meta( $autor, Concursos_Participante::META . 'email', true ) : '';
+
+		return '' !== $email && strtolower( $email ) === strtolower( (string) $votante->email );
+	}
+
+		/**
 	 * Nombre de un puesto.
 	 *
 	 * @param int  $lugar  Puesto (1 a 3).
@@ -264,6 +278,9 @@ class Concursos_Votos {
 			&& Concursos_Entrada::se_ve( get_post( $entrada ) );
 		if ( ! $valida ) {
 			Concursos_Votantes::volver( $reto, 'error' );
+		}
+		if ( self::es_propia( $entrada, $votante ) ) {
+			Concursos_Votantes::volver( $reto, 'propia' );
 		}
 
 		global $wpdb;

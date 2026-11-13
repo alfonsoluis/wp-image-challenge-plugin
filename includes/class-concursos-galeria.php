@@ -400,7 +400,13 @@ class Concursos_Galeria {
 
 		echo '<ul class="pc-mosaico concursos-galeria__rejilla">';
 		foreach ( $entradas as $i => $entrada ) {
-			$boton = $votante ? Concursos_Votos::botones( $reto_id, $s, $entrada->ID, $mios ) : '';
+			$boton = '';
+			if ( $votante ) {
+				// En su propia foto, quien vota no ve botones: solo que es suya.
+				$boton = Concursos_Votos::es_propia( $entrada->ID, $votante )
+					? '<span class="pc-etiqueta concursos-propia">' . esc_html__( 'Your photo', 'foncholuis-art-challenge-manager' ) . '</span>'
+					: Concursos_Votos::botones( $reto_id, $s, $entrada->ID, $mios );
+			}
 			echo self::tarjeta( $entrada, $boton, $anonima, $i + 1 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
 		}
 		echo '</ul>';
