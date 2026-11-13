@@ -45,19 +45,23 @@ Pensado para asociaciones de fotografía, escuelas y organizaciones que ya tiene
 <table>
   <tr>
     <td width="50%"><img alt="Página de un reto en votación" src="docs/screenshots/reto.jpg"><p align="center"><sub>Un reto en votación</sub></p></td>
-    <td width="50%"><img alt="Resultados de un reto con empates" src="docs/screenshots/resultados.jpg"><p align="center"><sub>Resultados con premios y empates</sub></p></td>
+    <td width="50%"><img alt="Fotos en votación con el 1.º, 2.º y 3.º de un votante" src="docs/screenshots/votacion.jpg"><p align="center"><sub>Votación por puestos: 1.º, 2.º y 3.º valen 3, 2 y 1 puntos</sub></p></td>
   </tr>
   <tr>
-    <td><img alt="Formulario de inscripción a un reto" src="docs/screenshots/inscripcion.jpg"><p align="center"><sub>Inscripción en tres pasos</sub></p></td>
+    <td><img alt="Resultados de un reto con empates" src="docs/screenshots/resultados.jpg"><p align="center"><sub>Resultados con premios y empates</sub></p></td>
     <td><img alt="Perfil público de un participante" src="docs/screenshots/perfil.jpg"><p align="center"><sub>Perfil de participante</sub></p></td>
   </tr>
   <tr>
+    <td><img alt="Formulario de inscripción a un reto" src="docs/screenshots/inscripcion.jpg"><p align="center"><sub>Inscripción en tres pasos</sub></p></td>
     <td><img alt="Pantalla Stats con la actividad de los retos" src="docs/screenshots/stats.jpg"><p align="center"><sub>Stats: actividad y resumen de cada reto</sub></p></td>
-    <td><img alt="Opciones de participación y diseño de un reto" src="docs/screenshots/formulario.jpg"><p align="center"><sub>Participación, premios y diseño</sub></p></td>
   </tr>
   <tr>
+    <td><img alt="Opciones de participación y diseño de un reto" src="docs/screenshots/formulario.jpg"><p align="center"><sub>Participación, premios y diseño</sub></p></td>
     <td><img alt="Panel de retos en la administración" src="docs/screenshots/panel.jpg"><p align="center"><sub>Panel de retos</sub></p></td>
+  </tr>
+  <tr>
     <td><img alt="Lista de votantes en la administración" src="docs/screenshots/votantes.jpg"><p align="center"><sub>Votantes y en qué retos votaron</sub></p></td>
+    <td></td>
   </tr>
 </table>
 
