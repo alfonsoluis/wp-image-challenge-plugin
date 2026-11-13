@@ -258,8 +258,8 @@ class Concursos_Perfil {
 		ob_start();
 		?>
 		<div class="pc-contenedor">
-			<nav class="pc-ruta" aria-label="<?php esc_attr_e( 'Breadcrumb', 'photo-challenges' ); ?>">
-				<a href="<?php echo esc_url( $portada ); ?>"><?php esc_html_e( 'Challenges', 'photo-challenges' ); ?></a>
+			<nav class="pc-ruta" aria-label="<?php esc_attr_e( 'Breadcrumb', 'foncholuis-art-challenge-manager' ); ?>">
+				<a href="<?php echo esc_url( $portada ); ?>"><?php esc_html_e( 'Challenges', 'foncholuis-art-challenge-manager' ); ?></a>
 				<span aria-hidden="true">/</span>
 				<span aria-current="page"><?php echo esc_html( $nombre ); ?></span>
 			</nav>
@@ -271,7 +271,7 @@ class Concursos_Perfil {
 						<span class="pc-perfil__foto pc-perfil__foto--vacia concursos-perfil__foto--vacia" aria-hidden="true"><?php echo esc_html( Concursos_Vista::iniciales( $nombre ) ); ?></span>
 					<?php endif; ?>
 					<div class="pc-perfil__texto">
-						<p class="pc-antetitulo"><?php esc_html_e( 'Participant', 'photo-challenges' ); ?></p>
+						<p class="pc-antetitulo"><?php esc_html_e( 'Participant', 'foncholuis-art-challenge-manager' ); ?></p>
 						<h1 class="pc-perfil__nombre"><?php echo esc_html( $nombre ); ?></h1>
 						<?php if ( $redes ) : ?>
 							<p class="pc-acciones concursos-perfil__redes">
@@ -283,9 +283,9 @@ class Concursos_Perfil {
 					</div>
 				</div>
 				<dl class="pc-cifras concursos-perfil__cifras">
-					<div><dt class="pc-etiqueta"><?php esc_html_e( 'Challenges', 'photo-challenges' ); ?></dt><dd><?php echo esc_html( number_format_i18n( count( $filas ) ) ); ?></dd></div>
-					<div><dt class="pc-etiqueta"><?php esc_html_e( 'Photos', 'photo-challenges' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $fotos ) ); ?></dd></div>
-					<div><dt class="pc-etiqueta"><?php esc_html_e( 'Places', 'photo-challenges' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $puestos ) ); ?></dd></div>
+					<div><dt class="pc-etiqueta"><?php esc_html_e( 'Challenges', 'foncholuis-art-challenge-manager' ); ?></dt><dd><?php echo esc_html( number_format_i18n( count( $filas ) ) ); ?></dd></div>
+					<div><dt class="pc-etiqueta"><?php esc_html_e( 'Photos', 'foncholuis-art-challenge-manager' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $fotos ) ); ?></dd></div>
+					<div><dt class="pc-etiqueta"><?php esc_html_e( 'Places', 'foncholuis-art-challenge-manager' ); ?></dt><dd><?php echo esc_html( number_format_i18n( $puestos ) ); ?></dd></div>
 				</dl>
 			</header>
 
@@ -301,11 +301,11 @@ class Concursos_Perfil {
 						<span class="pc-sello pc-sello--<?php echo esc_attr( (string) min( 3, $logro['puesto']['lugar'] ) ); ?>"><?php echo Concursos_Vista::icono( 'medalla', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG fijo. ?><?php echo esc_html( Concursos_Votos::nombre_lugar( $logro['puesto']['lugar'], $logro['puesto']['empate'] ) ); ?></span>
 						<h2 class="pc-logro__titulo" id="pc-logro"><?php echo esc_html( get_the_title( $logro['mias'][0] ) ); ?></h2>
 						<p>
-							<?php esc_html_e( 'Challenge:', 'photo-challenges' ); ?>
+							<?php esc_html_e( 'Challenge:', 'foncholuis-art-challenge-manager' ); ?>
 							<a href="<?php echo esc_url( get_permalink( $logro['reto_id'] ) ); ?>"><?php echo esc_html( get_the_title( $logro['reto_id'] ) ); ?></a><?php
 							if ( '' !== $logro['puesto']['premio'] ) {
 								/* translators: %s: prize. */
-								echo '. ' . esc_html( sprintf( __( 'Prize: %s', 'photo-challenges' ), $logro['puesto']['premio'] ) );
+								echo '. ' . esc_html( sprintf( __( 'Prize: %s', 'foncholuis-art-challenge-manager' ), $logro['puesto']['premio'] ) );
 							}
 							?>
 						</p>
@@ -314,7 +314,7 @@ class Concursos_Perfil {
 			<?php endif; ?>
 
 			<section class="pc-seccion" aria-labelledby="pc-historial">
-				<?php echo Concursos_Vista::cabecera_seccion( 'pc-historial', __( 'Challenges they took part in', 'photo-challenges' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+				<?php echo Concursos_Vista::cabecera_seccion( 'pc-historial', __( 'Challenges they took part in', 'foncholuis-art-challenge-manager' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
 				<?php foreach ( $filas as $fila ) : ?>
 					<article class="pc-historial concursos-perfil__reto">
 						<div class="pc-historial__datos">
@@ -327,7 +327,7 @@ class Concursos_Perfil {
 									<span class="pc-texto-suave concursos-premio">
 										<?php
 										/* translators: %s: prize. */
-										echo esc_html( sprintf( __( 'Prize: %s', 'photo-challenges' ), $fila['puesto']['premio'] ) );
+										echo esc_html( sprintf( __( 'Prize: %s', 'foncholuis-art-challenge-manager' ), $fila['puesto']['premio'] ) );
 										?>
 									</span>
 								<?php endif; ?>
@@ -345,7 +345,7 @@ class Concursos_Perfil {
 								<?php endforeach; ?>
 							</ul>
 						<?php else : ?>
-							<p class="pc-texto-suave pc-historial__vacio"><?php esc_html_e( 'Their photos in this challenge cannot be shown yet.', 'photo-challenges' ); ?></p>
+							<p class="pc-texto-suave pc-historial__vacio"><?php esc_html_e( 'Their photos in this challenge cannot be shown yet.', 'foncholuis-art-challenge-manager' ); ?></p>
 						<?php endif; ?>
 					</article>
 				<?php endforeach; ?>

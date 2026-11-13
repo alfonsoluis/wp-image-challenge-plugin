@@ -96,25 +96,25 @@ class Concursos_Clasificacion {
 
 		$titulo = null === $hasta
 			/* translators: %d: year. */
-			? sprintf( __( 'General ranking %d', 'photo-challenges' ), $anio )
+			? sprintf( __( 'General ranking %d', 'foncholuis-art-challenge-manager' ), $anio )
 			/* translators: %d: year. */
-			: sprintf( __( 'General ranking %d after this challenge', 'photo-challenges' ), $anio );
+			: sprintf( __( 'General ranking %d after this challenge', 'foncholuis-art-challenge-manager' ), $anio );
 
 		ob_start();
 		?>
 		<section class="pc-seccion pc-clasificacion concursos-clasificacion" id="clasificacion" aria-labelledby="pc-clasificacion">
 			<div class="pc-clasificacion__intro">
 				<h2 class="pc-seccion__titulo" id="pc-clasificacion"><?php echo esc_html( $titulo ); ?></h2>
-				<p class="pc-texto-suave"><?php esc_html_e( 'Points are added up across the challenges finished during the year. With several votes per voter, a 1st is worth 3 points, a 2nd 2 and a 3rd 1; with a single vote, each vote is worth 1 point.', 'photo-challenges' ); ?></p>
+				<p class="pc-texto-suave"><?php esc_html_e( 'Points are added up across the challenges finished during the year. With several votes per voter, a 1st is worth 3 points, a 2nd 2 and a 3rd 1; with a single vote, each vote is worth 1 point.', 'foncholuis-art-challenge-manager' ); ?></p>
 			</div>
 			<div class="pc-tabla-marco">
 				<table class="pc-tabla">
 					<thead>
 						<tr>
-							<th scope="col" class="pc-tabla__puesto"><?php esc_html_e( 'Place', 'photo-challenges' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Participant', 'photo-challenges' ); ?></th>
-							<th scope="col" class="pc-tabla__num concursos-tabla__num"><?php esc_html_e( 'Challenges', 'photo-challenges' ); ?></th>
-							<th scope="col" class="pc-tabla__num concursos-tabla__num"><?php esc_html_e( 'Points', 'photo-challenges' ); ?></th>
+							<th scope="col" class="pc-tabla__puesto"><?php esc_html_e( 'Place', 'foncholuis-art-challenge-manager' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Participant', 'foncholuis-art-challenge-manager' ); ?></th>
+							<th scope="col" class="pc-tabla__num concursos-tabla__num"><?php esc_html_e( 'Challenges', 'foncholuis-art-challenge-manager' ); ?></th>
+							<th scope="col" class="pc-tabla__num concursos-tabla__num"><?php esc_html_e( 'Points', 'foncholuis-art-challenge-manager' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -123,7 +123,7 @@ class Concursos_Clasificacion {
 								<td class="pc-tabla__puesto">
 									<?php echo esc_html( number_format_i18n( $fila['lugar'] ) ); ?>
 									<?php if ( $fila['empate'] ) : ?>
-										<span class="pc-etiqueta"><?php esc_html_e( '(tie)', 'photo-challenges' ); ?></span>
+										<span class="pc-etiqueta"><?php esc_html_e( '(tie)', 'foncholuis-art-challenge-manager' ); ?></span>
 									<?php endif; ?>
 								</td>
 								<td>

@@ -1,4 +1,4 @@
-"""Actualiza languages/photo-challenges-es_ES.po a partir del .pot recién generado.
+"""Actualiza languages/foncholuis-art-challenge-manager-es_ES.po a partir del .pot recién generado.
 
 Conserva las traducciones que ya tiene el .po y añade las de un JSON opcional
 con pares [inglés, español] (o [[singular, plural], [singular, plural]]).
@@ -8,8 +8,8 @@ import json
 import re
 import sys
 
-POT = "languages/photo-challenges.pot"
-PO = "languages/photo-challenges-es_ES.po"
+POT = "languages/foncholuis-art-challenge-manager.pot"
+PO = "languages/foncholuis-art-challenge-manager-es_ES.po"
 
 
 def unq(s):

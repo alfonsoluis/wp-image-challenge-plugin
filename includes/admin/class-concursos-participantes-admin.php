@@ -55,16 +55,16 @@ class Concursos_Participantes_Admin {
 		$reto   = absint( self::filter_value( 'concursos_reto' ) );
 		$estado = self::filter_value( 'concursos_estado' );
 		?>
-		<label class="screen-reader-text" for="concursos-filtro-reto"><?php esc_html_e( 'Filter by challenge', 'photo-challenges' ); ?></label>
+		<label class="screen-reader-text" for="concursos-filtro-reto"><?php esc_html_e( 'Filter by challenge', 'foncholuis-art-challenge-manager' ); ?></label>
 		<select name="concursos_reto" id="concursos-filtro-reto">
-			<option value=""><?php esc_html_e( 'All challenges', 'photo-challenges' ); ?></option>
+			<option value=""><?php esc_html_e( 'All challenges', 'foncholuis-art-challenge-manager' ); ?></option>
 			<?php foreach ( Concursos_Reto::all() as $r ) : ?>
 				<option value="<?php echo esc_attr( $r['post']->ID ); ?>" <?php selected( $reto, $r['post']->ID ); ?>><?php echo esc_html( get_the_title( $r['post'] ) ); ?></option>
 			<?php endforeach; ?>
 		</select>
-		<label class="screen-reader-text" for="concursos-filtro-estado"><?php esc_html_e( 'Filter by status', 'photo-challenges' ); ?></label>
+		<label class="screen-reader-text" for="concursos-filtro-estado"><?php esc_html_e( 'Filter by status', 'foncholuis-art-challenge-manager' ); ?></label>
 		<select name="concursos_estado" id="concursos-filtro-estado">
-			<option value=""><?php esc_html_e( 'All statuses', 'photo-challenges' ); ?></option>
+			<option value=""><?php esc_html_e( 'All statuses', 'foncholuis-art-challenge-manager' ); ?></option>
 			<?php foreach ( Concursos_Participante::estado_labels() as $value => $label ) : ?>
 				<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $estado, $value ); ?>><?php echo esc_html( $label ); ?></option>
 			<?php endforeach; ?>
@@ -111,13 +111,13 @@ class Concursos_Participantes_Admin {
 	public static function columns( $columns ) {
 		return array(
 			'cb'               => $columns['cb'],
-			'concursos_foto'   => __( 'Photo', 'photo-challenges' ),
-			'title'            => __( 'Name', 'photo-challenges' ),
-			'concursos_email'  => __( 'Email', 'photo-challenges' ),
-			'concursos_reto'   => __( 'Challenge', 'photo-challenges' ),
-			'concursos_estado' => __( 'Status', 'photo-challenges' ),
-			'concursos_redes'  => __( 'Social networks', 'photo-challenges' ),
-			'date'             => __( 'Registration', 'photo-challenges' ),
+			'concursos_foto'   => __( 'Photo', 'foncholuis-art-challenge-manager' ),
+			'title'            => __( 'Name', 'foncholuis-art-challenge-manager' ),
+			'concursos_email'  => __( 'Email', 'foncholuis-art-challenge-manager' ),
+			'concursos_reto'   => __( 'Challenge', 'foncholuis-art-challenge-manager' ),
+			'concursos_estado' => __( 'Status', 'foncholuis-art-challenge-manager' ),
+			'concursos_redes'  => __( 'Social networks', 'foncholuis-art-challenge-manager' ),
+			'date'             => __( 'Registration', 'foncholuis-art-challenge-manager' ),
 		);
 	}
 
@@ -144,7 +144,7 @@ class Concursos_Participantes_Admin {
 				$labels = Concursos_Participante::estado_labels();
 				printf( '<span class="concursos-badge concursos-badge--%1$s">%2$s</span>', esc_attr( $p['estado'] ), esc_html( $labels[ $p['estado'] ] ?? $p['estado'] ) );
 				if ( $p['enlace_enviado'] ) {
-					echo '<br><small>' . esc_html__( 'Link sent', 'photo-challenges' ) . '</small>';
+					echo '<br><small>' . esc_html__( 'Link sent', 'foncholuis-art-challenge-manager' ) . '</small>';
 				}
 				break;
 			case 'concursos_redes':
@@ -176,8 +176,8 @@ class Concursos_Participantes_Admin {
 		unset( $actions['edit'] );
 
 		return array(
-			'concursos_activar'    => __( 'Activate (approve)', 'photo-challenges' ),
-			'concursos_desactivar' => __( 'Deactivate', 'photo-challenges' ),
+			'concursos_activar'    => __( 'Activate (approve)', 'foncholuis-art-challenge-manager' ),
+			'concursos_desactivar' => __( 'Deactivate', 'foncholuis-art-challenge-manager' ),
 		) + $actions;
 	}
 
@@ -237,7 +237,7 @@ class Concursos_Participantes_Admin {
 				'concursos_aprobar' => sprintf(
 					'<a href="%s">%s</a>',
 					esc_url( $url ),
-					Concursos_Participante::PENDIENTE === $p['estado'] ? esc_html__( 'Approve', 'photo-challenges' ) : esc_html__( 'Activate', 'photo-challenges' )
+					Concursos_Participante::PENDIENTE === $p['estado'] ? esc_html__( 'Approve', 'foncholuis-art-challenge-manager' ) : esc_html__( 'Activate', 'foncholuis-art-challenge-manager' )
 				),
 			) + $actions;
 		}
@@ -248,7 +248,7 @@ class Concursos_Participantes_Admin {
 				'concursos_perfil' => sprintf(
 					'<a href="%s" target="_blank" rel="noopener">%s</a>',
 					esc_url( Concursos_Perfil::url( $post->ID ) ),
-					esc_html__( 'View profile', 'photo-challenges' )
+					esc_html__( 'View profile', 'foncholuis-art-challenge-manager' )
 				),
 			);
 			$actions = array_slice( $actions, 0, 1, true ) + $perfil + array_slice( $actions, 1, null, true );
@@ -265,7 +265,7 @@ class Concursos_Participantes_Admin {
 		$id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : 0;
 		check_admin_referer( 'concursos_aprobar_' . $id );
 		if ( ! current_user_can( 'edit_post', $id ) || self::TYPE !== get_post_type( $id ) ) {
-			wp_die( esc_html__( 'You cannot do this.', 'photo-challenges' ) );
+			wp_die( esc_html__( 'You cannot do this.', 'foncholuis-art-challenge-manager' ) );
 		}
 
 		Concursos_Inscripcion::activar( $id );
@@ -298,10 +298,10 @@ class Concursos_Participantes_Admin {
 		$n = absint( self::filter_value( 'concursos_n' ) );
 		if ( 'activados' === $hecho ) {
 			/* translators: %d: number of participants. */
-			$text = sprintf( _n( '%d participant activated. Anyone without a personal link received it by email.', '%d participants activated. Anyone without a personal link received it by email.', $n, 'photo-challenges' ), $n );
+			$text = sprintf( _n( '%d participant activated. Anyone without a personal link received it by email.', '%d participants activated. Anyone without a personal link received it by email.', $n, 'foncholuis-art-challenge-manager' ), $n );
 		} else {
 			/* translators: %d: number of participants. */
-			$text = sprintf( _n( '%d participant deactivated: their photos are hidden and their votes have been deleted.', '%d participants deactivated: their photos are hidden and their votes have been deleted.', $n, 'photo-challenges' ), $n );
+			$text = sprintf( _n( '%d participant deactivated: their photos are hidden and their votes have been deleted.', '%d participants deactivated: their photos are hidden and their votes have been deleted.', $n, 'foncholuis-art-challenge-manager' ), $n );
 		}
 		printf( '<div class="notice notice-success is-dismissible"><p>%s</p></div>', esc_html( $text ) );
 	}
@@ -323,7 +323,7 @@ class Concursos_Participantes_Admin {
 	 * Caja con los datos de la inscripción en la pantalla de edición.
 	 */
 	public static function meta_box() {
-		add_meta_box( 'concursos-participante', __( 'Registration details', 'photo-challenges' ), array( __CLASS__, 'render_meta_box' ), null, 'normal', 'high' );
+		add_meta_box( 'concursos-participante', __( 'Registration details', 'foncholuis-art-challenge-manager' ), array( __CLASS__, 'render_meta_box' ), null, 'normal', 'high' );
 	}
 
 	/**
@@ -336,23 +336,23 @@ class Concursos_Participantes_Admin {
 		$labels = Concursos_Participante::estado_labels();
 		?>
 		<table class="form-table">
-			<tr><th scope="row"><?php esc_html_e( 'Email', 'photo-challenges' ); ?></th><td><?php echo esc_html( $p['email'] ); ?></td></tr>
-			<tr><th scope="row"><?php esc_html_e( 'Challenge', 'photo-challenges' ); ?></th><td><?php echo $p['reto'] ? esc_html( get_the_title( $p['reto'] ) ) : '—'; ?></td></tr>
-			<tr><th scope="row"><?php esc_html_e( 'Status', 'photo-challenges' ); ?></th><td><?php echo esc_html( $labels[ $p['estado'] ] ?? $p['estado'] ); ?></td></tr>
-			<tr><th scope="row"><?php esc_html_e( 'Social networks', 'photo-challenges' ); ?></th><td><?php self::social_links( $p ); ?></td></tr>
+			<tr><th scope="row"><?php esc_html_e( 'Email', 'foncholuis-art-challenge-manager' ); ?></th><td><?php echo esc_html( $p['email'] ); ?></td></tr>
+			<tr><th scope="row"><?php esc_html_e( 'Challenge', 'foncholuis-art-challenge-manager' ); ?></th><td><?php echo $p['reto'] ? esc_html( get_the_title( $p['reto'] ) ) : '—'; ?></td></tr>
+			<tr><th scope="row"><?php esc_html_e( 'Status', 'foncholuis-art-challenge-manager' ); ?></th><td><?php echo esc_html( $labels[ $p['estado'] ] ?? $p['estado'] ); ?></td></tr>
+			<tr><th scope="row"><?php esc_html_e( 'Social networks', 'foncholuis-art-challenge-manager' ); ?></th><td><?php self::social_links( $p ); ?></td></tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Personal link', 'photo-challenges' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Personal link', 'foncholuis-art-challenge-manager' ); ?></th>
 				<td>
 					<?php
 					echo $p['enlace_enviado']
 						/* translators: %s: date. */
-						? esc_html( sprintf( __( 'Sent on %s', 'photo-challenges' ), Concursos_Reto::format_date( $p['enlace_enviado'] ) ) )
-						: esc_html__( 'Sent when the participant is activated.', 'photo-challenges' );
+						? esc_html( sprintf( __( 'Sent on %s', 'foncholuis-art-challenge-manager' ), Concursos_Reto::format_date( $p['enlace_enviado'] ) ) )
+						: esc_html__( 'Sent when the participant is activated.', 'foncholuis-art-challenge-manager' );
 					?>
 				</td>
 			</tr>
 		</table>
-		<p class="description"><?php esc_html_e( 'The status is changed from the participant list, using the bulk actions.', 'photo-challenges' ); ?></p>
+		<p class="description"><?php esc_html_e( 'The status is changed from the participant list, using the bulk actions.', 'foncholuis-art-challenge-manager' ); ?></p>
 		<?php
 	}
 }

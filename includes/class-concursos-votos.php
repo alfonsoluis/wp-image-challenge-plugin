@@ -59,9 +59,9 @@ class Concursos_Votos {
 	 */
 	public static function ordinal( $puesto ) {
 		$ordinales = array(
-			1 => __( '1st', 'photo-challenges' ),
-			2 => __( '2nd', 'photo-challenges' ),
-			3 => __( '3rd', 'photo-challenges' ),
+			1 => __( '1st', 'foncholuis-art-challenge-manager' ),
+			2 => __( '2nd', 'foncholuis-art-challenge-manager' ),
+			3 => __( '3rd', 'foncholuis-art-challenge-manager' ),
 		);
 
 		return isset( $ordinales[ $puesto ] ) ? $ordinales[ $puesto ] : (string) $puesto;
@@ -77,9 +77,9 @@ class Concursos_Votos {
 	public static function etiqueta( $n, array $s ) {
 		return self::por_puestos( $s )
 			/* translators: %d: number of points. */
-			? sprintf( _n( '%d point', '%d points', $n, 'photo-challenges' ), $n )
+			? sprintf( _n( '%d point', '%d points', $n, 'foncholuis-art-challenge-manager' ), $n )
 			/* translators: %d: number of votes. */
-			: sprintf( _n( '%d vote', '%d votes', $n, 'photo-challenges' ), $n );
+			: sprintf( _n( '%d vote', '%d votes', $n, 'foncholuis-art-challenge-manager' ), $n );
 	}
 
 	/**
@@ -226,9 +226,9 @@ class Concursos_Votos {
 	 */
 	public static function nombre_lugar( $lugar, $empate ) {
 		$nombres = array(
-			1 => array( __( 'First place', 'photo-challenges' ), __( 'Tied for first place', 'photo-challenges' ) ),
-			2 => array( __( 'Second place', 'photo-challenges' ), __( 'Tied for second place', 'photo-challenges' ) ),
-			3 => array( __( 'Third place', 'photo-challenges' ), __( 'Tied for third place', 'photo-challenges' ) ),
+			1 => array( __( 'First place', 'foncholuis-art-challenge-manager' ), __( 'Tied for first place', 'foncholuis-art-challenge-manager' ) ),
+			2 => array( __( 'Second place', 'foncholuis-art-challenge-manager' ), __( 'Tied for second place', 'foncholuis-art-challenge-manager' ) ),
+			3 => array( __( 'Third place', 'foncholuis-art-challenge-manager' ), __( 'Tied for third place', 'foncholuis-art-challenge-manager' ) ),
 		);
 
 		return $nombres[ $lugar ][ $empate ? 1 : 0 ];
@@ -357,8 +357,8 @@ class Concursos_Votos {
 				esc_url( admin_url( 'admin-post.php' ) ),
 				$campos, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
 				/* translators: 1: place such as 1st, 2: number of points. */
-				esc_html( sprintf( _n( 'Your %1$s · %2$d point', 'Your %1$s · %2$d points', self::puntos_de( $puesto ), 'photo-challenges' ), self::ordinal( $puesto ), self::puntos_de( $puesto ) ) ),
-				esc_html__( 'Remove vote', 'photo-challenges' )
+				esc_html( sprintf( _n( 'Your %1$s · %2$d point', 'Your %1$s · %2$d points', self::puntos_de( $puesto ), 'foncholuis-art-challenge-manager' ), self::ordinal( $puesto ), self::puntos_de( $puesto ) ) ),
+				esc_html__( 'Remove vote', 'foncholuis-art-challenge-manager' )
 			);
 		}
 
@@ -373,9 +373,9 @@ class Concursos_Votos {
 				esc_attr(
 					$usado
 						/* translators: %s: place such as 1st. */
-						? sprintf( __( 'Move your %s to this photo', 'photo-challenges' ), self::ordinal( $p ) )
+						? sprintf( __( 'Move your %s to this photo', 'foncholuis-art-challenge-manager' ), self::ordinal( $p ) )
 						/* translators: 1: place such as 1st, 2: number of points. */
-						: sprintf( _n( 'Give this photo your %1$s (%2$d point)', 'Give this photo your %1$s (%2$d points)', self::puntos_de( $p ), 'photo-challenges' ), self::ordinal( $p ), self::puntos_de( $p ) )
+						: sprintf( _n( 'Give this photo your %1$s (%2$d point)', 'Give this photo your %1$s (%2$d points)', self::puntos_de( $p ), 'foncholuis-art-challenge-manager' ), self::ordinal( $p ), self::puntos_de( $p ) )
 				),
 				esc_html( self::ordinal( $p ) )
 			);
@@ -385,7 +385,7 @@ class Concursos_Votos {
 			'<form method="post" action="%1$s" class="concursos-voto-form concursos-puestos">%2$s<input type="hidden" name="op" value="votar"><span class="concursos-puestos__texto">%3$s</span>%4$s</form>',
 			esc_url( admin_url( 'admin-post.php' ) ),
 			$campos, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
-			esc_html__( 'Vote:', 'photo-challenges' ),
+			esc_html__( 'Vote:', 'foncholuis-art-challenge-manager' ),
 			$botones // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
 		);
 	}
@@ -401,7 +401,7 @@ class Concursos_Votos {
 	 */
 	public static function boton( $reto_id, $entrada_id, $votada, $puede ) {
 		if ( ! $votada && ! $puede ) {
-			return '<button type="button" class="concursos-voto" disabled>' . esc_html__( 'No votes left', 'photo-challenges' ) . '</button>';
+			return '<button type="button" class="concursos-voto" disabled>' . esc_html__( 'No votes left', 'foncholuis-art-challenge-manager' ) . '</button>';
 		}
 
 		return sprintf(
@@ -413,7 +413,7 @@ class Concursos_Votos {
 			(int) $entrada_id,
 			$votada ? 'quitar' : 'votar',
 			$votada ? ' concursos-voto--hecho' : '',
-			$votada ? esc_html__( 'Remove vote', 'photo-challenges' ) : esc_html__( 'Vote', 'photo-challenges' )
+			$votada ? esc_html__( 'Remove vote', 'foncholuis-art-challenge-manager' ) : esc_html__( 'Vote', 'foncholuis-art-challenge-manager' )
 		);
 	}
 

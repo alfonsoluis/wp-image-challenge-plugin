@@ -1,4 +1,4 @@
-=== Photo Challenges ===
+=== Foncholuis Art Challenge Manager ===
 Contributors: foncholuis
 Tags: contest, photo contest, voting, gallery, challenges
 Requires at least: 7.1
@@ -12,7 +12,7 @@ Run photo, drawing and design challenges with participant registration, photo su
 
 == Description ==
 
-Photo Challenges lets associations, schools and clubs run art challenges on their own WordPress site, with no external service.
+Foncholuis Art Challenge Manager lets associations, schools and clubs run art challenges on their own WordPress site, with no external service.
 
 Create a challenge, open registration, approve participants, collect their photos, let people vote and publish the results.
 
@@ -42,7 +42,7 @@ Create a challenge, open registration, approve participants, collect their photo
 * Enlarged photos with their description, author and challenge.
 * Each challenge can use your theme colors or an editorial style, one of 6 accent colors and 3 text sizes. Typography always comes from your theme.
 * The public pages use their own isolated design system, so your theme's styles do not break them.
-* Available in English and Spanish.
+* Ready for translation through translate.wordpress.org.
 
 = Privacy =
 
@@ -50,7 +50,7 @@ The plugin stores the names, email addresses, social network names and photos th
 
 == Installation ==
 
-1. In WordPress, go to Plugins > Add New, search for "Photo Challenges", then install and activate it.
+1. In WordPress, go to Plugins > Add New, search for "Foncholuis Art Challenge Manager", then install and activate it.
 2. Create a challenge in Challenges > Create new challenge.
 3. Add the Challenges and Challenge registration pages, which the plugin creates for you, to your site menu.
 

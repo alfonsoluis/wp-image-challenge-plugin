@@ -7,4 +7,4 @@ node_modules/
 # Herramientas locales: no forman parte del plugin.
 /.agents/
 /skills-lock.json
-/photo-challenges.zip
+/foncholuis-art-challenge-manager.zip

@@ -1,4 +1,4 @@
-<h1 align="center">🏆 Photo Challenges</h1>
+<h1 align="center">🏆 Foncholuis Art Challenge Manager</h1>
 
 <p align="center">
   <strong>Retos fotográficos y concursos de arte para tu sitio WordPress.</strong><br>
@@ -35,7 +35,7 @@ Pensado para asociaciones de fotografía, escuelas y organizaciones que ya tiene
 | 📣 **Avisos de nuevos retos** | Quien se suscribe recibe un email al publicarse un reto, y puede darse de baja cuando quiera. |
 | 🧬 **Duplicar retos** | Crea una nueva edición en un clic, copiando o no a sus participantes activos. |
 | 🎨 **Diseño por reto** | Dos estilos (los colores del tema o el editorial, de papel cálido y tinta oscura), 6 colores de acento y 3 tamaños de texto. La tipografía siempre es la de tu tema. |
-| 🌍 **Inglés y español** | Traducción completa, válida para cualquier variante regional del español. Las direcciones siguen el idioma del sitio: `/retos/` o `/challenges/`. |
+| 🌍 **Inglés y español** | Traducción completa al español en `languages/`, para aportarla a translate.wordpress.org, que es quien la distribuye (el ZIP del plugin no incluye traducciones). Las direcciones siguen el idioma del sitio: `/retos/` o `/challenges/`. |
 | 🔌 **REST API** | La configuración de cada reto se lee y se cambia en el campo `concursos` de `/wp-json/wp/v2/concurso_reto`, con un usuario que pueda editarlo (por ejemplo, con una contraseña de aplicación). |
 | 🧹 **Desinstalación limpia** | Al borrar el plugin desde WordPress se eliminan sus retos, participantes, fotos, votos y ajustes. |
 
@@ -166,7 +166,7 @@ make reset                  # borra todo
 | phpMyAdmin  | http://localhost:8081          | automático    |
 | Mailpit     | http://localhost:8025          | emails de prueba |
 
-La raíz del repositorio es el plugin y está montada en `wp-content/plugins/photo-challenges`: los cambios se ven al recargar el navegador. En local, ningún email sale de verdad; todos llegan a Mailpit.
+La raíz del repositorio es el plugin y está montada en `wp-content/plugins/foncholuis-art-challenge-manager`: los cambios se ven al recargar el navegador. En local, ningún email sale de verdad; todos llegan a Mailpit.
 
 ## Licencia
 

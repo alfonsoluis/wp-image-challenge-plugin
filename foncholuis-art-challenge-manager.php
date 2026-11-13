@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Photo Challenges
+ * Plugin Name:       Foncholuis Art Challenge Manager
  * Plugin URI:        https://github.com/alfonsoluis/wp-image-challenge-plugin
  * Description:       Photo, drawing, design and other art challenges with participants, submissions, voting and results.
  * Version:           1.0.0
@@ -9,10 +9,10 @@
  * Author:            Alfonso Rodriguez
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       photo-challenges
+ * Text Domain:       foncholuis-art-challenge-manager
  * Domain Path:       /languages
  *
- * @package PhotoChallenges
+ * @package FoncholuisArtChallengeManager
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -40,17 +40,6 @@ require_once CONCURSOS_PATH . 'includes/class-concursos-plantilla.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-portada.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-perfil.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-api.php';
-
-add_action(
-	'init',
-	function () {
-		// Cualquier variante del español (es_MX, es_CO...) usa la traducción incluida.
-		if ( preg_match( '/^es(_|$)/', determine_locale() ) ) {
-			load_textdomain( 'photo-challenges', CONCURSOS_PATH . 'languages/photo-challenges-es_ES.mo' );
-		}
-	},
-	0
-);
 
 Concursos_DB::init();
 Concursos_Post_Types::init();

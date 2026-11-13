@@ -81,7 +81,7 @@ class Concursos_Vista {
 	 */
 	public static function dia_mes( $ts ) {
 		/* translators: short date format with day and month, see https://www.php.net/manual/datetime.format.php */
-		return $ts ? wp_date( _x( 'j M', 'short date', 'photo-challenges' ), (int) $ts ) : '—';
+		return $ts ? wp_date( _x( 'j M', 'short date', 'foncholuis-art-challenge-manager' ), (int) $ts ) : '—';
 	}
 
 	/**
@@ -105,9 +105,9 @@ class Concursos_Vista {
 	 */
 	public static function calendario( $status, array $s, $fechas = true ) {
 		$tramos = array(
-			'envios'     => array( __( 'Submissions', 'photo-challenges' ), self::intervalo( $s['inicio'], $s['fin_envios'] ) ),
-			'votacion'   => array( _x( 'Voting', 'calendar phase', 'photo-challenges' ), self::intervalo( $s['fin_envios'], $s['fin_votacion'] ) ),
-			'finalizado' => array( __( 'Results', 'photo-challenges' ), self::dia_mes( $s['cierre'] ) ),
+			'envios'     => array( __( 'Submissions', 'foncholuis-art-challenge-manager' ), self::intervalo( $s['inicio'], $s['fin_envios'] ) ),
+			'votacion'   => array( _x( 'Voting', 'calendar phase', 'foncholuis-art-challenge-manager' ), self::intervalo( $s['fin_envios'], $s['fin_votacion'] ) ),
+			'finalizado' => array( __( 'Results', 'foncholuis-art-challenge-manager' ), self::dia_mes( $s['cierre'] ) ),
 		);
 		$orden  = array( 'proximo' => 0, 'envios' => 1, 'votacion' => 2, 'evaluacion' => 3, 'finalizado' => 4 );
 		$actual = isset( $orden[ $status ] ) ? $orden[ $status ] : 0;
@@ -121,7 +121,7 @@ class Concursos_Vista {
 				'<li class="pc-calendario__tramo pc-calendario__tramo--%1$s"%2$s><span class="pc-calendario__barra" aria-hidden="true"></span><span class="pc-etiqueta">%3$s</span>%4$s</li>',
 				esc_attr( $estado ),
 				'ahora' === $estado ? ' aria-current="step"' : '',
-				esc_html( 'ahora' === $estado && 'finalizado' !== $clave ? sprintf( /* translators: %s: phase name. */ __( '%s · now', 'photo-challenges' ), $tramo[0] ) : $tramo[0] ),
+				esc_html( 'ahora' === $estado && 'finalizado' !== $clave ? sprintf( /* translators: %s: phase name. */ __( '%s · now', 'foncholuis-art-challenge-manager' ), $tramo[0] ) : $tramo[0] ),
 				$fechas ? '<span class="pc-calendario__fecha">' . esc_html( $tramo[1] ) . '</span>' : ''
 			);
 		}
@@ -139,13 +139,13 @@ class Concursos_Vista {
 	private static function proxima( $status, array $s ) {
 		$etapas = array(
 			/* translators: %s: date. */
-			'proximo'    => array( 'inicio', __( 'until the challenge opens · on %s', 'photo-challenges' ) ),
+			'proximo'    => array( 'inicio', __( 'until the challenge opens · on %s', 'foncholuis-art-challenge-manager' ) ),
 			/* translators: %s: date. */
-			'envios'     => array( 'fin_envios', __( 'to submit your photo · closes on %s', 'photo-challenges' ) ),
+			'envios'     => array( 'fin_envios', __( 'to submit your photo · closes on %s', 'foncholuis-art-challenge-manager' ) ),
 			/* translators: %s: date. */
-			'votacion'   => array( 'fin_votacion', __( 'to vote · voting ends on %s', 'photo-challenges' ) ),
+			'votacion'   => array( 'fin_votacion', __( 'to vote · voting ends on %s', 'foncholuis-art-challenge-manager' ) ),
 			/* translators: %s: date. */
-			'evaluacion' => array( 'cierre', __( 'until the results · published on %s', 'photo-challenges' ) ),
+			'evaluacion' => array( 'cierre', __( 'until the results · published on %s', 'foncholuis-art-challenge-manager' ) ),
 		);
 
 		return isset( $etapas[ $status ] ) ? array( (int) $s[ $etapas[ $status ][0] ], $etapas[ $status ][1] ) : null;
@@ -168,9 +168,9 @@ class Concursos_Vista {
 		$dias  = (int) floor( $falta / DAY_IN_SECONDS );
 		$cifra = $dias >= 1
 			/* translators: %d: number of days. */
-			? sprintf( _n( '%d day', '%d days', $dias, 'photo-challenges' ), $dias )
+			? sprintf( _n( '%d day', '%d days', $dias, 'foncholuis-art-challenge-manager' ), $dias )
 			/* translators: %d: number of hours. */
-			: sprintf( _n( '%d hour', '%d hours', max( 1, (int) floor( $falta / HOUR_IN_SECONDS ) ), 'photo-challenges' ), max( 1, (int) floor( $falta / HOUR_IN_SECONDS ) ) );
+			: sprintf( _n( '%d hour', '%d hours', max( 1, (int) floor( $falta / HOUR_IN_SECONDS ) ), 'foncholuis-art-challenge-manager' ), max( 1, (int) floor( $falta / HOUR_IN_SECONDS ) ) );
 
 		return sprintf(
 			'<div class="pc-cuenta"><p class="pc-cuenta__cifra">%1$s</p><p class="pc-cuenta__texto">%2$s</p></div>',

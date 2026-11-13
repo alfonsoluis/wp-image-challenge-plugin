@@ -32,8 +32,8 @@ class Concursos_Admin {
 	public static function menu() {
 		add_submenu_page(
 			'edit.php?post_type=' . Concursos_Post_Types::RETO,
-			__( 'Challenges dashboard', 'photo-challenges' ),
-			__( 'Dashboard', 'photo-challenges' ),
+			__( 'Challenges dashboard', 'foncholuis-art-challenge-manager' ),
+			__( 'Dashboard', 'foncholuis-art-challenge-manager' ),
 			'edit_posts',
 			self::PANEL,
 			array( __CLASS__, 'render_panel' ),
@@ -75,17 +75,17 @@ class Concursos_Admin {
 		$new_url  = admin_url( 'post-new.php?post_type=' . Concursos_Post_Types::RETO );
 
 		$stats = array(
-			array( __( 'Challenges', 'photo-challenges' ), count( $retos ) ),
-			array( __( 'In progress', 'photo-challenges' ), $en_curso ),
-			array( __( 'Accepting photos', 'photo-challenges' ), $counts['envios'] ),
-			array( __( 'Voting', 'photo-challenges' ), $counts['votacion'] ),
-			array( __( 'Upcoming challenges', 'photo-challenges' ), $counts['proximo'] ),
-			array( __( 'Finished challenges', 'photo-challenges' ), $counts['finalizado'] ),
+			array( __( 'Challenges', 'foncholuis-art-challenge-manager' ), count( $retos ) ),
+			array( __( 'In progress', 'foncholuis-art-challenge-manager' ), $en_curso ),
+			array( __( 'Accepting photos', 'foncholuis-art-challenge-manager' ), $counts['envios'] ),
+			array( __( 'Voting', 'foncholuis-art-challenge-manager' ), $counts['votacion'] ),
+			array( __( 'Upcoming challenges', 'foncholuis-art-challenge-manager' ), $counts['proximo'] ),
+			array( __( 'Finished challenges', 'foncholuis-art-challenge-manager' ), $counts['finalizado'] ),
 		);
 		?>
 		<div class="wrap concursos-panel">
-			<h1 class="wp-heading-inline"><?php esc_html_e( 'Challenges dashboard', 'photo-challenges' ); ?></h1>
-			<a href="<?php echo esc_url( $new_url ); ?>" class="page-title-action"><?php esc_html_e( 'New challenge', 'photo-challenges' ); ?></a>
+			<h1 class="wp-heading-inline"><?php esc_html_e( 'Challenges dashboard', 'foncholuis-art-challenge-manager' ); ?></h1>
+			<a href="<?php echo esc_url( $new_url ); ?>" class="page-title-action"><?php esc_html_e( 'New challenge', 'foncholuis-art-challenge-manager' ); ?></a>
 			<hr class="wp-header-end">
 
 			<div class="concursos-stats">
@@ -99,21 +99,21 @@ class Concursos_Admin {
 
 			<?php if ( ! $retos ) : ?>
 				<div class="concursos-empty">
-					<p><?php esc_html_e( 'There are no challenges yet.', 'photo-challenges' ); ?></p>
-					<a href="<?php echo esc_url( $new_url ); ?>" class="button button-primary button-hero"><?php esc_html_e( 'Create the first challenge', 'photo-challenges' ); ?></a>
+					<p><?php esc_html_e( 'There are no challenges yet.', 'foncholuis-art-challenge-manager' ); ?></p>
+					<a href="<?php echo esc_url( $new_url ); ?>" class="button button-primary button-hero"><?php esc_html_e( 'Create the first challenge', 'foncholuis-art-challenge-manager' ); ?></a>
 				</div>
 			<?php else : ?>
 				<table class="wp-list-table widefat fixed striped">
 					<thead>
 						<tr>
-							<th scope="col" class="column-primary"><?php esc_html_e( 'Challenge', 'photo-challenges' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Publication', 'photo-challenges' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Phase', 'photo-challenges' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Submissions until', 'photo-challenges' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Voting until', 'photo-challenges' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Results', 'photo-challenges' ); ?></th>
-							<th scope="col" title="<?php esc_attr_e( 'Active / registered', 'photo-challenges' ); ?>"><?php esc_html_e( 'Participants', 'photo-challenges' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Photos', 'photo-challenges' ); ?></th>
+							<th scope="col" class="column-primary"><?php esc_html_e( 'Challenge', 'foncholuis-art-challenge-manager' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Publication', 'foncholuis-art-challenge-manager' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Phase', 'foncholuis-art-challenge-manager' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Submissions until', 'foncholuis-art-challenge-manager' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Voting until', 'foncholuis-art-challenge-manager' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Results', 'foncholuis-art-challenge-manager' ); ?></th>
+							<th scope="col" title="<?php esc_attr_e( 'Active / registered', 'foncholuis-art-challenge-manager' ); ?>"><?php esc_html_e( 'Participants', 'foncholuis-art-challenge-manager' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Photos', 'foncholuis-art-challenge-manager' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -121,7 +121,7 @@ class Concursos_Admin {
 							<tr>
 								<td class="column-primary">
 									<strong><a href="<?php echo esc_url( get_edit_post_link( $reto['post']->ID ) ); ?>"><?php echo esc_html( get_the_title( $reto['post'] ) ); ?></a></strong>
-									<div class="row-actions"><a href="<?php echo esc_url( Concursos_Duplicar::url( $reto['post']->ID ) ); ?>"><?php esc_html_e( 'Duplicate', 'photo-challenges' ); ?></a></div>
+									<div class="row-actions"><a href="<?php echo esc_url( Concursos_Duplicar::url( $reto['post']->ID ) ); ?>"><?php esc_html_e( 'Duplicate', 'foncholuis-art-challenge-manager' ); ?></a></div>
 								</td>
 								<td><?php self::publicacion_badge( $reto['post']->post_status ); ?></td>
 								<td>
@@ -165,9 +165,9 @@ class Concursos_Admin {
 		$date = $columns['date'] ?? null;
 		unset( $columns['date'] );
 
-		$columns['concursos_publicacion'] = __( 'Publication', 'photo-challenges' );
-		$columns['concursos_estado']     = __( 'Phase', 'photo-challenges' );
-		$columns['concursos_fin_envios'] = __( 'Submissions until', 'photo-challenges' );
+		$columns['concursos_publicacion'] = __( 'Publication', 'foncholuis-art-challenge-manager' );
+		$columns['concursos_estado']     = __( 'Phase', 'foncholuis-art-challenge-manager' );
+		$columns['concursos_fin_envios'] = __( 'Submissions until', 'foncholuis-art-challenge-manager' );
 		if ( $date ) {
 			$columns['date'] = $date;
 		}
@@ -208,13 +208,13 @@ class Concursos_Admin {
 	 */
 	private static function publicacion_badge( $status ) {
 		$labels = array(
-			'publish'                       => __( 'Published', 'photo-challenges' ),
-			'draft'                         => __( 'Draft', 'photo-challenges' ),
-			'auto-draft'                    => __( 'Draft', 'photo-challenges' ),
-			'future'                        => __( 'Scheduled', 'photo-challenges' ),
-			'pending'                       => __( 'Pending', 'photo-challenges' ),
-			'private'                       => __( 'Private', 'photo-challenges' ),
-			Concursos_Post_Types::ARCHIVADO => __( 'Archived', 'photo-challenges' ),
+			'publish'                       => __( 'Published', 'foncholuis-art-challenge-manager' ),
+			'draft'                         => __( 'Draft', 'foncholuis-art-challenge-manager' ),
+			'auto-draft'                    => __( 'Draft', 'foncholuis-art-challenge-manager' ),
+			'future'                        => __( 'Scheduled', 'foncholuis-art-challenge-manager' ),
+			'pending'                       => __( 'Pending', 'foncholuis-art-challenge-manager' ),
+			'private'                       => __( 'Private', 'foncholuis-art-challenge-manager' ),
+			Concursos_Post_Types::ARCHIVADO => __( 'Archived', 'foncholuis-art-challenge-manager' ),
 		);
 		printf(
 			'<span class="concursos-badge concursos-badge--pub-%s">%s</span>',

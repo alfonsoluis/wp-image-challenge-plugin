@@ -26,8 +26,8 @@ class Concursos_Diseno {
 	 */
 	public static function estilos() {
 		return array(
-			self::TEMA      => __( 'Site theme: your theme colors', 'photo-challenges' ),
-			self::EDITORIAL => __( 'Editorial: warm paper background and dark ink', 'photo-challenges' ),
+			self::TEMA      => __( 'Site theme: your theme colors', 'foncholuis-art-challenge-manager' ),
+			self::EDITORIAL => __( 'Editorial: warm paper background and dark ink', 'foncholuis-art-challenge-manager' ),
 		);
 	}
 
@@ -41,31 +41,31 @@ class Concursos_Diseno {
 	public static function acentos() {
 		return array(
 			''          => array(
-				'nombre' => __( 'Theme color', 'photo-challenges' ),
+				'nombre' => __( 'Theme color', 'foncholuis-art-challenge-manager' ),
 				'color'  => '',
 			),
 			'teja'      => array(
-				'nombre' => __( 'Terracotta', 'photo-challenges' ),
+				'nombre' => __( 'Terracotta', 'foncholuis-art-challenge-manager' ),
 				'color'  => '#C2410C',
 			),
 			'azul'      => array(
-				'nombre' => __( 'Blue', 'photo-challenges' ),
+				'nombre' => __( 'Blue', 'foncholuis-art-challenge-manager' ),
 				'color'  => '#1D4ED8',
 			),
 			'verde'     => array(
-				'nombre' => __( 'Green', 'photo-challenges' ),
+				'nombre' => __( 'Green', 'foncholuis-art-challenge-manager' ),
 				'color'  => '#047857',
 			),
 			'violeta'   => array(
-				'nombre' => __( 'Violet', 'photo-challenges' ),
+				'nombre' => __( 'Violet', 'foncholuis-art-challenge-manager' ),
 				'color'  => '#6D28D9',
 			),
 			'frambuesa' => array(
-				'nombre' => __( 'Raspberry', 'photo-challenges' ),
+				'nombre' => __( 'Raspberry', 'foncholuis-art-challenge-manager' ),
 				'color'  => '#BE185D',
 			),
 			'tinta'     => array(
-				'nombre' => __( 'Ink', 'photo-challenges' ),
+				'nombre' => __( 'Ink', 'foncholuis-art-challenge-manager' ),
 				'color'  => '#17161A',
 			),
 		);
@@ -104,15 +104,15 @@ class Concursos_Diseno {
 	public static function tamanos() {
 		return array(
 			'pequeno'    => array(
-				'nombre' => __( 'Smaller', 'photo-challenges' ),
+				'nombre' => __( 'Smaller', 'foncholuis-art-challenge-manager' ),
 				'escala' => 0.9,
 			),
 			self::NORMAL => array(
-				'nombre' => __( 'Theme default', 'photo-challenges' ),
+				'nombre' => __( 'Theme default', 'foncholuis-art-challenge-manager' ),
 				'escala' => 1,
 			),
 			'grande'     => array(
-				'nombre' => __( 'Larger', 'photo-challenges' ),
+				'nombre' => __( 'Larger', 'foncholuis-art-challenge-manager' ),
 				'escala' => 1.125,
 			),
 		);

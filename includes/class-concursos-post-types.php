@@ -51,22 +51,22 @@ class Concursos_Post_Types {
 		self::register_estado();
 
 		$labels = array(
-			'name'               => __( 'Challenges', 'photo-challenges' ),
-			'singular_name'      => __( 'Challenge', 'photo-challenges' ),
-			'menu_name'          => __( 'Challenges', 'photo-challenges' ),
-			'add_new'            => __( 'New challenge', 'photo-challenges' ),
-			'add_new_item'       => __( 'Create new challenge', 'photo-challenges' ),
-			'edit_item'          => __( 'Edit challenge', 'photo-challenges' ),
-			'new_item'           => __( 'New challenge', 'photo-challenges' ),
-			'view_item'          => __( 'View challenge', 'photo-challenges' ),
-			'search_items'       => __( 'Search challenges', 'photo-challenges' ),
-			'not_found'          => __( 'No challenges.', 'photo-challenges' ),
-			'not_found_in_trash' => __( 'No challenges in the trash.', 'photo-challenges' ),
-			'all_items'          => __( 'All challenges', 'photo-challenges' ),
-			'featured_image'     => __( 'Background image', 'photo-challenges' ),
-			'set_featured_image' => __( 'Choose background image', 'photo-challenges' ),
-			'remove_featured_image' => __( 'Remove background image', 'photo-challenges' ),
-			'use_featured_image' => __( 'Use as background image', 'photo-challenges' ),
+			'name'               => __( 'Challenges', 'foncholuis-art-challenge-manager' ),
+			'singular_name'      => __( 'Challenge', 'foncholuis-art-challenge-manager' ),
+			'menu_name'          => __( 'Challenges', 'foncholuis-art-challenge-manager' ),
+			'add_new'            => __( 'New challenge', 'foncholuis-art-challenge-manager' ),
+			'add_new_item'       => __( 'Create new challenge', 'foncholuis-art-challenge-manager' ),
+			'edit_item'          => __( 'Edit challenge', 'foncholuis-art-challenge-manager' ),
+			'new_item'           => __( 'New challenge', 'foncholuis-art-challenge-manager' ),
+			'view_item'          => __( 'View challenge', 'foncholuis-art-challenge-manager' ),
+			'search_items'       => __( 'Search challenges', 'foncholuis-art-challenge-manager' ),
+			'not_found'          => __( 'No challenges.', 'foncholuis-art-challenge-manager' ),
+			'not_found_in_trash' => __( 'No challenges in the trash.', 'foncholuis-art-challenge-manager' ),
+			'all_items'          => __( 'All challenges', 'foncholuis-art-challenge-manager' ),
+			'featured_image'     => __( 'Background image', 'foncholuis-art-challenge-manager' ),
+			'set_featured_image' => __( 'Choose background image', 'foncholuis-art-challenge-manager' ),
+			'remove_featured_image' => __( 'Remove background image', 'foncholuis-art-challenge-manager' ),
+			'use_featured_image' => __( 'Use as background image', 'foncholuis-art-challenge-manager' ),
 		);
 
 		register_post_type(
@@ -95,14 +95,14 @@ class Concursos_Post_Types {
 		register_post_status(
 			self::ARCHIVADO,
 			array(
-				'label'                     => __( 'Archived', 'photo-challenges' ),
+				'label'                     => __( 'Archived', 'foncholuis-art-challenge-manager' ),
 				'public'                    => false,
 				'protected'                 => true,
 				'exclude_from_search'       => true,
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
 				/* translators: %s: number of archived challenges. */
-				'label_count'               => _n_noop( 'Archived <span class="count">(%s)</span>', 'Archived <span class="count">(%s)</span>', 'photo-challenges' ),
+				'label_count'               => _n_noop( 'Archived <span class="count">(%s)</span>', 'Archived <span class="count">(%s)</span>', 'foncholuis-art-challenge-manager' ),
 			)
 		);
 	}

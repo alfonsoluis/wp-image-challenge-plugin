@@ -42,14 +42,14 @@ class Concursos_Galeria {
 		$autor = get_the_author_meta( 'display_name', $post->post_author );
 		if ( $autor ) {
 			/* translators: %s: name of the user who created the challenge. */
-			$datos[] = sprintf( __( 'By %s', 'photo-challenges' ), $autor );
+			$datos[] = sprintf( __( 'By %s', 'foncholuis-art-challenge-manager' ), $autor );
 		}
 		$datos[] = wp_date( get_option( 'date_format' ), (int) $s['cierre'] );
 
 		$etiquetas = wp_get_post_terms( $post->ID, 'post_tag', array( 'fields' => 'names' ) );
 		if ( $etiquetas && ! is_wp_error( $etiquetas ) ) {
 			/* translators: %s: list of tags. */
-			$datos[] = sprintf( __( 'Tags: %s', 'photo-challenges' ), implode( ', ', $etiquetas ) );
+			$datos[] = sprintf( __( 'Tags: %s', 'foncholuis-art-challenge-manager' ), implode( ', ', $etiquetas ) );
 		}
 
 		return implode( ' · ', $datos );
@@ -100,9 +100,9 @@ class Concursos_Galeria {
 			);
 		};
 
-		return '<nav class="pc-navegacion concursos-navegacion" aria-label="' . esc_attr__( 'Challenge navigation', 'photo-challenges' ) . '">'
-			. ( $anterior ? $enlace( $anterior, 'anterior', 'prev', __( 'Previous challenge', 'photo-challenges' ) ) : '' )
-			. ( $siguiente ? $enlace( $siguiente, 'siguiente', 'next', __( 'Next challenge', 'photo-challenges' ) ) : '' )
+		return '<nav class="pc-navegacion concursos-navegacion" aria-label="' . esc_attr__( 'Challenge navigation', 'foncholuis-art-challenge-manager' ) . '">'
+			. ( $anterior ? $enlace( $anterior, 'anterior', 'prev', __( 'Previous challenge', 'foncholuis-art-challenge-manager' ) ) : '' )
+			. ( $siguiente ? $enlace( $siguiente, 'siguiente', 'next', __( 'Next challenge', 'foncholuis-art-challenge-manager' ) ) : '' )
 			. '</nav>';
 	}
 
@@ -136,15 +136,15 @@ class Concursos_Galeria {
 
 		$inscripcion = in_array( $status, array( 'proximo', 'envios' ), true ) ? Concursos_Inscripcion::url( $post->ID ) : '';
 		if ( $inscripcion ) {
-			$html .= '<p class="pc-acciones"><a class="pc-boton pc-boton--principal pc-boton--ancho concursos-boton" href="' . esc_url( $inscripcion ) . '">' . Concursos_Vista::icono( 'subir' ) . esc_html__( 'Join this challenge', 'photo-challenges' ) . '</a></p>';
+			$html .= '<p class="pc-acciones"><a class="pc-boton pc-boton--principal pc-boton--ancho concursos-boton" href="' . esc_url( $inscripcion ) . '">' . Concursos_Vista::icono( 'subir' ) . esc_html__( 'Join this challenge', 'foncholuis-art-challenge-manager' ) . '</a></p>';
 		}
 		if ( 'envios' === $status ) {
-			$html .= '<p class="pc-nota"><strong>' . esc_html__( 'Already registered?', 'photo-challenges' ) . '</strong> ' . esc_html__( 'Use the link we emailed you to upload or delete your photos.', 'photo-challenges' ) . '</p>';
+			$html .= '<p class="pc-nota"><strong>' . esc_html__( 'Already registered?', 'foncholuis-art-challenge-manager' ) . '</strong> ' . esc_html__( 'Use the link we emailed you to upload or delete your photos.', 'foncholuis-art-challenge-manager' ) . '</p>';
 		}
 		if ( 'votacion' === $status ) {
-			$html .= '<p class="pc-acciones">' . Concursos_Vista::boton( '#concursos-votacion', __( 'See the photos and vote', 'photo-challenges' ), 'principal', 'flecha', 'pc-boton--ancho' ) . '</p>';
+			$html .= '<p class="pc-acciones">' . Concursos_Vista::boton( '#concursos-votacion', __( 'See the photos and vote', 'foncholuis-art-challenge-manager' ), 'principal', 'flecha', 'pc-boton--ancho' ) . '</p>';
 			if ( Concursos_Votos::por_puestos( $s ) ) {
-				$html .= '<p class="pc-nota">' . esc_html( 3 === (int) $s['votos_por_votante'] ? __( 'Choose your 1st, 2nd and 3rd: they are worth 3, 2 and 1 points.', 'photo-challenges' ) : __( 'Choose your 1st and 2nd: they are worth 3 and 2 points.', 'photo-challenges' ) ) . '</p>';
+				$html .= '<p class="pc-nota">' . esc_html( 3 === (int) $s['votos_por_votante'] ? __( 'Choose your 1st, 2nd and 3rd: they are worth 3, 2 and 1 points.', 'foncholuis-art-challenge-manager' ) : __( 'Choose your 1st and 2nd: they are worth 3 and 2 points.', 'foncholuis-art-challenge-manager' ) ) . '</p>';
 			}
 		}
 		if ( 'finalizado' === $status ) {
@@ -155,14 +155,14 @@ class Concursos_Galeria {
 					'<a class="pc-siguiente" href="%1$s">%2$s<span class="pc-siguiente__texto"><span class="pc-texto-suave">%3$s</span><strong>%4$s</strong></span>%5$s</a>',
 					esc_url( get_permalink( $siguiente['post'] ) ),
 					$imagen ? '<img src="' . esc_url( $imagen['url'] ) . '" alt="" width="48" height="48">' : '',
-					esc_html( 'envios' === $siguiente['status'] ? __( 'Next open challenge', 'photo-challenges' ) : __( 'Next challenge', 'photo-challenges' ) ),
+					esc_html( 'envios' === $siguiente['status'] ? __( 'Next open challenge', 'foncholuis-art-challenge-manager' ) : __( 'Next challenge', 'foncholuis-art-challenge-manager' ) ),
 					esc_html( get_the_title( $siguiente['post'] ) . ' · ' . Concursos_Galeria::frase_estado( $siguiente['status'], $siguiente['settings'] ) ),
 					Concursos_Vista::icono( 'flecha' )
 				);
 			}
 		}
 
-		return '<aside class="pc-lateral" aria-label="' . esc_attr__( 'Challenge schedule', 'photo-challenges' ) . '">' . $html . '</aside>';
+		return '<aside class="pc-lateral" aria-label="' . esc_attr__( 'Challenge schedule', 'foncholuis-art-challenge-manager' ) . '">' . $html . '</aside>';
 	}
 
 	/**
@@ -192,7 +192,7 @@ class Concursos_Galeria {
 		$datos = array(
 			Concursos_Vista::intervalo( $s['inicio'], $s['cierre'] ) . ' ' . wp_date( 'Y', (int) $s['cierre'] ),
 			/* translators: %d: number of photos. */
-			sprintf( _n( '%d photo submitted', '%d photos submitted', $fotos, 'photo-challenges' ), $fotos ),
+			sprintf( _n( '%d photo submitted', '%d photos submitted', $fotos, 'foncholuis-art-challenge-manager' ), $fotos ),
 		);
 		if ( 'finalizado' === $status ) {
 			$datos = array( self::ficha( $post, $s ), $datos[1] );
@@ -206,8 +206,8 @@ class Concursos_Galeria {
 		ob_start();
 		?>
 		<div class="pc-contenedor concursos-reto">
-			<nav class="pc-ruta" aria-label="<?php esc_attr_e( 'Breadcrumb', 'photo-challenges' ); ?>">
-				<a href="<?php echo esc_url( $portada ); ?>"><?php esc_html_e( 'Challenges', 'photo-challenges' ); ?></a>
+			<nav class="pc-ruta" aria-label="<?php esc_attr_e( 'Breadcrumb', 'foncholuis-art-challenge-manager' ); ?>">
+				<a href="<?php echo esc_url( $portada ); ?>"><?php esc_html_e( 'Challenges', 'foncholuis-art-challenge-manager' ); ?></a>
 				<span aria-hidden="true">/</span>
 				<span aria-current="page"><?php echo esc_html( get_the_title( $post ) ); ?></span>
 			</nav>
@@ -228,7 +228,7 @@ class Concursos_Galeria {
 					</div>
 					<?php if ( $reglas ) : ?>
 						<section class="pc-bloque" id="reglas" aria-labelledby="pc-reglas">
-							<h2 class="pc-bloque__titulo" id="pc-reglas"><?php esc_html_e( 'Rules', 'photo-challenges' ); ?></h2>
+							<h2 class="pc-bloque__titulo" id="pc-reglas"><?php esc_html_e( 'Rules', 'foncholuis-art-challenge-manager' ); ?></h2>
 							<ul class="pc-reglas">
 								<?php foreach ( $reglas as $regla ) : ?>
 									<li><?php echo esc_html( $regla ); ?></li>
@@ -238,7 +238,7 @@ class Concursos_Galeria {
 					<?php endif; ?>
 					<?php if ( $premios ) : ?>
 						<section class="pc-bloque"<?php echo $reglas ? '' : ' id="reglas"'; ?> aria-labelledby="pc-premios">
-							<h2 class="pc-bloque__titulo" id="pc-premios"><?php esc_html_e( 'Prizes', 'photo-challenges' ); ?></h2>
+							<h2 class="pc-bloque__titulo" id="pc-premios"><?php esc_html_e( 'Prizes', 'foncholuis-art-challenge-manager' ); ?></h2>
 							<ul class="pc-premios">
 								<?php foreach ( $premios as $lugar => $premio ) : ?>
 									<li class="pc-premio"><span class="pc-premio__lugar"><?php echo esc_html( Concursos_Votos::ordinal( $lugar ) ); ?></span><span><?php echo esc_html( $premio ); ?></span></li>
@@ -297,15 +297,15 @@ class Concursos_Galeria {
 	public static function frase_estado( $status, array $s ) {
 		$frases = array(
 			/* translators: %s: date. */
-			'proximo'    => array( __( 'Starts on %s.', 'photo-challenges' ), 'inicio' ),
+			'proximo'    => array( __( 'Starts on %s.', 'foncholuis-art-challenge-manager' ), 'inicio' ),
 			/* translators: %s: date. */
-			'envios'     => array( __( 'Accepting photos until %s.', 'photo-challenges' ), 'fin_envios' ),
+			'envios'     => array( __( 'Accepting photos until %s.', 'foncholuis-art-challenge-manager' ), 'fin_envios' ),
 			/* translators: %s: date. */
-			'votacion'   => array( __( 'Voting until %s.', 'photo-challenges' ), 'fin_votacion' ),
+			'votacion'   => array( __( 'Voting until %s.', 'foncholuis-art-challenge-manager' ), 'fin_votacion' ),
 			/* translators: %s: date. */
-			'evaluacion' => array( __( 'Voting has ended. Results on %s.', 'photo-challenges' ), 'cierre' ),
+			'evaluacion' => array( __( 'Voting has ended. Results on %s.', 'foncholuis-art-challenge-manager' ), 'cierre' ),
 			/* translators: %s: date. */
-			'finalizado' => array( __( 'Finished on %s.', 'photo-challenges' ), 'cierre' ),
+			'finalizado' => array( __( 'Finished on %s.', 'foncholuis-art-challenge-manager' ), 'cierre' ),
 		);
 
 		return isset( $frases[ $status ] ) ? sprintf( $frases[ $status ][0], Concursos_Reto::format_dia( $s[ $frases[ $status ][1] ] ) ) : '';
@@ -326,7 +326,7 @@ class Concursos_Galeria {
 				'<li class="pc-foto"><figure>%1$s<figcaption class="pc-foto__pie"><span class="pc-foto__titulo">%2$s</span></figcaption>%3$s</figure></li>',
 				Concursos_Entrada::miniatura( $entrada, 'large', true ),
 				/* translators: %s: photo number, such as 01. */
-				esc_html( sprintf( __( 'No. %s', 'photo-challenges' ), str_pad( (string) $numero, 2, '0', STR_PAD_LEFT ) ) ),
+				esc_html( sprintf( __( 'No. %s', 'foncholuis-art-challenge-manager' ), str_pad( (string) $numero, 2, '0', STR_PAD_LEFT ) ) ),
 				$extra ? '<div class="pc-foto__voto">' . $extra . '</div>' : ''
 			);
 		}
@@ -354,12 +354,12 @@ class Concursos_Galeria {
 		$nota = '';
 		if ( 'envios' === $status && Concursos_Reto::photos_visible( $s ) ) {
 			/* translators: %s: date. */
-			$nota = sprintf( __( 'Shown as they are submitted · voting starts on %s', 'photo-challenges' ), Concursos_Reto::format_dia( $s['fin_envios'] ) );
+			$nota = sprintf( __( 'Shown as they are submitted · voting starts on %s', 'foncholuis-art-challenge-manager' ), Concursos_Reto::format_dia( $s['fin_envios'] ) );
 		} elseif ( $entradas ) {
 			/* translators: %d: number of photos. */
-			$nota = sprintf( _n( '%d photo', '%d photos', count( $entradas ), 'photo-challenges' ), count( $entradas ) );
+			$nota = sprintf( _n( '%d photo', '%d photos', count( $entradas ), 'foncholuis-art-challenge-manager' ), count( $entradas ) );
 		}
-		echo Concursos_Vista::cabecera_seccion( 'pc-fotos', 'votacion' === $status ? __( 'Photos in the vote', 'photo-challenges' ) : __( 'Submitted entries', 'photo-challenges' ), esc_html( $nota ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+		echo Concursos_Vista::cabecera_seccion( 'pc-fotos', 'votacion' === $status ? __( 'Photos in the vote', 'foncholuis-art-challenge-manager' ) : __( 'Submitted entries', 'foncholuis-art-challenge-manager' ), esc_html( $nota ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
 
 		if ( ! Concursos_Reto::photos_visible( $s ) ) {
 			if ( 'envios' === $status ) {
@@ -368,21 +368,21 @@ class Concursos_Galeria {
 					esc_html(
 						sprintf(
 							/* translators: 1: number of photos, 2: submission end date. */
-							_n( '%1$d photo has been submitted so far. All of them will be shown when submissions end, on %2$s.', '%1$d photos have been submitted so far. All of them will be shown when submissions end, on %2$s.', count( $entradas ), 'photo-challenges' ),
+							_n( '%1$d photo has been submitted so far. All of them will be shown when submissions end, on %2$s.', '%1$d photos have been submitted so far. All of them will be shown when submissions end, on %2$s.', count( $entradas ), 'foncholuis-art-challenge-manager' ),
 							count( $entradas ),
 							Concursos_Reto::format_dia( $s['fin_envios'] )
 						)
 					)
 				);
 			} else {
-				echo '<p class="pc-vacio">' . esc_html__( 'Photos will be shown when the challenge starts.', 'photo-challenges' ) . '</p>';
+				echo '<p class="pc-vacio">' . esc_html__( 'Photos will be shown when the challenge starts.', 'foncholuis-art-challenge-manager' ) . '</p>';
 			}
 
 			return;
 		}
 
 		if ( ! $entradas ) {
-			echo '<p class="pc-vacio">' . esc_html__( 'There are no photos yet.', 'photo-challenges' ) . '</p>';
+			echo '<p class="pc-vacio">' . esc_html__( 'There are no photos yet.', 'foncholuis-art-challenge-manager' ) . '</p>';
 
 			return;
 		}
@@ -395,7 +395,7 @@ class Concursos_Galeria {
 		$anonima = Concursos_Reto::oculta_autoria( $s, $status );
 
 		if ( $anonima ) {
-			echo '<p class="pc-aviso-suave">' . esc_html__( 'Anonymous voting: the title and author of each photo will be shown when voting ends.', 'photo-challenges' ) . '</p>';
+			echo '<p class="pc-aviso-suave">' . esc_html__( 'Anonymous voting: the title and author of each photo will be shown when voting ends.', 'foncholuis-art-challenge-manager' ) . '</p>';
 		}
 
 		echo '<ul class="pc-mosaico concursos-galeria__rejilla">';
@@ -421,10 +421,10 @@ class Concursos_Galeria {
 		$votos   = Concursos_Votos::de_fotos( $reto_id, $entradas );
 		$ranking = Concursos_Votos::rank( $votos, (int) $s['lugares'] );
 
-		echo Concursos_Vista::cabecera_seccion( 'pc-ganadores', 1 === (int) $s['lugares'] ? __( 'Winner', 'photo-challenges' ) : __( 'Winners', 'photo-challenges' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+		echo Concursos_Vista::cabecera_seccion( 'pc-ganadores', 1 === (int) $s['lugares'] ? __( 'Winner', 'foncholuis-art-challenge-manager' ) : __( 'Winners', 'foncholuis-art-challenge-manager' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
 
 		if ( ! $ranking['puestos'] ) {
-			echo '<p class="pc-vacio">' . esc_html__( 'This challenge ended without votes.', 'photo-challenges' ) . '</p>';
+			echo '<p class="pc-vacio">' . esc_html__( 'This challenge ended without votes.', 'foncholuis-art-challenge-manager' ) . '</p>';
 		} else {
 			$primero = array_shift( $ranking['puestos'] );
 			echo '<div class="pc-podio">';
@@ -462,7 +462,7 @@ class Concursos_Galeria {
 		}
 
 		if ( $ranking['resto'] ) {
-			echo '<div class="pc-resto concursos-resto"><h3 class="pc-resto__titulo">' . esc_html__( 'Other participants', 'photo-challenges' ) . '</h3>';
+			echo '<div class="pc-resto concursos-resto"><h3 class="pc-resto__titulo">' . esc_html__( 'Other participants', 'foncholuis-art-challenge-manager' ) . '</h3>';
 			echo '<ul class="pc-mosaico concursos-galeria__rejilla">';
 			foreach ( $ranking['resto'] as $id ) {
 				echo self::tarjeta( $por_id[ $id ], '<span class="pc-etiqueta concursos-votos">' . esc_html( Concursos_Votos::etiqueta( $votos[ $id ], $s ) ) . '</span>' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
@@ -496,7 +496,7 @@ class Concursos_Galeria {
 			$autor ? Concursos_Perfil::enlace( $autor ) : '',
 			esc_html( Concursos_Votos::etiqueta( $puesto['votos'], $s ) ),
 			/* translators: %s: prize. */
-			'' !== $premio ? '<span class="pc-ganadora__premio concursos-premio">' . esc_html( sprintf( __( 'Prize: %s', 'photo-challenges' ), $premio ) ) . '</span>' : ''
+			'' !== $premio ? '<span class="pc-ganadora__premio concursos-premio">' . esc_html( sprintf( __( 'Prize: %s', 'foncholuis-art-challenge-manager' ), $premio ) ) . '</span>' : ''
 		);
 	}
 
@@ -524,20 +524,20 @@ class Concursos_Galeria {
 		}
 
 		$participantes = Concursos_Votos::votantes_de_reto( $reto_id );
-		$escala        = Concursos_Votos::por_puestos( $s ) ? __( '1st = 3 pts, 2nd = 2 pts, 3rd = 1 pt', 'photo-challenges' ) : '';
+		$escala        = Concursos_Votos::por_puestos( $s ) ? __( '1st = 3 pts, 2nd = 2 pts, 3rd = 1 pt', 'foncholuis-art-challenge-manager' ) : '';
 		/* translators: %d: number of voters. */
-		$dato = sprintf( _n( '%d voter took part', '%d voters took part', $participantes, 'photo-challenges' ), $participantes ) . ( $escala ? ' · ' . $escala : '' );
+		$dato = sprintf( _n( '%d voter took part', '%d voters took part', $participantes, 'foncholuis-art-challenge-manager' ), $participantes ) . ( $escala ? ' · ' . $escala : '' );
 		?>
 		<section class="pc-seccion concursos-resumen" aria-labelledby="pc-resumen">
-			<?php echo Concursos_Vista::cabecera_seccion( 'pc-resumen', __( 'Challenge ranking', 'photo-challenges' ), esc_html( $dato ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+			<?php echo Concursos_Vista::cabecera_seccion( 'pc-resumen', __( 'Challenge ranking', 'foncholuis-art-challenge-manager' ), esc_html( $dato ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
 			<div class="pc-tabla-marco">
 				<table class="pc-tabla">
 					<thead>
 						<tr>
-							<th scope="col" class="pc-tabla__puesto"><?php esc_html_e( 'Place', 'photo-challenges' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Photo', 'photo-challenges' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Participant', 'photo-challenges' ); ?></th>
-							<th scope="col" class="pc-tabla__num concursos-tabla__num"><?php echo Concursos_Votos::por_puestos( $s ) ? esc_html__( 'Points', 'photo-challenges' ) : esc_html__( 'Votes', 'photo-challenges' ); ?></th>
+							<th scope="col" class="pc-tabla__puesto"><?php esc_html_e( 'Place', 'foncholuis-art-challenge-manager' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Photo', 'foncholuis-art-challenge-manager' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Participant', 'foncholuis-art-challenge-manager' ); ?></th>
+							<th scope="col" class="pc-tabla__num concursos-tabla__num"><?php echo Concursos_Votos::por_puestos( $s ) ? esc_html__( 'Points', 'foncholuis-art-challenge-manager' ) : esc_html__( 'Votes', 'foncholuis-art-challenge-manager' ); ?></th>
 							<th scope="col" class="pc-tabla__num concursos-tabla__num">%</th>
 						</tr>
 					</thead>
@@ -552,7 +552,7 @@ class Concursos_Galeria {
 								<td class="pc-tabla__puesto">
 									<?php echo esc_html( $fila[1] ); ?>
 									<?php if ( $fila[2] ) : ?>
-										<span class="pc-etiqueta"><?php esc_html_e( '(tie)', 'photo-challenges' ); ?></span>
+										<span class="pc-etiqueta"><?php esc_html_e( '(tie)', 'foncholuis-art-challenge-manager' ); ?></span>
 									<?php endif; ?>
 								</td>
 								<td>
@@ -570,7 +570,7 @@ class Concursos_Galeria {
 					<?php if ( $total ) : ?>
 						<tfoot>
 							<tr>
-								<th scope="row" colspan="3"><?php esc_html_e( 'Total', 'photo-challenges' ); ?></th>
+								<th scope="row" colspan="3"><?php esc_html_e( 'Total', 'foncholuis-art-challenge-manager' ); ?></th>
 								<td class="pc-tabla__num concursos-tabla__num"><?php echo esc_html( number_format_i18n( $total ) ); ?></td>
 								<td class="pc-tabla__num concursos-tabla__num"><?php echo esc_html( number_format_i18n( 100, 1 ) ); ?></td>
 							</tr>
