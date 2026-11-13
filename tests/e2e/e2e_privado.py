@@ -82,7 +82,7 @@ v=session(); c,_=reg(v,ok); check("votante en la lista: recibe enlace",c=="revis
 l=re.search(r"http://localhost:8080/\?\S+",json.loads(fetch(urllib.request.build_opener(),f"{MAILPIT}/api/v1/message/{correos(ok)[0]['ID']}")[2])["Text"]).group(0)
 h=fetch(v,l)[2]; check("en la lista: ve botones","concursos-voto-form" in h)
 nonce=re.search(r'name="action" value="concursos_votar"><input type="hidden" name="_wpnonce" value="([^"]+)"',h).group(1)
-fotos=re.findall(r'name="entrada" value="(\d+)"',h)
+fotos=re.findall(r'name="elegir" value="(\d+):1"',h)
 def votar():
     _,f,_x=fetch(v,BASE+"/wp-admin/admin-post.php",urllib.parse.urlencode({"action":"concursos_votar","_wpnonce":nonce,"reto":V,"entrada":fotos[0],"op":"votar","puesto":1}).encode())
     return urllib.parse.parse_qs(urllib.parse.urlparse(f).query).get("concursos_voto",["?"])[0]

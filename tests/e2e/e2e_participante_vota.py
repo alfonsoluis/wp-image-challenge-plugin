@@ -80,10 +80,13 @@ check("en el reto ve los botones de votar", "Te quedan 3 de 3" in h and "concurs
 check("en otro navegador no", "concursos-voto-form" not in fetch(session(), RETO_URL)[1])
 
 # No puede votar su propia foto: sin botones en ella, y el voto directo se rechaza.
-check("en sus fotos pone «Tu foto» y no hay botones", h.count("concursos-propia") == len(propias) and all(f'name="entrada" value="{e}"' not in h for e in propias), str(propias))
+check("en sus fotos pone «Tu foto» y no hay botones", h.count("concursos-propia") == len(propias) and all(f'value="{e}:1"' not in h for e in propias), str(propias))
 nonce = re.search(r'value="concursos_votar"><input type="hidden" name="_wpnonce" value="([^"]+)"', h).group(1)
 check("votar su propia foto se rechaza", votar(op, nonce, propias[0], 1) == "propia")
 check("votar otra foto sí", votar(op, nonce, otra, 1) == "votado")
+data = urllib.parse.urlencode({"action": "concursos_votar", "_wpnonce": nonce, "reto": reto, "op": "podio", "puestos[1]": otra, "puestos[2]": propias[0]}).encode()
+r = op.open(urllib.request.Request(BASE + "/wp-admin/admin-post.php", data=data))
+check("en el podio tampoco puede ir su foto", urllib.parse.parse_qs(urllib.parse.urlparse(r.geturl()).query).get("concursos_voto", ["?"])[0] == "propia")
 
 # Abrir otra vez el enlace no duplica el votante.
 fetch(session(), link)

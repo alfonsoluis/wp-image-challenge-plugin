@@ -272,11 +272,11 @@ class Concursos_Votos {
 			Concursos_Votantes::volver( $reto, 'privado' );
 		}
 
-		$valida = Concursos_Entrada::POST_TYPE === get_post_type( $entrada )
-			&& 'publish' === get_post_status( $entrada )
-			&& (int) get_post_meta( $entrada, Concursos_Entrada::META . 'reto', true ) === $reto
-			&& Concursos_Entrada::se_ve( get_post( $entrada ) );
-		if ( ! $valida ) {
+		if ( isset( $_POST['op'] ) && 'podio' === $_POST['op'] ) {
+			self::guardar_podio( $votante, $reto, $s );
+		}
+
+		if ( ! self::votable( $entrada, $reto ) ) {
 			Concursos_Votantes::volver( $reto, 'error' );
 		}
 		if ( self::es_propia( $entrada, $votante ) ) {
@@ -346,6 +346,98 @@ class Concursos_Votos {
 	}
 
 	/**
+	 * Si una foto se puede votar en un reto: publicada, de ese reto y de un participante activo.
+	 *
+	 * @param int $entrada Foto.
+	 * @param int $reto    Reto.
+	 * @return bool
+	 */
+	private static function votable( $entrada, $reto ) {
+		return Concursos_Entrada::POST_TYPE === get_post_type( $entrada )
+			&& 'publish' === get_post_status( $entrada )
+			&& (int) get_post_meta( $entrada, Concursos_Entrada::META . 'reto', true ) === (int) $reto
+			&& Concursos_Entrada::se_ve( get_post( $entrada ) );
+	}
+
+	/**
+	 * Guarda de una vez los puestos de un votante («Confirmar votos») y vuelve al reto.
+	 *
+	 * Llegan como puestos[1..N] = foto. Sin JavaScript, cada botón envía además
+	 * elegir = "foto:puesto", que se aplica igual que en la página: el puesto pasa a
+	 * esa foto, que pierde el que tuviera, o se quita si ya lo tenía.
+	 *
+	 * @param object $votante Votante.
+	 * @param int    $reto    Reto.
+	 * @param array  $s       Configuración.
+	 */
+	private static function guardar_podio( $votante, $reto, array $s ) {
+		global $wpdb;
+
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- el nonce se comprueba en handle().
+		if ( ! self::por_puestos( $s ) ) {
+			Concursos_Votantes::volver( $reto, 'error' );
+		}
+		$total   = (int) $s['votos_por_votante'];
+		$enviado = isset( $_POST['puestos'] ) ? array_map( 'absint', (array) wp_unslash( $_POST['puestos'] ) ) : array();
+		$puestos = array();
+		for ( $p = 1; $p <= $total; $p++ ) {
+			if ( ! empty( $enviado[ $p ] ) ) {
+				$puestos[ $p ] = $enviado[ $p ];
+			}
+		}
+
+		$elegir = isset( $_POST['elegir'] ) ? sanitize_text_field( wp_unslash( $_POST['elegir'] ) ) : '';
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
+		if ( preg_match( '/^(\d+):(\d)$/', $elegir, $m ) && (int) $m[2] >= 1 && (int) $m[2] <= $total ) {
+			$foto   = (int) $m[1];
+			$puesto = (int) $m[2];
+			if ( isset( $puestos[ $puesto ] ) && $puestos[ $puesto ] === $foto ) {
+				unset( $puestos[ $puesto ] );
+			} else {
+				$puestos            = array_diff( $puestos, array( $foto ) );
+				$puestos[ $puesto ] = $foto;
+			}
+		}
+
+		if ( count( $puestos ) !== count( array_unique( $puestos ) ) ) {
+			Concursos_Votantes::volver( $reto, 'error' );
+		}
+		foreach ( $puestos as $foto ) {
+			if ( ! self::votable( $foto, $reto ) ) {
+				Concursos_Votantes::volver( $reto, 'error' );
+			}
+			if ( self::es_propia( $foto, $votante ) ) {
+				Concursos_Votantes::volver( $reto, 'propia' );
+			}
+		}
+
+		$t = Concursos_DB::votos();
+		$wpdb->delete(
+			$t,
+			array(
+				'votante_id' => (int) $votante->id,
+				'reto_id'    => (int) $reto,
+			),
+			array( '%d', '%d' )
+		);
+		foreach ( $puestos as $puesto => $foto ) {
+			$wpdb->insert(
+				$t,
+				array(
+					'votante_id' => (int) $votante->id,
+					'reto_id'    => (int) $reto,
+					'entrada_id' => (int) $foto,
+					'puesto'     => (int) $puesto,
+					'creado'     => time(),
+				),
+				array( '%d', '%d', '%d', '%d', '%d' )
+			);
+		}
+		Concursos_Stats::limpiar_cache();
+		Concursos_Votantes::volver( $reto, $puestos ? 'podio' : 'quitado' );
+	}
+
+		/**
 	 * Botones de voto de una foto: un solo botón, o uno por puesto.
 	 *
 	 * @param int   $reto_id    Reto.

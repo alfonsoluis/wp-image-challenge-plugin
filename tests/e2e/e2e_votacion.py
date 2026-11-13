@@ -104,7 +104,7 @@ link = re.search(r"http://localhost:8080/\?\S+", texto(confirm[0])).group(0).rep
 st, final, html = fetch(v, link)
 check("confirmar redirige al reto", code(final) == "confirmado" and "reto-de-prueba" in final, final)
 forms = formularios(html)
-check("confirmado ve 9 botones y sus votos", len(forms) == 9 and "Te quedan 3 de 3" in html, str(len(forms)))
+check("confirmado ve el podio con las 9 fotos y sus votos", len(forms) == 1 and html.count('class="pc-puestos" role="group"') == 9 and "Te quedan 3 de 3" in html, str(len(forms)))
 NONCE = forms[0]["_wpnonce"]
 cookie = next(c for c in v.jar if c.name == "concursos_votante")
 check("cookie httponly y sin token en claro", cookie.has_nonstandard_attr("HttpOnly") or cookie.has_nonstandard_attr("httponly"), cookie.value[:12])
@@ -122,7 +122,7 @@ check("voto 2 (2.º)", votar(v, fotos[1], puesto=2) == "votado")
 check("voto 3 (3.º)", votar(v, fotos[2], puesto=3) == "votado")
 check("un 4.º puesto no existe", votar(v, fotos[3], puesto=4) == "error")
 html = fetch(v, RETO_URL)[2]
-check("puestos dados: 3 para quitar y el resto para moverlos", html.count("Quitar voto") == 3 and html.count("concursos-voto--usado") == 18)
+check("puestos dados: 3 marcados en las fotos y en la barra", html.count('aria-pressed="true"') == 3 and html.count("pc-barra-podio__hueco is-vacio") == 0)
 check("quitar voto", votar(v, fotos[0], "quitar") == "quitado" and "Te quedan 1 de 3" in fetch(v, RETO_URL)[2])
 check("votar otra tras quitar", votar(v, fotos[3], puesto=1) == "votado")
 otra = wp("post", "create", "--post_type=concurso_entrada", "--post_status=publish", "--post_title=Otra", "--porcelain")

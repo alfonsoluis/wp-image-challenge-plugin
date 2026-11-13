@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-13T15:47:42+00:00\n"
+"POT-Creation-Date: 2026-11-13T16:53:37+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: foncholuis-art-challenge-manager\n"
@@ -44,9 +44,9 @@ msgid "Dashboard"
 msgstr ""
 
 #: includes/admin/class-concursos-admin.php:78
-#: includes/admin/class-concursos-stats-admin.php:632
+#: includes/admin/class-concursos-stats-admin.php:633
 #: includes/class-concursos-clasificacion.php:116
-#: includes/class-concursos-galeria.php:210
+#: includes/class-concursos-galeria.php:207
 #: includes/class-concursos-perfil.php:262
 #: includes/class-concursos-perfil.php:286
 #: includes/class-concursos-portada.php:40
@@ -85,7 +85,7 @@ msgid "New challenge"
 msgstr ""
 
 #: includes/admin/class-concursos-admin.php:102
-#: includes/admin/class-concursos-stats-admin.php:463
+#: includes/admin/class-concursos-stats-admin.php:464
 msgid "There are no challenges yet."
 msgstr ""
 
@@ -122,7 +122,7 @@ msgid "Voting until"
 msgstr ""
 
 #: includes/admin/class-concursos-admin.php:114
-#: includes/admin/class-concursos-stats-admin.php:785
+#: includes/admin/class-concursos-stats-admin.php:786
 #: includes/class-concursos-vista.php:110
 msgid "Results"
 msgstr ""
@@ -132,7 +132,7 @@ msgid "Active / registered"
 msgstr ""
 
 #: includes/admin/class-concursos-admin.php:115
-#: includes/admin/class-concursos-stats-admin.php:702
+#: includes/admin/class-concursos-stats-admin.php:703
 #: includes/class-concursos-participante.php:111
 #: includes/class-concursos-participante.php:113
 #: includes/class-concursos-participante.php:114
@@ -140,8 +140,8 @@ msgid "Participants"
 msgstr ""
 
 #: includes/admin/class-concursos-admin.php:116
-#: includes/admin/class-concursos-stats-admin.php:704
-#: includes/admin/class-concursos-stats-admin.php:853
+#: includes/admin/class-concursos-stats-admin.php:705
+#: includes/admin/class-concursos-stats-admin.php:854
 #: includes/class-concursos-perfil.php:287
 msgid "Photos"
 msgstr ""
@@ -170,7 +170,7 @@ msgid "Pending"
 msgstr ""
 
 #: includes/admin/class-concursos-admin.php:216
-#: includes/admin/class-concursos-stats-admin.php:669
+#: includes/admin/class-concursos-stats-admin.php:670
 msgid "Private"
 msgstr ""
 
@@ -185,7 +185,7 @@ msgid "Foncholuis Art Challenge Manager settings"
 msgstr ""
 
 #: includes/admin/class-concursos-ajustes.php:33
-#: includes/admin/class-concursos-stats-admin.php:1067
+#: includes/admin/class-concursos-stats-admin.php:1068
 msgid "Settings"
 msgstr ""
 
@@ -206,7 +206,7 @@ msgid "When turned off, profile pages no longer exist and participant names are 
 msgstr ""
 
 #: includes/admin/class-concursos-duplicar.php:66
-#: includes/admin/class-concursos-stats-admin.php:1029
+#: includes/admin/class-concursos-stats-admin.php:1030
 msgid "Duplicate challenge"
 msgstr ""
 
@@ -290,11 +290,11 @@ msgstr ""
 
 #: includes/admin/class-concursos-entradas-admin.php:149
 #: includes/admin/class-concursos-participantes-admin.php:114
-#: includes/admin/class-concursos-stats-admin.php:983
-#: includes/admin/class-concursos-stats-admin.php:1115
+#: includes/admin/class-concursos-stats-admin.php:984
+#: includes/admin/class-concursos-stats-admin.php:1116
 #: includes/class-concursos-entrada.php:45
 #: includes/class-concursos-envio.php:250
-#: includes/class-concursos-galeria.php:544
+#: includes/class-concursos-galeria.php:680
 msgid "Photo"
 msgstr ""
 
@@ -304,16 +304,16 @@ msgstr ""
 
 #: includes/admin/class-concursos-entradas-admin.php:151
 #: includes/class-concursos-clasificacion.php:115
-#: includes/class-concursos-galeria.php:545
+#: includes/class-concursos-galeria.php:681
 #: includes/class-concursos-participante.php:112
 #: includes/class-concursos-perfil.php:274
 msgid "Participant"
 msgstr ""
 
 #: includes/admin/class-concursos-entradas-admin.php:153
-#: includes/admin/class-concursos-stats-admin.php:1115
+#: includes/admin/class-concursos-stats-admin.php:1116
 #: includes/class-concursos-clasificacion.php:117
-#: includes/class-concursos-galeria.php:546
+#: includes/class-concursos-galeria.php:682
 msgid "Points"
 msgstr ""
 
@@ -383,7 +383,7 @@ msgid "View profile"
 msgstr ""
 
 #: includes/admin/class-concursos-participantes-admin.php:268
-#: includes/admin/class-concursos-stats-admin.php:1102
+#: includes/admin/class-concursos-stats-admin.php:1103
 #: includes/admin/class-concursos-votantes-admin.php:376
 msgid "You cannot do this."
 msgstr ""
@@ -448,7 +448,7 @@ msgstr ""
 
 #: includes/admin/class-concursos-reto-metabox.php:74
 #: includes/class-concursos-envio.php:273
-#: includes/class-concursos-galeria.php:231
+#: includes/class-concursos-galeria.php:229
 msgid "Rules"
 msgstr ""
 
@@ -473,7 +473,7 @@ msgid "One rule per line."
 msgstr ""
 
 #: includes/admin/class-concursos-reto-metabox.php:141
-#: includes/admin/class-concursos-stats-admin.php:1058
+#: includes/admin/class-concursos-stats-admin.php:1059
 msgid "Photo visibility"
 msgstr ""
 
@@ -518,8 +518,8 @@ msgid "With more than one vote, each voter chooses a 1st, 2nd and 3rd, worth 3, 
 msgstr ""
 
 #: includes/admin/class-concursos-reto-metabox.php:195
-#: includes/admin/class-concursos-stats-admin.php:726
-#: includes/admin/class-concursos-stats-admin.php:1059
+#: includes/admin/class-concursos-stats-admin.php:727
+#: includes/admin/class-concursos-stats-admin.php:1060
 msgid "Anonymous voting"
 msgstr ""
 
@@ -528,7 +528,7 @@ msgid "Hide the title and author of each photo until voting ends"
 msgstr ""
 
 #: includes/admin/class-concursos-reto-metabox.php:204
-#: includes/class-concursos-galeria.php:430
+#: includes/class-concursos-galeria.php:566
 msgid "Winners"
 msgstr ""
 
@@ -577,7 +577,7 @@ msgstr ""
 
 #: includes/admin/class-concursos-stats-admin.php:36
 #: includes/admin/class-concursos-stats-admin.php:37
-#: includes/admin/class-concursos-stats-admin.php:444
+#: includes/admin/class-concursos-stats-admin.php:445
 msgid "Stats"
 msgstr ""
 
@@ -612,7 +612,7 @@ msgid "Finished on %s"
 msgstr ""
 
 #. translators: %d: number of days.
-#: includes/admin/class-concursos-stats-admin.php:220
+#: includes/admin/class-concursos-stats-admin.php:221
 #, php-format
 msgid "%d day left"
 msgid_plural "%d days left"
@@ -620,401 +620,401 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of hours.
-#: includes/admin/class-concursos-stats-admin.php:225
+#: includes/admin/class-concursos-stats-admin.php:226
 #, php-format
 msgid "%d hour left"
 msgid_plural "%d hours left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-concursos-stats-admin.php:228
+#: includes/admin/class-concursos-stats-admin.php:229
 msgid "Less than an hour left"
 msgstr ""
 
 #. translators: %s: date.
-#: includes/admin/class-concursos-stats-admin.php:315
+#: includes/admin/class-concursos-stats-admin.php:316
 #, php-format
 msgid "week of %s"
 msgstr ""
 
 #. translators: 1: what is counted, 2: list of values.
-#: includes/admin/class-concursos-stats-admin.php:322
+#: includes/admin/class-concursos-stats-admin.php:323
 #, php-format
 msgid "%1$s per week: %2$s"
 msgstr ""
 
 #. translators: 1: what is counted, 2: list of values.
-#: includes/admin/class-concursos-stats-admin.php:324
+#: includes/admin/class-concursos-stats-admin.php:325
 #, php-format
 msgid "%1$s per day: %2$s"
 msgstr ""
 
 #. translators: %s: highest value in the chart.
-#: includes/admin/class-concursos-stats-admin.php:390
+#: includes/admin/class-concursos-stats-admin.php:391
 #, php-format
 msgid "max. %s"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:445
+#: includes/admin/class-concursos-stats-admin.php:446
 msgid "Challenge activity"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:498
+#: includes/admin/class-concursos-stats-admin.php:499
 msgid "Period"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:504
+#: includes/admin/class-concursos-stats-admin.php:505
 msgid "Apply"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:505
+#: includes/admin/class-concursos-stats-admin.php:506
 msgid "Export CSV"
 msgstr ""
 
 #. translators: 1: challenge name, 2: time such as "2 days", 3: date.
-#: includes/admin/class-concursos-stats-admin.php:518
+#: includes/admin/class-concursos-stats-admin.php:519
 #, php-format
 msgid "“%1$s” opens in %2$s (%3$s)."
 msgstr ""
 
 #. translators: 1: challenge name, 2: time such as "2 days", 3: date.
-#: includes/admin/class-concursos-stats-admin.php:520
+#: includes/admin/class-concursos-stats-admin.php:521
 #, php-format
 msgid "“%1$s” closes submissions in %2$s (%3$s)."
 msgstr ""
 
 #. translators: 1: challenge name, 2: time such as "2 days", 3: date.
-#: includes/admin/class-concursos-stats-admin.php:522
+#: includes/admin/class-concursos-stats-admin.php:523
 #, php-format
 msgid "“%1$s” closes voting in %2$s (%3$s)."
 msgstr ""
 
 #. translators: 1: challenge name, 2: time such as "2 days", 3: date.
-#: includes/admin/class-concursos-stats-admin.php:524
+#: includes/admin/class-concursos-stats-admin.php:525
 #, php-format
 msgid "“%1$s” publishes its results in %2$s (%3$s)."
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:544
+#: includes/admin/class-concursos-stats-admin.php:545
 msgid "Upcoming stage changes"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:564
+#: includes/admin/class-concursos-stats-admin.php:565
 msgid "No change vs previous period"
 msgstr ""
 
 #. translators: %s: change such as "+12 (+40%)".
-#: includes/admin/class-concursos-stats-admin.php:577
+#: includes/admin/class-concursos-stats-admin.php:578
 #, php-format
 msgid "Up %s vs previous period"
 msgstr ""
 
 #. translators: %s: change such as "+12 (+40%)".
-#: includes/admin/class-concursos-stats-admin.php:577
+#: includes/admin/class-concursos-stats-admin.php:578
 #, php-format
 msgid "Down %s vs previous period"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:589
+#: includes/admin/class-concursos-stats-admin.php:590
 msgid "Activity in the period"
-msgstr ""
-
-#: includes/admin/class-concursos-stats-admin.php:617
-msgctxt "challenges filter"
-msgid "All"
 msgstr ""
 
 #: includes/admin/class-concursos-stats-admin.php:618
 msgctxt "challenges filter"
-msgid "Active"
+msgid "All"
 msgstr ""
 
 #: includes/admin/class-concursos-stats-admin.php:619
 msgctxt "challenges filter"
-msgid "Upcoming"
+msgid "Active"
 msgstr ""
 
 #: includes/admin/class-concursos-stats-admin.php:620
 msgctxt "challenges filter"
+msgid "Upcoming"
+msgstr ""
+
+#: includes/admin/class-concursos-stats-admin.php:621
+msgctxt "challenges filter"
 msgid "Finished"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:638
+#: includes/admin/class-concursos-stats-admin.php:639
 msgid "Search challenges by title"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:639
+#: includes/admin/class-concursos-stats-admin.php:640
 #: includes/class-concursos-post-types.php:62
 msgid "Search challenges"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:640
+#: includes/admin/class-concursos-stats-admin.php:641
 msgid "Search"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:650
+#: includes/admin/class-concursos-stats-admin.php:651
 msgid "No challenges match."
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:666
-#: includes/admin/class-concursos-stats-admin.php:720
+#: includes/admin/class-concursos-stats-admin.php:667
+#: includes/admin/class-concursos-stats-admin.php:721
 msgid "Not published"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:700
+#: includes/admin/class-concursos-stats-admin.php:701
 #: includes/class-concursos-post-types.php:61
 msgid "View challenge"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:701
+#: includes/admin/class-concursos-stats-admin.php:702
 msgid "Edit"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:703
+#: includes/admin/class-concursos-stats-admin.php:704
 #: includes/admin/class-concursos-votantes-admin.php:341
 #: includes/admin/class-concursos-votantes-admin.php:342
 #: includes/admin/class-concursos-votantes-admin.php:448
 msgid "Voters"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:723
+#: includes/admin/class-concursos-stats-admin.php:724
 msgid "Private · members only"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:760
+#: includes/admin/class-concursos-stats-admin.php:761
 msgid "This challenge has no dates yet."
 msgstr ""
 
 #. translators: %s: date.
-#: includes/admin/class-concursos-stats-admin.php:767
+#: includes/admin/class-concursos-stats-admin.php:768
 #, php-format
 msgid "to open the challenge · %s"
 msgstr ""
 
 #. translators: %s: date.
-#: includes/admin/class-concursos-stats-admin.php:769
+#: includes/admin/class-concursos-stats-admin.php:770
 #, php-format
 msgid "to close submissions · %s"
 msgstr ""
 
 #. translators: %s: date.
-#: includes/admin/class-concursos-stats-admin.php:771
+#: includes/admin/class-concursos-stats-admin.php:772
 #, php-format
 msgid "to close voting · %s"
 msgstr ""
 
 #. translators: %s: date.
-#: includes/admin/class-concursos-stats-admin.php:773
+#: includes/admin/class-concursos-stats-admin.php:774
 #, php-format
 msgid "to publish the results · %s"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:779
+#: includes/admin/class-concursos-stats-admin.php:780
 #: includes/class-concursos-vista.php:108
 msgid "Submissions"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:780
+#: includes/admin/class-concursos-stats-admin.php:781
 #: includes/class-concursos-vista.php:109
 msgctxt "calendar phase"
 msgid "Voting"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:783
+#: includes/admin/class-concursos-stats-admin.php:784
 msgid "Review"
-msgstr ""
-
-#: includes/admin/class-concursos-stats-admin.php:788
-msgctxt "stage state"
-msgid "Done"
 msgstr ""
 
 #: includes/admin/class-concursos-stats-admin.php:789
 msgctxt "stage state"
-msgid "Now"
+msgid "Done"
 msgstr ""
 
 #: includes/admin/class-concursos-stats-admin.php:790
 msgctxt "stage state"
+msgid "Now"
+msgstr ""
+
+#: includes/admin/class-concursos-stats-admin.php:791
+msgctxt "stage state"
 msgid "Upcoming"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:794
+#: includes/admin/class-concursos-stats-admin.php:795
 msgid "Stages"
 msgstr ""
 
 #. translators: %s: date.
-#: includes/admin/class-concursos-stats-admin.php:805
+#: includes/admin/class-concursos-stats-admin.php:806
 #, php-format
 msgid "results published on %s"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:830
+#: includes/admin/class-concursos-stats-admin.php:831
 msgid "Today"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:835
+#: includes/admin/class-concursos-stats-admin.php:836
 msgid "today"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:852
+#: includes/admin/class-concursos-stats-admin.php:853
 msgid "Active / registered participants"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:856
+#: includes/admin/class-concursos-stats-admin.php:857
 msgid "Voters who voted"
 msgstr ""
 
 #. translators: 1: percentage, 2: number of confirmed voters.
-#: includes/admin/class-concursos-stats-admin.php:858
+#: includes/admin/class-concursos-stats-admin.php:859
 #, php-format
 msgid "%1$s%% of all %2$s confirmed voters"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:860
-#: includes/admin/class-concursos-stats-admin.php:1115
+#: includes/admin/class-concursos-stats-admin.php:861
+#: includes/admin/class-concursos-stats-admin.php:1116
 #: includes/admin/class-concursos-votantes-admin.php:53
-#: includes/class-concursos-galeria.php:546
+#: includes/class-concursos-galeria.php:682
 msgid "Votes"
 msgstr ""
 
 #. translators: %s: time such as "2 hours".
-#: includes/admin/class-concursos-stats-admin.php:914
-#: includes/admin/class-concursos-stats-admin.php:991
+#: includes/admin/class-concursos-stats-admin.php:915
+#: includes/admin/class-concursos-stats-admin.php:992
 #, php-format
 msgid "%s ago"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:919
-#: includes/admin/class-concursos-stats-admin.php:936
+#: includes/admin/class-concursos-stats-admin.php:920
+#: includes/admin/class-concursos-stats-admin.php:937
 msgid "No photos yet."
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:921
+#: includes/admin/class-concursos-stats-admin.php:922
 msgid "Latest photos received"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:923
+#: includes/admin/class-concursos-stats-admin.php:924
 #: includes/class-concursos-stats.php:46
 msgid "Photos received"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:945
-#: includes/admin/class-concursos-stats-admin.php:1118
+#: includes/admin/class-concursos-stats-admin.php:946
+#: includes/admin/class-concursos-stats-admin.php:1119
 #: includes/class-concursos-clasificacion.php:126
-#: includes/class-concursos-galeria.php:561
+#: includes/class-concursos-galeria.php:697
 msgid "(tie)"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:972
+#: includes/admin/class-concursos-stats-admin.php:973
 msgid "Provisional ranking"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:974
+#: includes/admin/class-concursos-stats-admin.php:975
 msgid "Only visible in the admin"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:980
+#: includes/admin/class-concursos-stats-admin.php:981
 msgid "When"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:981
+#: includes/admin/class-concursos-stats-admin.php:982
 msgid "Voter"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:982
-#: includes/admin/class-concursos-stats-admin.php:1115
+#: includes/admin/class-concursos-stats-admin.php:983
+#: includes/admin/class-concursos-stats-admin.php:1116
 #: includes/class-concursos-clasificacion.php:114
-#: includes/class-concursos-galeria.php:543
+#: includes/class-concursos-galeria.php:679
 msgid "Place"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:999
+#: includes/admin/class-concursos-stats-admin.php:1000
 msgid "No votes yet."
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:1001
+#: includes/admin/class-concursos-stats-admin.php:1002
 msgid "Latest votes"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:1003
-#: includes/admin/class-concursos-stats-admin.php:1044
+#: includes/admin/class-concursos-stats-admin.php:1004
+#: includes/admin/class-concursos-stats-admin.php:1045
 #: includes/class-concursos-stats.php:48
 msgid "Votes cast"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:1028
+#: includes/admin/class-concursos-stats-admin.php:1029
 msgid "Export results"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:1032
+#: includes/admin/class-concursos-stats-admin.php:1033
 msgid "Final ranking"
 msgstr ""
 
 #. translators: 1: voters who voted, 2: confirmed voters on the site.
-#: includes/admin/class-concursos-stats-admin.php:1037
+#: includes/admin/class-concursos-stats-admin.php:1038
 #, php-format
 msgid "%1$s people voted, out of %2$s confirmed voters on the site."
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:1042
+#: includes/admin/class-concursos-stats-admin.php:1043
 msgid "Final participation"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:1056
+#: includes/admin/class-concursos-stats-admin.php:1057
 msgid "Photos per person"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:1057
+#: includes/admin/class-concursos-stats-admin.php:1058
 msgid "Votes per person"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:1058
+#: includes/admin/class-concursos-stats-admin.php:1059
 msgid "Shown as they are submitted"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:1058
+#: includes/admin/class-concursos-stats-admin.php:1059
 msgid "Shown when submissions end"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:1059
+#: includes/admin/class-concursos-stats-admin.php:1060
 #: includes/admin/class-concursos-votantes-admin.php:279
 msgid "Yes"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:1059
+#: includes/admin/class-concursos-stats-admin.php:1060
 #: includes/admin/class-concursos-votantes-admin.php:279
 msgid "No"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:1060
-#: includes/class-concursos-galeria.php:241
+#: includes/admin/class-concursos-stats-admin.php:1061
+#: includes/class-concursos-galeria.php:239
 msgid "Prizes"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:1060
+#: includes/admin/class-concursos-stats-admin.php:1061
 msgid "None"
 msgstr ""
 
 #. translators: %s: date.
-#: includes/admin/class-concursos-stats-admin.php:1070
+#: includes/admin/class-concursos-stats-admin.php:1071
 #, php-format
 msgid "No activity yet. Opens on %s."
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:1111
+#: includes/admin/class-concursos-stats-admin.php:1112
 msgid "Challenge not found."
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:1115
+#: includes/admin/class-concursos-stats-admin.php:1116
 msgid "Author"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:1115
+#: includes/admin/class-concursos-stats-admin.php:1116
 msgid "Number of votes"
 msgstr ""
 
-#: includes/admin/class-concursos-stats-admin.php:1130
+#: includes/admin/class-concursos-stats-admin.php:1131
 msgid "Date"
 msgstr ""
 
@@ -1249,13 +1249,13 @@ msgid "The photo must be a JPG, PNG or WebP of up to %s."
 msgstr ""
 
 #: includes/class-concursos-envio.php:43
-#: includes/class-concursos-votantes.php:186
+#: includes/class-concursos-votantes.php:187
 msgid "We could not complete the action. Please try again."
 msgstr ""
 
 #: includes/class-concursos-envio.php:65
-#: includes/class-concursos-votantes.php:351
-#: includes/class-concursos-votantes.php:496
+#: includes/class-concursos-votantes.php:352
+#: includes/class-concursos-votantes.php:497
 msgid "Invalid link"
 msgstr ""
 
@@ -1363,8 +1363,8 @@ msgid "See all challenges"
 msgstr ""
 
 #: includes/class-concursos-envio.php:341
-#: includes/class-concursos-galeria.php:145
 #: includes/class-concursos-portada.php:196
+#: includes/class-concursos-votantes.php:631
 msgid "See the photos and vote"
 msgstr ""
 
@@ -1398,7 +1398,7 @@ msgid "Previous challenge"
 msgstr ""
 
 #: includes/class-concursos-galeria.php:105
-#: includes/class-concursos-galeria.php:158
+#: includes/class-concursos-galeria.php:155
 msgid "Next challenge"
 msgstr ""
 
@@ -1414,26 +1414,16 @@ msgstr ""
 msgid "Use the link we emailed you to upload or delete your photos."
 msgstr ""
 
-#: includes/class-concursos-galeria.php:147
-#: includes/class-concursos-votantes.php:620
-msgid "Choose your 1st, 2nd and 3rd: they are worth 3, 2 and 1 points."
-msgstr ""
-
-#: includes/class-concursos-galeria.php:147
-#: includes/class-concursos-votantes.php:622
-msgid "Choose your 1st and 2nd: they are worth 3 and 2 points."
-msgstr ""
-
-#: includes/class-concursos-galeria.php:158
+#: includes/class-concursos-galeria.php:155
 msgid "Next open challenge"
 msgstr ""
 
-#: includes/class-concursos-galeria.php:165
+#: includes/class-concursos-galeria.php:162
 msgid "Challenge schedule"
 msgstr ""
 
 #. translators: %d: number of photos.
-#: includes/class-concursos-galeria.php:195
+#: includes/class-concursos-galeria.php:192
 #: includes/class-concursos-portada.php:212
 #: includes/class-concursos-portada.php:285
 #, php-format
@@ -1442,130 +1432,193 @@ msgid_plural "%d photos submitted"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-concursos-galeria.php:209
+#: includes/class-concursos-galeria.php:206
 #: includes/class-concursos-perfil.php:261
 msgid "Breadcrumb"
 msgstr ""
 
 #. translators: %s: date.
-#: includes/class-concursos-galeria.php:300
+#: includes/class-concursos-galeria.php:295
 #, php-format
 msgid "Starts on %s."
 msgstr ""
 
 #. translators: %s: date.
-#: includes/class-concursos-galeria.php:302
+#: includes/class-concursos-galeria.php:297
 #, php-format
 msgid "Accepting photos until %s."
 msgstr ""
 
 #. translators: %s: date.
-#: includes/class-concursos-galeria.php:304
+#: includes/class-concursos-galeria.php:299
 #, php-format
 msgid "Voting until %s."
 msgstr ""
 
 #. translators: %s: date.
-#: includes/class-concursos-galeria.php:306
+#: includes/class-concursos-galeria.php:301
 #, php-format
 msgid "Voting has ended. Results on %s."
 msgstr ""
 
 #. translators: %s: date.
-#: includes/class-concursos-galeria.php:308
+#: includes/class-concursos-galeria.php:303
 #, php-format
 msgid "Finished on %s."
 msgstr ""
 
+#: includes/class-concursos-galeria.php:320
+msgid "Your favourite photo"
+msgstr ""
+
+#: includes/class-concursos-galeria.php:321
+msgid "The next one"
+msgstr ""
+
+#: includes/class-concursos-galeria.php:322
+msgid "Completes your podium"
+msgstr ""
+
+#. translators: %d: number of points.
+#: includes/class-concursos-galeria.php:332
+#: includes/class-concursos-votos.php:80
+#, php-format
+msgid "%d point"
+msgid_plural "%d points"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-concursos-galeria.php:339
+msgid "How to vote"
+msgstr ""
+
+#: includes/class-concursos-galeria.php:341
+msgid "Each place goes to one photo only: if you give it to another, the first one loses it. The photo with the most points wins."
+msgstr ""
+
 #. translators: %s: photo number, such as 01.
-#: includes/class-concursos-galeria.php:329
+#: includes/class-concursos-galeria.php:370
+#: includes/class-concursos-galeria.php:459
 #, php-format
 msgid "No. %s"
 msgstr ""
 
+#: includes/class-concursos-galeria.php:376
+#: includes/class-concursos-galeria.php:432
+msgid "Not chosen"
+msgstr ""
+
+#: includes/class-concursos-galeria.php:377
+#: includes/class-concursos-galeria.php:437
+msgid "Your votes are saved. You can change them until voting ends."
+msgstr ""
+
+#: includes/class-concursos-galeria.php:378
+msgid "Unsaved changes"
+msgstr ""
+
+#: includes/class-concursos-galeria.php:399
+#: includes/class-concursos-galeria.php:543
+msgid "Your photo"
+msgstr ""
+
+#. translators: %s: photo title or number.
+#: includes/class-concursos-galeria.php:402
+#, php-format
+msgid "Give a place to %s"
+msgstr ""
+
+#. translators: 1: place such as 1st, 2: number of points.
+#: includes/class-concursos-galeria.php:431
+#, php-format
+msgid "%1$s · %2$d pt"
+msgid_plural "%1$s · %2$d pts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-concursos-galeria.php:438
+msgid "Confirm votes"
+msgstr ""
+
 #. translators: %s: date.
-#: includes/class-concursos-galeria.php:357
+#: includes/class-concursos-galeria.php:487
 #, php-format
 msgid "Shown as they are submitted · voting starts on %s"
 msgstr ""
 
 #. translators: %d: number of photos.
-#: includes/class-concursos-galeria.php:360
+#: includes/class-concursos-galeria.php:490
 #, php-format
 msgid "%d photo"
 msgid_plural "%d photos"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-concursos-galeria.php:362
+#: includes/class-concursos-galeria.php:492
 msgid "Photos in the vote"
 msgstr ""
 
-#: includes/class-concursos-galeria.php:362
+#: includes/class-concursos-galeria.php:492
 msgid "Submitted entries"
 msgstr ""
 
 #. translators: 1: number of photos, 2: submission end date.
-#: includes/class-concursos-galeria.php:371
+#: includes/class-concursos-galeria.php:501
 #, php-format
 msgid "%1$d photo has been submitted so far. All of them will be shown when submissions end, on %2$s."
 msgid_plural "%1$d photos have been submitted so far. All of them will be shown when submissions end, on %2$s."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-concursos-galeria.php:378
+#: includes/class-concursos-galeria.php:508
 msgid "Photos will be shown when the challenge starts."
 msgstr ""
 
-#: includes/class-concursos-galeria.php:385
+#: includes/class-concursos-galeria.php:515
 msgid "There are no photos yet."
 msgstr ""
 
-#: includes/class-concursos-galeria.php:398
+#: includes/class-concursos-galeria.php:528
 msgid "Anonymous voting: the title and author of each photo will be shown when voting ends."
 msgstr ""
 
-#: includes/class-concursos-galeria.php:407
-msgid "Your photo"
-msgstr ""
-
-#: includes/class-concursos-galeria.php:430
+#: includes/class-concursos-galeria.php:566
 msgid "Winner"
 msgstr ""
 
-#: includes/class-concursos-galeria.php:433
+#: includes/class-concursos-galeria.php:569
 msgid "This challenge ended without votes."
 msgstr ""
 
-#: includes/class-concursos-galeria.php:471
+#: includes/class-concursos-galeria.php:607
 msgid "Other participants"
 msgstr ""
 
 #. translators: %s: prize.
-#: includes/class-concursos-galeria.php:505
+#: includes/class-concursos-galeria.php:641
 #: includes/class-concursos-perfil.php:308
 #: includes/class-concursos-perfil.php:330
 #, php-format
 msgid "Prize: %s"
 msgstr ""
 
-#: includes/class-concursos-galeria.php:533
+#: includes/class-concursos-galeria.php:669
 msgid "1st = 3 pts, 2nd = 2 pts, 3rd = 1 pt"
 msgstr ""
 
 #. translators: %d: number of voters.
-#: includes/class-concursos-galeria.php:535
+#: includes/class-concursos-galeria.php:671
 #, php-format
 msgid "%d voter took part"
 msgid_plural "%d voters took part"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-concursos-galeria.php:538
+#: includes/class-concursos-galeria.php:674
 msgid "Challenge ranking"
 msgstr ""
 
-#: includes/class-concursos-galeria.php:579
+#: includes/class-concursos-galeria.php:715
 msgid "Total"
 msgstr ""
 
@@ -1586,7 +1639,7 @@ msgid "Enter your name."
 msgstr ""
 
 #: includes/class-concursos-inscripcion.php:173
-#: includes/class-concursos-votantes.php:180
+#: includes/class-concursos-votantes.php:181
 msgid "Enter a valid email address."
 msgstr ""
 
@@ -2067,45 +2120,49 @@ msgid "Vote recorded."
 msgstr ""
 
 #: includes/class-concursos-votantes.php:176
-msgid "Vote removed."
+msgid "Thank you. Your votes have been saved: you can change them until voting ends."
 msgstr ""
 
 #: includes/class-concursos-votantes.php:177
-msgid "We will let you know when there is a new challenge."
+msgid "Vote removed."
 msgstr ""
 
 #: includes/class-concursos-votantes.php:178
-msgid "You will no longer receive notifications about new challenges."
+msgid "We will let you know when there is a new challenge."
 msgstr ""
 
 #: includes/class-concursos-votantes.php:179
+msgid "You will no longer receive notifications about new challenges."
+msgstr ""
+
+#: includes/class-concursos-votantes.php:180
 msgid "You have signed out as a voter in this browser."
 msgstr ""
 
-#: includes/class-concursos-votantes.php:181
+#: includes/class-concursos-votantes.php:182
 msgid "You cannot vote for your own photo."
 msgstr ""
 
-#: includes/class-concursos-votantes.php:182
+#: includes/class-concursos-votantes.php:183
 msgid "You have used all your votes in this challenge. Remove one to vote for another photo."
 msgstr ""
 
-#: includes/class-concursos-votantes.php:184
+#: includes/class-concursos-votantes.php:185
 msgid "Voting for this challenge is not open."
 msgstr ""
 
-#: includes/class-concursos-votantes.php:185
+#: includes/class-concursos-votantes.php:186
 msgid "Confirm your email to be able to vote."
 msgstr ""
 
 #. translators: %s: site name.
-#: includes/class-concursos-votantes.php:295
+#: includes/class-concursos-votantes.php:296
 #, php-format
 msgid "Confirm your email to vote on %s"
 msgstr ""
 
 #. translators: 1: challenge name, 2: link, 3: site name.
-#: includes/class-concursos-votantes.php:298
+#: includes/class-concursos-votantes.php:299
 #, php-format
 msgid ""
 "Hello,\n"
@@ -2119,44 +2176,44 @@ msgid ""
 "%3$s"
 msgstr ""
 
-#: includes/class-concursos-votantes.php:353
+#: includes/class-concursos-votantes.php:354
 msgid "This link is not valid or has expired, and voting for this challenge has already ended."
 msgstr ""
 
-#: includes/class-concursos-votantes.php:354
+#: includes/class-concursos-votantes.php:355
 msgid "This link is not valid or has expired. Register your email again to receive a new one."
 msgstr ""
 
-#: includes/class-concursos-votantes.php:496
+#: includes/class-concursos-votantes.php:497
 msgid "This unsubscribe link is not valid."
 msgstr ""
 
-#: includes/class-concursos-votantes.php:499
+#: includes/class-concursos-votantes.php:500
 msgid "New challenge notifications"
 msgstr ""
 
-#: includes/class-concursos-votantes.php:503
+#: includes/class-concursos-votantes.php:504
 msgid "Done: you will no longer receive notifications about new challenges."
 msgstr ""
 
 #. translators: %s: voter email.
-#: includes/class-concursos-votantes.php:513
+#: includes/class-concursos-votantes.php:514
 #, php-format
 msgid "Stop sending new challenge notifications to %s?"
 msgstr ""
 
-#: includes/class-concursos-votantes.php:514
+#: includes/class-concursos-votantes.php:515
 msgid "Unsubscribe me"
 msgstr ""
 
 #. translators: %s: challenge name.
-#: includes/class-concursos-votantes.php:555
+#: includes/class-concursos-votantes.php:556
 #, php-format
 msgid "New challenge: %s"
 msgstr ""
 
 #. translators: 1: challenge name, 2: challenge link, 3: unsubscribe link, 4: site name.
-#: includes/class-concursos-votantes.php:558
+#: includes/class-concursos-votantes.php:559
 #, php-format
 msgid ""
 "Hello,\n"
@@ -2170,43 +2227,55 @@ msgid ""
 "To stop receiving these notifications: %3$s"
 msgstr ""
 
-#: includes/class-concursos-votantes.php:585
-msgid "Register your email to vote"
+#: includes/class-concursos-votantes.php:587
+msgid "To vote, confirm your email: we send you a link and with it you choose your places. We only use your email to check that you are a real person."
 msgstr ""
 
-#: includes/class-concursos-votantes.php:586
-msgid "We only use your email to confirm that you are a real person and, if you tick the box, to tell you about new challenges. You can unsubscribe at any time."
+#: includes/class-concursos-votantes.php:596
+msgid "you@email.com"
+msgstr ""
+
+#: includes/class-concursos-votantes.php:597
+msgid "Email me when there is a new challenge"
 msgstr ""
 
 #: includes/class-concursos-votantes.php:598
 msgid "Send me the link"
 msgstr ""
 
-#: includes/class-concursos-votantes.php:601
-msgid "Email me when there is a new challenge"
+#: includes/class-concursos-votantes.php:600
+msgid "See the photos"
 msgstr ""
 
-#. translators: %s: voter email.
-#: includes/class-concursos-votantes.php:615
+#: includes/class-concursos-votantes.php:614
+msgid "Email confirmed"
+msgstr ""
+
+#. translators: %s: voter email, partly hidden.
+#: includes/class-concursos-votantes.php:617
 #, php-format
 msgid "Voting as %s"
 msgstr ""
 
 #. translators: 1: votes left, 2: total votes.
-#: includes/class-concursos-votantes.php:629
+#: includes/class-concursos-votantes.php:624
 #, php-format
 msgid "You have %1$d of %2$d votes left."
 msgstr ""
 
-#: includes/class-concursos-votantes.php:640
+#: includes/class-concursos-votantes.php:631
+msgid "Build my podium"
+msgstr ""
+
+#: includes/class-concursos-votantes.php:639
 msgid "Stop receiving new challenge notifications"
 msgstr ""
 
-#: includes/class-concursos-votantes.php:640
+#: includes/class-concursos-votantes.php:639
 msgid "Notify me about new challenges"
 msgstr ""
 
-#: includes/class-concursos-votantes.php:646
+#: includes/class-concursos-votantes.php:645
 msgid "Sign out"
 msgstr ""
 
@@ -2221,14 +2290,6 @@ msgstr ""
 #: includes/class-concursos-votos.php:64
 msgid "3rd"
 msgstr ""
-
-#. translators: %d: number of points.
-#: includes/class-concursos-votos.php:80
-#, php-format
-msgid "%d point"
-msgid_plural "%d points"
-msgstr[0] ""
-msgstr[1] ""
 
 #. translators: %d: number of votes.
 #: includes/class-concursos-votos.php:82
@@ -2263,40 +2324,40 @@ msgid "Tied for third place"
 msgstr ""
 
 #. translators: 1: place such as 1st, 2: number of points.
-#: includes/class-concursos-votos.php:380
+#: includes/class-concursos-votos.php:472
 #, php-format
 msgid "Your %1$s · %2$d point"
 msgid_plural "Your %1$s · %2$d points"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-concursos-votos.php:381
-#: includes/class-concursos-votos.php:436
+#: includes/class-concursos-votos.php:473
+#: includes/class-concursos-votos.php:528
 msgid "Remove vote"
 msgstr ""
 
 #. translators: %s: place such as 1st.
-#: includes/class-concursos-votos.php:396
+#: includes/class-concursos-votos.php:488
 #, php-format
 msgid "Move your %s to this photo"
 msgstr ""
 
 #. translators: 1: place such as 1st, 2: number of points.
-#: includes/class-concursos-votos.php:398
+#: includes/class-concursos-votos.php:490
 #, php-format
 msgid "Give this photo your %1$s (%2$d point)"
 msgid_plural "Give this photo your %1$s (%2$d points)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-concursos-votos.php:408
+#: includes/class-concursos-votos.php:500
 msgid "Vote:"
 msgstr ""
 
-#: includes/class-concursos-votos.php:424
+#: includes/class-concursos-votos.php:516
 msgid "No votes left"
 msgstr ""
 
-#: includes/class-concursos-votos.php:436
+#: includes/class-concursos-votos.php:528
 msgid "Vote"
 msgstr ""

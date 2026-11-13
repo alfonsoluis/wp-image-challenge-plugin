@@ -88,3 +88,98 @@
 		}
 	} );
 } )();
+
+/* Concursos – votar por puestos: se eligen en la página y se guardan con «Confirmar votos». */
+( function () {
+	'use strict';
+
+	var form = document.getElementById( 'concursos-podio' );
+	if ( ! form ) {
+		return;
+	}
+
+	var campos = Array.prototype.slice.call( form.querySelectorAll( 'input[name^="puestos["]' ) );
+	var confirmar = form.querySelector( '.pc-barra-podio__confirmar' );
+	var estado = form.querySelector( '.pc-barra-podio__estado' );
+
+	function campo( puesto ) {
+		return form.querySelector( 'input[name="puestos[' + puesto + ']"]' );
+	}
+
+	function cambiado() {
+		return campos.some( function ( c ) {
+			return c.value !== c.getAttribute( 'data-guardado' );
+		} );
+	}
+
+	function pintar() {
+		var puestoDe = {};
+		campos.forEach( function ( c, i ) {
+			if ( c.value ) {
+				puestoDe[ c.value ] = i + 1;
+			}
+		} );
+
+		form.querySelectorAll( '.pc-foto--podio' ).forEach( function ( foto ) {
+			var id = foto.getAttribute( 'data-entrada' );
+			var puesto = puestoDe[ id ] || 0;
+			foto.classList.remove( 'is-puesto-1', 'is-puesto-2', 'is-puesto-3' );
+			if ( puesto ) {
+				foto.classList.add( 'is-puesto-' + puesto );
+			}
+			var boton = puesto ? foto.querySelector( '.pc-puesto--' + puesto ) : null;
+			foto.querySelector( '.pc-foto__sello' ).textContent = boton ? boton.textContent : '';
+			foto.querySelectorAll( '.pc-puesto' ).forEach( function ( b ) {
+				b.setAttribute( 'aria-pressed', b === boton ? 'true' : 'false' );
+			} );
+		} );
+
+		form.querySelectorAll( '.pc-barra-podio__hueco' ).forEach( function ( hueco ) {
+			var id = campo( hueco.getAttribute( 'data-puesto' ) ).value;
+			var foto = id ? form.querySelector( '.pc-foto--podio[data-entrada="' + id + '"]' ) : null;
+			var img = hueco.querySelector( '.pc-barra-podio__img' );
+			var miniatura = foto ? foto.getAttribute( 'data-miniatura' ) : '';
+			hueco.classList.toggle( 'is-vacio', ! foto );
+			img.innerHTML = '';
+			if ( miniatura ) {
+				var el = document.createElement( 'img' );
+				el.src = miniatura;
+				el.alt = '';
+				img.appendChild( el );
+			}
+			hueco.querySelector( '.pc-barra-podio__titulo' ).textContent = foto ? foto.getAttribute( 'data-nombre' ) : form.getAttribute( 'data-sin-elegir' );
+		} );
+
+		var hayCambios = cambiado();
+		var hayVotos = campos.some( function ( c ) {
+			return c.getAttribute( 'data-guardado' );
+		} );
+		confirmar.disabled = ! hayCambios;
+		estado.textContent = hayCambios ? form.getAttribute( 'data-cambios' ) : ( hayVotos ? form.getAttribute( 'data-guardado' ) : '' );
+	}
+
+	form.addEventListener( 'click', function ( event ) {
+		var boton = event.target.closest( '.pc-puesto' );
+		if ( ! boton ) {
+			return;
+		}
+		event.preventDefault();
+
+		// El puesto pasa a esta foto, que pierde el que tuviera; si ya lo tenía, se quita.
+		var partes = boton.value.split( ':' );
+		var actual = campo( partes[ 1 ] );
+		if ( actual.value === partes[ 0 ] ) {
+			actual.value = '';
+		} else {
+			campos.forEach( function ( c ) {
+				if ( c.value === partes[ 0 ] ) {
+					c.value = '';
+				}
+			} );
+			actual.value = partes[ 0 ];
+		}
+		pintar();
+	} );
+
+	pintar();
+} )();

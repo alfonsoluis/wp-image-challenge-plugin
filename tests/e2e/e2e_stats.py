@@ -115,7 +115,7 @@ votante = session()
 fetch(votante, BASE + "/?concursos_envio=" + wp("eval", f"echo Concursos_Participante::issue_token( {pid} );"))
 _, _, hr, _ = fetch(votante, BASE + "/retos/reto-de-prueba-luz-y-sombra/")
 nonce = re.search(r'value="concursos_votar"><input type="hidden" name="_wpnonce" value="([^"]+)"', hr).group(1)
-otra = next(f for f in fotos if f'name="entrada" value="{f}"' in hr)
+otra = next(f for f in fotos if f'value="{f}:1"' in hr)
 fetch(votante, BASE + "/wp-admin/admin-post.php", urllib.parse.urlencode({"action": "concursos_votar", "_wpnonce": nonce, "reto": reto, "entrada": otra, "op": "votar", "puesto": 1}).encode())
 check("al votar se borra la caché", wp("eval", "echo get_transient( 'concursos_stats_7d' ) ? 1 : 0;") == "0")
 

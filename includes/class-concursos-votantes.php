@@ -173,6 +173,7 @@ class Concursos_Votantes {
 			'confirmado_antes' => array( 'success', __( 'Email confirmed! Voting has not started yet: you can vote once photo submissions close.', 'foncholuis-art-challenge-manager' ) ),
 			'confirmado_tarde' => array( 'success', __( 'Email confirmed, but voting for this challenge has already ended.', 'foncholuis-art-challenge-manager' ) ),
 			'votado'      => array( 'success', __( 'Vote recorded.', 'foncholuis-art-challenge-manager' ) ),
+			'podio'       => array( 'success', __( 'Thank you. Your votes have been saved: you can change them until voting ends.', 'foncholuis-art-challenge-manager' ) ),
 			'quitado'     => array( 'success', __( 'Vote removed.', 'foncholuis-art-challenge-manager' ) ),
 			'suscrito'    => array( 'success', __( 'We will let you know when there is a new challenge.', 'foncholuis-art-challenge-manager' ) ),
 			'desuscrito'  => array( 'success', __( 'You will no longer receive notifications about new challenges.', 'foncholuis-art-challenge-manager' ) ),
@@ -567,7 +568,8 @@ class Concursos_Votantes {
 	}
 
 	/**
-	 * Panel de votación: registro para quien no se ha identificado o estado de sus votos.
+	 * Panel de votación de la columna lateral: registro para quien no se ha
+	 * identificado, o su email confirmado, sus votos y el acceso a las fotos.
 	 *
 	 * @param int   $reto_id Reto.
 	 * @param array $s       Configuración del reto.
@@ -575,63 +577,60 @@ class Concursos_Votantes {
 	 */
 	public static function panel_html( $reto_id, array $s ) {
 		$votante = self::actual();
+		$puestos = Concursos_Votos::por_puestos( $s );
 
 		ob_start();
-		echo '<div class="concursos-panel-voto' . ( $votante ? '' : ' concursos-panel-voto--registro' ) . '">';
 
 		if ( ! $votante ) {
 			?>
-			<div class="concursos-panel-voto__intro">
-				<h3><?php esc_html_e( 'Register your email to vote', 'foncholuis-art-challenge-manager' ); ?></h3>
-				<p class="concursos-xs"><?php esc_html_e( 'We only use your email to confirm that you are a real person and, if you tick the box, to tell you about new challenges. You can unsubscribe at any time.', 'foncholuis-art-challenge-manager' ); ?></p>
+			<div class="pc-votante pc-votante--registro">
+				<p class="pc-votante__texto"><?php esc_html_e( 'To vote, confirm your email: we send you a link and with it you choose your places. We only use your email to check that you are a real person.', 'foncholuis-art-challenge-manager' ); ?></p>
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="pc-votante__form concursos-form-publico">
+					<input type="hidden" name="action" value="<?php echo esc_attr( self::REGISTRO ); ?>">
+					<input type="hidden" name="reto" value="<?php echo esc_attr( $reto_id ); ?>">
+					<?php wp_nonce_field( self::REGISTRO ); ?>
+					<p class="concursos-hp" aria-hidden="true">
+						<label><?php esc_html_e( 'Do not fill in this field', 'foncholuis-art-challenge-manager' ); ?> <input type="text" name="web" tabindex="-1" autocomplete="off"></label>
+					</p>
+					<label class="pc-campo__etiqueta" for="concursos-votante-email"><?php esc_html_e( 'Email', 'foncholuis-art-challenge-manager' ); ?></label>
+					<input type="email" id="concursos-votante-email" name="email" required autocomplete="email" placeholder="<?php esc_attr_e( 'you@email.com', 'foncholuis-art-challenge-manager' ); ?>">
+					<label class="pc-casilla"><input type="checkbox" name="suscribir" value="1"> <?php esc_html_e( 'Email me when there is a new challenge', 'foncholuis-art-challenge-manager' ); ?></label>
+					<button type="submit" class="pc-boton pc-boton--principal pc-boton--ancho"><?php esc_html_e( 'Send me the link', 'foncholuis-art-challenge-manager' ); ?></button>
+				</form>
+				<p class="pc-acciones"><?php echo Concursos_Vista::boton( '#concursos-votacion', __( 'See the photos', 'foncholuis-art-challenge-manager' ), 'secundario', 'flecha', 'pc-boton--ancho' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?></p>
 			</div>
-			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="concursos-form-publico">
-				<input type="hidden" name="action" value="<?php echo esc_attr( self::REGISTRO ); ?>">
-				<input type="hidden" name="reto" value="<?php echo esc_attr( $reto_id ); ?>">
-				<?php wp_nonce_field( self::REGISTRO ); ?>
-				<p class="concursos-hp" aria-hidden="true">
-					<label><?php esc_html_e( 'Do not fill in this field', 'foncholuis-art-challenge-manager' ); ?> <input type="text" name="web" tabindex="-1" autocomplete="off"></label>
-				</p>
-				<label for="concursos-votante-email"><?php esc_html_e( 'Email', 'foncholuis-art-challenge-manager' ); ?></label>
-				<div class="concursos-panel-voto__fila">
-					<input type="email" id="concursos-votante-email" name="email" required autocomplete="email">
-					<button type="submit"><?php esc_html_e( 'Send me the link', 'foncholuis-art-challenge-manager' ); ?></button>
-				</div>
-				<p class="concursos-casilla concursos-sm">
-					<label><input type="checkbox" name="suscribir" value="1"> <?php esc_html_e( 'Email me when there is a new challenge', 'foncholuis-art-challenge-manager' ); ?></label>
-				</p>
-			</form>
 			<?php
-		} else {
-			$permitido = Concursos_Reto::permite_email( $s, 'votantes', $votante->email );
-			$usados = count( Concursos_Votos::de_votante( (int) $votante->id, $reto_id ) );
-			$total  = (int) $s['votos_por_votante'];
-			$quedan = max( 0, $total - $usados );
-			?>
-			<p>
-				<strong>
+			return ob_get_clean();
+		}
+
+		$permitido = Concursos_Reto::permite_email( $s, 'votantes', $votante->email );
+		$total     = (int) $s['votos_por_votante'];
+		$quedan    = max( 0, $total - count( Concursos_Votos::de_votante( (int) $votante->id, $reto_id ) ) );
+		?>
+		<div class="pc-votante">
+			<div class="pc-votante__estado">
+				<svg class="pc-icono" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>
+				<p>
+					<strong><?php esc_html_e( 'Email confirmed', 'foncholuis-art-challenge-manager' ); ?></strong><br>
 					<?php
-					/* translators: %s: voter email. */
-					echo esc_html( sprintf( __( 'Voting as %s', 'foncholuis-art-challenge-manager' ), $votante->email ) );
+					/* translators: %s: voter email, partly hidden. */
+					echo esc_html( sprintf( __( 'Voting as %s', 'foncholuis-art-challenge-manager' ), Concursos_Stats::enmascarar( $votante->email ) ) );
 					?>
-				</strong><br>
-				<?php
-				if ( $permitido && 3 === $total ) {
-					echo esc_html__( 'Choose your 1st, 2nd and 3rd: they are worth 3, 2 and 1 points.', 'foncholuis-art-challenge-manager' ) . '<br>';
-				} elseif ( $permitido && 2 === $total ) {
-					echo esc_html__( 'Choose your 1st and 2nd: they are worth 3 and 2 points.', 'foncholuis-art-challenge-manager' ) . '<br>';
-				}
-				?>
-				<?php
-				echo esc_html(
-					$permitido
-						/* translators: 1: votes left, 2: total votes. */
-						? sprintf( __( 'You have %1$d of %2$d votes left.', 'foncholuis-art-challenge-manager' ), $quedan, $total )
-						: Concursos_Reto::mensaje_privado()
-				);
-				?>
-			</p>
-			<div class="concursos-panel-voto__acciones">
+					<br>
+					<?php
+					echo esc_html(
+						$permitido
+							/* translators: 1: votes left, 2: total votes. */
+							? sprintf( __( 'You have %1$d of %2$d votes left.', 'foncholuis-art-challenge-manager' ), $quedan, $total )
+							: Concursos_Reto::mensaje_privado()
+					);
+					?>
+				</p>
+			</div>
+			<?php if ( $permitido ) : ?>
+				<p class="pc-acciones"><?php echo Concursos_Vista::boton( '#concursos-votacion', $puestos ? __( 'Build my podium', 'foncholuis-art-challenge-manager' ) : __( 'See the photos and vote', 'foncholuis-art-challenge-manager' ), 'principal', 'flecha', 'pc-boton--ancho' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?></p>
+			<?php endif; ?>
+			<div class="pc-votante__enlaces concursos-panel-voto__acciones">
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 					<input type="hidden" name="action" value="<?php echo esc_attr( self::SUSCRIPCION ); ?>">
 					<input type="hidden" name="reto" value="<?php echo esc_attr( $reto_id ); ?>">
@@ -646,11 +645,8 @@ class Concursos_Votantes {
 					<button type="submit" class="concursos-enlace"><?php esc_html_e( 'Sign out', 'foncholuis-art-challenge-manager' ); ?></button>
 				</form>
 			</div>
-			<?php
-		}
-
-		echo '</div>';
-
+		</div>
+		<?php
 		return ob_get_clean();
 	}
 }

@@ -27,7 +27,7 @@ Pensado para asociaciones de fotografía, escuelas y organizaciones que ya tiene
 | 🔒 **Retos privados** | Limita participantes y, si quieres, votantes a una lista de emails. |
 | 🙋 **Inscripción y aprobación** | Formulario público con foto y redes sociales. Filtra, aprueba o desactiva en bloque desde el panel. |
 | 🔗 **Enlace personal** | Cada participante aprobado recibe por email un enlace para subir sus fotos, sin contraseñas. |
-| 🗳️ **Votación con email confirmado** | De 1 a 3 votos por reto. Con varios, cada votante elige su 1.º, 2.º y 3.º, que valen 3, 2 y 1 puntos, y puede cambiarlos mientras dure la votación. Quien participa queda registrado como votante al abrir su enlace personal, y nadie puede votar su propia foto. |
+| 🗳️ **Votación con email confirmado** | De 1 a 3 votos por reto. Con varios, cada votante arma su podio: elige su 1.º, 2.º y 3.º sobre las fotos (valen 3, 2 y 1 puntos) y los confirma de una vez desde una barra fija; puede cambiarlos mientras dure la votación. Quien participa queda registrado como votante al abrir su enlace personal, y nadie puede votar su propia foto. |
 | 🕶️ **Votación anónima** | Opción por reto para ocultar el título y el autor de las fotos hasta que termina la votación. |
 | 🥇 **Resultados con empates** | Uno o tres lugares, premios opcionales y empates con la misma prominencia. |
 | 🏅 **Clasificación anual** | Suma los votos de cada persona en los retos terminados del año, en la portada y en cada reto. |
@@ -45,7 +45,7 @@ Pensado para asociaciones de fotografía, escuelas y organizaciones que ya tiene
 <table>
   <tr>
     <td width="50%"><img alt="Página de un reto en votación" src="docs/screenshots/reto.jpg"><p align="center"><sub>Un reto en votación</sub></p></td>
-    <td width="50%"><img alt="Fotos en votación con el 1.º, 2.º y 3.º de un votante" src="docs/screenshots/votacion.jpg"><p align="center"><sub>Votación por puestos: 1.º, 2.º y 3.º valen 3, 2 y 1 puntos</sub></p></td>
+    <td width="50%"><img alt="Fotos en votación con el 1.º, 2.º y 3.º de un votante" src="docs/screenshots/votacion.jpg"><p align="center"><sub>Tu podio: 1.º, 2.º y 3.º sobre las fotos, y «Confirmar votos»</sub></p></td>
   </tr>
   <tr>
     <td><img alt="Resultados de un reto con empates" src="docs/screenshots/resultados.jpg"><p align="center"><sub>Resultados con premios y empates</sub></p></td>

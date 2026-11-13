@@ -103,16 +103,16 @@ wp("db", "query", f"DELETE FROM wp_concursos_votos WHERE reto_id={RETO}")
 # --- Votación por puestos (el reto de ejemplo permite 3 votos)
 v, email = votante()
 h = fetch(v, RETO_URL)[2]
-check("panel explica los puntos", "Elige tu 1.º, 2.º y 3.º: valen 3, 2 y 1 puntos." in h)
-check("cada foto ofrece 1.º, 2.º y 3.º", len(re.findall(r'name="puesto" value="[123]"', h)) == 27, str(len(re.findall(r'name="puesto"', h))))
+check("«Cómo se vota» explica los puntos", "Cómo se vota" in h and "3 puntos" in h and "Tu foto favorita" in h and "Completa tu podio" in h)
+check("cada foto ofrece 1.º, 2.º y 3.º", len(re.findall(r'name="elegir" value="\d+:[123]"', h)) == 27, str(len(re.findall(r'name="elegir"', h))))
 check("1.º a la foto A", votar(v, f[0], 1) == "votado")
 check("2.º a la foto B", votar(v, f[1], 2) == "votado")
 check("3.º a la foto C", votar(v, f[2], 3) == "votado")
 p = puntos()
 check("puntos 3, 2 y 1", (p.get(str(f[0])), p.get(str(f[1])), p.get(str(f[2]))) == (3, 2, 1), str(p))
 h = fetch(v, RETO_URL)[2]
-check("la foto A muestra «Tu 1.º · 3 puntos»", "Tu 1.º · 3 puntos" in h and "Tu 3.º · 1 punto" in h)
-check("quedan 0 de 3 y los puestos usados se marcan", "Te quedan 0 de 3" in h and h.count("concursos-voto--usado") == 18, str(h.count("concursos-voto--usado")))
+check("la foto A lleva el 1.º y la C el 3.º", f'is-puesto-1" data-entrada="{f[0]}"' in h and f'is-puesto-3" data-entrada="{f[2]}"' in h)
+check("quedan 0 de 3 y los puestos se marcan", "Te quedan 0 de 3" in h and h.count('aria-pressed="true"') == 3, str(h.count('aria-pressed="true"')))
 check("mover el 1.º a la foto D", votar(v, f[3], 1) == "votado" and mis_puestos(email) == {f[3]: 1, f[1]: 2, f[2]: 3}, str(mis_puestos(email)))
 check("cambiar la foto D al 2.º libera su 1.º y quita el 2.º a B", votar(v, f[3], 2) == "votado" and mis_puestos(email) == {f[3]: 2, f[2]: 3}, str(mis_puestos(email)))
 check("puesto 4 no vale", votar(v, f[4], 4) == "error" and len(mis_puestos(email)) == 2)
@@ -121,6 +121,32 @@ check("sin puesto no vale", votar(v, f[4]) == "error")
 check("quitar el voto de C", votar(v, f[2], op="quitar") == "quitado" and mis_puestos(email) == {f[3]: 2})
 p = puntos()
 check("solo quedan 2 puntos de D", p == {str(f[3]): 2}, str(p))
+
+# --- Podio: «Confirmar votos» guarda los tres puestos de una vez
+def podio(v, puestos, elegir=None):
+    page = fetch(v, RETO_URL)[2]
+    nonce = re.search(r'name="action" value="concursos_votar"><input type="hidden" name="_wpnonce" value="([^"]+)"', page).group(1)
+    data = [("action", "concursos_votar"), ("_wpnonce", nonce), ("reto", RETO), ("op", "podio")]
+    data += [(f"puestos[{k}]", x) for k, x in puestos.items()]
+    if elegir:
+        data.append(("elegir", elegir))
+    return aviso(fetch(v, BASE + "/wp-admin/admin-post.php", urllib.parse.urlencode(data).encode())[1])
+
+wp("db", "query", f"DELETE FROM wp_concursos_votos WHERE reto_id={RETO}")
+check("podio: se guardan los tres puestos", podio(v, {1: f[0], 2: f[1], 3: f[2]}) == "podio" and mis_puestos(email) == {f[0]: 1, f[1]: 2, f[2]: 3}, str(mis_puestos(email)))
+check("podio: puntos 3, 2 y 1", puntos() == {str(f[0]): 3, str(f[1]): 2, str(f[2]): 1}, str(puntos()))
+check("podio: confirmar de nuevo cambia el podio", podio(v, {1: f[3], 2: f[0]}) == "podio" and mis_puestos(email) == {f[3]: 1, f[0]: 2}, str(mis_puestos(email)))
+check("podio: la misma foto en dos puestos se rechaza", podio(v, {1: f[4], 2: f[4]}) == "error" and mis_puestos(email) == {f[3]: 1, f[0]: 2})
+otra_foto = wp("post", "create", "--post_type=concurso_entrada", "--post_status=publish", "--post_title=Ajena", "--porcelain")
+wp("post", "meta", "update", otra_foto, "_concursos_reto", "999999")
+check("podio: una foto de otro reto se rechaza", podio(v, {1: otra_foto}) == "error" and mis_puestos(email) == {f[3]: 1, f[0]: 2})
+wp("post", "delete", otra_foto, "--force")
+check("podio sin JavaScript: el botón da el 3.º a E", podio(v, {1: f[3], 2: f[0]}, f"{f[4]}:3") == "podio" and mis_puestos(email) == {f[3]: 1, f[0]: 2, f[4]: 3}, str(mis_puestos(email)))
+check("podio sin JavaScript: el 1.º pasa a E, que pierde el 3.º", podio(v, {1: f[3], 2: f[0], 3: f[4]}, f"{f[4]}:1") == "podio" and mis_puestos(email) == {f[4]: 1, f[0]: 2}, str(mis_puestos(email)))
+check("podio sin JavaScript: pulsar su puesto lo quita", podio(v, {1: f[4], 2: f[0]}, f"{f[4]}:1") == "podio" and mis_puestos(email) == {f[0]: 2}, str(mis_puestos(email)))
+check("podio vacío: quita los votos", podio(v, {}) == "quitado" and mis_puestos(email) == {})
+h = fetch(v, RETO_URL)[2]
+check("barra: tres huecos vacíos y «Confirmar votos»", h.count("pc-barra-podio__hueco is-vacio") == 3 and "Confirmar votos" in h)
 
 # --- Un solo voto: botón «Votar», 1 punto
 wp("post", "meta", "update", RETO, "_concursos_votos_por_votante", "1")

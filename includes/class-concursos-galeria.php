@@ -142,10 +142,7 @@ class Concursos_Galeria {
 			$html .= '<p class="pc-nota"><strong>' . esc_html__( 'Already registered?', 'foncholuis-art-challenge-manager' ) . '</strong> ' . esc_html__( 'Use the link we emailed you to upload or delete your photos.', 'foncholuis-art-challenge-manager' ) . '</p>';
 		}
 		if ( 'votacion' === $status ) {
-			$html .= '<p class="pc-acciones">' . Concursos_Vista::boton( '#concursos-votacion', __( 'See the photos and vote', 'foncholuis-art-challenge-manager' ), 'principal', 'flecha', 'pc-boton--ancho' ) . '</p>';
-			if ( Concursos_Votos::por_puestos( $s ) ) {
-				$html .= '<p class="pc-nota">' . esc_html( 3 === (int) $s['votos_por_votante'] ? __( 'Choose your 1st, 2nd and 3rd: they are worth 3, 2 and 1 points.', 'foncholuis-art-challenge-manager' ) : __( 'Choose your 1st and 2nd: they are worth 3 and 2 points.', 'foncholuis-art-challenge-manager' ) ) . '</p>';
-			}
+			$html .= Concursos_Votantes::panel_html( $post->ID, $s );
 		}
 		if ( 'finalizado' === $status ) {
 			$siguiente = self::siguiente_abierto( $post->ID );
@@ -226,6 +223,7 @@ class Concursos_Galeria {
 					<div class="pc-descripcion">
 						<?php echo apply_filters( 'the_content', $post->post_content ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound,WordPress.Security.EscapeOutput.OutputNotEscaped -- filtro estándar de WordPress. ?>
 					</div>
+					<?php echo 'votacion' === $status ? self::como_se_vota( $s ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
 					<?php if ( $reglas ) : ?>
 						<section class="pc-bloque" id="reglas" aria-labelledby="pc-reglas">
 							<h2 class="pc-bloque__titulo" id="pc-reglas"><?php esc_html_e( 'Rules', 'foncholuis-art-challenge-manager' ); ?></h2>
@@ -276,9 +274,6 @@ class Concursos_Galeria {
 		if ( 'finalizado' === $status && $entradas ) {
 			self::resultados( $reto_id, $s, $entradas );
 		} else {
-			if ( 'votacion' === $status ) {
-				echo Concursos_Votantes::panel_html( $reto_id, $s ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
-			}
 			self::fotos( $reto_id, $s, $status, $entradas );
 		}
 
@@ -312,6 +307,141 @@ class Concursos_Galeria {
 	}
 
 	/**
+	 * Recuadro «Cómo se vota»: lo que vale cada puesto.
+	 *
+	 * @param array $s Configuración.
+	 * @return string
+	 */
+	private static function como_se_vota( array $s ) {
+		if ( ! Concursos_Votos::por_puestos( $s ) ) {
+			return '';
+		}
+		$textos = array(
+			1 => __( 'Your favourite photo', 'foncholuis-art-challenge-manager' ),
+			2 => __( 'The next one', 'foncholuis-art-challenge-manager' ),
+			3 => __( 'Completes your podium', 'foncholuis-art-challenge-manager' ),
+		);
+		$html   = '';
+		for ( $p = 1; $p <= (int) $s['votos_por_votante']; $p++ ) {
+			$puntos = Concursos_Votos::puntos_de( $p );
+			$html  .= sprintf(
+				'<li class="pc-como-votar__puesto"><span class="pc-medalla-grande pc-medalla-grande--%1$d" aria-hidden="true">%2$s</span><span><strong>%3$s</strong><br><span class="pc-texto-suave">%4$s</span></span></li>',
+				$p,
+				esc_html( Concursos_Votos::ordinal( $p ) ),
+				/* translators: %d: number of points. */
+				esc_html( sprintf( _n( '%d point', '%d points', $puntos, 'foncholuis-art-challenge-manager' ), $puntos ) ),
+				esc_html( $textos[ $p ] )
+			);
+		}
+
+		return sprintf(
+			'<section class="pc-bloque pc-como-votar" aria-labelledby="pc-como-votar"><h2 class="pc-bloque__titulo" id="pc-como-votar">%1$s</h2><ol class="pc-como-votar__puestos">%2$s</ol><p class="pc-nota">%3$s</p></section>',
+			esc_html__( 'How to vote', 'foncholuis-art-challenge-manager' ),
+			$html, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+			esc_html__( 'Each place goes to one photo only: if you give it to another, the first one loses it. The photo with the most points wins.', 'foncholuis-art-challenge-manager' )
+		);
+	}
+
+	/**
+	 * Mosaico para votar por puestos: botones sobre cada foto y una barra con el
+	 * podio del votante, que se guarda entero con «Confirmar votos». Sin
+	 * JavaScript, cada botón envía el formulario y guarda ese cambio.
+	 *
+	 * @param int       $reto_id  Reto.
+	 * @param array     $s        Configuración.
+	 * @param WP_Post[] $entradas Fotos.
+	 * @param object    $votante  Votante.
+	 * @param int[]     $mios     entrada => puesto ya guardado.
+	 * @param bool      $anonima  Si se ocultan título y autor.
+	 */
+	private static function podio( $reto_id, array $s, array $entradas, $votante, array $mios, $anonima ) {
+		$total   = (int) $s['votos_por_votante'];
+		$guardado = array();
+		foreach ( $mios as $entrada => $puesto ) {
+			if ( $puesto >= 1 && $puesto <= $total ) {
+				$guardado[ $puesto ] = (int) $entrada;
+			}
+		}
+		$datos = array();
+		foreach ( $entradas as $i => $entrada ) {
+			$numero                  = str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT );
+			$datos[ $entrada->ID ] = array(
+				/* translators: %s: photo number, such as 01. */
+				'nombre'     => $anonima ? sprintf( __( 'No. %s', 'foncholuis-art-challenge-manager' ), $numero ) : get_the_title( $entrada ),
+				'miniatura'  => (string) wp_get_attachment_image_url( get_post_thumbnail_id( $entrada ), 'thumbnail' ),
+			);
+		}
+		?>
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="concursos-voto-form concursos-podio" id="concursos-podio"
+			data-sin-elegir="<?php esc_attr_e( 'Not chosen', 'foncholuis-art-challenge-manager' ); ?>"
+			data-guardado="<?php esc_attr_e( 'Your votes are saved. You can change them until voting ends.', 'foncholuis-art-challenge-manager' ); ?>"
+			data-cambios="<?php esc_attr_e( 'Unsaved changes', 'foncholuis-art-challenge-manager' ); ?>"><input type="hidden" name="action" value="<?php echo esc_attr( Concursos_Votos::ACTION ); ?>"><input type="hidden" name="_wpnonce" value="<?php echo esc_attr( wp_create_nonce( Concursos_Votos::ACTION ) ); ?>">
+			<input type="hidden" name="reto" value="<?php echo esc_attr( $reto_id ); ?>">
+			<input type="hidden" name="op" value="podio">
+			<?php for ( $p = 1; $p <= $total; $p++ ) : ?>
+				<input type="hidden" name="puestos[<?php echo esc_attr( $p ); ?>]" value="<?php echo esc_attr( isset( $guardado[ $p ] ) ? $guardado[ $p ] : '' ); ?>" data-guardado="<?php echo esc_attr( isset( $guardado[ $p ] ) ? $guardado[ $p ] : '' ); ?>">
+			<?php endfor; ?>
+
+			<ul class="pc-mosaico concursos-galeria__rejilla">
+				<?php
+				foreach ( $entradas as $i => $entrada ) :
+					$id     = $entrada->ID;
+					$puesto = (int) array_search( $id, $guardado, true );
+					$propia = Concursos_Votos::es_propia( $id, $votante );
+					$autor  = Concursos_Entrada::owner( $id );
+					?>
+					<li class="pc-foto pc-foto--podio<?php echo $puesto ? ' is-puesto-' . esc_attr( $puesto ) : ''; ?>" data-entrada="<?php echo esc_attr( $id ); ?>" data-nombre="<?php echo esc_attr( $datos[ $id ]['nombre'] ); ?>" data-miniatura="<?php echo esc_url( $datos[ $id ]['miniatura'] ); ?>">
+						<figure>
+							<div class="pc-foto__media">
+								<?php echo Concursos_Entrada::miniatura( $entrada, 'large', $anonima ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+								<span class="pc-foto__sello" aria-hidden="true"><?php echo $puesto ? esc_html( Concursos_Votos::ordinal( $puesto ) ) : ''; ?></span>
+								<?php if ( $propia ) : ?>
+									<span class="pc-puestos pc-puestos--propia concursos-propia"><?php esc_html_e( 'Your photo', 'foncholuis-art-challenge-manager' ); ?></span>
+								<?php else : ?>
+									<?php /* translators: %s: photo title or number. */ ?>
+									<div class="pc-puestos" role="group" aria-label="<?php echo esc_attr( sprintf( __( 'Give a place to %s', 'foncholuis-art-challenge-manager' ), $datos[ $id ]['nombre'] ) ); ?>">
+										<?php for ( $p = 1; $p <= $total; $p++ ) : ?>
+											<button type="submit" name="elegir" value="<?php echo esc_attr( $id . ':' . $p ); ?>" class="pc-puesto pc-puesto--<?php echo esc_attr( $p ); ?>" aria-pressed="<?php echo $puesto === $p ? 'true' : 'false'; ?>"><?php echo esc_html( Concursos_Votos::ordinal( $p ) ); ?></button>
+										<?php endfor; ?>
+									</div>
+								<?php endif; ?>
+							</div>
+							<figcaption class="pc-foto__pie">
+								<span class="pc-foto__titulo"><?php echo esc_html( $datos[ $id ]['nombre'] ); ?></span>
+								<?php if ( ! $anonima && $autor ) : ?>
+									<span class="pc-foto__autor"><?php echo Concursos_Perfil::enlace( $autor ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?></span>
+								<?php endif; ?>
+							</figcaption>
+						</figure>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+
+			<div class="pc-barra-podio">
+				<ol class="pc-barra-podio__huecos">
+					<?php
+					for ( $p = 1; $p <= $total; $p++ ) :
+						$elegida = isset( $guardado[ $p ], $datos[ $guardado[ $p ] ] ) ? $datos[ $guardado[ $p ] ] : null;
+						$puntos  = Concursos_Votos::puntos_de( $p );
+						?>
+						<li class="pc-barra-podio__hueco<?php echo $elegida ? '' : ' is-vacio'; ?>" data-puesto="<?php echo esc_attr( $p ); ?>">
+							<span class="pc-barra-podio__img"><?php echo $elegida && $elegida['miniatura'] ? '<img src="' . esc_url( $elegida['miniatura'] ) . '" alt="">' : ''; ?></span>
+							<span class="pc-barra-podio__texto">
+								<?php /* translators: 1: place such as 1st, 2: number of points. */ ?>
+								<span class="pc-barra-podio__puesto"><span class="pc-punto-medalla pc-punto-medalla--<?php echo esc_attr( $p ); ?>" aria-hidden="true"></span><?php echo esc_html( sprintf( _n( '%1$s · %2$d pt', '%1$s · %2$d pts', $puntos, 'foncholuis-art-challenge-manager' ), Concursos_Votos::ordinal( $p ), $puntos ) ); ?></span>
+								<span class="pc-barra-podio__titulo"><?php echo esc_html( $elegida ? $elegida['nombre'] : __( 'Not chosen', 'foncholuis-art-challenge-manager' ) ); ?></span>
+							</span>
+						</li>
+					<?php endfor; ?>
+				</ol>
+				<p class="pc-barra-podio__estado" role="status"><?php echo $guardado ? esc_html__( 'Your votes are saved. You can change them until voting ends.', 'foncholuis-art-challenge-manager' ) : ''; ?></p>
+				<button type="submit" class="pc-barra-podio__confirmar"><?php esc_html_e( 'Confirm votes', 'foncholuis-art-challenge-manager' ); ?></button>
+			</div>
+		</form>
+		<?php
+	}
+
+		/**
 	 * Tarjeta de una foto en el mosaico.
 	 *
 	 * @param WP_Post $entrada Foto.
@@ -396,6 +526,12 @@ class Concursos_Galeria {
 
 		if ( $anonima ) {
 			echo '<p class="pc-aviso-suave">' . esc_html__( 'Anonymous voting: the title and author of each photo will be shown when voting ends.', 'foncholuis-art-challenge-manager' ) . '</p>';
+		}
+
+		if ( $votante && Concursos_Votos::por_puestos( $s ) ) {
+			self::podio( $reto_id, $s, $entradas, $votante, $mios, $anonima );
+
+			return;
 		}
 
 		echo '<ul class="pc-mosaico concursos-galeria__rejilla">';

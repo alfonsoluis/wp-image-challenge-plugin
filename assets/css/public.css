@@ -1206,42 +1206,335 @@
 	font-size: var(--pc-t-pequeno);
 }
 
-/* Panel del votante: registro o estado de sus votos */
+/* Panel del votante, en la columna lateral */
 
-.pc .concursos-panel-voto {
-	display: grid;
-	gap: 16px 40px;
-	margin-bottom: 40px;
-	padding: 28px;
+.pc .pc-votante {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.pc .pc-votante__estado {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	padding: 14px 16px;
 	border-radius: var(--pc-radio-grande);
-	background: var(--pc-superficie);
-	box-shadow: var(--pc-sombra);
-}
-
-.pc .concursos-panel-voto--registro {
-	grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-	align-items: start;
-}
-
-.pc .concursos-panel-voto h3 {
-	margin-bottom: 8px;
-	font-size: calc(28px * var(--pc-escala));
-}
-
-.pc .concursos-panel-voto__intro p {
+	background: var(--pc-fondo-solido);
 	color: var(--pc-tinta-2);
+	font-size: var(--pc-t-pequeno);
+	line-height: 1.45;
+}
+
+.pc .pc-votante__estado .pc-icono {
+	flex: none;
+	color: var(--pc-fase-envios-tinta);
+}
+
+.pc .pc-votante__estado strong {
+	color: var(--pc-tinta);
+	font-weight: 600;
+}
+
+.pc .pc-votante__texto {
+	color: var(--pc-tinta-2);
+	font-size: var(--pc-t-pequeno);
+	line-height: 1.55;
+}
+
+.pc .pc-votante__form {
+	gap: 10px;
+}
+
+.pc .pc-votante .pc-casilla {
+	display: flex;
+	gap: 8px;
+	font-weight: 400;
+}
+
+.pc .pc-votante__enlaces {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 16px;
 	font-size: var(--pc-t-pequeno);
 }
 
-.pc .concursos-panel-voto__fila {
-	display: flex;
-	gap: 8px;
-	margin: 6px 0 12px;
+/* Cómo se vota */
+
+.pc .pc-como-votar__puestos {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+	gap: 12px;
 }
 
-.pc .concursos-panel-voto__fila input {
-	flex: 1;
-	min-width: 0;
+.pc .pc-como-votar__puesto {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 18px;
+	border-radius: var(--pc-radio-grande);
+	background: var(--pc-superficie);
+	font-size: calc(15px * var(--pc-escala));
+	line-height: 1.4;
+}
+
+.pc .pc-como-votar__puesto strong {
+	font-weight: 600;
+}
+
+.pc .pc-como-votar .pc-nota {
+	margin-top: 12px;
+	padding-top: 0;
+	border-top: 0;
+}
+
+.pc .pc-medalla-grande {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	color: #17161a;
+	font-family: var(--pc-fuente-titulos);
+	font-size: 20px;
+	line-height: 1;
+}
+
+.pc .pc-medalla-grande--1,
+.pc .pc-punto-medalla--1 {
+	background: var(--pc-oro);
+}
+
+.pc .pc-medalla-grande--2,
+.pc .pc-punto-medalla--2 {
+	background: var(--pc-plata);
+}
+
+.pc .pc-medalla-grande--3,
+.pc .pc-punto-medalla--3 {
+	background: var(--pc-bronce);
+}
+
+/* Votar por puestos: botones sobre la foto y barra con el podio */
+
+.pc .pc-foto__media {
+	position: relative;
+	border-radius: var(--pc-radio);
+}
+
+.pc .pc-foto--podio.is-puesto-1 .pc-foto__media {
+	outline: 3px solid var(--pc-oro);
+	outline-offset: 3px;
+}
+
+.pc .pc-foto--podio.is-puesto-2 .pc-foto__media {
+	outline: 3px solid var(--pc-plata);
+	outline-offset: 3px;
+}
+
+.pc .pc-foto--podio.is-puesto-3 .pc-foto__media {
+	outline: 3px solid var(--pc-bronce);
+	outline-offset: 3px;
+}
+
+.pc .pc-foto__sello {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	width: 52px;
+	height: 52px;
+	border-radius: 50%;
+	color: #17161a;
+	font-family: var(--pc-fuente-titulos);
+	font-size: 24px;
+	line-height: 1;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+	pointer-events: none;
+}
+
+.pc .is-puesto-1 .pc-foto__sello {
+	display: inline-flex;
+	background: var(--pc-oro);
+}
+
+.pc .is-puesto-2 .pc-foto__sello {
+	display: inline-flex;
+	background: var(--pc-plata);
+}
+
+.pc .is-puesto-3 .pc-foto__sello {
+	display: inline-flex;
+	background: var(--pc-bronce);
+}
+
+.pc .pc-puestos {
+	position: absolute;
+	right: 12px;
+	bottom: 12px;
+	display: flex;
+	gap: 4px;
+	padding: 4px;
+	border-radius: var(--pc-pastilla);
+	background: rgba(23, 22, 26, 0.72);
+}
+
+.pc .pc-puesto {
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: transparent;
+	color: #f5f3ee;
+	font-family: var(--pc-fuente-titulos);
+	font-size: 19px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.pc .pc-puesto:hover {
+	background: rgba(245, 243, 238, 0.18);
+}
+
+.pc .pc-puesto:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
+}
+
+.pc .pc-puesto--1[aria-pressed="true"] {
+	background: var(--pc-oro);
+	color: #17161a;
+}
+
+.pc .pc-puesto--2[aria-pressed="true"] {
+	background: var(--pc-plata);
+	color: #17161a;
+}
+
+.pc .pc-puesto--3[aria-pressed="true"] {
+	background: var(--pc-bronce);
+	color: #17161a;
+}
+
+.pc .pc-puestos--propia {
+	padding: 10px 16px;
+	color: #f5f3ee;
+	font-size: var(--pc-t-etiqueta);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.pc .concursos-podio {
+	display: block;
+	color: inherit;
+	font-size: inherit;
+}
+
+.pc .pc-barra-podio {
+	position: sticky;
+	bottom: 20px;
+	z-index: 5;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 14px 24px;
+	margin-top: 8px;
+	padding: 14px 14px 14px 20px;
+	border-radius: 14px;
+	background: #17161a;
+	color: #f5f3ee;
+	box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
+}
+
+.pc .pc-barra-podio__huecos {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.pc .pc-barra-podio__hueco {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 4px 14px 4px 4px;
+	border-radius: 10px;
+	background: rgba(245, 243, 238, 0.06);
+}
+
+.pc .pc-barra-podio__img {
+	display: block;
+	flex: none;
+	width: 52px;
+	height: 52px;
+	overflow: hidden;
+	border-radius: 6px;
+}
+
+.pc .pc-barra-podio__img img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.pc .pc-barra-podio__hueco.is-vacio .pc-barra-podio__img {
+	border: 1px dashed #6b675f;
+}
+
+.pc .pc-barra-podio__texto {
+	display: flex;
+	flex-direction: column;
+	font-size: calc(13px * var(--pc-escala));
+	line-height: 1.35;
+}
+
+.pc .pc-barra-podio__puesto {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-weight: 600;
+}
+
+.pc .pc-barra-podio__titulo {
+	max-width: 18ch;
+	overflow: hidden;
+	color: #b8b3a8;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.pc .pc-punto-medalla {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+}
+
+.pc .pc-barra-podio__estado {
+	flex: 1 1 180px;
+	color: #b8b3a8;
+	font-size: calc(13px * var(--pc-escala));
+	text-align: right;
+}
+
+.pc .pc-barra-podio__confirmar {
+	min-height: 52px;
+	padding: 0 28px;
+	border: 0;
+	border-radius: var(--pc-pastilla);
+	background: #f5f3ee;
+	color: #17161a;
+	font-size: calc(16px * var(--pc-escala));
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.pc .pc-barra-podio__confirmar:disabled {
+	opacity: 0.5;
+	cursor: default;
 }
 
 .pc .concursos-panel-voto__acciones {
@@ -2101,12 +2394,40 @@
 /* Pantallas estrechas y movimiento reducido */
 
 @media (max-width: 720px) {
-	.pc .concursos-panel-voto--registro {
-		grid-template-columns: minmax(0, 1fr);
+	.pc .pc-barra-podio {
+		bottom: 8px;
+		padding: 10px;
 	}
 
-	.pc .concursos-panel-voto__fila {
+	.pc .pc-barra-podio__huecos {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+		gap: 6px;
+		width: 100%;
+	}
+
+	.pc .pc-barra-podio__hueco {
 		flex-direction: column;
+		align-items: flex-start;
+		gap: 6px;
+		padding: 6px;
+	}
+
+	.pc .pc-barra-podio__img {
+		width: 40px;
+		height: 40px;
+	}
+
+	.pc .pc-barra-podio__titulo {
+		max-width: 100%;
+	}
+
+	.pc .pc-barra-podio__estado {
+		text-align: left;
+	}
+
+	.pc .pc-barra-podio__confirmar {
+		width: 100%;
 	}
 
 	.pc .concursos-modal__reto {

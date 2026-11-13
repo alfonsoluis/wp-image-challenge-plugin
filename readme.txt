@@ -31,7 +31,7 @@ Create a challenge, open registration, approve participants, collect their photo
 
 * Public registration form with profile photo and social networks.
 * A personal link by email to submit photos: no passwords and no WordPress account.
-* Email-verified voting, with 1 to 3 votes per challenge. With several votes, each voter picks a 1st, 2nd and 3rd, worth 3, 2 and 1 points.
+* Email-verified voting, with 1 to 3 votes per challenge. With several votes, each voter builds a podium: they pick a 1st, 2nd and 3rd on the photos, worth 3, 2 and 1 points, and confirm them at once from a sticky bar. They can change them until voting ends.
 * Participants can also vote with the same email address, but never for their own photos.
 * Optional anonymous voting: photo titles and authors stay hidden until voting ends.
 * Optional email notifications about new challenges, with one-click unsubscribe.
