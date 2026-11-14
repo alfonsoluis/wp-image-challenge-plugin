@@ -11,6 +11,8 @@
 /.wordpress-org      export-ignore
 /.github             export-ignore
 /tests               export-ignore
+/tools               export-ignore
+/retos               export-ignore
 
 # Las traducciones las sirve translate.wordpress.org: el .po y el .mo quedan en el
 # repositorio para aportarlas allí, pero no van en el ZIP del plugin.

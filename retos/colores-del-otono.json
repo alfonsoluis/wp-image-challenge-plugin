@@ -1,0 +1,21 @@
+{
+  "slug": "colores-del-otono",
+  "title": "Colores del Otoño",
+  "concursos": {
+    "modo": "abierto",
+    "inicio": "2026-11-14T00:00",
+    "fin_envios": "2026-11-25T00:00",
+    "fin_votacion": "2026-12-01T00:00",
+    "cierre": "2026-12-01T10:00",
+    "votos_por_votante": 3,
+    "lugares": 3,
+    "max_fotos": 3,
+    "anonimo": false,
+    "premios": ["", "", ""],
+    "privado_participantes": true,
+    "privado_votantes": true,
+    "avisar": true,
+    "reglas": "Solo fotos tomadas en noviembre de 2026, antes del cierre de envíos. La organización puede pedir el archivo original o los datos EXIF para comprobar la fecha.\nSin inteligencia artificial: no se permiten imágenes generadas ni modificadas con IA generativa (relleno generativo, sustitución de cielos, añadir o quitar elementos, ampliación inventada). Sí se permiten las herramientas de revelado habituales, como la reducción de ruido.\nEdición moderada: ajustes de exposición, contraste, color, recorte y enfoque. No se permite añadir ni quitar elementos de la escena, salvo motas de polvo del sensor.\nSe admiten fotos en blanco y negro, aunque no se recomiendan: el color es el protagonista de este reto.\nCada foto debe ser obra propia del participante, que garantiza tener sus derechos y el permiso de las personas que aparezcan.\nSin firmas, marcas de agua, bordes ni textos sobre la imagen.\nHasta 3 fotos por participante, en JPG, PNG o WebP. Se pueden cambiar o retirar hasta el cierre de envíos.\nLas fotos no pueden haber ganado ni participado en otro concurso.\nRespeto a la naturaleza: no se aceptan fotos obtenidas dañando la vegetación, molestando a la fauna o entrando en zonas restringidas del Parque Nacional.\nLas fotos siguen siendo de su autor. Al participar se autoriza a la asociación a mostrarlas en su web y redes, siempre con el nombre del autor y sin fines comerciales.\nLa organización podrá retirar las fotos que no cumplan estas reglas, incluso después de publicados los resultados."
+  },
+  "content_file": "colores-del-otono.html"
+}

@@ -8,3 +8,7 @@ node_modules/
 /.agents/
 /skills-lock.json
 /foncholuis-art-challenge-manager.zip
+
+# Listas de emails de socios para tools/crear_reto.py: nunca en el repositorio.
+socios.txt
+*.emails.txt
