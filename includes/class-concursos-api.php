@@ -54,6 +54,10 @@ class Concursos_API {
 						'emails_participantes'  => array( 'type' => 'string' ),
 						'privado_votantes'      => array( 'type' => 'boolean' ),
 						'emails_votantes'       => array( 'type' => 'string' ),
+						'avisar'                => array(
+							'type'        => 'boolean',
+							'description' => __( 'Email the subscribers when the challenge is published (true by default). In a private challenge, only those on its lists.', 'foncholuis-art-challenge-manager' ),
+						),
 						'estilo'                => array( 'type' => 'string', 'enum' => array_keys( Concursos_Diseno::estilos() ) ),
 						'acento'                => array( 'type' => 'string', 'enum' => array_map( 'strval', array_keys( Concursos_Diseno::acentos() ) ) ),
 						'tamano'                => array( 'type' => 'string', 'enum' => array_keys( Concursos_Diseno::tamanos() ) ),
@@ -90,10 +94,10 @@ class Concursos_API {
 		foreach ( array( 'votos_por_votante', 'lugares', 'max_fotos' ) as $key ) {
 			$s[ $key ] = (int) $s[ $key ];
 		}
-		foreach ( array( 'anonimo', 'privado_participantes', 'privado_votantes' ) as $key ) {
+		foreach ( array( 'anonimo', 'privado_participantes', 'privado_votantes', 'avisar' ) as $key ) {
 			$s[ $key ] = (bool) $s[ $key ];
 		}
-		$s['fase']         = Concursos_Reto::status( Concursos_Reto::get_settings( $post['id'] ) );
+		$s['fase'] = Concursos_Reto::status( Concursos_Reto::get_settings( $post['id'] ) );
 
 		return $s;
 	}

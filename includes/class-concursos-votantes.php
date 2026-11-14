@@ -520,6 +520,8 @@ class Concursos_Votantes {
 	/**
 	 * Avisa a los suscritos cuando se publica un reto que no ha terminado.
 	 *
+	 * En un reto privado solo avisa a los suscritos que están en alguna de sus
+	 * listas activas, y no avisa a nadie si el reto tiene el aviso desactivado.
 	 * Usa este hook, y no el de cambio de estado, porque aquí ya están guardadas las fechas.
 	 *
 	 * @param int          $post_id     Post.
@@ -534,21 +536,39 @@ class Concursos_Votantes {
 		if ( $post_before && 'publish' === $post_before->post_status ) {
 			return;
 		}
-		if ( 'finalizado' === Concursos_Reto::status( Concursos_Reto::get_settings( $post_id ) ) ) {
+		$s = Concursos_Reto::get_settings( $post_id );
+		if ( 'finalizado' === Concursos_Reto::status( $s ) ) {
 			return;
 		}
 
 		// Un reto solo se anuncia una vez, aunque se despublique y se publique de nuevo.
+		// Se marca también cuando no se avisa a nadie, para que no se avise más tarde.
 		if ( get_post_meta( $post_id, '_concursos_avisado', true ) ) {
 			return;
 		}
 		update_post_meta( $post_id, '_concursos_avisado', time() );
+
+		if ( empty( $s['avisar'] ) ) {
+			return;
+		}
+
+		// Listas privadas activas: solo se avisa a quien está en alguna de ellas.
+		$grupos = array();
+		foreach ( array( 'participantes', 'votantes' ) as $grupo ) {
+			if ( ! empty( $s[ 'privado_' . $grupo ] ) ) {
+				$grupos[] = $grupo;
+			}
+		}
 
 		global $wpdb;
 		$t         = Concursos_DB::votantes();
 		$suscritos = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i WHERE suscrito = 1 AND estado = %s', $t, self::CONFIRMADO ) );
 
 		foreach ( $suscritos as $votante ) {
+			if ( $grupos && ! self::en_alguna_lista( $s, $grupos, $votante->email ) ) {
+				continue;
+			}
+
 			$baja = self::enlace_baja( $votante );
 			wp_mail(
 				$votante->email,
@@ -565,6 +585,24 @@ class Concursos_Votantes {
 				array( 'List-Unsubscribe: <' . $baja . '>' )
 			);
 		}
+	}
+
+	/**
+	 * ¿Está el email en alguna de las listas privadas indicadas del reto?
+	 *
+	 * @param array    $s      Configuración del reto.
+	 * @param string[] $grupos Grupos privados activos (participantes, votantes).
+	 * @param string   $email  Email.
+	 * @return bool
+	 */
+	private static function en_alguna_lista( array $s, array $grupos, $email ) {
+		foreach ( $grupos as $grupo ) {
+			if ( Concursos_Reto::permite_email( $s, $grupo, $email ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

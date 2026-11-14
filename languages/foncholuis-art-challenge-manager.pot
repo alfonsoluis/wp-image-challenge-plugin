@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-13T16:53:37+00:00\n"
+"POT-Creation-Date: 2026-11-14T13:32:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: foncholuis-art-challenge-manager\n"
@@ -61,12 +61,12 @@ msgid "In progress"
 msgstr ""
 
 #: includes/admin/class-concursos-admin.php:80
-#: includes/class-concursos-reto.php:357
+#: includes/class-concursos-reto.php:359
 msgid "Accepting photos"
 msgstr ""
 
 #: includes/admin/class-concursos-admin.php:81
-#: includes/class-concursos-reto.php:358
+#: includes/class-concursos-reto.php:360
 msgid "Voting"
 msgstr ""
 
@@ -338,7 +338,7 @@ msgstr ""
 #: includes/admin/class-concursos-participantes-admin.php:339
 #: includes/admin/class-concursos-votantes-admin.php:50
 #: includes/class-concursos-inscripcion.php:271
-#: includes/class-concursos-votantes.php:595
+#: includes/class-concursos-votantes.php:633
 msgid "Email"
 msgstr ""
 
@@ -498,80 +498,96 @@ msgid "Email addresses separated by commas."
 msgstr ""
 
 #: includes/admin/class-concursos-reto-metabox.php:175
-msgid "Photos per participant"
+msgid "New challenge notice"
 msgstr ""
 
 #: includes/admin/class-concursos-reto-metabox.php:179
+msgid "Email subscribers when this challenge is published"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:184
+msgid "This challenge has already been published once, so no notice will be sent again."
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:186
+msgid "Sent only once, the first time it is published. In a private challenge, only subscribers on its lists receive it."
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:193
+msgid "Photos per participant"
+msgstr ""
+
+#: includes/admin/class-concursos-reto-metabox.php:197
 msgid "Votes per voter"
 msgstr ""
 
 #. translators: %d: number of photos a voter can choose.
-#: includes/admin/class-concursos-reto-metabox.php:186
+#: includes/admin/class-concursos-reto-metabox.php:204
 #, php-format
 msgid "%d photo only"
 msgid_plural "Up to %d photos"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-concursos-reto-metabox.php:191
+#: includes/admin/class-concursos-reto-metabox.php:209
 msgid "With more than one vote, each voter chooses a 1st, 2nd and 3rd, worth 3, 2 and 1 points."
 msgstr ""
 
-#: includes/admin/class-concursos-reto-metabox.php:195
+#: includes/admin/class-concursos-reto-metabox.php:213
 #: includes/admin/class-concursos-stats-admin.php:727
 #: includes/admin/class-concursos-stats-admin.php:1060
 msgid "Anonymous voting"
 msgstr ""
 
-#: includes/admin/class-concursos-reto-metabox.php:199
+#: includes/admin/class-concursos-reto-metabox.php:217
 msgid "Hide the title and author of each photo until voting ends"
 msgstr ""
 
-#: includes/admin/class-concursos-reto-metabox.php:204
+#: includes/admin/class-concursos-reto-metabox.php:222
 #: includes/class-concursos-galeria.php:566
 msgid "Winners"
 msgstr ""
 
-#: includes/admin/class-concursos-reto-metabox.php:216
+#: includes/admin/class-concursos-reto-metabox.php:234
 msgid "1st place prize"
 msgstr ""
 
-#: includes/admin/class-concursos-reto-metabox.php:217
+#: includes/admin/class-concursos-reto-metabox.php:235
 msgid "2nd place prize"
 msgstr ""
 
-#: includes/admin/class-concursos-reto-metabox.php:218
+#: includes/admin/class-concursos-reto-metabox.php:236
 msgid "3rd place prize"
 msgstr ""
 
-#: includes/admin/class-concursos-reto-metabox.php:225
+#: includes/admin/class-concursos-reto-metabox.php:243
 msgid "Optional"
 msgstr ""
 
-#: includes/admin/class-concursos-reto-metabox.php:243
+#: includes/admin/class-concursos-reto-metabox.php:261
 msgid "Style"
 msgstr ""
 
-#: includes/admin/class-concursos-reto-metabox.php:254
+#: includes/admin/class-concursos-reto-metabox.php:272
 msgid "Accent color"
 msgstr ""
 
-#: includes/admin/class-concursos-reto-metabox.php:265
+#: includes/admin/class-concursos-reto-metabox.php:283
 msgid "Used for the current phase, highlights and votes. Typography always comes from your theme."
 msgstr ""
 
-#: includes/admin/class-concursos-reto-metabox.php:269
+#: includes/admin/class-concursos-reto-metabox.php:287
 msgid "Text size"
 msgstr ""
 
 #. translators: %s: list of invalid email addresses.
-#: includes/admin/class-concursos-reto-metabox.php:310
-#: includes/class-concursos-api.php:118
+#: includes/admin/class-concursos-reto-metabox.php:328
+#: includes/class-concursos-api.php:122
 #, php-format
 msgid "These addresses are not valid and were ignored: %s"
 msgstr ""
 
-#: includes/admin/class-concursos-reto-metabox.php:330
+#: includes/admin/class-concursos-reto-metabox.php:348
 msgid "The challenge was saved, but check its settings:"
 msgstr ""
 
@@ -1114,6 +1130,10 @@ msgstr ""
 msgid "Challenge settings. Dates use the site time zone, in the format YYYY-MM-DDTHH:MM."
 msgstr ""
 
+#: includes/class-concursos-api.php:59
+msgid "Email the subscribers when the challenge is published (true by default). In a private challenge, only those on its lists."
+msgstr ""
+
 #. translators: %d: year.
 #: includes/class-concursos-clasificacion.php:99
 #, php-format
@@ -1364,7 +1384,7 @@ msgstr ""
 
 #: includes/class-concursos-envio.php:341
 #: includes/class-concursos-portada.php:196
-#: includes/class-concursos-votantes.php:631
+#: includes/class-concursos-votantes.php:669
 msgid "See the photos and vote"
 msgstr ""
 
@@ -1672,7 +1692,7 @@ msgid "There are no challenges open for registration right now."
 msgstr ""
 
 #: includes/class-concursos-inscripcion.php:236
-#: includes/class-concursos-votantes.php:593
+#: includes/class-concursos-votantes.php:631
 msgid "Do not fill in this field"
 msgstr ""
 
@@ -1951,75 +1971,75 @@ msgid_plural "Archived <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-concursos-reto.php:87
+#: includes/class-concursos-reto.php:88
 msgid "Open: photos are shown as they are submitted"
 msgstr ""
 
-#: includes/class-concursos-reto.php:88
+#: includes/class-concursos-reto.php:89
 msgid "Closed: photos are shown when submissions end"
 msgstr ""
 
-#: includes/class-concursos-reto.php:91
+#: includes/class-concursos-reto.php:92
 msgid "A single winner"
 msgstr ""
 
-#: includes/class-concursos-reto.php:92
+#: includes/class-concursos-reto.php:93
 msgid "Three places"
 msgstr ""
 
 #. translators: %s: date name.
-#: includes/class-concursos-reto.php:183
+#: includes/class-concursos-reto.php:185
 #, php-format
 msgid "Missing date: %s."
 msgstr ""
 
-#: includes/class-concursos-reto.php:187
+#: includes/class-concursos-reto.php:189
 msgid "Participation is private but the list of emails is empty: nobody will be able to register."
 msgstr ""
 
-#: includes/class-concursos-reto.php:190
+#: includes/class-concursos-reto.php:192
 msgid "Voting is private but the list of emails is empty: nobody will be able to vote."
 msgstr ""
 
 #. translators: 1: later date, 2: earlier date.
-#: includes/class-concursos-reto.php:201
+#: includes/class-concursos-reto.php:203
 #, php-format
 msgid "“%1$s” cannot be before “%2$s”."
 msgstr ""
 
-#: includes/class-concursos-reto.php:279
+#: includes/class-concursos-reto.php:281
 msgid "This challenge is private. Contact the organizers for more information."
 msgstr ""
 
-#: includes/class-concursos-reto.php:355
+#: includes/class-concursos-reto.php:357
 msgid "No dates"
 msgstr ""
 
-#: includes/class-concursos-reto.php:356
+#: includes/class-concursos-reto.php:358
 msgid "Upcoming"
 msgstr ""
 
-#: includes/class-concursos-reto.php:359
+#: includes/class-concursos-reto.php:361
 msgid "Under review"
 msgstr ""
 
-#: includes/class-concursos-reto.php:360
+#: includes/class-concursos-reto.php:362
 msgid "Finished"
 msgstr ""
 
-#: includes/class-concursos-reto.php:371
+#: includes/class-concursos-reto.php:373
 msgid "Challenge start"
 msgstr ""
 
-#: includes/class-concursos-reto.php:372
+#: includes/class-concursos-reto.php:374
 msgid "End of submissions"
 msgstr ""
 
-#: includes/class-concursos-reto.php:373
+#: includes/class-concursos-reto.php:375
 msgid "End of voting"
 msgstr ""
 
-#: includes/class-concursos-reto.php:374
+#: includes/class-concursos-reto.php:376
 msgid "Publication of results"
 msgstr ""
 
@@ -2207,13 +2227,13 @@ msgid "Unsubscribe me"
 msgstr ""
 
 #. translators: %s: challenge name.
-#: includes/class-concursos-votantes.php:556
+#: includes/class-concursos-votantes.php:576
 #, php-format
 msgid "New challenge: %s"
 msgstr ""
 
 #. translators: 1: challenge name, 2: challenge link, 3: unsubscribe link, 4: site name.
-#: includes/class-concursos-votantes.php:559
+#: includes/class-concursos-votantes.php:579
 #, php-format
 msgid ""
 "Hello,\n"
@@ -2227,55 +2247,55 @@ msgid ""
 "To stop receiving these notifications: %3$s"
 msgstr ""
 
-#: includes/class-concursos-votantes.php:587
+#: includes/class-concursos-votantes.php:625
 msgid "To vote, confirm your email: we send you a link and with it you choose your places. We only use your email to check that you are a real person."
 msgstr ""
 
-#: includes/class-concursos-votantes.php:596
+#: includes/class-concursos-votantes.php:634
 msgid "you@email.com"
 msgstr ""
 
-#: includes/class-concursos-votantes.php:597
+#: includes/class-concursos-votantes.php:635
 msgid "Email me when there is a new challenge"
 msgstr ""
 
-#: includes/class-concursos-votantes.php:598
+#: includes/class-concursos-votantes.php:636
 msgid "Send me the link"
 msgstr ""
 
-#: includes/class-concursos-votantes.php:600
+#: includes/class-concursos-votantes.php:638
 msgid "See the photos"
 msgstr ""
 
-#: includes/class-concursos-votantes.php:614
+#: includes/class-concursos-votantes.php:652
 msgid "Email confirmed"
 msgstr ""
 
 #. translators: %s: voter email, partly hidden.
-#: includes/class-concursos-votantes.php:617
+#: includes/class-concursos-votantes.php:655
 #, php-format
 msgid "Voting as %s"
 msgstr ""
 
 #. translators: 1: votes left, 2: total votes.
-#: includes/class-concursos-votantes.php:624
+#: includes/class-concursos-votantes.php:662
 #, php-format
 msgid "You have %1$d of %2$d votes left."
 msgstr ""
 
-#: includes/class-concursos-votantes.php:631
+#: includes/class-concursos-votantes.php:669
 msgid "Build my podium"
 msgstr ""
 
-#: includes/class-concursos-votantes.php:639
+#: includes/class-concursos-votantes.php:677
 msgid "Stop receiving new challenge notifications"
 msgstr ""
 
-#: includes/class-concursos-votantes.php:639
+#: includes/class-concursos-votantes.php:677
 msgid "Notify me about new challenges"
 msgstr ""
 
-#: includes/class-concursos-votantes.php:645
+#: includes/class-concursos-votantes.php:683
 msgid "Sign out"
 msgstr ""
 

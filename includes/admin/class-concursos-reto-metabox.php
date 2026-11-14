@@ -172,6 +172,24 @@ class Concursos_Reto_Metabox {
 				</tr>
 			<?php endforeach; ?>
 			<tr>
+				<th scope="row"><?php esc_html_e( 'New challenge notice', 'foncholuis-art-challenge-manager' ); ?></th>
+				<td>
+					<label class="concursos-radio--block">
+						<input type="checkbox" name="concursos[avisar]" value="1" <?php checked( ! empty( $s['avisar'] ) ); ?>>
+						<?php esc_html_e( 'Email subscribers when this challenge is published', 'foncholuis-art-challenge-manager' ); ?>
+					</label>
+					<p class="description">
+						<?php
+						if ( get_post_meta( $post->ID, '_concursos_avisado', true ) ) {
+							esc_html_e( 'This challenge has already been published once, so no notice will be sent again.', 'foncholuis-art-challenge-manager' );
+						} else {
+							esc_html_e( 'Sent only once, the first time it is published. In a private challenge, only subscribers on its lists receive it.', 'foncholuis-art-challenge-manager' );
+						}
+						?>
+					</p>
+				</td>
+			</tr>
+			<tr>
 				<th scope="row"><label for="concursos-max-fotos"><?php esc_html_e( 'Photos per participant', 'foncholuis-art-challenge-manager' ); ?></label></th>
 				<td><input type="number" id="concursos-max-fotos" name="concursos[max_fotos]" min="1" max="20" value="<?php echo esc_attr( $s['max_fotos'] ); ?>" class="small-text"></td>
 			</tr>
