@@ -27,22 +27,46 @@ class Concursos_Entradas_Admin {
 		add_filter( 'post_row_actions', array( __CLASS__, 'row_actions' ), 10, 2 );
 		add_filter( 'admin_body_class', array( __CLASS__, 'clase_vista' ) );
 		add_action( 'manage_posts_extra_tablenav', array( __CLASS__, 'selector_vista' ) );
+		add_filter( 'removable_query_args', array( __CLASS__, 'quitar_args_vista' ) );
+	}
+
+	/**
+	 * Quita de la URL el cambio de vista una vez aplicado.
+	 *
+	 * @param string[] $args Parámetros que WordPress quita de la URL.
+	 * @return string[]
+	 */
+	public static function quitar_args_vista( $args ) {
+		$args[] = 'vista';
+		$args[] = self::VISTA_NONCE;
+
+		return $args;
 	}
 
 	const VISTA_META = 'concursos_vista_fotos';
 
 	/**
-	 * Vista elegida: tabla o rejilla. Se recuerda para el usuario.
+	 * Parámetro del nonce de los enlaces para cambiar de vista.
+	 */
+	const VISTA_NONCE = 'concursos_vista_nonce';
+
+	/**
+	 * Vista elegida: tabla o rejilla. Se recuerda para el usuario, solo si el
+	 * cambio llega desde los botones de la pantalla (con nonce) y puede ver las fotos.
 	 *
 	 * @return string tabla|rejilla
 	 */
 	public static function vista() {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- solo cambia la presentación.
-		$pedida = isset( $_GET['vista'] ) ? sanitize_key( wp_unslash( $_GET['vista'] ) ) : '';
-		if ( in_array( $pedida, array( 'tabla', 'rejilla' ), true ) ) {
-			update_user_meta( get_current_user_id(), self::VISTA_META, $pedida );
+		if ( isset( $_GET['vista'], $_GET[ self::VISTA_NONCE ] )
+			&& wp_verify_nonce( sanitize_key( wp_unslash( $_GET[ self::VISTA_NONCE ] ) ), self::VISTA_META )
+			&& current_user_can( 'edit_posts' )
+		) {
+			$pedida = sanitize_key( wp_unslash( $_GET['vista'] ) );
+			if ( in_array( $pedida, array( 'tabla', 'rejilla' ), true ) ) {
+				update_user_meta( get_current_user_id(), self::VISTA_META, $pedida );
 
-			return $pedida;
+				return $pedida;
+			}
 		}
 
 		return 'rejilla' === get_user_meta( get_current_user_id(), self::VISTA_META, true ) ? 'rejilla' : 'tabla';
@@ -59,11 +83,12 @@ class Concursos_Entradas_Admin {
 			return;
 		}
 		$vista = self::vista();
-		$url   = remove_query_arg( 'vista' );
+		$url   = remove_query_arg( array( 'vista', self::VISTA_NONCE ) );
+		$nonce = wp_create_nonce( self::VISTA_META );
 		?>
 		<span class="concursos-vistas" role="group" aria-label="<?php esc_attr_e( 'View', 'foncholuis-art-challenge-manager' ); ?>">
-			<a href="<?php echo esc_url( add_query_arg( 'vista', 'tabla', $url ) ); ?>" class="button<?php echo 'tabla' === $vista ? ' button-primary' : ''; ?>" aria-pressed="<?php echo 'tabla' === $vista ? 'true' : 'false'; ?>"><?php esc_html_e( 'Table', 'foncholuis-art-challenge-manager' ); ?></a>
-			<a href="<?php echo esc_url( add_query_arg( 'vista', 'rejilla', $url ) ); ?>" class="button<?php echo 'rejilla' === $vista ? ' button-primary' : ''; ?>" aria-pressed="<?php echo 'rejilla' === $vista ? 'true' : 'false'; ?>"><?php esc_html_e( 'Grid', 'foncholuis-art-challenge-manager' ); ?></a>
+			<a href="<?php echo esc_url( add_query_arg( array( 'vista' => 'tabla', self::VISTA_NONCE => $nonce ), $url ) ); ?>" class="button<?php echo 'tabla' === $vista ? ' button-primary' : ''; ?>" aria-pressed="<?php echo 'tabla' === $vista ? 'true' : 'false'; ?>"><?php esc_html_e( 'Table', 'foncholuis-art-challenge-manager' ); ?></a>
+			<a href="<?php echo esc_url( add_query_arg( array( 'vista' => 'rejilla', self::VISTA_NONCE => $nonce ), $url ) ); ?>" class="button<?php echo 'rejilla' === $vista ? ' button-primary' : ''; ?>" aria-pressed="<?php echo 'rejilla' === $vista ? 'true' : 'false'; ?>"><?php esc_html_e( 'Grid', 'foncholuis-art-challenge-manager' ); ?></a>
 		</span>
 		<?php
 	}
@@ -166,7 +191,7 @@ class Concursos_Entradas_Admin {
 			case 'concursos_foto':
 				$full = wp_get_attachment_url( get_post_thumbnail_id( $id ) );
 				if ( $full ) {
-					printf( '<a href="%s" target="_blank" rel="noopener">%s</a>', esc_url( $full ), get_the_post_thumbnail( $id, 'rejilla' === self::vista() ? 'medium_large' : array( 80, 80 ), array( 'class' => 'concursos-miniatura' ) ) );
+					printf( '<a href="%s" target="_blank" rel="noopener">%s</a>', esc_url( $full ), wp_kses( get_the_post_thumbnail( $id, 'rejilla' === self::vista() ? 'medium_large' : array( 80, 80 ), array( 'class' => 'concursos-miniatura' ) ), Concursos_Vista::html_permitido() ) );
 				}
 				break;
 			case 'concursos_participante':
