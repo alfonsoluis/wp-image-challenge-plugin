@@ -34,7 +34,7 @@ Create a challenge, open registration, approve participants, collect their photo
 * Email-verified voting, with 1 to 3 votes per challenge. With several votes, each voter builds a podium: they pick a 1st, 2nd and 3rd on the photos, worth 3, 2 and 1 points, and confirm them at once from a sticky bar. They can change them until voting ends.
 * Participants can also vote with the same email address, but never for their own photos.
 * Optional anonymous voting: photo titles and authors stay hidden until voting ends.
-* Optional email notifications about new challenges, with one-click unsubscribe.
+* Optional email notifications about new challenges, with one-click unsubscribe. Private challenges only notify the people on their lists, and any challenge can be published without a notice.
 
 = On your site =
 
@@ -68,7 +68,7 @@ The "Join a challenge" buttons appear when a published page contains the `[concu
 
 = Can I manage challenges through the REST API? =
 
-Yes. Challenges are available at /wp-json/wp/v2/concurso_reto, and their settings are in the `concursos` field, which is only shown and accepted for users who can edit the challenge (for example, with an application password). Dates use the site time zone, in the format YYYY-MM-DDTHH:MM.
+Yes. Challenges are available at /wp-json/wp/v2/concurso_reto, and their settings are in the `concursos` field, which is only shown and accepted for users who can edit the challenge (for example, with an application password). Dates use the site time zone, in the format YYYY-MM-DDTHH:MM. Set `avisar` to false to publish a challenge without emailing the subscribers.
 
 = Do participants need a WordPress account? =
 

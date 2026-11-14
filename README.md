@@ -32,7 +32,7 @@ Pensado para asociaciones de fotografía, escuelas y organizaciones que ya tiene
 | 🥇 **Resultados con empates** | Uno o tres lugares, premios opcionales y empates con la misma prominencia. |
 | 🏅 **Clasificación anual** | Suma los votos de cada persona en los retos terminados del año, en la portada y en cada reto. |
 | 👤 **Perfiles de participante** | Foto, redes, retos, fotos y puestos, sin mostrar nunca el email. Se pueden desactivar en **Retos → Ajustes**. |
-| 📣 **Avisos de nuevos retos** | Quien se suscribe recibe un email al publicarse un reto, y puede darse de baja cuando quiera. |
+| 📣 **Avisos de nuevos retos** | Quien se suscribe recibe un email al publicarse un reto, y puede darse de baja cuando quiera. Un reto privado solo avisa a quienes están en sus listas, y cualquier reto se puede publicar sin aviso. |
 | 📊 **Stats** | En **Retos → Stats**: participantes, fotos, votantes y votos de los últimos 7 o 30 días o del año, comparados con el periodo anterior; los próximos cambios de etapa; y el resumen de cada reto, con su cuenta atrás, la clasificación provisional y los últimos votos. Exporta CSV sin emails. |
 | 🧬 **Duplicar retos** | Crea una nueva edición en un clic, copiando o no a sus participantes activos. |
 | 🎨 **Diseño por reto** | Dos estilos (los colores del tema o el editorial, de papel cálido y tinta oscura), 6 colores de acento y 3 tamaños de texto. La tipografía siempre es la de tu tema. |
@@ -105,6 +105,7 @@ Los retos están en la REST API de WordPress, en `/wp-json/wp/v2/concurso_reto`,
 | `max_fotos` | De 1 a 20 |
 | `anonimo`, `privado_participantes`, `privado_votantes` | `true` o `false` |
 | `emails_participantes`, `emails_votantes` | Emails separados por comas |
+| `avisar` | `true` (por defecto) o `false`: si se avisa por email a los suscritos al publicar el reto |
 | `premios` | Hasta 3 textos, del 1.º al 3.º |
 | `reglas` | Texto |
 | `estilo` | `tema` o `editorial` |
@@ -115,7 +116,7 @@ Los retos están en la REST API de WordPress, en `/wp-json/wp/v2/concurso_reto`,
 - El campo solo se muestra y se acepta para usuarios que pueden editar el reto, con `context=edit`, porque incluye las listas de emails de los retos privados.
 - Al cambiar un reto, los valores que no se envían se conservan. Si las fechas no tienen sentido, el cambio se rechaza con el mismo mensaje que en el panel.
 - Para listar también borradores y archivados, añade `status=any`.
-- Publicar un reto envía el aviso por email a los suscritos. Si lo creas por la API, créalo como borrador y publícalo cuando esté listo.
+- Publicar un reto envía el aviso por email a los suscritos, una sola vez. En un reto privado solo lo reciben los suscritos que están en alguna de sus listas. Con `"avisar": false` no se envía a nadie, y tampoco se enviará si después se cambia a `true`. Si lo creas por la API, créalo como borrador y publícalo cuando esté listo.
 
 ### Crear una contraseña de aplicación
 

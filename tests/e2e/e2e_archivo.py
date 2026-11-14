@@ -25,7 +25,7 @@ admin=session(); fetch(admin,BASE+"/wp-login.php",urllib.parse.urlencode({"log":
 ahora=int(wp("eval","echo time();"))
 import datetime as dt
 def d(s): return dt.datetime.utcfromtimestamp(ahora+s+3600).strftime("%Y-%m-%dT%H:%M")
-base={"post_title":titulo,"content":"x","concursos[modo]":"abierto","concursos[lugares]":"1","concursos[inicio]":d(-60),"concursos[fin_envios]":d(86400),"concursos[fin_votacion]":d(172800),"concursos[cierre]":d(259200)}
+base={"post_title":titulo,"content":"x","concursos[modo]":"abierto","concursos[lugares]":"1","concursos[inicio]":d(-60),"concursos[fin_envios]":d(86400),"concursos[fin_votacion]":d(172800),"concursos[cierre]":d(259200),"concursos[avisar]":"1"}
 def enviar(url,extra):
     _,_,pg=fetch(admin,url); p=F(); p.feed(pg); x=dict(p.f)
     for k in ("aa","mm","jj","hh","mn"): x[k]=x.get("hidden_"+k,"")

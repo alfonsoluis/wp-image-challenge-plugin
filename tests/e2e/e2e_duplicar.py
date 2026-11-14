@@ -85,6 +85,7 @@ antes=len(enlaces())
 def duplicar(extra):
     d={"action":"concursos_duplicar","reto":R,"_wpnonce":nonce,**extra}
     return fetch(admin,BASE+"/wp-admin/admin-post.php",urllib.parse.urlencode(d).encode())
+wp("post","meta","update",R,"_concursos_avisar","0")
 st,final,h=duplicar({"participantes":"1"})
 C=urllib.parse.parse_qs(urllib.parse.urlparse(final).query)["post"][0]
 check("abre la edición con aviso",st==200 and "post.php" in final and "Copia creada con 6 participantes" in h,final)
@@ -92,6 +93,7 @@ check("borrador y título (copia)",wp("post","get",C,"--field=post_status")=="dr
 check("copia la descripción",wp("post","get",C,"--field=post_content")==wp("post","get",R,"--field=post_content"))
 check("fechas vacías",all(meta(C,"_concursos_"+k)=="0" for k in ("inicio","fin_envios","fin_votacion","cierre")))
 check("copia configuración y diseño",(meta(C,"_concursos_estilo"),meta(C,"_concursos_acento"))==("editorial","teja") and meta(C,"_concursos_votos_por_votante")=="3" and "Un cuadro" in meta(C,"_concursos_premios") and "Foto propia" in meta(C,"_concursos_reglas"))
+check("copia «avisar» pero no el aviso ya enviado",meta(C,"_concursos_avisar")=="0" and meta(C,"_concursos_avisado")=="",meta(C,"_concursos_avisar"))
 check("sin fotos",wp("post","list","--post_type=concurso_entrada","--meta_key=_concursos_reto",f"--meta_value={C}","--format=count")=="0")
 check("sin votos",wp("db","query",f"SELECT COUNT(*) FROM wp_concursos_votos WHERE reto_id={C}","--skip-column-names")=="0")
 cop=wp("post","list","--post_type=concurso_inscrito","--meta_key=_concursos_reto",f"--meta_value={C}","--field=ID").split()
