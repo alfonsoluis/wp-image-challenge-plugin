@@ -51,10 +51,25 @@ def inscribir(mail):
     body=b"".join(f'--{b}\r\nContent-Disposition: form-data; name="{k}"\r\n\r\n{v}\r\n'.encode() for k,v in fields.items())+f'--{b}\r\nContent-Disposition: form-data; name="foto"; filename=""\r\nContent-Type: application/octet-stream\r\n\r\n\r\n--{b}--\r\n'.encode()
     _,f,html=fetch(op,BASE+"/wp-admin/admin-post.php",body,{"Content-Type":f"multipart/form-data; boundary={b}","Referer":u})
     return urllib.parse.parse_qs(urllib.parse.urlparse(f).query).get("concursos_inscripcion",["?"])[0],html
-c,h=inscribir(f"fuera{run}@example.com")
-check("fuera de la lista: rechazado con el mensaje",c=="privado" and MSG in H.unescape(h),c)
+def buzon(mail,asunto):
+    import time; time.sleep(1)
+    ms=json.loads(fetch(urllib.request.build_opener(),MAILPIT+"/api/v1/messages?limit=500")[2])["messages"]
+    return [z for z in ms if z["To"][0]["Address"].lower()==mail.lower() and z["Subject"].startswith(asunto)]
+def texto(m): return json.loads(fetch(urllib.request.build_opener(),f"{MAILPIT}/api/v1/message/{m['ID']}")[2])["Text"]
+fuera=f"fuera{run}@example.com"
+c,h=inscribir(fuera); _,h_ok=None,None
+check("fuera de la lista: misma respuesta que al inscribirse",c=="ok" and MSG not in H.unescape(h),c)
 check("no se guarda",wp("post","list","--post_type=concurso_inscrito","--meta_key=_concursos_reto",f"--meta_value={R}","--format=count")=="0")
-c,_=inscribir(a1); check("en la lista: se inscribe",c=="ok",c)
+m=buzon(fuera,"Sobre tu inscripción")
+check("fuera de la lista: el motivo llega por email",len(m)==1 and "es privado" in texto(m[0]),str(len(m)))
+c,_=inscribir(fuera); check("repetido: sin otro email en 5 minutos",c=="ok" and len(buzon(fuera,"Sobre tu inscripción"))==1)
+c,h_ok=inscribir(a1); check("en la lista: se inscribe",c=="ok",c)
+c,h_dup=inscribir(a1)
+check("ya inscrito: misma respuesta, sin duplicar",c=="ok" and wp("post","list","--post_type=concurso_inscrito","--meta_key=_concursos_reto",f"--meta_value={R}","--format=count")=="1",c)
+m=buzon(a1,"Sobre tu inscripción")
+check("ya inscrito: el motivo llega por email",len(m)==1 and "ya está inscrita" in texto(m[0]),str(len(m)))
+aviso=lambda h: re.sub(r"\s+"," ",H.unescape(re.search(r'concursos-aviso[^>]*>(.*?)</',h,re.S).group(1))) if re.search(r'concursos-aviso[^>]*>(.*?)</',h,re.S) else "?"
+check("las tres respuestas muestran el mismo aviso",aviso(h)==aviso(h_ok)==aviso(h_dup)!="?",aviso(h_dup))
 c,_=inscribir(a2.upper()); check("sin distinguir mayúsculas",c=="ok",c)
 pid=wp("post","list","--post_type=concurso_inscrito","--meta_key=_concursos_reto",f"--meta_value={R}","--field=ID").split()
 wp("eval",f"foreach(array({','.join(pid)}) as $i) Concursos_Inscripcion::activar($i);")
@@ -77,7 +92,11 @@ def reg(op,mail):
 def correos(mail):
     ms=json.loads(fetch(urllib.request.build_opener(),MAILPIT+"/api/v1/messages?limit=500")[2])["messages"]
     return [z for z in ms if z["To"][0]["Address"]==mail and z["Subject"].startswith("Confirma")]
-c,h=reg(session(),no); check("votante fuera de la lista: mensaje y sin email",c=="privado" and MSG in H.unescape(h) and not correos(no),c)
+c,h=reg(session(),no)
+check("votante fuera de la lista: misma respuesta y sin enlace",c=="revisa" and MSG not in H.unescape(h) and not correos(no),c)
+m=buzon(no,"Votar en")
+check("votante fuera de la lista: el motivo llega por email",len(m)==1 and "no está en su lista" in texto(m[0]),str(len(m)))
+c,_=reg(session(),no); check("votante fuera, repetido: sin otro email",c=="espera" and len(buzon(no,"Votar en"))==1,c)
 v=session(); c,_=reg(v,ok); check("votante en la lista: recibe enlace",c=="revisa",c)
 l=re.search(r"http://localhost:8080/\?\S+",json.loads(fetch(urllib.request.build_opener(),f"{MAILPIT}/api/v1/message/{correos(ok)[0]['ID']}")[2])["Text"]).group(0)
 h=fetch(v,l)[2]; check("en la lista: ve botones","concursos-voto-form" in h)

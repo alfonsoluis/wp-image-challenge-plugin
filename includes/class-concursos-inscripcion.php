@@ -168,18 +168,16 @@ class Concursos_Inscripcion {
 	 */
 	private static function messages() {
 		return array(
-			'ok'        => array( 'success', __( 'Thank you! We received your registration. We will write to you when it is approved.', 'foncholuis-art-challenge-manager' ) ),
+			'ok'        => array( 'success', __( 'Thank you! We received your registration and sent you an email. Check your inbox, and also your spam folder.', 'foncholuis-art-challenge-manager' ) ),
 			'nombre'    => array( 'error', __( 'Enter your name.', 'foncholuis-art-challenge-manager' ) ),
 			'email'     => array( 'error', __( 'Enter a valid email address.', 'foncholuis-art-challenge-manager' ) ),
 			'reto'      => array( 'error', __( 'Choose an open challenge.', 'foncholuis-art-challenge-manager' ) ),
-			'duplicado' => array( 'error', __( 'That email is already registered for that challenge.', 'foncholuis-art-challenge-manager' ) ),
 			'foto'      => array( 'error', sprintf(
 				/* translators: %s: maximum file size, such as 5 MB. */
 				__( 'The photo must be a JPG, PNG or WebP of up to %s.', 'foncholuis-art-challenge-manager' ),
 				size_format( Concursos_Imagenes::limite() )
 			) ),
 			'privacidad' => array( 'error', __( 'You must accept the use of your data to register.', 'foncholuis-art-challenge-manager' ) ),
-			'privado'    => array( 'error', Concursos_Reto::mensaje_privado() ),
 			'error'     => array( 'error', __( 'We could not save your registration. Please try again.', 'foncholuis-art-challenge-manager' ) ),
 		);
 	}
@@ -211,7 +209,7 @@ class Concursos_Inscripcion {
 
 		ob_start();
 		?>
-		<div class="pc alignwide concursos-inscripcion"<?php echo Concursos_Diseno::atributos( $referencia ? $referencia['settings'] : null ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escapado. ?>>
+		<div class="pc alignwide concursos-inscripcion"<?php Concursos_Diseno::imprimir_atributos( $referencia ? $referencia['settings'] : null ); ?>>
 			<div class="pc-inscripcion">
 				<div class="pc-inscripcion__intro">
 					<p class="pc-antetitulo"><?php esc_html_e( 'Registration', 'foncholuis-art-challenge-manager' ); ?></p>
@@ -307,7 +305,7 @@ class Concursos_Inscripcion {
 									<?php endif; ?>
 								</label>
 							</p>
-							<p class="pc-acciones"><button type="submit" class="pc-boton pc-boton--principal"><?php esc_html_e( 'Register', 'foncholuis-art-challenge-manager' ); ?><?php echo Concursos_Vista::icono( 'flecha' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG fijo. ?></button></p>
+							<p class="pc-acciones"><button type="submit" class="pc-boton pc-boton--principal"><?php esc_html_e( 'Register', 'foncholuis-art-challenge-manager' ); ?><?php echo wp_kses( Concursos_Vista::icono( 'flecha' ), Concursos_Vista::html_permitido() ); ?></button></p>
 						</fieldset>
 					</form>
 				<?php endif; ?>
@@ -349,14 +347,8 @@ class Concursos_Inscripcion {
 		if ( ! in_array( $reto_id, wp_list_pluck( wp_list_pluck( self::retos_abiertos(), 'post' ), 'ID' ), true ) ) {
 			$done( 'reto' );
 		}
-		if ( ! Concursos_Reto::permite_email( Concursos_Reto::get_settings( $reto_id ), 'participantes', $email ) ) {
-			$done( 'privado' );
-		}
 		if ( empty( $_POST['privacidad'] ) ) {
 			$done( 'privacidad' );
-		}
-		if ( Concursos_Participante::exists( $email, $reto_id ) ) {
-			$done( 'duplicado' );
 		}
 
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- se valida abajo y lo maneja media_handle_upload().
@@ -364,6 +356,18 @@ class Concursos_Inscripcion {
 		$has_foto = $foto && ! empty( $foto['name'] );
 		if ( $has_foto && ! self::valid_image( $foto, Concursos_Imagenes::limite() ) ) {
 			$done( 'foto' );
+		}
+
+		// Si el email no está en la lista de un reto privado o ya está inscrito, la
+		// respuesta es la misma que al inscribirse: así el formulario no revela qué
+		// emails están en la lista o inscritos. El motivo solo se cuenta por email.
+		if ( ! Concursos_Reto::permite_email( Concursos_Reto::get_settings( $reto_id ), 'participantes', $email ) ) {
+			self::email_no_inscrito( $email, $nombre, $reto_id, 'privado' );
+			$done( 'ok' );
+		}
+		if ( Concursos_Participante::exists( $email, $reto_id ) ) {
+			self::email_no_inscrito( $email, $nombre, $reto_id, 'duplicado' );
+			$done( 'ok' );
 		}
 
 		$id = Concursos_Participante::create(
@@ -516,6 +520,38 @@ class Concursos_Inscripcion {
 				$reto,
 				get_bloginfo( 'name' )
 			)
+		);
+	}
+
+	/**
+	 * Explica por email por qué no se ha hecho la inscripción. Solo uno cada 5
+	 * minutos por email y reto, para que el formulario no sirva para llenar un buzón.
+	 *
+	 * @param string $email   Email.
+	 * @param string $nombre  Nombre escrito en el formulario.
+	 * @param int    $reto_id Reto.
+	 * @param string $motivo  privado|duplicado.
+	 * @return bool
+	 */
+	private static function email_no_inscrito( $email, $nombre, $reto_id, $motivo ) {
+		$clave = 'concursos_no_inscrito_' . md5( strtolower( $email ) . '|' . $reto_id );
+		if ( get_transient( $clave ) ) {
+			return false;
+		}
+		set_transient( $clave, 1, 5 * MINUTE_IN_SECONDS );
+
+		$reto  = get_the_title( $reto_id );
+		$texto = 'privado' === $motivo
+			/* translators: 1: name, 2: challenge name, 3: site name. */
+			? __( "Hello %1\$s,\n\nWe could not register you for the challenge “%2\$s”: it is private, and this email address is not on the list of people who can take part. If you think this is a mistake, contact the organizers.\n\nIf you did not fill in the registration form, you can ignore this email.\n\n%3\$s", 'foncholuis-art-challenge-manager' )
+			/* translators: 1: name, 2: challenge name, 3: site name. */
+			: __( "Hello %1\$s,\n\nThis email address is already registered for the challenge “%2\$s”, so we did not register it again. If your registration has been approved, use the personal link we sent you to submit your photos. If you cannot find it, contact the organizers.\n\nIf you did not fill in the registration form, you can ignore this email.\n\n%3\$s", 'foncholuis-art-challenge-manager' );
+
+		return wp_mail(
+			$email,
+			/* translators: %s: challenge name. */
+			sprintf( __( 'About your registration: %s', 'foncholuis-art-challenge-manager' ), $reto ),
+			sprintf( $texto, $nombre, $reto, get_bloginfo( 'name' ) )
 		);
 	}
 

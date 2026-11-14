@@ -226,8 +226,26 @@ class Concursos_Votantes {
 			self::volver( $reto, 'email' );
 		}
 
+		// Fuera de la lista de un reto privado: la misma respuesta que al registrarse,
+		// para no revelar qué emails están en la lista. El motivo se cuenta por email.
 		if ( ! Concursos_Reto::permite_email( Concursos_Reto::get_settings( $reto ), 'votantes', $email ) ) {
-			self::volver( $reto, 'privado' );
+			$clave = 'concursos_voto_privado_' . md5( $email . '|' . $reto );
+			if ( get_transient( $clave ) ) {
+				self::volver( $reto, 'espera' );
+			}
+			set_transient( $clave, 1, self::REENVIO_MIN );
+			wp_mail(
+				$email,
+				/* translators: %s: challenge name. */
+				sprintf( __( 'Voting in %s', 'foncholuis-art-challenge-manager' ), get_the_title( $reto ) ),
+				sprintf(
+					/* translators: 1: challenge name, 2: site name. */
+					__( "Hello,\n\nSomeone asked to vote in the challenge “%1\$s” with this email address, but voting in that challenge is private and this address is not on its list. If you think this is a mistake, contact the organizers.\n\nIf you did not ask for this, you can ignore this email.\n\n%2\$s", 'foncholuis-art-challenge-manager' ),
+					get_the_title( $reto ),
+					get_bloginfo( 'name' )
+				)
+			);
+			self::volver( $reto, 'revisa' );
 		}
 
 		global $wpdb;
@@ -635,7 +653,7 @@ class Concursos_Votantes {
 					<label class="pc-casilla"><input type="checkbox" name="suscribir" value="1"> <?php esc_html_e( 'Email me when there is a new challenge', 'foncholuis-art-challenge-manager' ); ?></label>
 					<button type="submit" class="pc-boton pc-boton--principal pc-boton--ancho"><?php esc_html_e( 'Send me the link', 'foncholuis-art-challenge-manager' ); ?></button>
 				</form>
-				<p class="pc-acciones"><?php echo Concursos_Vista::boton( '#concursos-votacion', __( 'See the photos', 'foncholuis-art-challenge-manager' ), 'secundario', 'flecha', 'pc-boton--ancho' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?></p>
+				<p class="pc-acciones"><?php echo wp_kses( Concursos_Vista::boton( '#concursos-votacion', __( 'See the photos', 'foncholuis-art-challenge-manager' ), 'secundario', 'flecha', 'pc-boton--ancho' ), Concursos_Vista::html_permitido() ); ?></p>
 			</div>
 			<?php
 			return ob_get_clean();
@@ -666,7 +684,7 @@ class Concursos_Votantes {
 				</p>
 			</div>
 			<?php if ( $permitido ) : ?>
-				<p class="pc-acciones"><?php echo Concursos_Vista::boton( '#concursos-votacion', $puestos ? __( 'Build my podium', 'foncholuis-art-challenge-manager' ) : __( 'See the photos and vote', 'foncholuis-art-challenge-manager' ), 'principal', 'flecha', 'pc-boton--ancho' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?></p>
+				<p class="pc-acciones"><?php echo wp_kses( Concursos_Vista::boton( '#concursos-votacion', $puestos ? __( 'Build my podium', 'foncholuis-art-challenge-manager' ) : __( 'See the photos and vote', 'foncholuis-art-challenge-manager' ), 'principal', 'flecha', 'pc-boton--ancho' ), Concursos_Vista::html_permitido() ); ?></p>
 			<?php endif; ?>
 			<div class="pc-votante__enlaces concursos-panel-voto__acciones">
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
