@@ -210,7 +210,7 @@ class Concursos_Galeria {
 			</nav>
 			<header class="pc-cabecera-reto">
 				<div class="pc-cabecera-reto__titulo">
-					<?php echo Concursos_Vista::chip( $status ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+					<?php echo wp_kses( Concursos_Vista::chip( $status ), Concursos_Vista::html_permitido() ); ?>
 					<h1 class="pc-titulo-reto"><?php echo esc_html( get_the_title( $post ) ); ?></h1>
 				</div>
 				<p class="pc-datos"><?php echo esc_html( implode( ' · ', $datos ) ); ?></p>
@@ -221,9 +221,9 @@ class Concursos_Galeria {
 			<div class="pc-cuerpo">
 				<div class="pc-cuerpo__principal">
 					<div class="pc-descripcion">
-						<?php echo apply_filters( 'the_content', $post->post_content ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound,WordPress.Security.EscapeOutput.OutputNotEscaped -- filtro estándar de WordPress. ?>
+						<?php echo wp_kses( apply_filters( 'the_content', $post->post_content ), Concursos_Vista::html_permitido() ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- filtro estándar de WordPress. ?>
 					</div>
-					<?php echo 'votacion' === $status ? self::como_se_vota( $s ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+					<?php echo wp_kses( 'votacion' === $status ? self::como_se_vota( $s ) : '', Concursos_Vista::html_permitido() ); ?>
 					<?php if ( $reglas ) : ?>
 						<section class="pc-bloque" id="reglas" aria-labelledby="pc-reglas">
 							<h2 class="pc-bloque__titulo" id="pc-reglas"><?php esc_html_e( 'Rules', 'foncholuis-art-challenge-manager' ); ?></h2>
@@ -245,10 +245,10 @@ class Concursos_Galeria {
 						</section>
 					<?php endif; ?>
 				</div>
-				<?php echo self::lateral( $post, $s, $status ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+				<?php echo wp_kses( self::lateral( $post, $s, $status ), Concursos_Vista::html_permitido() ); ?>
 			</div>
-			<?php echo self::render( $post->ID ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
-			<?php echo self::navegacion( $post ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+			<?php echo wp_kses( self::render( $post->ID ), Concursos_Vista::html_permitido() ); ?>
+			<?php echo wp_kses( self::navegacion( $post ), Concursos_Vista::html_permitido() ); ?>
 		</div>
 		<?php
 		return ob_get_clean();
@@ -269,7 +269,7 @@ class Concursos_Galeria {
 
 		ob_start();
 		echo '<section class="pc-seccion concursos-galeria" id="concursos-votacion">';
-		echo Concursos_Votantes::aviso_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+		echo wp_kses( Concursos_Votantes::aviso_html(), Concursos_Vista::html_permitido() );
 
 		if ( 'finalizado' === $status && $entradas ) {
 			self::resultados( $reto_id, $s, $entradas );
@@ -337,7 +337,7 @@ class Concursos_Galeria {
 		return sprintf(
 			'<section class="pc-bloque pc-como-votar" aria-labelledby="pc-como-votar"><h2 class="pc-bloque__titulo" id="pc-como-votar">%1$s</h2><ol class="pc-como-votar__puestos">%2$s</ol><p class="pc-nota">%3$s</p></section>',
 			esc_html__( 'How to vote', 'foncholuis-art-challenge-manager' ),
-			$html, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+			$html,
 			esc_html__( 'Each place goes to one photo only: if you give it to another, the first one loses it. The photo with the most points wins.', 'foncholuis-art-challenge-manager' )
 		);
 	}
@@ -393,7 +393,7 @@ class Concursos_Galeria {
 					<li class="pc-foto pc-foto--podio<?php echo $puesto ? ' is-puesto-' . esc_attr( $puesto ) : ''; ?>" data-entrada="<?php echo esc_attr( $id ); ?>" data-nombre="<?php echo esc_attr( $datos[ $id ]['nombre'] ); ?>" data-miniatura="<?php echo esc_url( $datos[ $id ]['miniatura'] ); ?>">
 						<figure>
 							<div class="pc-foto__media">
-								<?php echo Concursos_Entrada::miniatura( $entrada, 'large', $anonima ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+								<?php echo wp_kses( Concursos_Entrada::miniatura( $entrada, 'large', $anonima ), Concursos_Vista::html_permitido() ); ?>
 								<span class="pc-foto__sello" aria-hidden="true"><?php echo $puesto ? esc_html( Concursos_Votos::ordinal( $puesto ) ) : ''; ?></span>
 								<?php if ( $propia ) : ?>
 									<span class="pc-puestos pc-puestos--propia concursos-propia"><?php esc_html_e( 'Your photo', 'foncholuis-art-challenge-manager' ); ?></span>
@@ -409,7 +409,7 @@ class Concursos_Galeria {
 							<figcaption class="pc-foto__pie">
 								<span class="pc-foto__titulo"><?php echo esc_html( $datos[ $id ]['nombre'] ); ?></span>
 								<?php if ( ! $anonima && $autor ) : ?>
-									<span class="pc-foto__autor"><?php echo Concursos_Perfil::enlace( $autor ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?></span>
+									<span class="pc-foto__autor"><?php echo wp_kses( Concursos_Perfil::enlace( $autor ), Concursos_Vista::html_permitido() ); ?></span>
 								<?php endif; ?>
 							</figcaption>
 						</figure>
@@ -489,7 +489,7 @@ class Concursos_Galeria {
 			/* translators: %d: number of photos. */
 			$nota = sprintf( _n( '%d photo', '%d photos', count( $entradas ), 'foncholuis-art-challenge-manager' ), count( $entradas ) );
 		}
-		echo Concursos_Vista::cabecera_seccion( 'pc-fotos', 'votacion' === $status ? __( 'Photos in the vote', 'foncholuis-art-challenge-manager' ) : __( 'Submitted entries', 'foncholuis-art-challenge-manager' ), esc_html( $nota ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+		echo wp_kses( Concursos_Vista::cabecera_seccion( 'pc-fotos', 'votacion' === $status ? __( 'Photos in the vote', 'foncholuis-art-challenge-manager' ) : __( 'Submitted entries', 'foncholuis-art-challenge-manager' ), esc_html( $nota ) ), Concursos_Vista::html_permitido() );
 
 		if ( ! Concursos_Reto::photos_visible( $s ) ) {
 			if ( 'envios' === $status ) {
@@ -543,7 +543,7 @@ class Concursos_Galeria {
 					? '<span class="pc-etiqueta concursos-propia">' . esc_html__( 'Your photo', 'foncholuis-art-challenge-manager' ) . '</span>'
 					: Concursos_Votos::botones( $reto_id, $s, $entrada->ID, $mios );
 			}
-			echo self::tarjeta( $entrada, $boton, $anonima, $i + 1 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+			echo wp_kses( self::tarjeta( $entrada, $boton, $anonima, $i + 1 ), Concursos_Vista::html_permitido() );
 		}
 		echo '</ul>';
 	}
@@ -563,7 +563,7 @@ class Concursos_Galeria {
 		$votos   = Concursos_Votos::de_fotos( $reto_id, $entradas );
 		$ranking = Concursos_Votos::rank( $votos, (int) $s['lugares'] );
 
-		echo Concursos_Vista::cabecera_seccion( 'pc-ganadores', 1 === (int) $s['lugares'] ? __( 'Winner', 'foncholuis-art-challenge-manager' ) : __( 'Winners', 'foncholuis-art-challenge-manager' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+		echo wp_kses( Concursos_Vista::cabecera_seccion( 'pc-ganadores', 1 === (int) $s['lugares'] ? __( 'Winner', 'foncholuis-art-challenge-manager' ) : __( 'Winners', 'foncholuis-art-challenge-manager' ) ), Concursos_Vista::html_permitido() );
 
 		if ( ! $ranking['puestos'] ) {
 			echo '<p class="pc-vacio">' . esc_html__( 'This challenge ended without votes.', 'foncholuis-art-challenge-manager' ) . '</p>';
@@ -572,7 +572,7 @@ class Concursos_Galeria {
 			echo '<div class="pc-podio">';
 			echo '<div class="pc-podio__primero">';
 			foreach ( $primero['entradas'] as $id ) {
-				echo self::ganadora( $por_id[ $id ], $primero, $s, count( $primero['entradas'] ) > 1 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+				echo wp_kses( self::ganadora( $por_id[ $id ], $primero, $s, count( $primero['entradas'] ) > 1 ), Concursos_Vista::html_permitido() );
 			}
 			echo '</div>';
 			if ( $ranking['puestos'] ) {
@@ -589,9 +589,9 @@ class Concursos_Galeria {
 						$autor = Concursos_Entrada::owner( $id );
 						printf(
 							'<figure class="pc-podio__foto">%1$s<figcaption><span class="pc-foto__titulo">%2$s</span><span class="pc-foto__autor">%3$s</span><span class="pc-etiqueta concursos-votos">%4$s</span></figcaption></figure>',
-							Concursos_Entrada::miniatura( $por_id[ $id ], 'medium_large' ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+							wp_kses( Concursos_Entrada::miniatura( $por_id[ $id ], 'medium_large' ), Concursos_Vista::html_permitido() ),
 							esc_html( get_the_title( $id ) ),
-							$autor ? Concursos_Perfil::enlace( $autor ) : '', // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+							$autor ? wp_kses( Concursos_Perfil::enlace( $autor ), Concursos_Vista::html_permitido() ) : '',
 							esc_html( Concursos_Votos::etiqueta( $puesto['votos'], $s ) )
 						);
 					}
@@ -607,13 +607,13 @@ class Concursos_Galeria {
 			echo '<div class="pc-resto concursos-resto"><h3 class="pc-resto__titulo">' . esc_html__( 'Other participants', 'foncholuis-art-challenge-manager' ) . '</h3>';
 			echo '<ul class="pc-mosaico concursos-galeria__rejilla">';
 			foreach ( $ranking['resto'] as $id ) {
-				echo self::tarjeta( $por_id[ $id ], '<span class="pc-etiqueta concursos-votos">' . esc_html( Concursos_Votos::etiqueta( $votos[ $id ], $s ) ) . '</span>' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+				echo wp_kses( self::tarjeta( $por_id[ $id ], '<span class="pc-etiqueta concursos-votos">' . esc_html( Concursos_Votos::etiqueta( $votos[ $id ], $s ) ) . '</span>' ), Concursos_Vista::html_permitido() );
 			}
 			echo '</ul></div>';
 		}
 
 		self::resumen( $reto_id, $ranking, $votos, $por_id, $s );
-		echo Concursos_Clasificacion::html( (int) wp_date( 'Y', (int) $s['cierre'] ), (int) $s['cierre'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+		echo wp_kses( Concursos_Clasificacion::html( (int) wp_date( 'Y', (int) $s['cierre'] ), (int) $s['cierre'] ), Concursos_Vista::html_permitido() );
 	}
 
 	/**
@@ -671,7 +671,7 @@ class Concursos_Galeria {
 		$dato = sprintf( _n( '%d voter took part', '%d voters took part', $participantes, 'foncholuis-art-challenge-manager' ), $participantes ) . ( $escala ? ' · ' . $escala : '' );
 		?>
 		<section class="pc-seccion concursos-resumen" aria-labelledby="pc-resumen">
-			<?php echo Concursos_Vista::cabecera_seccion( 'pc-resumen', __( 'Challenge ranking', 'foncholuis-art-challenge-manager' ), esc_html( $dato ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+			<?php echo wp_kses( Concursos_Vista::cabecera_seccion( 'pc-resumen', __( 'Challenge ranking', 'foncholuis-art-challenge-manager' ), esc_html( $dato ) ), Concursos_Vista::html_permitido() ); ?>
 			<div class="pc-tabla-marco">
 				<table class="pc-tabla">
 					<thead>
@@ -699,11 +699,11 @@ class Concursos_Galeria {
 								</td>
 								<td>
 									<div class="pc-tabla__foto">
-										<?php echo Concursos_Entrada::miniatura( $foto, 'thumbnail' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+										<?php echo wp_kses( Concursos_Entrada::miniatura( $foto, 'thumbnail' ), Concursos_Vista::html_permitido() ); ?>
 										<span class="pc-foto__titulo"><?php echo esc_html( get_the_title( $foto ) ); ?></span>
 									</div>
 								</td>
-								<td class="pc-texto-suave"><?php echo $autor ? Concursos_Perfil::enlace( $autor ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?></td>
+								<td class="pc-texto-suave"><?php echo wp_kses( $autor ? Concursos_Perfil::enlace( $autor ) : '', Concursos_Vista::html_permitido() ); ?></td>
 								<td class="pc-tabla__num pc-tabla__fuerte concursos-tabla__num"><?php echo esc_html( number_format_i18n( $n ) ); ?></td>
 								<td class="pc-tabla__num pc-texto-suave concursos-tabla__num"><?php echo esc_html( $total ? number_format_i18n( $n / $total * 100, 1 ) : '—' ); ?></td>
 							</tr>

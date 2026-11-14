@@ -139,7 +139,7 @@ check("valores inválidos vuelven al tema",(meta(C2,"_concursos_estilo"),meta(C2
 
 st,_,h=fetch(session(),BASE+"/retos/reto-de-prueba-luz-y-sombra/")
 u=H.unescape(h)
-check("reto con su estilo, acento y la fuente del tema",'data-pc-estilo="editorial" style="--pc-acento:#C2410C;"' in u and "--c-" not in u and "Playfair" not in u)
+check("reto con su estilo, acento y la fuente del tema",'data-pc-estilo="editorial" style="--pc-acento:#C2410C' in u and "--c-" not in u and "Playfair" not in u)
 check("reglas, premios y fase","Foto propia" in h and "Un cuadro" in h and "En votación" in h and "Votación · ahora" in h)
 check("una sola h1 y galería",h.count("<h1")==1 and h.count('class="pc-foto"')==9)
 check("sin fuentes externas ni propias","fonts.googleapis" not in h and "plugins/concursos/assets/fonts" not in h)
@@ -148,7 +148,7 @@ _,_,g=fetch(session(),BASE+"/retos/reto-anterior-calles-vacias/"); check("tamañ
 _,_,g=fetch(session(),BASE+"/retos/reto-luz-de-otono/")
 est=re.search(r'<main class="pc[^"]*" data-pc-estilo="([^"]*)"( style)?',g)
 check("con el tema no fija nada",est and est.group(1)=="tema" and not est.group(2),str(est and est.groups()))
-_,_,p=fetch(session(),BASE+"/retos/"); check("portada con diseño del destacado",'<main class="pc concursos-publico concursos-publico--portada' in p and 'data-pc-estilo="editorial" style="--pc-acento:#C2410C;"' in H.unescape(p))
+_,_,p=fetch(session(),BASE+"/retos/"); check("portada con diseño del destacado",'<main class="pc concursos-publico concursos-publico--portada' in p and 'data-pc-estilo="editorial" style="--pc-acento:#C2410C' in H.unescape(p))
 
 # Limpieza
 for c in (C,C2):

@@ -204,7 +204,7 @@ class Concursos_Envio {
 			}
 			?>
 		</p>
-		<?php echo $abierto ? '' : self::enlace_reto( $p['reto'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+		<?php echo wp_kses( $abierto ? '' : self::enlace_reto( $p['reto'] ), Concursos_Vista::html_permitido() ); ?>
 		<?php if ( in_array( $status, array( 'proximo', 'envios', 'votacion' ), true ) && Concursos_Reto::permite_email( $reto, 'votantes', $p['email'] ) ) : ?>
 			<p class="concursos-aviso concursos-aviso--info concursos-voto-aviso">
 				<?php
@@ -373,9 +373,9 @@ class Concursos_Envio {
 	<?php wp_print_styles( 'concursos-public' ); ?>
 </head>
 <body class="concursos-pagina">
-	<main class="pc concursos-pagina__contenido"<?php echo Concursos_Diseno::atributos( $s ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escapado. ?>>
+	<main class="pc concursos-pagina__contenido"<?php Concursos_Diseno::imprimir_atributos( $s ); ?>>
 		<p class="concursos-sitio"><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php bloginfo( 'name' ); ?></a></p>
-		<?php echo $body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado al construirlo. ?>
+		<?php echo wp_kses( $body, Concursos_Vista::html_permitido() ); ?>
 	</main>
 	<?php wp_print_scripts( 'concursos-public' ); ?>
 </body>

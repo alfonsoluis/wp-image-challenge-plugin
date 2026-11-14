@@ -266,7 +266,7 @@ class Concursos_Perfil {
 			<header class="pc-perfil concursos-perfil">
 				<div class="pc-perfil__persona">
 					<?php if ( $foto ) : ?>
-						<?php echo $foto; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- HTML de WordPress. ?>
+						<?php echo wp_kses( $foto, Concursos_Vista::html_permitido() ); ?>
 					<?php else : ?>
 						<span class="pc-perfil__foto pc-perfil__foto--vacia concursos-perfil__foto--vacia" aria-hidden="true"><?php echo esc_html( Concursos_Vista::iniciales( $nombre ) ); ?></span>
 					<?php endif; ?>
@@ -298,7 +298,7 @@ class Concursos_Perfil {
 						<span class="pc-logro__media"><img src="<?php echo esc_url( $imagen ); ?>" alt=""></span>
 					<?php endif; ?>
 					<div class="pc-logro__texto">
-						<span class="pc-sello pc-sello--<?php echo esc_attr( (string) min( 3, $logro['puesto']['lugar'] ) ); ?>"><?php echo Concursos_Vista::icono( 'medalla', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG fijo. ?><?php echo esc_html( Concursos_Votos::nombre_lugar( $logro['puesto']['lugar'], $logro['puesto']['empate'] ) ); ?></span>
+						<span class="pc-sello pc-sello--<?php echo esc_attr( (string) min( 3, $logro['puesto']['lugar'] ) ); ?>"><?php echo wp_kses( Concursos_Vista::icono( 'medalla', 16 ), Concursos_Vista::html_permitido() ); ?><?php echo esc_html( Concursos_Votos::nombre_lugar( $logro['puesto']['lugar'], $logro['puesto']['empate'] ) ); ?></span>
 						<h2 class="pc-logro__titulo" id="pc-logro"><?php echo esc_html( get_the_title( $logro['mias'][0] ) ); ?></h2>
 						<p>
 							<?php esc_html_e( 'Challenge:', 'foncholuis-art-challenge-manager' ); ?>
@@ -314,13 +314,13 @@ class Concursos_Perfil {
 			<?php endif; ?>
 
 			<section class="pc-seccion" aria-labelledby="pc-historial">
-				<?php echo Concursos_Vista::cabecera_seccion( 'pc-historial', __( 'Challenges they took part in', 'foncholuis-art-challenge-manager' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+				<?php echo wp_kses( Concursos_Vista::cabecera_seccion( 'pc-historial', __( 'Challenges they took part in', 'foncholuis-art-challenge-manager' ) ), Concursos_Vista::html_permitido() ); ?>
 				<?php foreach ( $filas as $fila ) : ?>
 					<article class="pc-historial concursos-perfil__reto">
 						<div class="pc-historial__datos">
 							<span class="pc-etiqueta"><?php echo esc_html( Concursos_Reto::format_dia( Concursos_Reto::get_settings( $fila['reto_id'] )['cierre'] ) ); ?></span>
 							<h3 class="pc-historial__titulo"><a href="<?php echo esc_url( get_permalink( $fila['reto_id'] ) ); ?>"><?php echo esc_html( get_the_title( $fila['reto_id'] ) ); ?></a></h3>
-							<?php echo Concursos_Vista::chip( $fila['status'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+							<?php echo wp_kses( Concursos_Vista::chip( $fila['status'] ), Concursos_Vista::html_permitido() ); ?>
 							<?php if ( $fila['puesto'] ) : ?>
 								<span class="pc-resultado concursos-perfil__puesto"><span class="pc-medalla pc-medalla--<?php echo esc_attr( (string) min( 3, $fila['puesto']['lugar'] ) ); ?>" aria-hidden="true"></span><?php echo esc_html( Concursos_Votos::nombre_lugar( $fila['puesto']['lugar'], $fila['puesto']['empate'] ) ); ?></span>
 								<?php if ( '' !== $fila['puesto']['premio'] ) : ?>
@@ -338,7 +338,7 @@ class Concursos_Perfil {
 								<?php foreach ( $fila['mias'] as $entrada ) : ?>
 									<li class="pc-foto">
 										<figure>
-											<?php echo Concursos_Entrada::miniatura( $entrada ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+											<?php echo wp_kses( Concursos_Entrada::miniatura( $entrada ), Concursos_Vista::html_permitido() ); ?>
 											<figcaption class="pc-foto__pie"><span class="pc-foto__titulo"><?php echo esc_html( get_the_title( $entrada ) ); ?></span></figcaption>
 										</figure>
 									</li>

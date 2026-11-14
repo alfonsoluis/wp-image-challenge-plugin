@@ -385,7 +385,7 @@ class Concursos_Stats_Admin {
 		return sprintf(
 			'<figure class="concursos-stats-barras"><svg viewBox="0 0 100 40" preserveAspectRatio="none" role="img" aria-label="%1$s">%2$s</svg><figcaption class="concursos-stats-barras__eje"><span>%3$s</span><span>%4$s</span><span>%5$s</span></figcaption></figure>',
 			esc_attr( self::descripcion( $serie, $semanas, $nombre ) ),
-			$rects, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+			$rects,
 			esc_html( self::dia_corto( $claves[0] ) ),
 			/* translators: %s: highest value in the chart. */
 			esc_html( sprintf( __( 'max. %s', 'foncholuis-art-challenge-manager' ), number_format_i18n( max( $valores ) ) ) ),
@@ -595,8 +595,8 @@ class Concursos_Stats_Admin {
 						<h3 class="concursos-stats-tarjeta__nombre"><?php echo esc_html( $nombre ); ?></h3>
 						<p class="concursos-stats-tarjeta__total"><?php echo esc_html( number_format_i18n( $datos[ $clave ]['total'] ) ); ?></p>
 						<?php
-						echo self::sparkline( $datos[ $clave ]['serie'], $nombre ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
-						echo self::diferencia( $datos[ $clave ]['total'], $datos[ $clave ]['antes'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+						echo wp_kses( self::sparkline( $datos[ $clave ]['serie'], $nombre ), Concursos_Vista::html_permitido() );
+						echo wp_kses( self::diferencia( $datos[ $clave ]['total'], $datos[ $clave ]['antes'] ), Concursos_Vista::html_permitido() );
 						?>
 					</div>
 				</div>
@@ -657,12 +657,12 @@ class Concursos_Stats_Admin {
 						?>
 						<li class="concursos-stats-reto<?php echo $actual ? ' is-actual' : ''; ?>">
 							<a href="<?php echo esc_url( self::url( array( 'reto' => $reto['post']->ID ) ) ); ?>"<?php echo $actual ? ' aria-current="page"' : ''; ?>>
-								<?php echo self::miniatura_reto( $reto, 40 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+								<?php echo wp_kses( self::miniatura_reto( $reto, 40 ), Concursos_Vista::html_permitido() ); ?>
 								<span class="concursos-stats-reto__texto">
 									<span class="concursos-stats-reto__titulo"><?php echo esc_html( get_the_title( $reto['post'] ) ); ?></span>
 									<span class="concursos-stats-reto__etiquetas">
 										<?php
-										echo self::badge( $reto['status'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+										echo wp_kses( self::badge( $reto['status'] ), Concursos_Vista::html_permitido() );
 										if ( 'publish' !== $reto['post']->post_status ) {
 											echo ' <span class="concursos-badge">' . esc_html__( 'Not published', 'foncholuis-art-challenge-manager' ) . '</span>';
 										}
@@ -711,12 +711,12 @@ class Concursos_Stats_Admin {
 		?>
 		<section class="concursos-stats-reto-detalle" aria-labelledby="concursos-stats-reto-titulo" data-reto="<?php echo esc_attr( $id ); ?>">
 			<div class="concursos-stats-reto-cabecera">
-				<?php echo self::miniatura_reto( $reto, 64 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
+				<?php echo wp_kses( self::miniatura_reto( $reto, 64 ), Concursos_Vista::html_permitido() ); ?>
 				<div>
 					<h2 id="concursos-stats-reto-titulo"><?php echo esc_html( get_the_title( $reto['post'] ) ); ?></h2>
 					<p class="concursos-stats-reto__etiquetas">
 						<?php
-						echo self::badge( $status ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+						echo wp_kses( self::badge( $status ), Concursos_Vista::html_permitido() );
 						if ( 'publish' !== $reto['post']->post_status ) {
 							echo ' <span class="concursos-badge">' . esc_html__( 'Not published', 'foncholuis-art-challenge-manager' ) . '</span>';
 						}
@@ -728,7 +728,7 @@ class Concursos_Stats_Admin {
 						}
 						?>
 					</p>
-					<div class="row-actions concursos-stats-acciones"><?php echo implode( ' | ', $enlaces ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?></div>
+					<div class="row-actions concursos-stats-acciones"><?php echo wp_kses( implode( ' | ', $enlaces ), Concursos_Vista::html_permitido() ); ?></div>
 				</div>
 			</div>
 
@@ -891,7 +891,7 @@ class Concursos_Stats_Admin {
 			esc_attr( $clase ),
 			esc_html( $titulo ),
 			$nota ? ' <span class="concursos-stats-nota">' . esc_html( $nota ) . '</span>' : '',
-			$html // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+			wp_kses( $html, Concursos_Vista::html_permitido() )
 		);
 	}
 
@@ -1141,11 +1141,13 @@ class Concursos_Stats_Admin {
 		nocache_headers();
 		header( 'Content-Type: text/csv; charset=utf-8' );
 		header( 'Content-Disposition: attachment; filename="' . sanitize_file_name( $nombre . '-' . wp_date( 'Y-m-d' ) . '.csv' ) . '"' );
-		$csv = "\xEF\xBB\xBF";
+		// Es un archivo CSV que se descarga, no HTML: se escribe directamente en la salida.
+		$salida = fopen( 'php://output', 'w' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- WP_Filesystem no escribe en php://output.
+		fwrite( $salida, "\xEF\xBB\xBF" ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite -- ver arriba.
 		foreach ( $filas as $fila ) {
-			$csv .= self::linea_csv( $fila );
+			fwrite( $salida, self::linea_csv( $fila ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite -- ver arriba.
 		}
-		echo $csv; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CSV, no HTML; cada campo va entre comillas.
+		fclose( $salida ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- ver arriba.
 		exit;
 	}
 }

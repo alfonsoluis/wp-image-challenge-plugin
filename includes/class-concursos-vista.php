@@ -13,6 +13,93 @@ defined( 'ABSPATH' ) || exit;
 class Concursos_Vista {
 
 	/**
+	 * Etiquetas y atributos permitidos al imprimir el HTML que genera el
+	 * plugin, para escaparlo con wp_kses() justo al imprimirlo: el HTML de una
+	 * entrada más los formularios, el SVG de los iconos y los atributos ARIA y data-*.
+	 *
+	 * @return array
+	 */
+	public static function html_permitido() {
+		static $permitido = null;
+		if ( null !== $permitido ) {
+			return $permitido;
+		}
+
+		$globales = array_fill_keys(
+			array(
+				'class', 'id', 'style', 'title', 'role', 'hidden', 'tabindex', 'lang', 'dir', 'data-*',
+				'aria-label', 'aria-labelledby', 'aria-describedby', 'aria-hidden', 'aria-current', 'aria-pressed',
+				'aria-live', 'aria-atomic', 'aria-expanded', 'aria-controls', 'aria-haspopup', 'aria-modal',
+				'aria-valuenow', 'aria-valuemin', 'aria-valuemax', 'aria-valuetext', 'aria-checked', 'aria-selected',
+				'aria-disabled', 'aria-sort', 'aria-busy', 'aria-roledescription', 'aria-invalid', 'aria-required',
+			),
+			true
+		);
+		$svg      = array( 'fill', 'stroke', 'stroke-width', 'stroke-linecap', 'stroke-linejoin', 'stroke-dasharray', 'opacity', 'fill-opacity', 'transform', 'vector-effect' );
+
+		$extra = array(
+			'form'       => array( 'action', 'method', 'enctype', 'novalidate', 'name', 'target', 'autocomplete' ),
+			'input'      => array( 'type', 'name', 'value', 'checked', 'disabled', 'required', 'readonly', 'placeholder', 'autocomplete', 'min', 'max', 'step', 'minlength', 'maxlength', 'size', 'pattern', 'accept', 'multiple', 'form', 'inputmode', 'list' ),
+			'button'     => array( 'type', 'name', 'value', 'disabled', 'form', 'formaction', 'formmethod' ),
+			'select'     => array( 'name', 'disabled', 'required', 'multiple', 'size', 'form', 'autocomplete' ),
+			'option'     => array( 'value', 'selected', 'disabled', 'label' ),
+			'optgroup'   => array( 'label', 'disabled' ),
+			'textarea'   => array( 'name', 'rows', 'cols', 'disabled', 'required', 'readonly', 'placeholder', 'maxlength', 'form', 'autocomplete' ),
+			'label'      => array( 'for', 'form' ),
+			'fieldset'   => array( 'disabled', 'form', 'name' ),
+			'legend'     => array(),
+			'output'     => array( 'for', 'form', 'name' ),
+			'datalist'   => array(),
+			'main'       => array(),
+			'section'    => array(),
+			'header'     => array(),
+			'footer'     => array(),
+			'nav'        => array(),
+			'article'    => array(),
+			'aside'      => array(),
+			'figure'     => array(),
+			'figcaption' => array(),
+			'time'       => array( 'datetime' ),
+			'meter'      => array( 'value', 'min', 'max', 'low', 'high', 'optimum' ),
+			'progress'   => array( 'value', 'max' ),
+			'details'    => array( 'open', 'name' ),
+			'summary'    => array(),
+			'picture'    => array(),
+			'source'     => array( 'srcset', 'sizes', 'type', 'media', 'width', 'height', 'src' ),
+			'img'        => array( 'src', 'srcset', 'sizes', 'alt', 'width', 'height', 'loading', 'decoding', 'fetchpriority' ),
+			'iframe'     => array( 'src', 'width', 'height', 'allow', 'allowfullscreen', 'loading', 'referrerpolicy', 'frameborder', 'name', 'sandbox' ),
+			'ol'         => array( 'start', 'reversed', 'type' ),
+			'li'         => array( 'value' ),
+			'td'         => array( 'colspan', 'rowspan', 'headers' ),
+			'th'         => array( 'colspan', 'rowspan', 'headers', 'scope', 'abbr' ),
+			'a'          => array( 'href', 'rel', 'target', 'download', 'hreflang', 'type', 'name' ),
+			'svg'        => array_merge( $svg, array( 'xmlns', 'viewbox', 'width', 'height', 'focusable', 'preserveaspectratio' ) ),
+			'g'          => $svg,
+			'path'       => array_merge( $svg, array( 'd' ) ),
+			'circle'     => array_merge( $svg, array( 'cx', 'cy', 'r' ) ),
+			'ellipse'    => array_merge( $svg, array( 'cx', 'cy', 'rx', 'ry' ) ),
+			'rect'       => array_merge( $svg, array( 'x', 'y', 'width', 'height', 'rx', 'ry' ) ),
+			'line'       => array_merge( $svg, array( 'x1', 'y1', 'x2', 'y2' ) ),
+			'polyline'   => array_merge( $svg, array( 'points' ) ),
+			'polygon'    => array_merge( $svg, array( 'points' ) ),
+			'text'       => array_merge( $svg, array( 'x', 'y', 'dx', 'dy', 'text-anchor', 'font-size', 'dominant-baseline' ) ),
+			'tspan'      => array_merge( $svg, array( 'x', 'y', 'dx', 'dy' ) ),
+			'desc'       => array(),
+			'defs'       => array(),
+		);
+
+		$permitido = wp_kses_allowed_html( 'post' );
+		foreach ( $extra as $etiqueta => $atributos ) {
+			$permitido[ $etiqueta ] = array_merge( isset( $permitido[ $etiqueta ] ) ? $permitido[ $etiqueta ] : array(), array_fill_keys( $atributos, true ) );
+		}
+		foreach ( $permitido as $etiqueta => $atributos ) {
+			$permitido[ $etiqueta ] = array_merge( $globales, (array) $atributos );
+		}
+
+		return $permitido;
+	}
+
+	/**
 	 * Icono SVG de trazo, del color del texto.
 	 *
 	 * @param string $nombre flecha, subir, medalla o camara.

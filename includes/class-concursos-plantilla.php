@@ -38,7 +38,7 @@ class Concursos_Plantilla {
 			self::con_bloques( $main );
 		} else {
 			get_header();
-			echo $main; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+			echo wp_kses( $main, Concursos_Vista::html_permitido() );
 			get_footer();
 		}
 		exit;
@@ -72,9 +72,9 @@ class Concursos_Plantilla {
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <div class="wp-site-blocks">
-	<header class="wp-block-template-part"><?php echo $header; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- bloques del tema. ?></header>
-	<?php echo $main; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado. ?>
-	<footer class="wp-block-template-part"><?php echo $footer; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- bloques del tema. ?></footer>
+	<header class="wp-block-template-part"><?php echo wp_kses( $header, Concursos_Vista::html_permitido() ); ?></header>
+	<?php echo wp_kses( $main, Concursos_Vista::html_permitido() ); ?>
+	<footer class="wp-block-template-part"><?php echo wp_kses( $footer, Concursos_Vista::html_permitido() ); ?></footer>
 </div>
 <?php wp_footer(); ?>
 </body>

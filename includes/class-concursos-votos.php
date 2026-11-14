@@ -467,7 +467,7 @@ class Concursos_Votos {
 			return sprintf(
 				'<form method="post" action="%1$s" class="concursos-voto-form concursos-puestos">%2$s<input type="hidden" name="op" value="quitar"><span class="concursos-puestos__mio">%3$s</span><button type="submit" class="concursos-voto concursos-voto--quitar">%4$s</button></form>',
 				esc_url( admin_url( 'admin-post.php' ) ),
-				$campos, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+				$campos,
 				/* translators: 1: place such as 1st, 2: number of points. */
 				esc_html( sprintf( _n( 'Your %1$s · %2$d point', 'Your %1$s · %2$d points', self::puntos_de( $puesto ), 'foncholuis-art-challenge-manager' ), self::ordinal( $puesto ), self::puntos_de( $puesto ) ) ),
 				esc_html__( 'Remove vote', 'foncholuis-art-challenge-manager' )
@@ -496,9 +496,9 @@ class Concursos_Votos {
 		return sprintf(
 			'<form method="post" action="%1$s" class="concursos-voto-form concursos-puestos">%2$s<input type="hidden" name="op" value="votar"><span class="concursos-puestos__texto">%3$s</span>%4$s</form>',
 			esc_url( admin_url( 'admin-post.php' ) ),
-			$campos, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+			$campos,
 			esc_html__( 'Vote:', 'foncholuis-art-challenge-manager' ),
-			$botones // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ya escapado.
+			$botones
 		);
 	}
 

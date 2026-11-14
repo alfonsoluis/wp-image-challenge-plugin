@@ -140,9 +140,9 @@ class Concursos_Diseno {
 	 * Atributos del contenedor raíz .pc de un reto: estilo y variables.
 	 *
 	 * @param array|null $s Configuración del reto, o null para los valores por defecto.
-	 * @return string Atributos ya escapados, con un espacio delante.
+	 * @return array Nombre del atributo => valor, sin escapar.
 	 */
-	public static function atributos( $s ) {
+	private static function valores_atributos( $s ) {
 		$estilo = $s && isset( self::estilos()[ $s['estilo'] ] ) ? $s['estilo'] : self::TEMA;
 		$vars   = '';
 
@@ -155,7 +155,38 @@ class Concursos_Diseno {
 			$vars .= '--pc-escala:' . $tamanos[ $s['tamano'] ]['escala'] . ';';
 		}
 
-		return ' data-pc-estilo="' . esc_attr( $estilo ) . '"' . ( $vars ? ' style="' . esc_attr( $vars ) . '"' : '' );
+		return array_filter(
+			array(
+				'data-pc-estilo' => $estilo,
+				'style'          => $vars,
+			)
+		);
+	}
+
+	/**
+	 * Atributos de diseño como texto, para construir HTML que se escapa al imprimirlo.
+	 *
+	 * @param array|null $s Configuración del reto.
+	 * @return string
+	 */
+	public static function atributos( $s ) {
+		$html = '';
+		foreach ( self::valores_atributos( $s ) as $nombre => $valor ) {
+			$html .= ' ' . $nombre . '="' . esc_attr( $valor ) . '"';
+		}
+
+		return $html;
+	}
+
+	/**
+	 * Imprime los atributos de diseño dentro de una etiqueta, escapados.
+	 *
+	 * @param array|null $s Configuración del reto.
+	 */
+	public static function imprimir_atributos( $s ) {
+		foreach ( self::valores_atributos( $s ) as $nombre => $valor ) {
+			echo ' ' . esc_attr( $nombre ) . '="' . esc_attr( $valor ) . '"';
+		}
 	}
 
 	/**
