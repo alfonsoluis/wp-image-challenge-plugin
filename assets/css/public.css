@@ -920,6 +920,32 @@
 	border-radius: var(--pc-radio);
 }
 
+/* Tablas de la descripción: en pantallas estrechas se desplazan dentro de su caja. */
+.pc .pc-descripcion table {
+	display: block;
+	max-width: 100%;
+	overflow-x: auto;
+	border-collapse: collapse;
+}
+
+.pc .pc-descripcion th,
+.pc .pc-descripcion td {
+	padding: 6px 12px 6px 0;
+	vertical-align: top;
+	text-align: left;
+}
+
+.pc .pc-descripcion tbody tr + tr td {
+	border-top: 1px solid var(--pc-linea);
+}
+
+@media (max-width: 600px) {
+	.pc .pc-descripcion th,
+	.pc .pc-descripcion td {
+		width: 9em;
+	}
+}
+
 .pc .pc-bloque__titulo {
 	margin-bottom: 16px;
 	font-size: calc(13px * var(--pc-escala));
