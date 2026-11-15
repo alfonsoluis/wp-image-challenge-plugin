@@ -4,7 +4,7 @@ Tags: contest, photo contest, voting, gallery, challenges
 Requires at least: 7.1
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,7 @@ Create a challenge, open registration, approve participants, collect their photo
 = On your site =
 
 * A challenges page with the current challenge featured and past ones listed.
+* A horizontal challenges banner for any page, as a block or with the `[concursos_banner]` shortcode: it invites people to take part in the open challenge, vote in the one in voting, or see past winners, either fixed or a random one on each visit.
 * Results with prizes and ties shown with equal prominence, a vote summary and an annual general ranking.
 * Participant profiles with their photos and places, which you can turn off in the plugin settings.
 * Enlarged photos with their description, author and challenge.
@@ -69,6 +70,10 @@ The "Join a challenge" buttons appear when a published page contains the `[concu
 = Can I manage challenges through the REST API? =
 
 Yes. Challenges are available at /wp-json/wp/v2/concurso_reto, and their settings are in the `concursos` field, which is only shown and accepted for users who can edit the challenge (for example, with an application password). Dates use the site time zone, in the format YYYY-MM-DDTHH:MM. Set `avisar` to false to publish a challenge without emailing the subscribers.
+
+= How do I add the challenges banner to a page? =
+
+Add the "Challenges banner" block, or write `[concursos_banner]` in a Shortcode block or in your page builder's shortcode widget. Use `modo="participar"`, `modo="votar"` or `modo="pasados"` to always show one message, or leave the default `modo="aleatorio"` to show a random one on each visit (it also works with page caching). Use `estilo="tema"` or `estilo="editorial"` to override the style of the challenge shown. If the chosen message has nothing to show, another available one is used.
 
 = Do participants need a WordPress account? =
 
@@ -102,10 +107,16 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 
 == Changelog ==
 
+= 1.1.0 =
+* New: challenges banner, as a block and with the `[concursos_banner]` shortcode, with three messages (take part, vote, past winners) that can be fixed or shown at random.
+
 = 1.0.0 =
 * First public release.
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Adds the challenges banner block and shortcode.
 
 = 1.0.0 =
 First public release.

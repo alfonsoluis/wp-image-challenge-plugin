@@ -2487,3 +2487,225 @@
 		transition: none;
 	}
 }
+
+/* Banner de retos ([concursos_banner] y bloque «Banner de retos») ------------
+ * Cada variante es su propio contenedor .pc. El grupo .concursos-banner es un
+ * contenedor de consultas, así que el banner se adapta al ancho de la columna
+ * donde se ponga, no al de la ventana.
+ */
+
+.concursos-banner {
+	container-type: inline-size;
+	margin-block: 24px;
+}
+
+.pc.pc-banner {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 44%);
+	min-height: 250px;
+	overflow: hidden;
+	border: 1px solid var(--pc-linea);
+	border-radius: var(--pc-radio-grande);
+	background: var(--pc-fondo-solido);
+	color: var(--pc-tinta);
+}
+
+.pc.pc-banner[hidden] {
+	display: none;
+}
+
+.pc.pc-banner--sin-imagen {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.pc .pc-banner__texto {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 14px;
+	min-width: 0;
+	padding: clamp(22px, 4cqi, 40px);
+}
+
+.pc .pc-banner__chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.pc .pc-banner__privado {
+	background: transparent;
+	box-shadow: inset 0 0 0 1px var(--pc-linea-fuerte);
+	color: var(--pc-tinta-2);
+}
+
+.pc .pc-banner__antetitulo {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.pc .pc-banner__podio {
+	display: inline-flex;
+	gap: 4px;
+}
+
+.pc .pc-banner__podio span {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: var(--pc-oro);
+}
+
+.pc .pc-banner__podio span:nth-child(2) {
+	background: var(--pc-plata);
+}
+
+.pc .pc-banner__podio span:nth-child(3) {
+	background: var(--pc-bronce);
+}
+
+.pc .pc-banner__titulo {
+	font-family: var(--pc-fuente-titulos);
+	font-size: calc(clamp(28px, 5.4cqi, 54px) * var(--pc-escala));
+	font-weight: var(--pc-peso-titulos);
+	line-height: 0.98;
+	letter-spacing: -0.01em;
+	text-wrap: balance;
+}
+
+.pc .pc-banner__titulo em {
+	font-style: italic;
+}
+
+.pc .pc-banner__resumen {
+	display: -webkit-box;
+	overflow: hidden;
+	max-width: 52ch;
+	color: var(--pc-tinta-2);
+	font-size: var(--pc-t-pequeno);
+	line-height: 1.5;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+
+.pc .pc-banner__accion {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px 18px;
+	margin-top: 4px;
+}
+
+.pc .pc-banner__dato {
+	color: var(--pc-tinta-3);
+	font-size: var(--pc-t-pequeno);
+	font-variant-numeric: tabular-nums;
+}
+
+.pc .pc-banner__dato strong {
+	color: var(--pc-tinta);
+	font-weight: 600;
+}
+
+.pc .pc-banner__media {
+	position: relative;
+	min-height: 100%;
+	background: var(--pc-vacio);
+}
+
+.pc .pc-banner__media img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	max-width: none;
+	object-fit: cover;
+	display: block;
+}
+
+/* Votar: mosaico de fotos a la izquierda, el texto a la derecha. */
+
+.pc.pc-banner--votar {
+	grid-template-columns: minmax(0, 46%) minmax(0, 1fr);
+}
+
+.pc.pc-banner--votar.pc-banner--sin-imagen {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.pc .pc-banner__mosaico {
+	display: grid;
+	grid-template-rows: minmax(0, 1fr);
+	gap: 3px;
+	height: 100%;
+	min-height: 250px;
+	background: var(--pc-fondo-solido);
+}
+
+.pc .pc-banner__celda {
+	position: relative;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.pc .pc-banner__mosaico--2 {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.pc .pc-banner__mosaico--3 {
+	grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+	grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.pc .pc-banner__mosaico--3 .pc-banner__celda:first-child {
+	grid-row: span 2;
+}
+
+/* Pasados: superficie oscura y la foto ganadora con su sello. */
+
+.pc.pc-banner--pasados {
+	border-color: var(--pc-tinta);
+	background: var(--pc-tinta);
+	color: var(--pc-sobre-tinta);
+}
+
+.pc.pc-banner--pasados .pc-banner__antetitulo,
+.pc.pc-banner--pasados .pc-banner__resumen,
+.pc.pc-banner--pasados .pc-banner__dato {
+	color: color-mix(in srgb, var(--pc-sobre-tinta) 78%, var(--pc-tinta));
+}
+
+.pc.pc-banner--pasados .pc-boton,
+.pc.pc-banner--pasados .pc-boton:hover {
+	border-color: var(--pc-sobre-tinta);
+	background: var(--pc-sobre-tinta);
+	color: var(--pc-tinta);
+}
+
+.pc.pc-banner--pasados .pc-boton:focus-visible {
+	outline: 2px solid var(--pc-sobre-tinta);
+	outline-offset: 3px;
+}
+
+/* Columnas estrechas: la imagen arriba, en franja, y el texto debajo. */
+
+@container (max-width: 600px) {
+	.pc.pc-banner,
+	.pc.pc-banner--votar {
+		grid-template-columns: minmax(0, 1fr);
+		min-height: 0;
+	}
+
+	.pc .pc-banner__media,
+	.pc .pc-banner__mosaico {
+		order: -1;
+		height: auto;
+		min-height: 0;
+		aspect-ratio: 16 / 7;
+	}
+
+	.pc .pc-banner__titulo {
+		font-size: calc(clamp(26px, 8cqi, 36px) * var(--pc-escala));
+	}
+}
