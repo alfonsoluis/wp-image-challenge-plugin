@@ -984,9 +984,44 @@
 	line-height: 1;
 }
 
-.pc .pc-lateral {
+/* Columna lateral: el cuadro del reto y, debajo, el banner de retos pasados. */
+.pc .pc-columna {
 	display: flex;
 	flex: 1 1 320px;
+	flex-direction: column;
+	gap: 24px;
+	min-width: 0;
+}
+
+.pc .pc-columna .concursos-banner {
+	margin-block: 0;
+}
+
+/* A dos columnas se queda a la vista al hacer scroll, hasta el final del texto
+ * del reto. assets/js/columna.js baja el tope si no cabe en la ventana. */
+@media (min-width: 960px) {
+	.pc .pc-columna {
+		position: sticky;
+		top: var(--pc-columna-top, calc(var(--wp-admin--admin-bar--height, 0px) + 24px));
+	}
+}
+
+/* El banner de retos pasados, más compacto en la columna. */
+.pc .pc-columna .pc-banner__media {
+	aspect-ratio: 16 / 6;
+}
+
+.pc .pc-columna .pc-banner__texto {
+	gap: 10px;
+	padding: 20px 22px 22px;
+}
+
+.pc .pc-columna .pc-banner__titulo {
+	font-size: calc(26px * var(--pc-escala));
+}
+
+.pc .pc-lateral {
+	display: flex;
 	flex-direction: column;
 	gap: 24px;
 	padding: 28px;

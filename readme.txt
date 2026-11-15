@@ -109,6 +109,7 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 
 = 1.1.0 =
 * New: challenges banner, as a block and with the `[concursos_banner]` shortcode, with three messages (take part, vote, past winners) that can be fixed or shown at random.
+* New: on each challenge page, the past challenges banner appears below the dates box, and both stay in view while scrolling on wide screens.
 
 = 1.0.0 =
 * First public release.

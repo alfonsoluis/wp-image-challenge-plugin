@@ -124,7 +124,8 @@ class Concursos_Galeria {
 	}
 
 	/**
-	 * Columna lateral del reto: calendario, cuenta atrás y acción de la fase.
+	 * Columna lateral del reto: calendario, cuenta atrás y acción de la fase,
+	 * y debajo el banner de retos pasados si los hay.
 	 *
 	 * @param WP_Post $post   Reto.
 	 * @param array   $s      Configuración.
@@ -159,7 +160,22 @@ class Concursos_Galeria {
 			}
 		}
 
-		return '<aside class="pc-lateral" aria-label="' . esc_attr__( 'Challenge schedule', 'foncholuis-art-challenge-manager' ) . '">' . $html . '</aside>';
+		// El cuadro y el banner de retos pasados van juntos y se quedan a la vista al hacer scroll.
+		wp_enqueue_script(
+			'concursos-columna',
+			CONCURSOS_URL . 'assets/js/columna.js',
+			array(),
+			CONCURSOS_VERSION,
+			array(
+				'in_footer' => true,
+				'strategy'  => 'defer',
+			)
+		);
+
+		return '<div class="pc-columna">'
+			. '<aside class="pc-lateral" aria-label="' . esc_attr__( 'Challenge schedule', 'foncholuis-art-challenge-manager' ) . '">' . $html . '</aside>'
+			. Concursos_Banner::pasados_lateral( $post->ID )
+			. '</div>';
 	}
 
 	/**

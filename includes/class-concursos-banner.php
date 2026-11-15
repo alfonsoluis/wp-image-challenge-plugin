@@ -179,6 +179,29 @@ class Concursos_Banner {
 	}
 
 	/**
+	 * Banner de retos pasados para la columna lateral de un reto, sin contar
+	 * ese reto. Vacío si no hay otros retos terminados.
+	 *
+	 * @param int $excluir Reto que se está viendo.
+	 * @return string
+	 */
+	public static function pasados_lateral( $excluir ) {
+		$pasados = array();
+		foreach ( self::retos()['finalizado'] as $reto ) {
+			if ( (int) $reto['post']->ID !== (int) $excluir ) {
+				$pasados[] = $reto;
+			}
+		}
+		if ( ! $pasados ) {
+			return '';
+		}
+
+		wp_enqueue_style( 'concursos-public' );
+
+		return wp_kses( '<div class="concursos-banner concursos-banner--lateral" data-pc-banner-modo="pasados">' . self::pasados( $pasados, 'reto' ) . '</div>', Concursos_Vista::html_permitido() );
+	}
+
+	/**
 	 * Variantes con contenido, por modo.
 	 *
 	 * @param string $estilo Estilo pedido.

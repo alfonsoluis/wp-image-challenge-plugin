@@ -16,6 +16,17 @@ def get(u):
 # La demo en votación crea un reto en votación y dos terminados.
 print(sh("make","demo","FASE=votacion").splitlines()[-1])
 
+# Página de un reto: el banner de retos pasados va en la columna lateral, sin ese reto.
+terminados = wp("eval", "foreach(Concursos_Reto::all(array('publish')) as $r){ if('finalizado'===$r['status']) echo $r['post']->ID,'|',get_permalink($r['post']),'|',get_the_title($r['post']),\"\\n\"; }").splitlines()
+check("hay dos retos terminados", len(terminados)>=2, str(len(terminados)))
+rid, url, titulo = terminados[0].split("|", 2)
+st, p = get(url)
+columna = p.split('class="pc-columna"', 1)[1].split('<nav ', 1)[0] if 'class="pc-columna"' in p else ""
+check("reto: columna lateral con el cuadro y el banner", '<aside class="pc-lateral"' in columna and 'concursos-banner--lateral' in columna)
+banner = columna.split('concursos-banner--lateral', 1)[-1].split('</aside>', 1)[0]
+check("reto: el banner no presenta el propio reto", 'pc-banner--pasados' in banner and titulo not in banner and 'El último' in banner, titulo)
+check("reto: carga columna.js", "assets/js/columna.js" in p)
+
 contenido = "\n".join([
     '<!-- wp:shortcode -->[concursos_banner]<!-- /wp:shortcode -->',
     '<!-- wp:shortcode -->[concursos_banner modo="votar"]<!-- /wp:shortcode -->',

@@ -166,6 +166,10 @@ Si no hay retos recibiendo fotos, en votación ni terminados, el banner invita a
 
 <img alt="Banner sin retos activos: Un tema. Una foto. Tu mirada., con el próximo reto" src="docs/screenshots/banner-general.jpg" width="820">
 
+#### En la página de cada reto
+
+No hace falta añadirlo: en la página de un reto, debajo del cuadro con las fechas y el botón de inscripción, sale el banner de retos pasados si hay otros retos terminados. En pantallas anchas, el cuadro y el banner se quedan a la vista al hacer scroll hasta el final del texto del reto.
+
 #### En una columna estrecha o en el móvil
 
 El banner se adapta al ancho de la columna donde lo pongas, no al de la ventana: en columnas estrechas la imagen pasa arriba y el texto abajo.
