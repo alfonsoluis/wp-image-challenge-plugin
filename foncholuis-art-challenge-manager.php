@@ -3,7 +3,7 @@
  * Plugin Name:       Foncholuis Art Challenge Manager
  * Plugin URI:        https://github.com/alfonsoluis/wp-image-challenge-plugin
  * Description:       Photo, drawing, design and other art challenges with participants, submissions, voting and results.
- * Version:           1.1.0
+ * Version:           1.2.0
  * Requires at least: 7.1
  * Requires PHP:      7.4
  * Author:            Alfonso Rodriguez
@@ -17,7 +17,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'CONCURSOS_VERSION', '1.1.0' );
+define( 'CONCURSOS_VERSION', '1.2.0' );
 define( 'CONCURSOS_FILE', __FILE__ );
 define( 'CONCURSOS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'CONCURSOS_URL', plugin_dir_url( __FILE__ ) );

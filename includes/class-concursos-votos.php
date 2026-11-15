@@ -21,6 +21,9 @@ class Concursos_Votos {
 	/** Puntos de cada voto según su puesto, en SQL. */
 	const PUNTOS_SQL = 'CASE puesto WHEN 1 THEN 3 WHEN 2 THEN 2 ELSE 1 END';
 
+	/** Puntos de una foto que no vienen de votos: retos anteriores al plugin, importados. */
+	const META_IMPORTADOS = '_concursos_puntos_importados';
+
 	/**
 	 * Engancha los hooks.
 	 */
@@ -83,7 +86,7 @@ class Concursos_Votos {
 	}
 
 	/**
-	 * Puntos de cada foto de un reto.
+	 * Puntos de cada foto de un reto: los de los votos más los importados.
 	 *
 	 * @param int $reto_id Reto.
 	 * @return int[] entrada => puntos (solo las que tienen alguno).
@@ -98,12 +101,53 @@ class Concursos_Votos {
 		foreach ( $rows as $row ) {
 			$counts[ (int) $row->entrada_id ] = (int) $row->n;
 		}
+		foreach ( self::importados( $reto_id ) as $entrada_id => $n ) {
+			$counts[ $entrada_id ] = ( isset( $counts[ $entrada_id ] ) ? $counts[ $entrada_id ] : 0 ) + $n;
+		}
 
 		return $counts;
 	}
 
 	/**
-	 * Puntos de una foto.
+	 * Puntos importados de las fotos de un reto.
+	 *
+	 * @param int $reto_id Reto.
+	 * @return int[] entrada => puntos (solo las que tienen alguno).
+	 */
+	public static function importados( $reto_id ) {
+		$ids = get_posts(
+			array(
+				'post_type'      => Concursos_Entrada::POST_TYPE,
+				'post_status'    => 'any',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+				'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+					array(
+						'key'   => Concursos_Entrada::META . 'reto',
+						'value' => (int) $reto_id,
+					),
+					array(
+						'key'     => self::META_IMPORTADOS,
+						'compare' => 'EXISTS',
+					),
+				),
+			)
+		);
+
+		$puntos = array();
+		foreach ( $ids as $id ) {
+			$n = (int) get_post_meta( $id, self::META_IMPORTADOS, true );
+			if ( $n > 0 ) {
+				$puntos[ (int) $id ] = $n;
+			}
+		}
+
+		return $puntos;
+	}
+
+	/**
+	 * Puntos de una foto: los de los votos más los importados.
 	 *
 	 * @param int $entrada_id Foto.
 	 * @return int
@@ -113,7 +157,9 @@ class Concursos_Votos {
 
 		$t = Concursos_DB::votos();
 
-		return (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COALESCE(SUM(' . self::PUNTOS_SQL . '), 0) FROM %i WHERE entrada_id = %d', $t, $entrada_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- PUNTOS_SQL es una constante.
+		$votos = (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COALESCE(SUM(' . self::PUNTOS_SQL . '), 0) FROM %i WHERE entrada_id = %d', $t, $entrada_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- PUNTOS_SQL es una constante.
+
+		return $votos + max( 0, (int) get_post_meta( $entrada_id, self::META_IMPORTADOS, true ) );
 	}
 
 	/**

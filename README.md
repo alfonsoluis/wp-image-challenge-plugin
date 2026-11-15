@@ -200,6 +200,19 @@ El banner se adapta al ancho de la columna donde lo pongas, no al de la ventana:
 | `modo` | **Qué mostrar** | `aleatorio`, `participar`, `votar`, `pasados` | `aleatorio` |
 | `estilo` | **Estilo** | `reto` (el estilo y el color de acento del reto que se muestra), `tema` (los colores de tu tema) o `editorial` (papel cálido y tinta oscura) | `reto` |
 
+## Retos anteriores al plugin
+
+Si la asociación ya hacía retos antes de usar el plugin, se pueden pasar al plugin como retos terminados, con sus participantes, sus fotos y su podio.
+
+- **Puntos importados:** cada foto enviada tiene en su edición (Retos → Fotos enviadas) una caja **Puntos importados**. Esos puntos se suman a los de los votos, así que deciden el podio, la clasificación anual y el perfil de cada participante aunque el reto no tenga votos.
+- **Importación en bloque:** `tools/importar_retos.php` crea los retos desde un JSON con WP-CLI en el servidor, reutilizando fotos que ya están en la biblioteca de medios:
+
+  ```sh
+  wp eval-file importar_retos.php datos.json emails.txt [publicar]
+  ```
+
+  Cada reto se crea terminado, con el aviso a los suscritos desactivado y sin enviar ningún email, ni siquiera al publicarlo. A quien no tenga email en `emails.txt` se le asigna uno que nunca recibe correo (`nombre@sin-email.invalid`), el mismo en todos sus retos. El formato del JSON está al principio del script.
+
 ## REST API
 
 Los retos están en la REST API de WordPress, en `/wp-json/wp/v2/concurso_reto`, con su título, contenido, estado e imagen. La configuración de cada reto va en el campo `concursos`:

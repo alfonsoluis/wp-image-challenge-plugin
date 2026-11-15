@@ -4,7 +4,7 @@ Tags: contest, photo contest, voting, gallery, challenges
 Requires at least: 7.1
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,10 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 
 == Changelog ==
 
+= 1.2.0 =
+* New: "Imported points" box on each submitted photo, for challenges held before the plugin: the points are added to the votes to decide the ranking.
+* Fix: publishing a challenge that has already finished no longer emails the upload link to its participants.
+
 = 1.1.0 =
 * New: challenges banner, as a block and with the `[concursos_banner]` shortcode, with three messages (take part, vote, past winners) that can be fixed or shown at random.
 * New: on each challenge page, the past challenges banner appears below the dates box, and both stay in view while scrolling on wide screens.
@@ -115,6 +119,9 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 * First public release.
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+Adds imported points for past challenges.
 
 = 1.1.0 =
 Adds the challenges banner block and shortcode.

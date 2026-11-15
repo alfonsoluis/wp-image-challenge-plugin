@@ -465,6 +465,10 @@ class Concursos_Inscripcion {
 		if ( $post_before && 'publish' === $post_before->post_status ) {
 			return;
 		}
+		// Un reto ya terminado no necesita enlaces para subir fotos.
+		if ( 'finalizado' === Concursos_Reto::status( Concursos_Reto::get_settings( $post_id ) ) ) {
+			return;
+		}
 
 		$participantes = get_posts(
 			array(

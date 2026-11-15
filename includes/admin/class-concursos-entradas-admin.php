@@ -28,6 +28,53 @@ class Concursos_Entradas_Admin {
 		add_filter( 'admin_body_class', array( __CLASS__, 'clase_vista' ) );
 		add_action( 'manage_posts_extra_tablenav', array( __CLASS__, 'selector_vista' ) );
 		add_filter( 'removable_query_args', array( __CLASS__, 'quitar_args_vista' ) );
+		add_action( "add_meta_boxes_{$t}", array( __CLASS__, 'caja_importados' ) );
+		add_action( "save_post_{$t}", array( __CLASS__, 'guardar_importados' ) );
+	}
+
+	/**
+	 * Caja «Imported points» en la edición de una foto.
+	 */
+	public static function caja_importados() {
+		add_meta_box( 'concursos-importados', __( 'Imported points', 'foncholuis-art-challenge-manager' ), array( __CLASS__, 'render_importados' ), self::TYPE, 'side' );
+	}
+
+	/**
+	 * Campo de puntos importados.
+	 *
+	 * @param WP_Post $post Foto.
+	 */
+	public static function render_importados( $post ) {
+		$n = (int) get_post_meta( $post->ID, Concursos_Votos::META_IMPORTADOS, true );
+		wp_nonce_field( 'concursos_importados_' . $post->ID, 'concursos_importados_nonce' );
+		printf(
+			'<p><label for="concursos-puntos-importados">%1$s</label> <input type="number" min="0" step="1" class="small-text" id="concursos-puntos-importados" name="concursos_puntos_importados" value="%2$s"></p><p class="description">%3$s</p>',
+			esc_html__( 'Points', 'foncholuis-art-challenge-manager' ),
+			esc_attr( $n ? (string) $n : '' ),
+			esc_html__( 'For challenges held before this plugin: these points are added to the votes to decide the ranking.', 'foncholuis-art-challenge-manager' )
+		);
+	}
+
+	/**
+	 * Guarda los puntos importados.
+	 *
+	 * @param int $post_id Foto.
+	 */
+	public static function guardar_importados( $post_id ) {
+		if ( ! isset( $_POST['concursos_importados_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['concursos_importados_nonce'] ) ), 'concursos_importados_' . $post_id ) ) {
+			return;
+		}
+		if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		$n = isset( $_POST['concursos_puntos_importados'] ) ? absint( wp_unslash( $_POST['concursos_puntos_importados'] ) ) : 0;
+		if ( $n > 0 ) {
+			update_post_meta( $post_id, Concursos_Votos::META_IMPORTADOS, $n );
+		} else {
+			delete_post_meta( $post_id, Concursos_Votos::META_IMPORTADOS );
+		}
+		Concursos_Stats::limpiar_cache();
 	}
 
 	/**

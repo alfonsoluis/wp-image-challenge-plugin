@@ -15,3 +15,5 @@ socios.txt
 
 # Credenciales de la web real para tools/crear_reto.py: nunca en el repositorio.
 .env.web
+.env.afs
+retos/privado/
