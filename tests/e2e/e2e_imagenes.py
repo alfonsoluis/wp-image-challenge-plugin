@@ -1,4 +1,4 @@
-"""Subida de fotos: 5 MB, WebP de hasta 2048 px y sin original."""
+"""Subida de fotos: 5 MB, WebP de hasta 1600 px y sin original."""
 import os
 import base64,json,re,subprocess,sys,uuid,urllib.error,urllib.parse,urllib.request
 BASE="http://localhost:8080";PROJECT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -43,14 +43,14 @@ aid=wp("post","meta","get",ent,"_thumbnail_id")
 info=json.loads(wp("eval",f'''$f=get_attached_file({aid});$m=wp_get_attachment_metadata({aid});$d=dirname($f);$b=preg_replace('/-scaled$/','',pathinfo($f,PATHINFO_FILENAME));$fs=array_values(array_filter(scandir($d),function($x)use($b){{return strpos($x,$b)===0;}}));$t=0;foreach($fs as $x){{$t+=filesize("$d/$x");}}echo wp_json_encode(array("archivo"=>basename($f),"ancho"=>$m["width"],"alto"=>$m["height"],"mime"=>get_post_mime_type({aid}),"sizes"=>array_keys($m["sizes"]),"original"=>isset($m["original_image"]),"orig_path"=>wp_get_original_image_path({aid})===$f,"backup"=>(bool)get_post_meta({aid},"_wp_attachment_backup_sizes",true),"ficheros"=>$fs,"total"=>$t));'''))
 print("   ",info)
 check("WebP",info["mime"]=="image/webp" and info["archivo"].endswith(".webp"))
-check("lado mayor 2048",max(info["ancho"],info["alto"])==2048)
+check("lado mayor 1600",max(info["ancho"],info["alto"])==1600)
 check("solo 2 tamaños",sorted(info["sizes"])==["medium_large","thumbnail"],str(info["sizes"]))
 check("original descartado",not info["original"] and info["orig_path"] and not info["backup"] and not any(x.endswith((".jpg",".jpeg")) for x in info["ficheros"]),str(info["ficheros"]))
 check("3 archivos en disco",len(info["ficheros"])==3,str(len(info["ficheros"])))
 check("ocupa menos de 1 MB",info["total"]<1048576,f'{info["total"]/1048576:.2f} MB')
 h=fetch(BASE+"/retos/reto-de-prueba-luz-y-sombra/")[2]
 g=re.findall(r'data-grande="([^"]+)"',h)
-check("el modal usa la copia de 2048",any(info["archivo"] in x for x in g))
+check("el modal usa la copia de 1600",any(info["archivo"] in x for x in g))
 url=[x for x in g if info["archivo"] in x][0]; st,_,_=fetch(url); check("la copia se sirve",st==200,str(st))
 relleno=b"".join(b"\xff\xfe\xff\xff"+b"x"*65533 for _ in range(20))
 big=foto[:2]+relleno+foto[2:]; print(f"    foto grande: {len(big)/1048576:.2f} MB")

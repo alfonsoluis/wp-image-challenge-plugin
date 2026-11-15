@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Guarda cada foto como una copia WebP de hasta 2048 px y descarta el original.
+ * Guarda cada foto como una copia WebP de hasta 1600 px y descarta el original.
  *
  * Solo afecta a las fotos subidas por el plugin, con filtros activos durante
  * esa subida: el resto de la biblioteca de medios no cambia.
@@ -19,10 +19,10 @@ class Concursos_Imagenes {
 	const MAX_BYTES = 5242880;
 
 	/** Lado mayor de la copia guardada. */
-	const MAX_PX = 2048;
+	const MAX_PX = 1600;
 
-	/** Calidad de la copia WebP (de 0 a 100). */
-	const CALIDAD = 82;
+	/** Calidad de la copia WebP y de sus tamaños (de 0 a 100). */
+	const CALIDAD = 75;
 
 	/**
 	 * Tamaño máximo real: el del plugin o el del servidor, si es menor.

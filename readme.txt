@@ -85,7 +85,7 @@ Voters confirm their email address before voting, and each person can only use t
 
 = How large can the photos be? =
 
-Up to 5 MB, or your server's limit if it is lower. Each photo is stored as a WebP copy of up to 2048 pixels and the original file is discarded, to save disk space.
+Up to 5 MB, or your server's limit if it is lower. Each photo is stored as a WebP copy of up to 1600 pixels and the original file is discarded, to save disk space.
 
 = Which WordPress versions are supported? =
 
@@ -109,6 +109,7 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 
 = 1.3.0 =
 * New: per-challenge option to approve participants automatically when they confirm their email with the link they receive after registering. Also available in the REST API as `aprobar_al_confirmar`.
+* Change: submitted photos are stored at up to 1600 pixels (was 2048) and WebP quality 75 (was 82), for lighter pages and less disk space.
 
 = 1.2.0 =
 * New: "Imported points" box on each submitted photo, for challenges held before the plugin: the points are added to the votes to decide the ranking.
