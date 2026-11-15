@@ -100,7 +100,83 @@ Un banner horizontal para poner en cualquier página o entrada del sitio (la por
 - **Bloque**: en el editor de bloques, añade el bloque **Banner de retos** (categoría *Widgets*). En el panel de la derecha eliges qué mostrar y el estilo. Admite los anchos *Ancho amplio* y *Ancho completo*.
 - **Shortcode**: escribe `[concursos_banner]` en un bloque **Shortcode**, en el widget *Shortcode* de Elementor o en cualquier constructor que acepte shortcodes.
 
-### Qué muestra
+<p align="center">
+  <img alt="El bloque Banner de retos en el editor, con el panel Ajustes del banner" src="docs/screenshots/banner-editor.jpg" width="820"><br>
+  <sub>El bloque en el editor: <strong>Qué mostrar</strong> y <strong>Estilo</strong> en el panel de la derecha</sub>
+</p>
+
+### Ejemplos
+
+Cada ejemplo muestra el shortcode y el bloque equivalente, tal como queda en el editor de código.
+
+#### Uno distinto en cada visita (por defecto)
+
+```text
+[concursos_banner]
+<!-- wp:foncholuis/banner-retos /-->
+```
+
+Muestra al azar una de las tres variantes siguientes, entre las que tengan algo que mostrar en ese momento.
+
+#### Invitar a participar en el reto abierto
+
+```text
+[concursos_banner modo="participar"]
+<!-- wp:foncholuis/banner-retos {"modo":"participar"} /-->
+```
+
+<img alt="Banner en modo participar: el reto Colores del Otoño recibiendo fotos, con su imagen" src="docs/screenshots/banner-participar.jpg" width="820">
+
+#### Invitar a votar en el reto en votación
+
+```text
+[concursos_banner modo="votar"]
+<!-- wp:foncholuis/banner-retos {"modo":"votar"} /-->
+```
+
+<img alt="Banner en modo votar: mosaico de tres fotos del reto y el botón Ver las fotos y votar" src="docs/screenshots/banner-votar.jpg" width="820">
+
+#### Las fotos ganadoras de los retos pasados
+
+```text
+[concursos_banner modo="pasados"]
+<!-- wp:foncholuis/banner-retos {"modo":"pasados"} /-->
+```
+
+<img alt="Banner en modo pasados: fondo oscuro y la foto ganadora del último reto con su sello" src="docs/screenshots/banner-pasados.jpg" width="820">
+
+#### Con los colores del tema
+
+Por defecto el banner usa el estilo del reto que muestra (aquí, el editorial). Con `estilo="tema"` toma los colores de tu tema; con `estilo="editorial"`, el papel cálido y la tinta oscura.
+
+```text
+[concursos_banner modo="participar" estilo="tema"]
+<!-- wp:foncholuis/banner-retos {"modo":"participar","estilo":"tema"} /-->
+```
+
+<img alt="Banner en modo participar con el estilo del tema, sobre fondo blanco" src="docs/screenshots/banner-tema.jpg" width="820">
+
+#### Cuando no hay nada que destacar
+
+Si no hay retos recibiendo fotos, en votación ni terminados, el banner invita a ver la página de retos y, si hay uno próximo, dice cuándo abre.
+
+```text
+[concursos_banner]
+```
+
+<img alt="Banner sin retos activos: Un tema. Una foto. Tu mirada., con el próximo reto" src="docs/screenshots/banner-general.jpg" width="820">
+
+#### En una columna estrecha o en el móvil
+
+El banner se adapta al ancho de la columna donde lo pongas, no al de la ventana: en columnas estrechas la imagen pasa arriba y el texto abajo.
+
+```text
+[concursos_banner modo="votar"]
+```
+
+<img alt="Banner en modo votar dentro de una columna de 380 píxeles: el mosaico arriba y el texto debajo" src="docs/screenshots/banner-estrecho.jpg" width="380">
+
+### Qué muestra cada modo
 
 | Modo | Cuándo aparece | Qué muestra | Botón |
 |---|---|---|---|
@@ -110,24 +186,15 @@ Un banner horizontal para poner en cualquier página o entrada del sitio (la por
 | `aleatorio` (por defecto) | Siempre | Uno de los anteriores al azar en cada visita, entre los que tienen algo que mostrar. | — |
 
 - Si hay varios retos en la misma fase, se elige el más reciente, y entre ellos uno abierto a todo el público antes que uno privado. Un reto privado lleva la etiqueta **Concurso privado**.
-- Si el modo fijado no tiene nada que mostrar (por ejemplo, `votar` cuando no hay ningún reto en votación), se usa otro de los disponibles. Si no hay ninguno, el banner invita a ver la página de retos y, si hay un reto próximo, dice cuándo abre.
+- Si el modo fijado no tiene nada que mostrar (por ejemplo, `votar` cuando no hay ningún reto en votación), se usa otro de los disponibles.
 - El modo aleatorio funciona aunque la página esté en caché: el servidor imprime todas las variantes disponibles y un pequeño script (`assets/js/banner.js`) muestra una al azar en cada visita. Sin JavaScript se ve la que eligió el servidor.
-- El banner se adapta al ancho de la columna donde lo pongas: en columnas estrechas o en el móvil, la imagen pasa arriba y el texto abajo.
 
-### Opciones del shortcode
+### Opciones
 
-| Atributo | Valores | Por defecto |
-|---|---|---|
-| `modo` | `aleatorio`, `participar`, `votar`, `pasados` | `aleatorio` |
-| `estilo` | `reto` (el estilo y el color de acento del reto que se muestra), `tema` (los colores de tu tema) o `editorial` (papel cálido y tinta oscura) | `reto` |
-
-Ejemplos:
-
-```text
-[concursos_banner]
-[concursos_banner modo="votar"]
-[concursos_banner modo="participar" estilo="editorial"]
-```
+| Atributo del shortcode | Opción del bloque | Valores | Por defecto |
+|---|---|---|---|
+| `modo` | **Qué mostrar** | `aleatorio`, `participar`, `votar`, `pasados` | `aleatorio` |
+| `estilo` | **Estilo** | `reto` (el estilo y el color de acento del reto que se muestra), `tema` (los colores de tu tema) o `editorial` (papel cálido y tinta oscura) | `reto` |
 
 ## REST API
 
@@ -217,4 +284,4 @@ La raíz del repositorio es el plugin y está montada en `wp-content/plugins/fon
 
 ## Licencia
 
-[GPL-2.0 o posterior](LICENSE). Las fotos de las capturas y de la demo son de muestra, de [Unsplash](https://unsplash.com) bajo la [licencia de Unsplash](https://unsplash.com/license).
+[GPL-2.0 o posterior](LICENSE). Las fotos de las capturas y de la demo son de muestra, de [Unsplash](https://unsplash.com) bajo la [licencia de Unsplash](https://unsplash.com/license). Las capturas del banner usan ilustraciones de muestra generadas para la documentación y una foto del autor del plugin.
