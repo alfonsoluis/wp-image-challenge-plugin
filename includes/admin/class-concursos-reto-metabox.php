@@ -172,6 +172,16 @@ class Concursos_Reto_Metabox {
 				</tr>
 			<?php endforeach; ?>
 			<tr>
+				<th scope="row"><?php esc_html_e( 'Approval', 'foncholuis-art-challenge-manager' ); ?></th>
+				<td>
+					<label class="concursos-radio--block">
+						<input type="checkbox" name="concursos[aprobar_al_confirmar]" value="1" <?php checked( ! empty( $s['aprobar_al_confirmar'] ) ); ?>>
+						<?php esc_html_e( 'Approve participants automatically when they confirm their email', 'foncholuis-art-challenge-manager' ); ?>
+					</label>
+					<p class="description"><?php esc_html_e( 'They receive their personal link right after registering; opening it confirms the email and approves the registration. Useful with a private list of emails. Without this option, you approve each registration.', 'foncholuis-art-challenge-manager' ); ?></p>
+				</td>
+			</tr>
+			<tr>
 				<th scope="row"><?php esc_html_e( 'New challenge notice', 'foncholuis-art-challenge-manager' ); ?></th>
 				<td>
 					<label class="concursos-radio--block">

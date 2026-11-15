@@ -398,7 +398,12 @@ class Concursos_Inscripcion {
 			set_post_thumbnail( $id, $attachment_id );
 		}
 
-		self::email_inscripcion( $id );
+		if ( empty( Concursos_Reto::get_settings( $reto_id )['aprobar_al_confirmar'] ) ) {
+			self::email_inscripcion( $id );
+		} elseif ( self::email_confirmacion( $id ) ) {
+			// Ya tiene su enlace: no se le vuelve a enviar al aprobarla ni al publicar el reto.
+			update_post_meta( $id, Concursos_Participante::META . 'enlace_enviado', time() );
+		}
 		$done( 'ok' );
 	}
 
@@ -522,6 +527,33 @@ class Concursos_Inscripcion {
 				__( "Hello %1\$s,\n\nWe received your registration for the challenge “%2\$s”. We will write to you once we have reviewed and approved it.\n\n%3\$s", 'foncholuis-art-challenge-manager' ),
 				$p['nombre'],
 				$reto,
+				get_bloginfo( 'name' )
+			)
+		);
+	}
+
+	/**
+	 * Email con el enlace personal para confirmar el email, en un reto que
+	 * aprueba la inscripción al confirmarlo.
+	 *
+	 * @param int $id ID del participante.
+	 * @return bool
+	 */
+	public static function email_confirmacion( $id ) {
+		$p     = Concursos_Participante::get( $id );
+		$reto  = get_the_title( $p['reto'] );
+		$token = Concursos_Participante::issue_token( $id );
+
+		return wp_mail(
+			$p['email'],
+			/* translators: %s: challenge name. */
+			sprintf( __( 'Confirm your registration: %s', 'foncholuis-art-challenge-manager' ), $reto ),
+			sprintf(
+				/* translators: 1: participant name, 2: challenge name, 3: personal link, 4: site name. */
+				__( "Hello %1\$s,\n\nWe received your registration for the challenge “%2\$s”. Open this link to confirm your email: your registration is approved at once and you can submit your photos from the same page.\n\n%3\$s\n\nKeep this email: the link is personal and you will need it to submit or delete your photos. Do not share it.\n\n%4\$s", 'foncholuis-art-challenge-manager' ),
+				$p['nombre'],
+				$reto,
+				self::personal_link( $token ),
 				get_bloginfo( 'name' )
 			)
 		);

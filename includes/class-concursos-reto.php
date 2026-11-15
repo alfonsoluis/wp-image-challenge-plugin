@@ -71,6 +71,7 @@ class Concursos_Reto {
 			'privado_votantes'      => 0,
 			'emails_votantes'       => '',
 			'avisar'            => 1,
+			'aprobar_al_confirmar' => 0,
 			'estilo'            => Concursos_Diseno::TEMA,
 			'acento'            => '',
 			'tamano'            => Concursos_Diseno::NORMAL,
@@ -153,6 +154,7 @@ class Concursos_Reto {
 		$s['max_fotos']         = isset( $raw['max_fotos'] ) ? min( 20, max( 1, absint( $raw['max_fotos'] ) ) ) : 1;
 		$s['anonimo']           = empty( $raw['anonimo'] ) ? 0 : 1;
 		$s['avisar']            = empty( $raw['avisar'] ) ? 0 : 1;
+		$s['aprobar_al_confirmar'] = empty( $raw['aprobar_al_confirmar'] ) ? 0 : 1;
 
 		$premios = isset( $raw['premios'] ) ? (array) $raw['premios'] : array();
 		for ( $i = 0; $i < 3; $i++ ) {

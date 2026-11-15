@@ -70,6 +70,14 @@ class Concursos_Envio {
 			self::render_message( 404, __( 'Challenge not available', 'foncholuis-art-challenge-manager' ), __( 'This challenge is no longer available.', 'foncholuis-art-challenge-manager' ), self::enlace_reto( 0 ) );
 		}
 
+		// Abrir el enlace confirma el email: en los retos que lo piden, eso aprueba la inscripción.
+		$s = Concursos_Reto::get_settings( $p['reto'] );
+		if ( Concursos_Participante::PENDIENTE === $p['estado'] && ! empty( $s['aprobar_al_confirmar'] ) && Concursos_Reto::permite_email( $s, 'participantes', $p['email'] ) ) {
+			Concursos_Participante::set_estado( $id, Concursos_Participante::ACTIVO );
+			Concursos_Stats::limpiar_cache();
+			$p['estado'] = Concursos_Participante::ACTIVO;
+		}
+
 		if ( Concursos_Participante::ACTIVO !== $p['estado'] ) {
 			self::render_message( 403, __( 'Registration not active', 'foncholuis-art-challenge-manager' ), __( 'Your registration is not active. If you think this is a mistake, contact us.', 'foncholuis-art-challenge-manager' ), self::enlace_reto( $p['reto'] ) );
 		}

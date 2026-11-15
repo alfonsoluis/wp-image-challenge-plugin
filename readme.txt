@@ -4,7 +4,7 @@ Tags: contest, photo contest, voting, gallery, challenges
 Requires at least: 7.1
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,7 +77,7 @@ Add the "Challenges banner" block, or write `[concursos_banner]` in a Shortcode 
 
 = Do participants need a WordPress account? =
 
-No. Once approved, each participant receives a personal link by email to submit photos.
+No. Once approved, each participant receives a personal link by email to submit photos. With "Approve participants automatically when they confirm their email" (per challenge), the link arrives right after registering and opening it approves the registration.
 
 = How are votes protected? =
 
@@ -107,6 +107,9 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 
 == Changelog ==
 
+= 1.3.0 =
+* New: per-challenge option to approve participants automatically when they confirm their email with the link they receive after registering. Also available in the REST API as `aprobar_al_confirmar`.
+
 = 1.2.0 =
 * New: "Imported points" box on each submitted photo, for challenges held before the plugin: the points are added to the votes to decide the ranking.
 * Fix: publishing a challenge that has already finished no longer emails the upload link to its participants.
@@ -119,6 +122,9 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 * First public release.
 
 == Upgrade Notice ==
+
+= 1.3.0 =
+Adds automatic approval when participants confirm their email.
 
 = 1.2.0 =
 Adds imported points for past challenges.
