@@ -60,6 +60,17 @@ try:
     st,_,_=fetch(session(),e2)
     check("si el admin la rechazó, el enlace no la aprueba",st==403 and estado(A,otro)=="inactivo",str(st))
 
+    # Aprobada a mano sin haber abierto el enlace: recibe el email de aprobación con un enlace nuevo.
+    tarde=f"tarde{run}@example.com"
+    wp("post","meta","update",str(A),"_concursos_emails_participantes",f"{dentro}, {otro}, {tarde}")
+    inscribir(A,tarde)
+    pid=wp("eval",f"$p=get_posts(array('post_type'=>'concurso_inscrito','post_status'=>'any','meta_key'=>'_concursos_email','meta_value'=>'{tarde}'));echo $p[0]->ID;")
+    wp("eval",f"Concursos_Inscripcion::activar({pid});")
+    ms=buzon(tarde)
+    check("aprobada a mano: le llega el enlace de aprobación",any(m["Subject"].startswith("Ya puedes participar") for m in ms),str([m["Subject"] for m in ms]))
+    wp("eval",f"Concursos_Inscripcion::activar({pid});")
+    check("aprobarla otra vez no repite el email",len(buzon(tarde))==len(ms))
+
     # Sin la opción: como antes, la aprueba el admin.
     B=crear(0); retos.append(B)
     m2=f"b{dentro}"

@@ -4,7 +4,7 @@ Tags: contest, photo contest, voting, gallery, challenges
 Requires at least: 7.1
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,9 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 
 == Changelog ==
 
+= 1.3.1 =
+* Fix: approving by hand a pending registration in a challenge with automatic approval now emails the participant their personal link.
+
 = 1.3.0 =
 * New: per-challenge option to approve participants automatically when they confirm their email with the link they receive after registering. Also available in the REST API as `aprobar_al_confirmar`.
 * Change: submitted photos are stored at up to 1600 pixels (was 2048) and WebP quality 75 (was 82), for lighter pages and less disk space.
@@ -123,6 +126,9 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 * First public release.
 
 == Upgrade Notice ==
+
+= 1.3.1 =
+Approving a pending registration by hand always emails the personal link.
 
 = 1.3.0 =
 Adds automatic approval when participants confirm their email.

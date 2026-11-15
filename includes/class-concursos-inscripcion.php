@@ -441,15 +441,18 @@ class Concursos_Inscripcion {
 	}
 
 	/**
-	 * Aprueba (activa) a un participante. La primera vez le envía su enlace personal.
+	 * Aprueba (activa) a un participante. La primera vez le envía su enlace personal,
+	 * y también al aprobar a mano una inscripción pendiente que ya lo recibió para
+	 * confirmar su email: quizá no le llegó o no lo abrió.
 	 *
 	 * @param int $id ID del participante.
 	 */
 	public static function activar( $id ) {
+		$pendiente = Concursos_Participante::PENDIENTE === Concursos_Participante::get( $id )['estado'];
 		Concursos_Participante::set_estado( $id, Concursos_Participante::ACTIVO );
 
 		$p = Concursos_Participante::get( $id );
-		if ( ! $p['enlace_enviado'] && self::email_aprobacion( $id ) ) {
+		if ( ( ! $p['enlace_enviado'] || $pendiente ) && self::email_aprobacion( $id ) ) {
 			update_post_meta( $id, Concursos_Participante::META . 'enlace_enviado', time() );
 		}
 	}
