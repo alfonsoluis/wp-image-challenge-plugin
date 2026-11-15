@@ -1,8 +1,10 @@
 <?php
 /**
  * Importa retos anteriores al plugin, ya terminados, con sus participantes,
- * sus fotos (adjuntos que ya están en la biblioteca de medios) y los puntos
- * que deciden el podio.
+ * sus fotos y los puntos que deciden el podio. Las fotos se toman de adjuntos
+ * que ya están en la biblioteca de medios, pero se usa una copia de cada una:
+ * al borrar una foto enviada el plugin borra su imagen, y así las entradas
+ * antiguas que muestran el original no se quedan sin ella.
  *
  * Uso, con WP-CLI en el servidor:
  *   wp eval-file importar_retos.php datos.json emails.txt [publicar]
@@ -60,6 +62,34 @@ if ( isset( $args[1] ) ) {
 
 $email_de = function ( $nombre ) use ( $emails ) {
 	return isset( $emails[ $nombre ] ) ? $emails[ $nombre ] : sanitize_title( $nombre ) . '@sin-email.invalid';
+};
+
+// Copia de un adjunto, con sus tamaños, que pasa a ser del plugin.
+require_once ABSPATH . 'wp-admin/includes/file.php';
+require_once ABSPATH . 'wp-admin/includes/media.php';
+require_once ABSPATH . 'wp-admin/includes/image.php';
+$copiar = function ( $id ) {
+	$original = wp_attachment_is_image( $id ) ? wp_get_original_image_path( $id ) : false;
+	if ( ! $original || ! file_exists( $original ) ) {
+		return new WP_Error( 'sin_imagen', sprintf( 'El adjunto #%d no es una imagen o no tiene su archivo.', $id ) );
+	}
+	$tmp = wp_tempnam( basename( $original ) );
+	if ( ! copy( $original, $tmp ) ) {
+		return new WP_Error( 'sin_copia', sprintf( 'No se pudo copiar el adjunto #%d.', $id ) );
+	}
+	$nuevo = media_handle_sideload(
+		array(
+			'name'     => basename( $original ),
+			'tmp_name' => $tmp,
+		),
+		0,
+		get_the_title( $id )
+	);
+	if ( is_wp_error( $nuevo ) && file_exists( $tmp ) ) {
+		unlink( $tmp );
+	}
+
+	return $nuevo;
 };
 
 $zona = wp_timezone();
@@ -121,7 +151,12 @@ foreach ( $datos['retos'] as $r ) {
 	update_post_meta( $reto_id, '_concursos_avisado', time() );
 	update_post_meta( $reto_id, '_concursos_importado', $r['clave'] );
 	if ( ! empty( $r['imagen'] ) ) {
-		set_post_thumbnail( $reto_id, (int) $r['imagen'] );
+		$portada = $copiar( (int) $r['imagen'] );
+		if ( is_wp_error( $portada ) ) {
+			WP_CLI::warning( $r['titulo'] . ': ' . $portada->get_error_message() );
+		} else {
+			set_post_thumbnail( $reto_id, $portada );
+		}
 	}
 
 	// Un participante por persona, aprobado, y sus fotos con los puntos del podio.
@@ -153,11 +188,12 @@ foreach ( $datos['retos'] as $r ) {
 			);
 		}
 
-		if ( ! wp_attachment_is_image( (int) $f['adjunto'] ) ) {
-			WP_CLI::warning( sprintf( '%s: el adjunto #%d no es una imagen, se salta.', $r['titulo'], $f['adjunto'] ) );
+		$copia = $copiar( (int) $f['adjunto'] );
+		if ( is_wp_error( $copia ) ) {
+			WP_CLI::warning( $r['titulo'] . ': ' . $copia->get_error_message() . ' Se salta.' );
 			continue;
 		}
-		$eid = Concursos_Entrada::create( $participantes[ $nombre ], 'Foto de ' . $nombre, (int) $f['adjunto'] );
+		$eid = Concursos_Entrada::create( $participantes[ $nombre ], 'Foto de ' . $nombre, $copia );
 		if ( is_wp_error( $eid ) ) {
 			WP_CLI::error( $eid->get_error_message() );
 		}

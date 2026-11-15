@@ -56,6 +56,18 @@ echo wp_json_encode(array('fase'=>Concursos_Reto::status($s),'avisar'=>(int)$s['
     ganadora=wp("eval",f"$g=Concursos_Vista::ganadora({reto},Concursos_Reto::get_settings({reto})); echo $g?$g->ID:0;")
     check("con 5 puntos pasa a ganar",ganadora==str(tres),f"{ganadora} vs {tres}")
     check("la columna de puntos los suma",wp("eval",f"echo Concursos_Votos::count_entrada({tres});")=="5")
+
+    # Las fotos son copias: borrar el reto importado no toca los adjuntos originales.
+    copias=json.loads(wp("eval",f"echo wp_json_encode(array_map('get_post_thumbnail_id',wp_list_pluck(Concursos_Entrada::find(array('reto'=>{reto})),'ID')));"))
+    check("usa copias de las fotos",len(copias)==4 and not set(copias)&set(adjuntos),str(copias))
+    for i in wp("post","list","--post_type=concurso_entrada,concurso_inscrito","--post_status=any","--meta_key=_concursos_reto",f"--meta_value={reto}","--field=ID").split():
+        wp("post","delete",i,"--force")
+    portada=wp("eval",f"echo get_post_thumbnail_id({reto});")
+    wp("post","delete",str(reto),"--force"); reto=None
+    if portada and portada!="0" and int(portada) not in adjuntos: wp("post","delete",portada,"--force")
+    quedan=wp("post","list","--post_type=attachment","--post__in="+",".join(map(str,adjuntos)),"--format=count")
+    check("al borrarlo, los originales siguen ahí",quedan=="4",quedan)
+    for c in copias: wp("post","delete",str(c),"--force")
 finally:
     if reto:
         for i in wp("post","list","--post_type=concurso_entrada,concurso_inscrito","--post_status=any","--meta_key=_concursos_reto",f"--meta_value={reto}","--field=ID").split():
