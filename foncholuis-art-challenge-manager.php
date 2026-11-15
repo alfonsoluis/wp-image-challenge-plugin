@@ -3,7 +3,7 @@
  * Plugin Name:       Foncholuis Art Challenge Manager
  * Plugin URI:        https://github.com/alfonsoluis/wp-image-challenge-plugin
  * Description:       Photo, drawing, design and other art challenges with participants, submissions, voting and results.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Requires at least: 7.1
  * Requires PHP:      7.4
  * Author:            Alfonso Rodriguez
@@ -17,7 +17,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'CONCURSOS_VERSION', '1.0.0' );
+define( 'CONCURSOS_VERSION', '1.1.0' );
 define( 'CONCURSOS_FILE', __FILE__ );
 define( 'CONCURSOS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'CONCURSOS_URL', plugin_dir_url( __FILE__ ) );
@@ -41,6 +41,7 @@ require_once CONCURSOS_PATH . 'includes/class-concursos-portada.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-perfil.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-api.php';
 require_once CONCURSOS_PATH . 'includes/class-concursos-stats.php';
+require_once CONCURSOS_PATH . 'includes/class-concursos-banner.php';
 
 Concursos_DB::init();
 Concursos_Post_Types::init();
@@ -54,6 +55,7 @@ Concursos_Galeria::init();
 Concursos_Portada::init();
 Concursos_Perfil::init();
 Concursos_API::init();
+Concursos_Banner::init();
 
 if ( is_admin() ) {
 	require_once CONCURSOS_PATH . 'includes/admin/class-concursos-reto-metabox.php';

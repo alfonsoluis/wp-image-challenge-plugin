@@ -12,3 +12,6 @@ node_modules/
 # Listas de emails de socios para tools/crear_reto.py: nunca en el repositorio.
 socios.txt
 *.emails.txt
+
+# Credenciales de la web real para tools/crear_reto.py: nunca en el repositorio.
+.env.web

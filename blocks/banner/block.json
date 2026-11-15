@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "foncholuis/banner-retos",
+	"title": "Challenges banner",
+	"category": "widgets",
+	"icon": "awards",
+	"description": "Horizontal banner that invites visitors to take part in an open challenge, vote in one, or see past winners.",
+	"keywords": [ "challenges", "banner", "contest", "vote" ],
+	"textdomain": "foncholuis-art-challenge-manager",
+	"attributes": {
+		"modo": {
+			"type": "string",
+			"enum": [ "aleatorio", "participar", "votar", "pasados" ],
+			"default": "aleatorio"
+		},
+		"estilo": {
+			"type": "string",
+			"enum": [ "reto", "tema", "editorial" ],
+			"default": "reto"
+		}
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ]
+	},
+	"editorScript": "concursos-banner-editor",
+	"style": "concursos-public",
+	"viewScript": "concursos-banner"
+}

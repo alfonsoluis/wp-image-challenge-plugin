@@ -33,6 +33,7 @@ Pensado para asociaciones de fotografía, escuelas y organizaciones que ya tiene
 | 🏅 **Clasificación anual** | Suma los votos de cada persona en los retos terminados del año, en la portada y en cada reto. |
 | 👤 **Perfiles de participante** | Foto, redes, retos, fotos y puestos, sin mostrar nunca el email. Se pueden desactivar en **Retos → Ajustes**. |
 | 📣 **Avisos de nuevos retos** | Quien se suscribe recibe un email al publicarse un reto, y puede darse de baja cuando quiera. Un reto privado solo avisa a quienes están en sus listas, y cualquier reto se puede publicar sin aviso. |
+| 🪧 **Banner de retos** | Un banner horizontal para cualquier página, con el shortcode `[concursos_banner]` o el bloque **Banner de retos**: invita a participar en el reto abierto, a votar en el que está en votación o a ver las fotos ganadoras de los retos pasados. Puede fijar uno de los tres mensajes o mostrar uno al azar en cada visita. |
 | 📊 **Stats** | En **Retos → Stats**: participantes, fotos, votantes y votos de los últimos 7 o 30 días o del año, comparados con el periodo anterior; los próximos cambios de etapa; y el resumen de cada reto, con su cuenta atrás, la clasificación provisional y los últimos votos. Exporta CSV sin emails. |
 | 🧬 **Duplicar retos** | Crea una nueva edición en un clic, copiando o no a sus participantes activos. |
 | 🎨 **Diseño por reto** | Dos estilos (los colores del tema o el editorial, de papel cálido y tinta oscura), 6 colores de acento y 3 tamaños de texto. La tipografía siempre es la de tu tema. |
@@ -91,6 +92,42 @@ Al activarse, el plugin crea dos páginas normales de WordPress. En **Páginas**
 - El formulario para **registrarse como votante** no necesita ninguna página: aparece en la propia página del reto durante la fase de votación.
 - Si borras una de estas páginas, el plugin no la vuelve a crear. Para recuperar la inscripción, crea una página con el bloque **Shortcode** y escribe `[concursos_inscripcion]`. Sin la página Retos, la lista sigue disponible en `/retos/`.
 - Si ya tenías una página con el shortcode antes de activar el plugin, se usa esa y no se crea otra.
+
+## Banner de retos
+
+Un banner horizontal para poner en cualquier página o entrada del sitio (la portada, una barra lateral ancha, una noticia…) y llevar a la gente a los retos. Hay dos formas de insertarlo:
+
+- **Bloque**: en el editor de bloques, añade el bloque **Banner de retos** (categoría *Widgets*). En el panel de la derecha eliges qué mostrar y el estilo. Admite los anchos *Ancho amplio* y *Ancho completo*.
+- **Shortcode**: escribe `[concursos_banner]` en un bloque **Shortcode**, en el widget *Shortcode* de Elementor o en cualquier constructor que acepte shortcodes.
+
+### Qué muestra
+
+| Modo | Cuándo aparece | Qué muestra | Botón |
+|---|---|---|---|
+| `participar` | Hay un reto **recibiendo fotos** | Su nombre, el comienzo de su descripción, hasta cuándo se reciben fotos y cuánto falta, con la imagen de fondo del reto (o su primera foto visible). | **Participar**, a la página del reto |
+| `votar` | Hay un reto **en votación** | Un mosaico de hasta tres de sus fotos, elegidas al azar, cuántas fotos hay, si se vota por puestos y hasta cuándo. Las fotos van sin nombre, así que respeta la votación anónima. | **Ver las fotos y votar**, a las fotos del reto |
+| `pasados` | Hay algún reto **terminado** | Sobre fondo oscuro, la foto ganadora del último reto terminado con su sello, quién ganó y cuántos retos han terminado. | **Ver retos pasados**, a esa sección de la página Retos |
+| `aleatorio` (por defecto) | Siempre | Uno de los anteriores al azar en cada visita, entre los que tienen algo que mostrar. | — |
+
+- Si hay varios retos en la misma fase, se elige el más reciente, y entre ellos uno abierto a todo el público antes que uno privado. Un reto privado lleva la etiqueta **Concurso privado**.
+- Si el modo fijado no tiene nada que mostrar (por ejemplo, `votar` cuando no hay ningún reto en votación), se usa otro de los disponibles. Si no hay ninguno, el banner invita a ver la página de retos y, si hay un reto próximo, dice cuándo abre.
+- El modo aleatorio funciona aunque la página esté en caché: el servidor imprime todas las variantes disponibles y un pequeño script (`assets/js/banner.js`) muestra una al azar en cada visita. Sin JavaScript se ve la que eligió el servidor.
+- El banner se adapta al ancho de la columna donde lo pongas: en columnas estrechas o en el móvil, la imagen pasa arriba y el texto abajo.
+
+### Opciones del shortcode
+
+| Atributo | Valores | Por defecto |
+|---|---|---|
+| `modo` | `aleatorio`, `participar`, `votar`, `pasados` | `aleatorio` |
+| `estilo` | `reto` (el estilo y el color de acento del reto que se muestra), `tema` (los colores de tu tema) o `editorial` (papel cálido y tinta oscura) | `reto` |
+
+Ejemplos:
+
+```text
+[concursos_banner]
+[concursos_banner modo="votar"]
+[concursos_banner modo="participar" estilo="editorial"]
+```
 
 ## REST API
 
