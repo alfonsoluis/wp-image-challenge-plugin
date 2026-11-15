@@ -71,6 +71,22 @@ try:
     wp("eval",f"Concursos_Inscripcion::activar({pid});")
     check("aprobarla otra vez no repite el email",len(buzon(tarde))==len(ms))
 
+    # Reenviar el enlace desde la tabla de participantes.
+    op=session(); fetch(op,BASE+"/wp-login.php",urllib.parse.urlencode({"log":"admin","pwd":"admin","wp-submit":"x","testcookie":"1"}).encode())
+    lista=fetch(op,BASE+f"/wp-admin/edit.php?post_type=concurso_inscrito&concursos_reto={A}")[2]
+    enlaces=re.findall(r'href="([^"]*action=concursos_reenviar(?:&|&amp;|&#038;)post=(\d+)[^"]*)"',lista)
+    ids={i for _,i in enlaces}
+    check("«Reenviar enlace» en activos y no en desactivados",pid in ids and wp("eval",f"$p=get_posts(array('post_type'=>'concurso_inscrito','post_status'=>'any','meta_key'=>'_concursos_email','meta_value'=>'{otro}'));echo $p[0]->ID;") not in ids,str(ids))
+    antes=len(buzon(tarde))
+    url=[u for u,i in enlaces if i==pid][0].replace("&amp;","&").replace("&#038;","&")
+    st,final,h=fetch(op,url if url.startswith("http") else BASE+url)
+    check("reenviar: aviso en el panel","Enlace personal reenviado a 1 participante" in h,str(st))
+    ms=buzon(tarde)
+    check("reenviar: llega un email nuevo con el enlace",len(ms)==antes+1 and ms[0]["Subject"].startswith("Ya puedes participar"))
+    nuevo=re.search(r"http://localhost:8080/\?\S+",texto(ms[0])).group(0)
+    viejo=re.search(r"http://localhost:8080/\?\S+",texto(ms[1])).group(0)
+    check("el enlace nuevo funciona y el viejo no",fetch(session(),nuevo)[0]==200 and fetch(session(),viejo)[0]==404)
+
     # Sin la opción: como antes, la aprueba el admin.
     B=crear(0); retos.append(B)
     m2=f"b{dentro}"

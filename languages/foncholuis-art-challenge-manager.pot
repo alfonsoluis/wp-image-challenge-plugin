@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Foncholuis Art Challenge Manager 1.2.0\n"
+"Project-Id-Version: Foncholuis Art Challenge Manager 1.3.1\n"
 "Report-Msgid-Bugs-To: https://github.com/alfonsoluis/wp-image-challenge-plugin/issues\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-15T18:17:00+00:00\n"
+"POT-Creation-Date: 2026-11-15T21:48:11+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: foncholuis-art-challenge-manager\n"
@@ -97,8 +97,8 @@ msgstr ""
 
 #: includes/admin/class-concursos-admin.php:109
 #: includes/admin/class-concursos-entradas-admin.php:224
-#: includes/admin/class-concursos-participantes-admin.php:117
-#: includes/admin/class-concursos-participantes-admin.php:340
+#: includes/admin/class-concursos-participantes-admin.php:118
+#: includes/admin/class-concursos-participantes-admin.php:410
 #: includes/class-concursos-entrada.php:160
 #: includes/class-concursos-post-types.php:55
 msgid "Challenge"
@@ -294,20 +294,20 @@ msgid "Grid"
 msgstr ""
 
 #: includes/admin/class-concursos-entradas-admin.php:179
-#: includes/admin/class-concursos-participantes-admin.php:58
+#: includes/admin/class-concursos-participantes-admin.php:59
 #: includes/admin/class-concursos-votantes-admin.php:196
 msgid "Filter by challenge"
 msgstr ""
 
 #: includes/admin/class-concursos-entradas-admin.php:181
-#: includes/admin/class-concursos-participantes-admin.php:60
+#: includes/admin/class-concursos-participantes-admin.php:61
 #: includes/admin/class-concursos-votantes-admin.php:198
 #: includes/class-concursos-post-types.php:65
 msgid "All challenges"
 msgstr ""
 
 #: includes/admin/class-concursos-entradas-admin.php:221
-#: includes/admin/class-concursos-participantes-admin.php:114
+#: includes/admin/class-concursos-participantes-admin.php:115
 #: includes/admin/class-concursos-stats-admin.php:984
 #: includes/admin/class-concursos-stats-admin.php:1116
 #: includes/class-concursos-entrada.php:45
@@ -332,75 +332,100 @@ msgstr ""
 msgid "Submitted"
 msgstr ""
 
-#: includes/admin/class-concursos-participantes-admin.php:65
+#: includes/admin/class-concursos-participantes-admin.php:66
 msgid "Filter by status"
 msgstr ""
 
-#: includes/admin/class-concursos-participantes-admin.php:67
+#: includes/admin/class-concursos-participantes-admin.php:68
 msgid "All statuses"
 msgstr ""
 
-#: includes/admin/class-concursos-participantes-admin.php:115
+#: includes/admin/class-concursos-participantes-admin.php:116
 #: includes/class-concursos-inscripcion.php:265
 msgid "Name"
 msgstr ""
 
-#: includes/admin/class-concursos-participantes-admin.php:116
-#: includes/admin/class-concursos-participantes-admin.php:339
+#: includes/admin/class-concursos-participantes-admin.php:117
+#: includes/admin/class-concursos-participantes-admin.php:409
 #: includes/admin/class-concursos-votantes-admin.php:50
 #: includes/class-concursos-inscripcion.php:269
 #: includes/class-concursos-votantes.php:651
 msgid "Email"
 msgstr ""
 
-#: includes/admin/class-concursos-participantes-admin.php:118
-#: includes/admin/class-concursos-participantes-admin.php:341
+#: includes/admin/class-concursos-participantes-admin.php:119
+#: includes/admin/class-concursos-participantes-admin.php:411
 #: includes/admin/class-concursos-votantes-admin.php:51
 msgid "Status"
 msgstr ""
 
-#: includes/admin/class-concursos-participantes-admin.php:119
-#: includes/admin/class-concursos-participantes-admin.php:342
+#: includes/admin/class-concursos-participantes-admin.php:120
+#: includes/admin/class-concursos-participantes-admin.php:412
 msgid "Social networks"
 msgstr ""
 
-#: includes/admin/class-concursos-participantes-admin.php:120
+#: includes/admin/class-concursos-participantes-admin.php:121
 #: includes/class-concursos-inscripcion.php:215
 msgid "Registration"
 msgstr ""
 
-#: includes/admin/class-concursos-participantes-admin.php:147
+#: includes/admin/class-concursos-participantes-admin.php:148
 msgid "Link sent"
 msgstr ""
 
-#: includes/admin/class-concursos-participantes-admin.php:179
+#: includes/admin/class-concursos-participantes-admin.php:180
 msgid "Activate (approve)"
 msgstr ""
 
-#: includes/admin/class-concursos-participantes-admin.php:180
+#: includes/admin/class-concursos-participantes-admin.php:181
 msgid "Deactivate"
 msgstr ""
 
-#: includes/admin/class-concursos-participantes-admin.php:240
+#: includes/admin/class-concursos-participantes-admin.php:182
+msgid "Resend personal link"
+msgstr ""
+
+#: includes/admin/class-concursos-participantes-admin.php:260
 msgid "Approve"
 msgstr ""
 
-#: includes/admin/class-concursos-participantes-admin.php:240
+#: includes/admin/class-concursos-participantes-admin.php:260
 msgid "Activate"
 msgstr ""
 
-#: includes/admin/class-concursos-participantes-admin.php:251
+#: includes/admin/class-concursos-participantes-admin.php:269
+msgid "Resend link"
+msgstr ""
+
+#: includes/admin/class-concursos-participantes-admin.php:279
 msgid "View profile"
 msgstr ""
 
-#: includes/admin/class-concursos-participantes-admin.php:268
+#: includes/admin/class-concursos-participantes-admin.php:296
+#: includes/admin/class-concursos-participantes-admin.php:325
 #: includes/admin/class-concursos-stats-admin.php:1103
 #: includes/admin/class-concursos-votantes-admin.php:376
 msgid "You cannot do this."
 msgstr ""
 
 #. translators: %d: number of participants.
-#: includes/admin/class-concursos-participantes-admin.php:301
+#: includes/admin/class-concursos-participantes-admin.php:359
+#, php-format
+msgid "Personal link resent to %d participant. The previous link no longer works."
+msgid_plural "Personal link resent to %d participants. Their previous links no longer work."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of participants.
+#: includes/admin/class-concursos-participantes-admin.php:362
+#, php-format
+msgid "%d was skipped: only active participants, or pending ones in a challenge that approves on email confirmation, get a link, and only until voting ends."
+msgid_plural "%d were skipped: only active participants, or pending ones in a challenge that approves on email confirmation, get a link, and only until voting ends."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of participants.
+#: includes/admin/class-concursos-participantes-admin.php:370
 #, php-format
 msgid "%d participant activated. Anyone without a personal link received it by email."
 msgid_plural "%d participants activated. Anyone without a personal link received it by email."
@@ -408,32 +433,32 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of participants.
-#: includes/admin/class-concursos-participantes-admin.php:304
+#: includes/admin/class-concursos-participantes-admin.php:373
 #, php-format
 msgid "%d participant deactivated: their photos are hidden and their votes have been deleted."
 msgid_plural "%d participants deactivated: their photos are hidden and their votes have been deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-concursos-participantes-admin.php:326
+#: includes/admin/class-concursos-participantes-admin.php:396
 msgid "Registration details"
 msgstr ""
 
-#: includes/admin/class-concursos-participantes-admin.php:344
+#: includes/admin/class-concursos-participantes-admin.php:414
 msgid "Personal link"
 msgstr ""
 
 #. translators: %s: date.
-#: includes/admin/class-concursos-participantes-admin.php:349
+#: includes/admin/class-concursos-participantes-admin.php:419
 #, php-format
 msgid "Sent on %s"
 msgstr ""
 
-#: includes/admin/class-concursos-participantes-admin.php:350
+#: includes/admin/class-concursos-participantes-admin.php:420
 msgid "Sent when the participant is activated."
 msgstr ""
 
-#: includes/admin/class-concursos-participantes-admin.php:355
+#: includes/admin/class-concursos-participantes-admin.php:425
 msgid "The status is changed from the participant list, using the bulk actions."
 msgstr ""
 
@@ -1914,13 +1939,13 @@ msgid "Register"
 msgstr ""
 
 #. translators: %s: challenge name.
-#: includes/class-concursos-inscripcion.php:524
+#: includes/class-concursos-inscripcion.php:564
 #, php-format
 msgid "We received your registration: %s"
 msgstr ""
 
 #. translators: 1: participant name, 2: challenge name, 3: site name.
-#: includes/class-concursos-inscripcion.php:527
+#: includes/class-concursos-inscripcion.php:567
 #, php-format
 msgid ""
 "Hello %1$s,\n"
@@ -1931,13 +1956,13 @@ msgid ""
 msgstr ""
 
 #. translators: %s: challenge name.
-#: includes/class-concursos-inscripcion.php:550
+#: includes/class-concursos-inscripcion.php:590
 #, php-format
 msgid "Confirm your registration: %s"
 msgstr ""
 
 #. translators: 1: participant name, 2: challenge name, 3: personal link, 4: site name.
-#: includes/class-concursos-inscripcion.php:553
+#: includes/class-concursos-inscripcion.php:593
 #, php-format
 msgid ""
 "Hello %1$s,\n"
@@ -1952,7 +1977,7 @@ msgid ""
 msgstr ""
 
 #. translators: 1: name, 2: challenge name, 3: site name.
-#: includes/class-concursos-inscripcion.php:582
+#: includes/class-concursos-inscripcion.php:622
 #, php-format
 msgid ""
 "Hello %1$s,\n"
@@ -1965,7 +1990,7 @@ msgid ""
 msgstr ""
 
 #. translators: 1: name, 2: challenge name, 3: site name.
-#: includes/class-concursos-inscripcion.php:584
+#: includes/class-concursos-inscripcion.php:624
 #, php-format
 msgid ""
 "Hello %1$s,\n"
@@ -1978,19 +2003,19 @@ msgid ""
 msgstr ""
 
 #. translators: %s: challenge name.
-#: includes/class-concursos-inscripcion.php:589
+#: includes/class-concursos-inscripcion.php:629
 #, php-format
 msgid "About your registration: %s"
 msgstr ""
 
 #. translators: %s: challenge name.
-#: includes/class-concursos-inscripcion.php:608
+#: includes/class-concursos-inscripcion.php:648
 #, php-format
 msgid "You can now take part in “%s”"
 msgstr ""
 
 #. translators: 1: participant name, 2: challenge name, 3: personal link, 4: site name.
-#: includes/class-concursos-inscripcion.php:611
+#: includes/class-concursos-inscripcion.php:651
 #, php-format
 msgid ""
 "Hello %1$s,\n"
@@ -2004,7 +2029,7 @@ msgid ""
 "%4$s"
 msgstr ""
 
-#: includes/class-concursos-inscripcion.php:616
+#: includes/class-concursos-inscripcion.php:656
 msgid "With this email you can also vote when voting opens: open this link once on each device where you want to vote."
 msgstr ""
 

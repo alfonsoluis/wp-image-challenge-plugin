@@ -99,8 +99,8 @@ msgstr "Crear el primer reto"
 
 #: includes/admin/class-concursos-admin.php:109
 #: includes/admin/class-concursos-entradas-admin.php:224
-#: includes/admin/class-concursos-participantes-admin.php:117
-#: includes/admin/class-concursos-participantes-admin.php:340
+#: includes/admin/class-concursos-participantes-admin.php:118
+#: includes/admin/class-concursos-participantes-admin.php:410
 #: includes/class-concursos-entrada.php:160
 #: includes/class-concursos-post-types.php:55
 msgid "Challenge"
@@ -296,20 +296,20 @@ msgid "Grid"
 msgstr "Rejilla"
 
 #: includes/admin/class-concursos-entradas-admin.php:179
-#: includes/admin/class-concursos-participantes-admin.php:58
+#: includes/admin/class-concursos-participantes-admin.php:59
 #: includes/admin/class-concursos-votantes-admin.php:196
 msgid "Filter by challenge"
 msgstr "Filtrar por reto"
 
 #: includes/admin/class-concursos-entradas-admin.php:181
-#: includes/admin/class-concursos-participantes-admin.php:60
+#: includes/admin/class-concursos-participantes-admin.php:61
 #: includes/admin/class-concursos-votantes-admin.php:198
 #: includes/class-concursos-post-types.php:65
 msgid "All challenges"
 msgstr "Todos los retos"
 
 #: includes/admin/class-concursos-entradas-admin.php:221
-#: includes/admin/class-concursos-participantes-admin.php:114
+#: includes/admin/class-concursos-participantes-admin.php:115
 #: includes/admin/class-concursos-stats-admin.php:984
 #: includes/admin/class-concursos-stats-admin.php:1116
 #: includes/class-concursos-entrada.php:45
@@ -334,75 +334,100 @@ msgstr "Participante"
 msgid "Submitted"
 msgstr "Enviada"
 
-#: includes/admin/class-concursos-participantes-admin.php:65
+#: includes/admin/class-concursos-participantes-admin.php:66
 msgid "Filter by status"
 msgstr "Filtrar por estado"
 
-#: includes/admin/class-concursos-participantes-admin.php:67
+#: includes/admin/class-concursos-participantes-admin.php:68
 msgid "All statuses"
 msgstr "Todos los estados"
 
-#: includes/admin/class-concursos-participantes-admin.php:115
+#: includes/admin/class-concursos-participantes-admin.php:116
 #: includes/class-concursos-inscripcion.php:265
 msgid "Name"
 msgstr "Nombre"
 
-#: includes/admin/class-concursos-participantes-admin.php:116
-#: includes/admin/class-concursos-participantes-admin.php:339
+#: includes/admin/class-concursos-participantes-admin.php:117
+#: includes/admin/class-concursos-participantes-admin.php:409
 #: includes/admin/class-concursos-votantes-admin.php:50
 #: includes/class-concursos-inscripcion.php:269
 #: includes/class-concursos-votantes.php:651
 msgid "Email"
 msgstr "Email"
 
-#: includes/admin/class-concursos-participantes-admin.php:118
-#: includes/admin/class-concursos-participantes-admin.php:341
+#: includes/admin/class-concursos-participantes-admin.php:119
+#: includes/admin/class-concursos-participantes-admin.php:411
 #: includes/admin/class-concursos-votantes-admin.php:51
 msgid "Status"
 msgstr "Estado"
 
-#: includes/admin/class-concursos-participantes-admin.php:119
-#: includes/admin/class-concursos-participantes-admin.php:342
+#: includes/admin/class-concursos-participantes-admin.php:120
+#: includes/admin/class-concursos-participantes-admin.php:412
 msgid "Social networks"
 msgstr "Redes"
 
-#: includes/admin/class-concursos-participantes-admin.php:120
+#: includes/admin/class-concursos-participantes-admin.php:121
 #: includes/class-concursos-inscripcion.php:215
 msgid "Registration"
 msgstr "Inscripción"
 
-#: includes/admin/class-concursos-participantes-admin.php:147
+#: includes/admin/class-concursos-participantes-admin.php:148
 msgid "Link sent"
 msgstr "Enlace enviado"
 
-#: includes/admin/class-concursos-participantes-admin.php:179
+#: includes/admin/class-concursos-participantes-admin.php:180
 msgid "Activate (approve)"
 msgstr "Activar (aprobar)"
 
-#: includes/admin/class-concursos-participantes-admin.php:180
+#: includes/admin/class-concursos-participantes-admin.php:181
 msgid "Deactivate"
 msgstr "Desactivar"
 
-#: includes/admin/class-concursos-participantes-admin.php:240
+#: includes/admin/class-concursos-participantes-admin.php:182
+msgid "Resend personal link"
+msgstr "Reenviar el enlace personal"
+
+#: includes/admin/class-concursos-participantes-admin.php:260
 msgid "Approve"
 msgstr "Aprobar"
 
-#: includes/admin/class-concursos-participantes-admin.php:240
+#: includes/admin/class-concursos-participantes-admin.php:260
 msgid "Activate"
 msgstr "Activar"
 
-#: includes/admin/class-concursos-participantes-admin.php:251
+#: includes/admin/class-concursos-participantes-admin.php:269
+msgid "Resend link"
+msgstr "Reenviar enlace"
+
+#: includes/admin/class-concursos-participantes-admin.php:279
 msgid "View profile"
 msgstr "Ver perfil"
 
-#: includes/admin/class-concursos-participantes-admin.php:268
+#: includes/admin/class-concursos-participantes-admin.php:296
+#: includes/admin/class-concursos-participantes-admin.php:325
 #: includes/admin/class-concursos-stats-admin.php:1103
 #: includes/admin/class-concursos-votantes-admin.php:376
 msgid "You cannot do this."
 msgstr "No puedes hacer esto."
 
 #. translators: %d: number of participants.
-#: includes/admin/class-concursos-participantes-admin.php:301
+#: includes/admin/class-concursos-participantes-admin.php:359
+#, php-format
+msgid "Personal link resent to %d participant. The previous link no longer works."
+msgid_plural "Personal link resent to %d participants. Their previous links no longer work."
+msgstr[0] "Enlace personal reenviado a %d participante. El enlace anterior deja de funcionar."
+msgstr[1] "Enlace personal reenviado a %d participantes. Sus enlaces anteriores dejan de funcionar."
+
+#. translators: %d: number of participants.
+#: includes/admin/class-concursos-participantes-admin.php:362
+#, php-format
+msgid "%d was skipped: only active participants, or pending ones in a challenge that approves on email confirmation, get a link, and only until voting ends."
+msgid_plural "%d were skipped: only active participants, or pending ones in a challenge that approves on email confirmation, get a link, and only until voting ends."
+msgstr[0] "%d no se envió: solo reciben enlace los participantes activos, o los pendientes en un reto que aprueba al confirmar el email, y solo hasta que termina la votación."
+msgstr[1] "%d no se enviaron: solo reciben enlace los participantes activos, o los pendientes en un reto que aprueba al confirmar el email, y solo hasta que termina la votación."
+
+#. translators: %d: number of participants.
+#: includes/admin/class-concursos-participantes-admin.php:370
 #, php-format
 msgid "%d participant activated. Anyone without a personal link received it by email."
 msgid_plural "%d participants activated. Anyone without a personal link received it by email."
@@ -410,32 +435,32 @@ msgstr[0] "%d participante activado. Quien no tenía enlace personal lo recibió
 msgstr[1] "%d participantes activados. Quienes no tenían enlace personal lo recibieron por email."
 
 #. translators: %d: number of participants.
-#: includes/admin/class-concursos-participantes-admin.php:304
+#: includes/admin/class-concursos-participantes-admin.php:373
 #, php-format
 msgid "%d participant deactivated: their photos are hidden and their votes have been deleted."
 msgid_plural "%d participants deactivated: their photos are hidden and their votes have been deleted."
 msgstr[0] "%d participante desactivado: sus fotos quedan ocultas y sus votos se han borrado."
 msgstr[1] "%d participantes desactivados: sus fotos quedan ocultas y sus votos se han borrado."
 
-#: includes/admin/class-concursos-participantes-admin.php:326
+#: includes/admin/class-concursos-participantes-admin.php:396
 msgid "Registration details"
 msgstr "Datos de la inscripción"
 
-#: includes/admin/class-concursos-participantes-admin.php:344
+#: includes/admin/class-concursos-participantes-admin.php:414
 msgid "Personal link"
 msgstr "Enlace personal"
 
 #. translators: %s: date.
-#: includes/admin/class-concursos-participantes-admin.php:349
+#: includes/admin/class-concursos-participantes-admin.php:419
 #, php-format
 msgid "Sent on %s"
 msgstr "Enviado el %s"
 
-#: includes/admin/class-concursos-participantes-admin.php:350
+#: includes/admin/class-concursos-participantes-admin.php:420
 msgid "Sent when the participant is activated."
 msgstr "Se envía al activar al participante."
 
-#: includes/admin/class-concursos-participantes-admin.php:355
+#: includes/admin/class-concursos-participantes-admin.php:425
 msgid "The status is changed from the participant list, using the bulk actions."
 msgstr "El estado se cambia desde la lista de participantes, con las acciones en bloque."
 
@@ -1916,13 +1941,13 @@ msgid "Register"
 msgstr "Inscribirme"
 
 #. translators: %s: challenge name.
-#: includes/class-concursos-inscripcion.php:524
+#: includes/class-concursos-inscripcion.php:564
 #, php-format
 msgid "We received your registration: %s"
 msgstr "Recibimos tu inscripción: %s"
 
 #. translators: 1: participant name, 2: challenge name, 3: site name.
-#: includes/class-concursos-inscripcion.php:527
+#: includes/class-concursos-inscripcion.php:567
 #, php-format
 msgid ""
 "Hello %1$s,\n"
@@ -1933,13 +1958,13 @@ msgid ""
 msgstr "Hola %1$s:\n\nRecibimos tu inscripción en el reto «%2$s». Te escribiremos cuando la revisemos y la aprobemos.\n\n%3$s"
 
 #. translators: %s: challenge name.
-#: includes/class-concursos-inscripcion.php:550
+#: includes/class-concursos-inscripcion.php:590
 #, php-format
 msgid "Confirm your registration: %s"
 msgstr "Confirma tu inscripción: %s"
 
 #. translators: 1: participant name, 2: challenge name, 3: personal link, 4: site name.
-#: includes/class-concursos-inscripcion.php:553
+#: includes/class-concursos-inscripcion.php:593
 #, php-format
 msgid ""
 "Hello %1$s,\n"
@@ -1954,7 +1979,7 @@ msgid ""
 msgstr "Hola %1$s:\n\nHemos recibido tu inscripción en el reto «%2$s». Abre este enlace para confirmar tu email: tu inscripción quedará aprobada en ese momento y podrás enviar tus fotos desde esa misma página.\n\n%3$s\n\nGuarda este email: el enlace es personal y lo necesitarás para enviar o borrar tus fotos. No lo compartas.\n\n%4$s"
 
 #. translators: 1: name, 2: challenge name, 3: site name.
-#: includes/class-concursos-inscripcion.php:582
+#: includes/class-concursos-inscripcion.php:622
 #, php-format
 msgid ""
 "Hello %1$s,\n"
@@ -1967,7 +1992,7 @@ msgid ""
 msgstr "Hola, %1$s:\n\nNo hemos podido inscribirte en el reto «%2$s»: es privado y esta dirección de email no está en la lista de personas que pueden participar. Si crees que es un error, comunícate con los organizadores.\n\nSi no has rellenado el formulario de inscripción, puedes ignorar este email.\n\n%3$s"
 
 #. translators: 1: name, 2: challenge name, 3: site name.
-#: includes/class-concursos-inscripcion.php:584
+#: includes/class-concursos-inscripcion.php:624
 #, php-format
 msgid ""
 "Hello %1$s,\n"
@@ -1980,19 +2005,19 @@ msgid ""
 msgstr "Hola, %1$s:\n\nEsta dirección de email ya está inscrita en el reto «%2$s», así que no la hemos inscrito de nuevo. Si tu inscripción está aprobada, usa el enlace personal que te enviamos para subir tus fotos. Si no lo encuentras, comunícate con los organizadores.\n\nSi no has rellenado el formulario de inscripción, puedes ignorar este email.\n\n%3$s"
 
 #. translators: %s: challenge name.
-#: includes/class-concursos-inscripcion.php:589
+#: includes/class-concursos-inscripcion.php:629
 #, php-format
 msgid "About your registration: %s"
 msgstr "Sobre tu inscripción: %s"
 
 #. translators: %s: challenge name.
-#: includes/class-concursos-inscripcion.php:608
+#: includes/class-concursos-inscripcion.php:648
 #, php-format
 msgid "You can now take part in “%s”"
 msgstr "Ya puedes participar en «%s»"
 
 #. translators: 1: participant name, 2: challenge name, 3: personal link, 4: site name.
-#: includes/class-concursos-inscripcion.php:611
+#: includes/class-concursos-inscripcion.php:651
 #, php-format
 msgid ""
 "Hello %1$s,\n"
@@ -2006,7 +2031,7 @@ msgid ""
 "%4$s"
 msgstr "Hola %1$s:\n\nAprobamos tu inscripción en el reto «%2$s».\n\nEste es tu enlace personal para enviar tus fotos. No lo compartas: quien lo tenga puede enviar fotos en tu nombre.\n\n%3$s\n\n%4$s"
 
-#: includes/class-concursos-inscripcion.php:616
+#: includes/class-concursos-inscripcion.php:656
 msgid "With this email you can also vote when voting opens: open this link once on each device where you want to vote."
 msgstr "Con este email también podrás votar cuando empiece la votación: abre este enlace una vez en cada dispositivo desde el que quieras votar."
 

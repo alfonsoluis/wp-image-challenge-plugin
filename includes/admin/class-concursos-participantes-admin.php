@@ -27,6 +27,7 @@ class Concursos_Participantes_Admin {
 		add_filter( "handle_bulk_actions-edit-{$t}", array( __CLASS__, 'handle_bulk' ), 10, 3 );
 		add_filter( 'post_row_actions', array( __CLASS__, 'row_actions' ), 10, 2 );
 		add_action( 'admin_post_concursos_aprobar', array( __CLASS__, 'aprobar' ) );
+		add_action( 'admin_post_concursos_reenviar', array( __CLASS__, 'reenviar' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'notices' ) );
 		add_action( 'add_meta_boxes_' . $t, array( __CLASS__, 'meta_box' ) );
 		add_filter( 'removable_query_args', array( __CLASS__, 'removable_args' ) );
@@ -178,6 +179,7 @@ class Concursos_Participantes_Admin {
 		return array(
 			'concursos_activar'    => __( 'Activate (approve)', 'foncholuis-art-challenge-manager' ),
 			'concursos_desactivar' => __( 'Deactivate', 'foncholuis-art-challenge-manager' ),
+			'concursos_reenviar'   => __( 'Resend personal link', 'foncholuis-art-challenge-manager' ),
 		) + $actions;
 	}
 
@@ -190,8 +192,26 @@ class Concursos_Participantes_Admin {
 	 * @return string
 	 */
 	public static function handle_bulk( $redirect, $action, $ids ) {
-		if ( ! in_array( $action, array( 'concursos_activar', 'concursos_desactivar' ), true ) ) {
+		if ( ! in_array( $action, array( 'concursos_activar', 'concursos_desactivar', 'concursos_reenviar' ), true ) ) {
 			return $redirect;
+		}
+
+		if ( 'concursos_reenviar' === $action ) {
+			$count = 0;
+			foreach ( array_map( 'absint', (array) $ids ) as $id ) {
+				if ( current_user_can( 'edit_post', $id ) && self::TYPE === get_post_type( $id ) && Concursos_Inscripcion::reenviar_enlace( $id ) ) {
+					++$count;
+				}
+			}
+
+			return add_query_arg(
+				array(
+					'concursos_hecho'   => 'reenviados',
+					'concursos_n'       => $count,
+					'concursos_saltados' => count( (array) $ids ) - $count,
+				),
+				$redirect
+			);
 		}
 
 		$count = 0;
@@ -242,6 +262,14 @@ class Concursos_Participantes_Admin {
 			) + $actions;
 		}
 
+		if ( 'trash' !== $post->post_status && Concursos_Inscripcion::puede_reenviar( $post->ID ) ) {
+			$actions['concursos_reenviar'] = sprintf(
+				'<a href="%s">%s</a>',
+				esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=concursos_reenviar&post=' . $post->ID ), 'concursos_reenviar_' . $post->ID ) ),
+				esc_html__( 'Resend link', 'foncholuis-art-challenge-manager' )
+			);
+		}
+
 		// Solo los participantes activos tienen perfil público, si los perfiles están activados.
 		if ( Concursos_Perfil::activos() && Concursos_Participante::esta_activo( $post->ID ) ) {
 			$perfil  = array(
@@ -287,6 +315,35 @@ class Concursos_Participantes_Admin {
 	}
 
 	/**
+	 * Reenvía el enlace personal desde el enlace de su fila.
+	 */
+	public static function reenviar() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- el nonce lleva el ID y se comprueba justo debajo.
+		$id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : 0;
+		check_admin_referer( 'concursos_reenviar_' . $id );
+		if ( ! current_user_can( 'edit_post', $id ) || self::TYPE !== get_post_type( $id ) ) {
+			wp_die( esc_html__( 'You cannot do this.', 'foncholuis-art-challenge-manager' ) );
+		}
+		$enviado = Concursos_Inscripcion::reenviar_enlace( $id );
+
+		$volver = wp_get_referer();
+		if ( ! $volver ) {
+			$volver = admin_url( 'edit.php?post_type=' . self::TYPE );
+		}
+		wp_safe_redirect(
+			add_query_arg(
+				array(
+					'concursos_hecho'    => 'reenviados',
+					'concursos_n'        => $enviado ? 1 : 0,
+					'concursos_saltados' => $enviado ? 0 : 1,
+				),
+				remove_query_arg( array( 'concursos_hecho', 'concursos_n', 'concursos_saltados' ), $volver )
+			)
+		);
+		exit;
+	}
+
+	/**
 	 * Aviso tras una acción en bloque.
 	 */
 	public static function notices() {
@@ -296,6 +353,18 @@ class Concursos_Participantes_Admin {
 			return;
 		}
 		$n = absint( self::filter_value( 'concursos_n' ) );
+		if ( 'reenviados' === $hecho ) {
+			$saltados = absint( self::filter_value( 'concursos_saltados' ) );
+			/* translators: %d: number of participants. */
+			$text = sprintf( _n( 'Personal link resent to %d participant. The previous link no longer works.', 'Personal link resent to %d participants. Their previous links no longer work.', $n, 'foncholuis-art-challenge-manager' ), $n );
+			if ( $saltados ) {
+				/* translators: %d: number of participants. */
+				$text .= ' ' . sprintf( _n( '%d was skipped: only active participants, or pending ones in a challenge that approves on email confirmation, get a link, and only until voting ends.', '%d were skipped: only active participants, or pending ones in a challenge that approves on email confirmation, get a link, and only until voting ends.', $saltados, 'foncholuis-art-challenge-manager' ), $saltados );
+			}
+			printf( '<div class="notice %1$s is-dismissible"><p>%2$s</p></div>', esc_attr( $n ? 'notice-success' : 'notice-warning' ), esc_html( $text ) );
+
+			return;
+		}
 		if ( 'activados' === $hecho ) {
 			/* translators: %d: number of participants. */
 			$text = sprintf( _n( '%d participant activated. Anyone without a personal link received it by email.', '%d participants activated. Anyone without a personal link received it by email.', $n, 'foncholuis-art-challenge-manager' ), $n );
@@ -315,6 +384,7 @@ class Concursos_Participantes_Admin {
 	public static function removable_args( $args ) {
 		$args[] = 'concursos_hecho';
 		$args[] = 'concursos_n';
+		$args[] = 'concursos_saltados';
 
 		return $args;
 	}

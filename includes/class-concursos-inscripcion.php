@@ -458,6 +458,43 @@ class Concursos_Inscripcion {
 	}
 
 	/**
+	 * Vuelve a enviar el enlace personal: el de aprobación a quien está activo, o el
+	 * de confirmación a quien está pendiente en un reto que aprueba al confirmar.
+	 * El enlace es nuevo, así que el anterior deja de funcionar.
+	 *
+	 * @param int $id ID del participante.
+	 * @return bool Si se envió.
+	 */
+	public static function reenviar_enlace( $id ) {
+		if ( ! self::puede_reenviar( $id ) ) {
+			return false;
+		}
+		$p      = Concursos_Participante::get( $id );
+		$enviado = Concursos_Participante::ACTIVO === $p['estado'] ? self::email_aprobacion( $id ) : self::email_confirmacion( $id );
+		if ( $enviado ) {
+			update_post_meta( $id, Concursos_Participante::META . 'enlace_enviado', time() );
+		}
+
+		return $enviado;
+	}
+
+	/**
+	 * Si a un participante se le puede reenviar su enlace.
+	 *
+	 * @param int $id ID del participante.
+	 * @return bool
+	 */
+	public static function puede_reenviar( $id ) {
+		$p = Concursos_Participante::get( $id );
+		if ( 'publish' !== get_post_status( $id ) || ! in_array( Concursos_Envio::estado_reto( $p['reto'] ), array( 'proximo', 'envios', 'votacion' ), true ) ) {
+			return false;
+		}
+
+		return Concursos_Participante::ACTIVO === $p['estado']
+			|| ( Concursos_Participante::PENDIENTE === $p['estado'] && ! empty( Concursos_Reto::get_settings( $p['reto'] )['aprobar_al_confirmar'] ) );
+	}
+
+	/**
 	 * Al publicar un reto, envía su enlace a los participantes activos que no
 	 * lo tienen: los copiados al duplicarlo. Cada uno lo recibe una sola vez.
 	 *

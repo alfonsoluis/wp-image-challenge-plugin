@@ -25,7 +25,7 @@ Pensado para asociaciones de fotografía, escuelas y organizaciones que ya tiene
 | 🗓️ **Calendario por reto** | Inicio, fin de los envíos, fin de la votación y publicación de resultados. La fase de cada reto se calcula sola. |
 | 🔓 **Retos abiertos o cerrados** | Las fotos se ven al enviarse o solo cuando terminan los envíos. |
 | 🔒 **Retos privados** | Limita participantes y, si quieres, votantes a una lista de emails. |
-| 🙋 **Inscripción y aprobación** | Formulario público con foto y redes sociales. Filtra, aprueba o desactiva en bloque desde el panel, o deja que cada inscripción se apruebe sola cuando la persona confirma su email (ideal con una lista privada de socios). |
+| 🙋 **Inscripción y aprobación** | Formulario público con foto y redes sociales. Filtra, aprueba o desactiva en bloque desde el panel, o deja que cada inscripción se apruebe sola cuando la persona confirma su email (ideal con una lista privada de socios). Si alguien pierde su enlace personal, se lo reenvías desde la lista. |
 | 🔗 **Enlace personal** | Cada participante aprobado recibe por email un enlace para subir sus fotos, sin contraseñas. |
 | 🗳️ **Votación con email confirmado** | De 1 a 3 votos por reto. Con varios, cada votante arma su podio: elige su 1.º, 2.º y 3.º sobre las fotos (valen 3, 2 y 1 puntos) y los confirma de una vez desde una barra fija; puede cambiarlos mientras dure la votación. Quien participa queda registrado como votante al abrir su enlace personal, y nadie puede votar su propia foto. |
 | 🕶️ **Votación anónima** | Opción por reto para ocultar el título y el autor de las fotos hasta que termina la votación. |

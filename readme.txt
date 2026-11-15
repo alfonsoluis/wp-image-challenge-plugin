@@ -108,6 +108,7 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 == Changelog ==
 
 = 1.3.1 =
+* New: "Resend link" in the participant list, for one participant or in bulk. It emails a new personal link and the previous one stops working.
 * Fix: approving by hand a pending registration in a challenge with automatic approval now emails the participant their personal link.
 
 = 1.3.0 =
