@@ -28,6 +28,7 @@ class Concursos_Participantes_Admin {
 		add_filter( 'post_row_actions', array( __CLASS__, 'row_actions' ), 10, 2 );
 		add_action( 'admin_post_concursos_aprobar', array( __CLASS__, 'aprobar' ) );
 		add_action( 'admin_post_concursos_reenviar', array( __CLASS__, 'reenviar' ) );
+		add_action( 'admin_post_concursos_copiar_enlace', array( __CLASS__, 'copiar_enlace' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'notices' ) );
 		add_action( 'add_meta_boxes_' . $t, array( __CLASS__, 'meta_box' ) );
 		add_filter( 'removable_query_args', array( __CLASS__, 'removable_args' ) );
@@ -268,6 +269,11 @@ class Concursos_Participantes_Admin {
 				esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=concursos_reenviar&post=' . $post->ID ), 'concursos_reenviar_' . $post->ID ) ),
 				esc_html__( 'Resend link', 'foncholuis-art-challenge-manager' )
 			);
+			$actions['concursos_copiar_enlace'] = sprintf(
+				'<a href="%s">%s</a>',
+				esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=concursos_copiar_enlace&post=' . $post->ID ), 'concursos_copiar_enlace_' . $post->ID ) ),
+				esc_html__( 'Copy link', 'foncholuis-art-challenge-manager' )
+			);
 		}
 
 		// Solo los participantes activos tienen perfil público, si los perfiles están activados.
@@ -344,12 +350,96 @@ class Concursos_Participantes_Admin {
 	}
 
 	/**
+	 * Genera un enlace personal nuevo y vuelve a la lista para mostrarlo y copiarlo.
+	 * El enlace no viaja en la URL: se guarda unos minutos solo para este usuario.
+	 */
+	public static function copiar_enlace() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- el nonce lleva el ID y se comprueba justo debajo.
+		$id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : 0;
+		check_admin_referer( 'concursos_copiar_enlace_' . $id );
+		if ( ! current_user_can( 'edit_post', $id ) || self::TYPE !== get_post_type( $id ) ) {
+			wp_die( esc_html__( 'You cannot do this.', 'foncholuis-art-challenge-manager' ) );
+		}
+		$enlace = Concursos_Inscripcion::enlace_nuevo( $id );
+		if ( $enlace ) {
+			set_transient(
+				self::clave_enlace(),
+				array(
+					'id'     => $id,
+					'enlace' => $enlace,
+				),
+				5 * MINUTE_IN_SECONDS
+			);
+		}
+
+		$volver = wp_get_referer();
+		if ( ! $volver ) {
+			$volver = admin_url( 'edit.php?post_type=' . self::TYPE );
+		}
+		wp_safe_redirect(
+			add_query_arg(
+				array(
+					'concursos_hecho'    => $enlace ? 'enlace' : 'reenviados',
+					'concursos_n'        => 0,
+					'concursos_saltados' => $enlace ? 0 : 1,
+				),
+				remove_query_arg( array( 'concursos_hecho', 'concursos_n', 'concursos_saltados' ), $volver )
+			)
+		);
+		exit;
+	}
+
+	/**
+	 * Transitorio con el último enlace generado por el usuario actual.
+	 *
+	 * @return string
+	 */
+	private static function clave_enlace() {
+		return 'concursos_enlace_' . get_current_user_id();
+	}
+
+	/**
+	 * Aviso con el enlace recién generado, para copiarlo. Se muestra una sola vez.
+	 */
+	private static function aviso_enlace() {
+		$datos = get_transient( self::clave_enlace() );
+		delete_transient( self::clave_enlace() );
+		if ( ! is_array( $datos ) || empty( $datos['enlace'] ) ) {
+			return;
+		}
+		$p = Concursos_Participante::get( $datos['id'] );
+		?>
+		<div class="notice notice-success concursos-copiar-enlace">
+			<p>
+				<?php
+				/* translators: %s: participant name. */
+				echo esc_html( sprintf( __( 'New personal link for %s. Send it only to this person: the previous link no longer works.', 'foncholuis-art-challenge-manager' ), $p['nombre'] ) );
+				?>
+			</p>
+			<p>
+				<label class="screen-reader-text" for="concursos-enlace"><?php esc_html_e( 'Personal link', 'foncholuis-art-challenge-manager' ); ?></label>
+				<input type="text" id="concursos-enlace" class="large-text code" value="<?php echo esc_attr( $datos['enlace'] ); ?>" readonly>
+			</p>
+			<p>
+				<button type="button" class="button button-primary" data-concursos-copiar="concursos-enlace" data-copiado="<?php esc_attr_e( 'Copied', 'foncholuis-art-challenge-manager' ); ?>"><?php esc_html_e( 'Copy to clipboard', 'foncholuis-art-challenge-manager' ); ?></button>
+				<span class="description"><?php esc_html_e( 'This link is only shown now. If you lose it, generate another one.', 'foncholuis-art-challenge-manager' ); ?></span>
+			</p>
+		</div>
+		<?php
+	}
+
+	/**
 	 * Aviso tras una acción en bloque.
 	 */
 	public static function notices() {
 		$screen = get_current_screen();
 		$hecho  = self::filter_value( 'concursos_hecho' );
 		if ( ! $screen || 'edit-' . self::TYPE !== $screen->id || ! $hecho ) {
+			return;
+		}
+		if ( 'enlace' === $hecho ) {
+			self::aviso_enlace();
+
 			return;
 		}
 		$n = absint( self::filter_value( 'concursos_n' ) );

@@ -4,7 +4,7 @@ Tags: contest, photo contest, voting, gallery, challenges
 Requires at least: 7.1
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,9 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 
 == Changelog ==
 
+= 1.3.2 =
+* New: "Copy link" in the participant list. It creates a new personal link and shows it once in the admin, ready to copy and send another way (for example, when the email does not arrive). The previous link stops working.
+
 = 1.3.1 =
 * New: "Resend link" in the participant list, for one participant or in bulk. It emails a new personal link and the previous one stops working.
 * Fix: approving by hand a pending registration in a challenge with automatic approval now emails the participant their personal link.
@@ -127,6 +130,9 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 * First public release.
 
 == Upgrade Notice ==
+
+= 1.3.2 =
+Copy a participant's personal link from the participant list.
 
 = 1.3.1 =
 Approving a pending registration by hand always emails the personal link.

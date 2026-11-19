@@ -479,6 +479,23 @@ class Concursos_Inscripcion {
 	}
 
 	/**
+	 * Genera un enlace personal nuevo para copiarlo y enviarlo por otra vía, por
+	 * ejemplo si el email no llega. El anterior deja de funcionar.
+	 *
+	 * @param int $id ID del participante.
+	 * @return string El enlace, o '' si no se le puede dar uno.
+	 */
+	public static function enlace_nuevo( $id ) {
+		if ( ! self::puede_reenviar( $id ) ) {
+			return '';
+		}
+		$token = Concursos_Participante::issue_token( $id );
+		update_post_meta( $id, Concursos_Participante::META . 'enlace_enviado', time() );
+
+		return self::personal_link( $token );
+	}
+
+	/**
 	 * Si a un participante se le puede reenviar su enlace.
 	 *
 	 * @param int $id ID del participante.

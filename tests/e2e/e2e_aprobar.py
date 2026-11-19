@@ -87,6 +87,20 @@ try:
     viejo=re.search(r"http://localhost:8080/\?\S+",texto(ms[1])).group(0)
     check("el enlace nuevo funciona y el viejo no",fetch(session(),nuevo)[0]==200 and fetch(session(),viejo)[0]==404)
 
+    # Copiar el enlace: se muestra una vez en el panel, sin email, y el anterior deja de valer.
+    lista=fetch(op,BASE+f"/wp-admin/edit.php?post_type=concurso_inscrito&concursos_reto={A}")[2]
+    copiar=[u for u,i in re.findall(r'href="([^"]*action=concursos_copiar_enlace(?:&|&amp;|&#038;)post=(\d+)[^"]*)"',lista) if i==pid]
+    check("«Copiar enlace» en la fila",len(copiar)==1)
+    antes=len(buzon(tarde))
+    url=copiar[0].replace("&amp;","&").replace("&#038;","&") if copiar else ""
+    st,final,h=fetch(op,url if url.startswith("http") else BASE+url)
+    m=re.search(r'id="concursos-enlace"[^>]*value="([^"]+)"',h)
+    check("copiar: campo con el enlace y botón",m is not None and "data-concursos-copiar" in h,str(st))
+    check("copiar: no envía email",len(buzon(tarde))==antes)
+    check("copiar: el enlace no va en la URL",m is not None and m.group(1).split("=")[-1] not in final)
+    check("copiar: el enlace copiado funciona y el anterior no",m is not None and fetch(session(),m.group(1).replace("&#038;","&"))[0]==200 and fetch(session(),nuevo)[0]==404)
+    check("copiar: se muestra una sola vez",'id="concursos-enlace"' not in fetch(op,final)[2])
+
     # Sin la opción: como antes, la aprueba el admin.
     B=crear(0); retos.append(B)
     m2=f"b{dentro}"

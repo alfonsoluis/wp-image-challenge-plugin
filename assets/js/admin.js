@@ -67,3 +67,33 @@
 
 	update();
 } )();
+
+/* Concursos – botón para copiar un campo al portapapeles. */
+( function () {
+	'use strict';
+
+	document.addEventListener( 'click', function ( e ) {
+		var boton = e.target.closest( '[data-concursos-copiar]' );
+		if ( ! boton ) {
+			return;
+		}
+		var campo = document.getElementById( boton.dataset.concursosCopiar );
+		if ( ! campo ) {
+			return;
+		}
+		campo.focus();
+		campo.select();
+		var hecho = function () {
+			boton.textContent = boton.dataset.copiado;
+		};
+		if ( navigator.clipboard && window.isSecureContext ) {
+			navigator.clipboard.writeText( campo.value ).then( hecho, function () {
+				if ( document.execCommand( 'copy' ) ) {
+					hecho();
+				}
+			} );
+		} else if ( document.execCommand( 'copy' ) ) {
+			hecho();
+		}
+	} );
+}() );
