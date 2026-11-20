@@ -623,7 +623,7 @@ class Concursos_Galeria {
 			echo '<div class="pc-resto concursos-resto"><h3 class="pc-resto__titulo">' . esc_html__( 'Other participants', 'foncholuis-art-challenge-manager' ) . '</h3>';
 			echo '<ul class="pc-mosaico concursos-galeria__rejilla">';
 			foreach ( $ranking['resto'] as $id ) {
-				echo wp_kses( self::tarjeta( $por_id[ $id ], '<span class="pc-etiqueta concursos-votos">' . esc_html( Concursos_Votos::etiqueta( $votos[ $id ], $s ) ) . '</span>' ), Concursos_Vista::html_permitido() );
+				echo wp_kses( self::tarjeta( $por_id[ $id ], empty( $votos[ $id ] ) ? '' : '<span class="pc-etiqueta concursos-votos">' . esc_html( Concursos_Votos::etiqueta( $votos[ $id ], $s ) ) . '</span>' ), Concursos_Vista::html_permitido() );
 			}
 			echo '</ul></div>';
 		}
@@ -680,6 +680,14 @@ class Concursos_Galeria {
 		foreach ( $ranking['resto'] as $id ) {
 			$filas[] = array( $id, '—', false );
 		}
+		// Las fotos sin votos no salen con un 0 en la tabla: van debajo, en una rejilla.
+		$sin_votos = array();
+		foreach ( $filas as $i => $fila ) {
+			if ( empty( $votos[ $fila[0] ] ) ) {
+				$sin_votos[] = $fila[0];
+				unset( $filas[ $i ] );
+			}
+		}
 
 		$participantes = Concursos_Votos::votantes_de_reto( $reto_id );
 		$escala        = Concursos_Votos::por_puestos( $s ) ? __( '1st = 3 pts, 2nd = 2 pts, 3rd = 1 pt', 'foncholuis-art-challenge-manager' ) : '';
@@ -688,6 +696,7 @@ class Concursos_Galeria {
 		?>
 		<section class="pc-seccion concursos-resumen" aria-labelledby="pc-resumen">
 			<?php echo wp_kses( Concursos_Vista::cabecera_seccion( 'pc-resumen', __( 'Challenge ranking', 'foncholuis-art-challenge-manager' ), esc_html( $dato ) ), Concursos_Vista::html_permitido() ); ?>
+			<?php if ( $filas ) : ?>
 			<div class="pc-tabla-marco">
 				<table class="pc-tabla">
 					<thead>
@@ -736,6 +745,25 @@ class Concursos_Galeria {
 					<?php endif; ?>
 				</table>
 			</div>
+			<?php endif; ?>
+			<?php if ( $sin_votos ) : ?>
+				<div class="pc-participaron">
+					<h3 class="pc-participaron__titulo"><?php esc_html_e( 'Also took part', 'foncholuis-art-challenge-manager' ); ?></h3>
+					<ul class="pc-participaron__fotos">
+						<?php
+						foreach ( $sin_votos as $id ) :
+							$foto  = $por_id[ $id ];
+							$autor = Concursos_Entrada::owner( $foto->ID );
+							?>
+							<li class="pc-participaron__foto">
+								<?php echo wp_kses( Concursos_Entrada::miniatura( $foto, 'thumbnail' ), Concursos_Vista::html_permitido() ); ?>
+								<span class="pc-foto__titulo"><?php echo esc_html( get_the_title( $foto ) ); ?></span>
+								<span class="pc-foto__autor"><?php echo wp_kses( $autor ? Concursos_Perfil::enlace( $autor ) : '', Concursos_Vista::html_permitido() ); ?></span>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			<?php endif; ?>
 		</section>
 		<?php
 	}

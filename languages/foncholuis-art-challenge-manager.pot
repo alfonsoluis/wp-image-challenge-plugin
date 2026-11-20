@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Foncholuis Art Challenge Manager 1.3.1\n"
+"Project-Id-Version: Foncholuis Art Challenge Manager 1.3.2\n"
 "Report-Msgid-Bugs-To: https://github.com/alfonsoluis/wp-image-challenge-plugin/issues\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-19T09:31:08+00:00\n"
+"POT-Creation-Date: 2026-11-20T08:44:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: foncholuis-art-challenge-manager\n"
@@ -47,7 +47,7 @@ msgstr ""
 #: includes/admin/class-concursos-stats-admin.php:633
 #: includes/class-concursos-banner.php:297
 #: includes/class-concursos-banner.php:548
-#: includes/class-concursos-clasificacion.php:116
+#: includes/class-concursos-clasificacion.php:154
 #: includes/class-concursos-galeria.php:223
 #: includes/class-concursos-perfil.php:262
 #: includes/class-concursos-perfil.php:286
@@ -272,8 +272,8 @@ msgstr ""
 #: includes/admin/class-concursos-entradas-admin.php:52
 #: includes/admin/class-concursos-entradas-admin.php:225
 #: includes/admin/class-concursos-stats-admin.php:1116
-#: includes/class-concursos-clasificacion.php:117
-#: includes/class-concursos-galeria.php:698
+#: includes/class-concursos-clasificacion.php:155
+#: includes/class-concursos-galeria.php:707
 msgid "Points"
 msgstr ""
 
@@ -312,7 +312,7 @@ msgstr ""
 #: includes/admin/class-concursos-stats-admin.php:1116
 #: includes/class-concursos-entrada.php:45
 #: includes/class-concursos-envio.php:258
-#: includes/class-concursos-galeria.php:696
+#: includes/class-concursos-galeria.php:705
 msgid "Photo"
 msgstr ""
 
@@ -321,8 +321,8 @@ msgid "Title"
 msgstr ""
 
 #: includes/admin/class-concursos-entradas-admin.php:223
-#: includes/class-concursos-clasificacion.php:115
-#: includes/class-concursos-galeria.php:697
+#: includes/class-concursos-clasificacion.php:153
+#: includes/class-concursos-galeria.php:706
 #: includes/class-concursos-participante.php:112
 #: includes/class-concursos-perfil.php:274
 msgid "Participant"
@@ -965,7 +965,7 @@ msgstr ""
 #: includes/admin/class-concursos-stats-admin.php:861
 #: includes/admin/class-concursos-stats-admin.php:1116
 #: includes/admin/class-concursos-votantes-admin.php:53
-#: includes/class-concursos-galeria.php:698
+#: includes/class-concursos-galeria.php:707
 msgid "Votes"
 msgstr ""
 
@@ -992,8 +992,8 @@ msgstr ""
 
 #: includes/admin/class-concursos-stats-admin.php:946
 #: includes/admin/class-concursos-stats-admin.php:1119
-#: includes/class-concursos-clasificacion.php:126
-#: includes/class-concursos-galeria.php:713
+#: includes/class-concursos-clasificacion.php:164
+#: includes/class-concursos-galeria.php:722
 msgid "(tie)"
 msgstr ""
 
@@ -1015,8 +1015,8 @@ msgstr ""
 
 #: includes/admin/class-concursos-stats-admin.php:983
 #: includes/admin/class-concursos-stats-admin.php:1116
-#: includes/class-concursos-clasificacion.php:114
-#: includes/class-concursos-galeria.php:695
+#: includes/class-concursos-clasificacion.php:152
+#: includes/class-concursos-galeria.php:704
 msgid "Place"
 msgstr ""
 
@@ -1368,19 +1368,24 @@ msgid "Next: “%1$s”, opens on %2$s"
 msgstr ""
 
 #. translators: %d: year.
-#: includes/class-concursos-clasificacion.php:99
+#: includes/class-concursos-clasificacion.php:136
 #, php-format
 msgid "General ranking %d"
 msgstr ""
 
 #. translators: %d: year.
-#: includes/class-concursos-clasificacion.php:101
+#: includes/class-concursos-clasificacion.php:138
 #, php-format
 msgid "General ranking %d after this challenge"
 msgstr ""
 
-#: includes/class-concursos-clasificacion.php:108
+#: includes/class-concursos-clasificacion.php:145
 msgid "Points are added up across the challenges finished during the year. With several votes per voter, a 1st is worth 3 points, a 2nd 2 and a 3rd 1; with a single vote, each vote is worth 1 point."
+msgstr ""
+
+#: includes/class-concursos-clasificacion.php:189
+#: includes/class-concursos-galeria.php:751
+msgid "Also took part"
 msgstr ""
 
 #: includes/class-concursos-diseno.php:29
@@ -1845,23 +1850,23 @@ msgstr ""
 msgid "Prize: %s"
 msgstr ""
 
-#: includes/class-concursos-galeria.php:685
+#: includes/class-concursos-galeria.php:693
 msgid "1st = 3 pts, 2nd = 2 pts, 3rd = 1 pt"
 msgstr ""
 
 #. translators: %d: number of voters.
-#: includes/class-concursos-galeria.php:687
+#: includes/class-concursos-galeria.php:695
 #, php-format
 msgid "%d voter took part"
 msgid_plural "%d voters took part"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-concursos-galeria.php:690
+#: includes/class-concursos-galeria.php:698
 msgid "Challenge ranking"
 msgstr ""
 
-#: includes/class-concursos-galeria.php:731
+#: includes/class-concursos-galeria.php:740
 msgid "Total"
 msgstr ""
 

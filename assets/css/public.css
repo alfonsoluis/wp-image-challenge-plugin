@@ -722,8 +722,61 @@
 	gap: 12px;
 }
 
-.pc .pc-clasificacion .pc-tabla-marco {
+.pc .pc-clasificacion__datos {
 	flex: 999 1 560px;
+	min-width: 0;
+}
+
+/* Quienes participaron sin votos: debajo de la tabla, sin un 0 al lado. */
+
+.pc .pc-participaron {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	margin-top: 32px;
+}
+
+.pc .pc-participaron__titulo {
+	margin: 0;
+	font-size: var(--pc-t-pequeno);
+	font-weight: 600;
+}
+
+.pc .pc-participaron__fotos,
+.pc .pc-participaron__personas {
+	display: grid;
+	gap: 20px 16px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.pc .pc-participaron__fotos {
+	grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+}
+
+.pc .pc-participaron__personas {
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.pc .pc-participaron__foto {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	min-width: 0;
+}
+
+.pc .pc-participaron__foto .concursos-foto {
+	margin-bottom: 4px;
+	overflow: hidden;
+	aspect-ratio: 4 / 3;
+	border-radius: 3px;
+}
+
+.pc .pc-participaron__foto img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 
 .pc .pc-tabla-marco {

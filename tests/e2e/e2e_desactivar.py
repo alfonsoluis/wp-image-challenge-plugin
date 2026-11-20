@@ -128,6 +128,8 @@ check("resultados incluyen a Marta", "Marta López" in antes and "Empate en el p
 print("   ", bulk("concursos_desactivar", pid2))
 despues = fetch(session(), RETO_URL)[2]
 despues = despues[:despues.find("concursos-clasificacion")] if "concursos-clasificacion" in despues else despues
+# El banner lateral de retos anteriores puede nombrar a Marta por otro reto.
+despues = re.sub(r'<div class="concursos-banner.*?</aside></div>', "", despues, flags=re.S)
 check("resultados sin Marta", "Marta López" not in despues and despues.count("<figcaption") == 7, str(despues.count("<figcaption")))
 check("el puesto se recalcula", "Primer lugar" in despues or "Empate en el primer lugar" in despues)
 

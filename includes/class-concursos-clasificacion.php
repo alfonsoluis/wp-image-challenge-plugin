@@ -23,36 +23,9 @@ class Concursos_Clasificacion {
 	 * @return array[] Cada fila: lugar, empate, nombre, url, retos, puntos.
 	 */
 	public static function calcular( $anio, $hasta = null ) {
-		$personas = array();
-
-		// Los retos llegan del más reciente al más antiguo: el nombre más nuevo es el que queda.
-		foreach ( Concursos_Reto::all( array( 'publish' ) ) as $reto ) {
-			$cierre = (int) $reto['settings']['cierre'];
-			if ( 'finalizado' !== $reto['status'] || (int) wp_date( 'Y', $cierre ) !== (int) $anio || ( null !== $hasta && $cierre > $hasta ) ) {
-				continue;
-			}
-
-			$fotos = Concursos_Entrada::find( array( 'reto' => $reto['post']->ID ) );
-			$votos = Concursos_Votos::de_fotos( $reto['post']->ID, $fotos );
-			foreach ( $fotos as $foto ) {
-				$autor = Concursos_Entrada::owner( $foto->ID );
-				$email = (string) get_post_meta( $autor, Concursos_Participante::META . 'email', true );
-				if ( ! isset( $personas[ $email ] ) ) {
-					$personas[ $email ] = array(
-						'nombre' => get_the_title( $autor ),
-						'url'    => Concursos_Perfil::url( $autor ),
-						'retos'  => array(),
-						'puntos' => 0,
-					);
-				}
-				$personas[ $email ]['puntos']                       += $votos[ $foto->ID ];
-				$personas[ $email ]['retos'][ $reto['post']->ID ] = true;
-			}
-		}
-
 		$filas = array_values(
 			array_filter(
-				$personas,
+				self::personas( $anio, $hasta ),
 				function ( $persona ) {
 					return $persona['puntos'] > 0;
 				}
@@ -82,6 +55,70 @@ class Concursos_Clasificacion {
 	}
 
 	/**
+	 * Quienes participaron en los retos del año sin conseguir puntos, por nombre.
+	 *
+	 * @param int      $anio  Año en que terminaron los retos.
+	 * @param int|null $hasta Contar solo los retos cerrados hasta esta fecha.
+	 * @return array[] Cada fila: nombre, url.
+	 */
+	public static function sin_puntos( $anio, $hasta = null ) {
+		$filas = array_values(
+			array_filter(
+				self::personas( $anio, $hasta ),
+				function ( $persona ) {
+					return 0 === $persona['puntos'];
+				}
+			)
+		);
+		usort(
+			$filas,
+			function ( $a, $b ) {
+				return strcmp( remove_accents( $a['nombre'] ), remove_accents( $b['nombre'] ) );
+			}
+		);
+
+		return $filas;
+	}
+
+	/**
+	 * Todas las personas que participaron en los retos terminados del año, con sus puntos.
+	 *
+	 * @param int      $anio  Año.
+	 * @param int|null $hasta Fecha de cierre máxima.
+	 * @return array[] email => nombre, url, retos (reto => true), puntos.
+	 */
+	private static function personas( $anio, $hasta ) {
+		$personas = array();
+
+		// Los retos llegan del más reciente al más antiguo: el nombre más nuevo es el que queda.
+		foreach ( Concursos_Reto::all( array( 'publish' ) ) as $reto ) {
+			$cierre = (int) $reto['settings']['cierre'];
+			if ( 'finalizado' !== $reto['status'] || (int) wp_date( 'Y', $cierre ) !== (int) $anio || ( null !== $hasta && $cierre > $hasta ) ) {
+				continue;
+			}
+
+			$fotos = Concursos_Entrada::find( array( 'reto' => $reto['post']->ID ) );
+			$votos = Concursos_Votos::de_fotos( $reto['post']->ID, $fotos );
+			foreach ( $fotos as $foto ) {
+				$autor = Concursos_Entrada::owner( $foto->ID );
+				$email = (string) get_post_meta( $autor, Concursos_Participante::META . 'email', true );
+				if ( ! isset( $personas[ $email ] ) ) {
+					$personas[ $email ] = array(
+						'nombre' => get_the_title( $autor ),
+						'url'    => Concursos_Perfil::url( $autor ),
+						'retos'  => array(),
+						'puntos' => 0,
+					);
+				}
+				$personas[ $email ]['puntos']                       += (int) $votos[ $foto->ID ];
+				$personas[ $email ]['retos'][ $reto['post']->ID ] = true;
+			}
+		}
+
+		return $personas;
+	}
+
+	/**
 	 * Tabla de la clasificación.
 	 *
 	 * @param int      $anio  Año.
@@ -107,6 +144,7 @@ class Concursos_Clasificacion {
 				<h2 class="pc-seccion__titulo" id="pc-clasificacion"><?php echo esc_html( $titulo ); ?></h2>
 				<p class="pc-texto-suave"><?php esc_html_e( 'Points are added up across the challenges finished during the year. With several votes per voter, a 1st is worth 3 points, a 2nd 2 and a 3rd 1; with a single vote, each vote is worth 1 point.', 'foncholuis-art-challenge-manager' ); ?></p>
 			</div>
+			<div class="pc-clasificacion__datos">
 			<div class="pc-tabla-marco">
 				<table class="pc-tabla">
 					<thead>
@@ -142,6 +180,27 @@ class Concursos_Clasificacion {
 						<?php endforeach; ?>
 					</tbody>
 				</table>
+			</div>
+			<?php
+			$sin_puntos = self::sin_puntos( $anio, $hasta );
+			if ( $sin_puntos ) :
+				?>
+				<div class="pc-participaron">
+					<h3 class="pc-participaron__titulo"><?php esc_html_e( 'Also took part', 'foncholuis-art-challenge-manager' ); ?></h3>
+					<ul class="pc-participaron__personas">
+						<?php foreach ( $sin_puntos as $persona ) : ?>
+							<li class="pc-persona">
+								<span class="pc-persona__ini" aria-hidden="true"><?php echo esc_html( Concursos_Vista::iniciales( $persona['nombre'] ) ); ?></span>
+								<?php if ( $persona['url'] ) : ?>
+									<a href="<?php echo esc_url( $persona['url'] ); ?>"><?php echo esc_html( $persona['nombre'] ); ?></a>
+								<?php else : ?>
+									<span><?php echo esc_html( $persona['nombre'] ); ?></span>
+								<?php endif; ?>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			<?php endif; ?>
 			</div>
 		</section>
 		<?php

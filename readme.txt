@@ -108,6 +108,7 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 == Changelog ==
 
 = 1.3.2 =
+* Change: ranking tables (challenge and general) only list photos and people with points. The rest appear below the table under "Also took part", without a 0 next to them.
 * New: "Copy link" in the participant list. It creates a new personal link and shows it once in the admin, ready to copy and send another way (for example, when the email does not arrive). The previous link stops working.
 
 = 1.3.1 =

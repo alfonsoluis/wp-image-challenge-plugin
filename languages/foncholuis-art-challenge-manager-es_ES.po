@@ -49,7 +49,7 @@ msgstr "Panel"
 #: includes/admin/class-concursos-stats-admin.php:633
 #: includes/class-concursos-banner.php:297
 #: includes/class-concursos-banner.php:548
-#: includes/class-concursos-clasificacion.php:116
+#: includes/class-concursos-clasificacion.php:154
 #: includes/class-concursos-galeria.php:223
 #: includes/class-concursos-perfil.php:262
 #: includes/class-concursos-perfil.php:286
@@ -274,8 +274,8 @@ msgstr "Puntos importados"
 #: includes/admin/class-concursos-entradas-admin.php:52
 #: includes/admin/class-concursos-entradas-admin.php:225
 #: includes/admin/class-concursos-stats-admin.php:1116
-#: includes/class-concursos-clasificacion.php:117
-#: includes/class-concursos-galeria.php:698
+#: includes/class-concursos-clasificacion.php:155
+#: includes/class-concursos-galeria.php:707
 msgid "Points"
 msgstr "Puntos"
 
@@ -314,7 +314,7 @@ msgstr "Todos los retos"
 #: includes/admin/class-concursos-stats-admin.php:1116
 #: includes/class-concursos-entrada.php:45
 #: includes/class-concursos-envio.php:258
-#: includes/class-concursos-galeria.php:696
+#: includes/class-concursos-galeria.php:705
 msgid "Photo"
 msgstr "Foto"
 
@@ -323,8 +323,8 @@ msgid "Title"
 msgstr "Título"
 
 #: includes/admin/class-concursos-entradas-admin.php:223
-#: includes/class-concursos-clasificacion.php:115
-#: includes/class-concursos-galeria.php:697
+#: includes/class-concursos-clasificacion.php:153
+#: includes/class-concursos-galeria.php:706
 #: includes/class-concursos-participante.php:112
 #: includes/class-concursos-perfil.php:274
 msgid "Participant"
@@ -967,7 +967,7 @@ msgstr "%1$s%% de los %2$s votantes confirmados"
 #: includes/admin/class-concursos-stats-admin.php:861
 #: includes/admin/class-concursos-stats-admin.php:1116
 #: includes/admin/class-concursos-votantes-admin.php:53
-#: includes/class-concursos-galeria.php:698
+#: includes/class-concursos-galeria.php:707
 msgid "Votes"
 msgstr "Votos"
 
@@ -994,8 +994,8 @@ msgstr "Fotos recibidas"
 
 #: includes/admin/class-concursos-stats-admin.php:946
 #: includes/admin/class-concursos-stats-admin.php:1119
-#: includes/class-concursos-clasificacion.php:126
-#: includes/class-concursos-galeria.php:713
+#: includes/class-concursos-clasificacion.php:164
+#: includes/class-concursos-galeria.php:722
 msgid "(tie)"
 msgstr "(empate)"
 
@@ -1017,8 +1017,8 @@ msgstr "Votante"
 
 #: includes/admin/class-concursos-stats-admin.php:983
 #: includes/admin/class-concursos-stats-admin.php:1116
-#: includes/class-concursos-clasificacion.php:114
-#: includes/class-concursos-galeria.php:695
+#: includes/class-concursos-clasificacion.php:152
+#: includes/class-concursos-galeria.php:704
 msgid "Place"
 msgstr "Lugar"
 
@@ -1370,20 +1370,25 @@ msgid "Next: “%1$s”, opens on %2$s"
 msgstr "Próximo: «%1$s», abre el %2$s"
 
 #. translators: %d: year.
-#: includes/class-concursos-clasificacion.php:99
+#: includes/class-concursos-clasificacion.php:136
 #, php-format
 msgid "General ranking %d"
 msgstr "Clasificación general %d"
 
 #. translators: %d: year.
-#: includes/class-concursos-clasificacion.php:101
+#: includes/class-concursos-clasificacion.php:138
 #, php-format
 msgid "General ranking %d after this challenge"
 msgstr "Clasificación general %d tras este reto"
 
-#: includes/class-concursos-clasificacion.php:108
+#: includes/class-concursos-clasificacion.php:145
 msgid "Points are added up across the challenges finished during the year. With several votes per voter, a 1st is worth 3 points, a 2nd 2 and a 3rd 1; with a single vote, each vote is worth 1 point."
 msgstr "Los puntos se suman entre los retos terminados durante el año. Con varios votos por votante, un 1.º vale 3 puntos, un 2.º 2 y un 3.º 1; con un solo voto, cada voto vale 1 punto."
+
+#: includes/class-concursos-clasificacion.php:189
+#: includes/class-concursos-galeria.php:751
+msgid "Also took part"
+msgstr "También participaron"
 
 #: includes/class-concursos-diseno.php:29
 msgid "Site theme: your theme colors"
@@ -1847,23 +1852,23 @@ msgstr "Resto de participantes"
 msgid "Prize: %s"
 msgstr "Premio: %s"
 
-#: includes/class-concursos-galeria.php:685
+#: includes/class-concursos-galeria.php:693
 msgid "1st = 3 pts, 2nd = 2 pts, 3rd = 1 pt"
 msgstr "1.º = 3 pts, 2.º = 2 pts, 3.º = 1 pt"
 
 #. translators: %d: number of voters.
-#: includes/class-concursos-galeria.php:687
+#: includes/class-concursos-galeria.php:695
 #, php-format
 msgid "%d voter took part"
 msgid_plural "%d voters took part"
 msgstr[0] "%d persona votó"
 msgstr[1] "%d personas votaron"
 
-#: includes/class-concursos-galeria.php:690
+#: includes/class-concursos-galeria.php:698
 msgid "Challenge ranking"
 msgstr "Clasificación del reto"
 
-#: includes/class-concursos-galeria.php:731
+#: includes/class-concursos-galeria.php:740
 msgid "Total"
 msgstr "Total"
 
