@@ -47,7 +47,7 @@ echo wp_json_encode(array('fase'=>Concursos_Reto::status($s),'avisar'=>(int)$s['
     tabla=h.split('class="pc-tabla"')[1].split("</table>")[0] if 'class="pc-tabla"' in h else ""
     rejilla=h.split('class="pc-participaron__fotos"')[1].split("</ul>")[0] if "pc-participaron__fotos" in h else ""
     check("tabla del reto: solo las fotos con puntos",tabla.count("<tr>")==5 and "Cuatro" not in tabla,str(tabla.count("<tr>")))
-    check("rejilla del reto: las fotos sin puntos",rejilla.count("<li")==2 and "Cuatro" in rejilla and "Uno" in rejilla,str(rejilla.count("<li")))
+    check("rejilla del reto: las fotos sin puntos, solo con el nombre",rejilla.count("<li")==2 and "Cuatro" in rejilla and "Uno" in rejilla and "pc-foto__titulo" not in rejilla,str(rejilla.count("<li")))
     personas=h.split('class="pc-participaron__personas"')[1].split("</ul>")[0] if "pc-participaron__personas" in h else ""
     general=h.split("pc-clasificacion__datos")[1].split("</table>")[0] if "pc-clasificacion__datos" in h else ""
     check("clasificación general: sin puntos va debajo",'"Cuatro"' not in general and "Cuatro</" not in general and "Cuatro" in personas and "Uno" not in personas)

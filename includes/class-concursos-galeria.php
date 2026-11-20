@@ -757,7 +757,6 @@ class Concursos_Galeria {
 							?>
 							<li class="pc-participaron__foto">
 								<?php echo wp_kses( Concursos_Entrada::miniatura( $foto, 'thumbnail' ), Concursos_Vista::html_permitido() ); ?>
-								<span class="pc-foto__titulo"><?php echo esc_html( get_the_title( $foto ) ); ?></span>
 								<span class="pc-foto__autor"><?php echo wp_kses( $autor ? Concursos_Perfil::enlace( $autor ) : '', Concursos_Vista::html_permitido() ); ?></span>
 							</li>
 						<?php endforeach; ?>
