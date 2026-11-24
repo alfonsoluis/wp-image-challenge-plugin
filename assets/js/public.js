@@ -4,7 +4,7 @@
 	'use strict';
 
 	var textos = window.concursosModal || {};
-	var modal, imagen, descripcion, avatar, titulo, autor, reto, votar, barraModal, anterior, siguiente;
+	var modal, imagen, descripcion, avatar, titulo, autor, reto, pie, votar, barraModal, anterior, siguiente;
 	var actual = null;
 
 	function crear() {
@@ -14,10 +14,9 @@
 			'<button type="button" class="concursos-modal__cerrar">&times;</button>' +
 			'<div class="concursos-modal__marco">' +
 				'<button type="button" class="concursos-modal__flecha concursos-modal__flecha--anterior">&#8249;</button>' +
-				'<div class="concursos-modal__foto"><img alt=""><p class="concursos-modal__descripcion concursos-sm" hidden></p></div>' +
+				'<div class="concursos-modal__foto"><img alt=""><p class="concursos-modal__descripcion concursos-sm" hidden></p><div class="concursos-modal__votar" hidden></div></div>' +
 				'<button type="button" class="concursos-modal__flecha concursos-modal__flecha--siguiente">&#8250;</button>' +
 			'</div>' +
-			'<div class="concursos-modal__votar" hidden></div>' +
 			'<div class="concursos-modal__pie">' +
 				'<div class="concursos-modal__autor"><img alt=""><div><strong></strong><a></a></div></div>' +
 				'<div class="concursos-modal__reto"><small></small><a></a></div>' +
@@ -30,6 +29,7 @@
 		titulo = modal.querySelector( '.concursos-modal__autor strong' );
 		autor = modal.querySelector( '.concursos-modal__autor a' );
 		reto = modal.querySelector( '.concursos-modal__reto a' );
+		pie = modal.querySelector( '.concursos-modal__pie' );
 		votar = modal.querySelector( '.concursos-modal__votar' );
 		barraModal = modal.querySelector( '.concursos-modal__barra' );
 		anterior = modal.querySelector( '.concursos-modal__flecha--anterior' );
@@ -108,7 +108,8 @@
 		if ( ! grupo || ! barra ) {
 			votar.hidden = true;
 			barraModal.hidden = true;
-			modal.classList.remove( 'is-votando' );
+			pie.hidden = false;
+			modal.classList.remove( 'is-votando', 'con-pie' );
 			return;
 		}
 
@@ -129,7 +130,10 @@
 
 		votar.hidden = false;
 		barraModal.hidden = false;
+		// Votando ya se sabe en qué reto se está: el pie solo queda si hay autor que mostrar.
+		pie.hidden = modal.querySelector( '.concursos-modal__autor' ).hidden;
 		modal.classList.add( 'is-votando' );
+		modal.classList.toggle( 'con-pie', ! pie.hidden );
 	}
 
 	document.addEventListener( 'concursos:podio', sincronizarVoto );

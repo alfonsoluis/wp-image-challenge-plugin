@@ -2420,21 +2420,31 @@
 	right: 12px;
 }
 
-/* Votar desde la foto ampliada: sus puestos bajo la foto y la barra con tu elección al pie. */
+/* Votar desde la foto ampliada: sus puestos flotan sobre la foto y la barra con tu elección va al pie. */
 .pc .concursos-modal__votar {
-	display: flex;
-	flex: none;
-	justify-content: center;
-	padding: 12px 24px 0;
+	position: absolute;
+	bottom: 16px;
+	left: 50%;
+	z-index: 1;
+	transform: translateX(-50%);
 }
 
 .pc .concursos-modal__votar[hidden],
-.pc .concursos-modal__barra[hidden] {
+.pc .concursos-modal__barra[hidden],
+.pc .concursos-modal__pie[hidden] {
 	display: none;
 }
 
 .pc .concursos-modal__votar .pc-puestos {
 	position: static;
+}
+
+.pc .concursos-modal.is-votando .concursos-modal__reto {
+	display: none;
+}
+
+.pc .concursos-modal.is-votando .concursos-modal__descripcion {
+	padding-bottom: 88px;
 }
 
 .pc .concursos-modal .pc-barra-podio {
@@ -2446,7 +2456,11 @@
 }
 
 .pc .concursos-modal.is-votando .concursos-modal__marco img {
-	max-height: calc(100dvh - 340px);
+	max-height: calc(100dvh - 190px);
+}
+
+.pc .concursos-modal.is-votando.con-pie .concursos-modal__marco img {
+	max-height: calc(100dvh - 270px);
 }
 
 .pc .concursos-modal__pie {
@@ -2630,7 +2644,11 @@
 	}
 
 	.pc .concursos-modal.is-votando .concursos-modal__marco img {
-		max-height: calc(100dvh - 430px);
+		max-height: calc(100dvh - 390px);
+	}
+
+	.pc .concursos-modal.is-votando.con-pie .concursos-modal__marco img {
+		max-height: calc(100dvh - 470px);
 	}
 
 	.pc .concursos-modal__flecha {
