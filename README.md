@@ -298,6 +298,8 @@ make reset                  # borra todo
 | phpMyAdmin  | http://localhost:8081          | automático    |
 | Mailpit     | http://localhost:8025          | emails de prueba |
 
+Para publicar una versión nueva (WordPress.org y la web real), mira [docs/publicar-version.md](docs/publicar-version.md).
+
 La raíz del repositorio es el plugin y está montada en `wp-content/plugins/foncholuis-art-challenge-manager`: los cambios se ven al recargar el navegador. En local, ningún email sale de verdad; todos llegan a Mailpit.
 
 ## Licencia
