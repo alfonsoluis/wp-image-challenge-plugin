@@ -49,6 +49,17 @@ demo: ## Reto de prueba abierto con participantes y fotos (FASE=envios|votacion|
 zip: ## Genera foncholuis-art-challenge-manager.zip con lo último confirmado en git
 	git archive --format=zip --prefix=foncholuis-art-challenge-manager/ -o foncholuis-art-challenge-manager.zip HEAD
 
+release: ## Publica una versión: make release V=1.3.3 (etiqueta y GitHub Actions la sube a wordpress.org)
+	@test -n "$(V)" || { echo "Uso: make release V=x.y.z"; exit 1; }
+	@test -z "$$(git status --porcelain --untracked-files=no)" || { echo "Hay cambios sin confirmar"; exit 1; }
+	@test "$$(git branch --show-current)" = main || { echo "Hay que estar en main"; exit 1; }
+	@grep -q "^ \* Version: *$(V)$$" foncholuis-art-challenge-manager.php || { echo "La cabecera del plugin no es $(V)"; exit 1; }
+	@grep -q "define( 'CONCURSOS_VERSION', '$(V)' )" foncholuis-art-challenge-manager.php || { echo "CONCURSOS_VERSION no es $(V)"; exit 1; }
+	@grep -q "^Stable tag: *$(V)$$" readme.txt || { echo "El Stable tag de readme.txt no es $(V)"; exit 1; }
+	git push origin main
+	git tag $(V)
+	git push origin $(V)
+
 i18n: ## Regenera .pot, .po y .mo (NUEVAS=pares.json añade traducciones nuevas)
 	docker compose run --rm -q wpcli i18n make-pot /var/www/html/wp-content/plugins/foncholuis-art-challenge-manager /var/www/html/wp-content/plugins/foncholuis-art-challenge-manager/languages/foncholuis-art-challenge-manager.pot --slug=foncholuis-art-challenge-manager --domain=foncholuis-art-challenge-manager --exclude=docker,tests,languages,docs,.wordpress-org --headers='{"Report-Msgid-Bugs-To":"https://github.com/alfonsoluis/wp-image-challenge-plugin/issues"}'
 	python3 -I docker/i18n.py $(NUEVAS)

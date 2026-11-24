@@ -1,0 +1,29 @@
+# Publica en el directorio de WordPress.org (SVN) cada vez que se sube una etiqueta
+# de versión, p. ej. 1.3.3. Hacen falta los secretos SVN_USERNAME y SVN_PASSWORD
+# (la contraseña SVN de wordpress.org, que no es la de la cuenta).
+name: Publicar en WordPress.org
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: La etiqueta debe coincidir con la versión del plugin
+        run: |
+          v="${GITHUB_REF_NAME}"
+          grep -q "^ \* Version: *${v}\$" foncholuis-art-challenge-manager.php || { echo "La cabecera del plugin no es ${v}"; exit 1; }
+          grep -q "^Stable tag: *${v}\$" readme.txt || { echo "El Stable tag del readme.txt no es ${v}"; exit 1; }
+
+      - name: Subir a WordPress.org
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: foncholuis-art-challenge-manager
+          ASSETS_DIR: .wordpress-org

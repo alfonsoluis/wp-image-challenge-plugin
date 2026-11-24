@@ -74,8 +74,8 @@ Las páginas públicas del plugin usan un sistema de diseño propio y aislado: t
 
 **Requisitos:** WordPress 7.1 o posterior y PHP 7.4 o posterior.
 
-1. Descarga el ZIP con **Code → Download ZIP**. Solo contiene el plugin.
-2. En tu WordPress, ve a **Plugins → Añadir nuevo → Subir plugin**, elige el ZIP y actívalo.
+1. Lo más cómodo: en tu WordPress, ve a **Plugins → Añadir nuevo**, busca **Foncholuis Art Challenge Manager** e instálalo. Está en el [directorio de WordPress.org](https://wordpress.org/plugins/foncholuis-art-challenge-manager/).
+2. Si prefieres el ZIP de este repositorio (**Code → Download ZIP**, solo contiene el plugin), ve a **Plugins → Añadir nuevo → Subir plugin**, elige el ZIP y actívalo.
 3. Crea tu primer reto en **Retos → Crear nuevo reto**.
 4. Añade al menú las páginas **Retos** e **Inscripción a retos**, que el plugin crea al activarse: en **Apariencia → Editor → Navegación** con temas de bloques, o en **Apariencia → Menús** con temas clásicos.
 
