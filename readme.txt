@@ -4,7 +4,7 @@ Tags: contest, photo contest, voting, gallery, challenges
 Requires at least: 7.1
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.4
+Stable tag: 1.3.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,9 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 
 == Changelog ==
 
+= 1.3.5 =
+* New: while voting, clicking a thumbnail in the voting bar scrolls to that photo in the grid (in the enlarged view it jumps to that photo).
+
 = 1.3.4 =
 * Change: in the enlarged photo while voting, the places float over the photo, the challenge name is no longer shown and the photo gets the freed space.
 
@@ -139,6 +142,9 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 * First public release.
 
 == Upgrade Notice ==
+
+= 1.3.5 =
+Click a thumbnail in the voting bar to jump to that photo.
 
 = 1.3.4 =
 Bigger photo when voting from the enlarged view.

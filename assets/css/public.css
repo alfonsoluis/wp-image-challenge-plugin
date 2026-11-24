@@ -1609,6 +1609,24 @@
 	border: 1px dashed #6b675f;
 }
 
+.pc .pc-barra-podio__hueco[role="button"] {
+	cursor: pointer;
+}
+
+.pc .pc-barra-podio__hueco[role="button"]:hover {
+	background: rgba(245, 243, 238, 0.14);
+}
+
+.pc .pc-barra-podio__hueco[role="button"]:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
+}
+
+.pc .pc-foto--podio.is-resaltada {
+	outline: 3px solid var(--pc-oro);
+	outline-offset: 4px;
+}
+
 .pc .pc-barra-podio__texto {
 	display: flex;
 	flex-direction: column;

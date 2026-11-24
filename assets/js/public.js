@@ -52,6 +52,15 @@
 				real.click();
 			}
 		} );
+		barraModal.addEventListener( 'click', function ( event ) {
+			var hueco = event.target.closest( '.pc-barra-podio__hueco' );
+			var id = hueco && hueco.getAttribute( 'data-entrada' );
+			var li = id ? document.querySelector( '#concursos-podio .pc-foto--podio[data-entrada="' + id + '"]' ) : null;
+			var boton = li ? li.querySelector( '.concursos-foto' ) : null;
+			if ( boton ) {
+				mostrar( boton );
+			}
+		} );
 		modal.addEventListener( 'keydown', function ( event ) {
 			if ( event.key === 'ArrowLeft' ) {
 				ir( -1 );
@@ -248,6 +257,14 @@
 			var img = hueco.querySelector( '.pc-barra-podio__img' );
 			var miniatura = foto ? foto.getAttribute( 'data-miniatura' ) : '';
 			hueco.classList.toggle( 'is-vacio', ! foto );
+			hueco.setAttribute( 'data-entrada', foto ? id : '' );
+			if ( foto ) {
+				hueco.setAttribute( 'tabindex', '0' );
+				hueco.setAttribute( 'role', 'button' );
+			} else {
+				hueco.removeAttribute( 'tabindex' );
+				hueco.removeAttribute( 'role' );
+			}
 			img.innerHTML = '';
 			if ( miniatura ) {
 				var el = document.createElement( 'img' );
@@ -292,6 +309,35 @@
 	} );
 
 	pintar();
+
+	// Pulsar una miniatura de la barra lleva hasta esa foto en la rejilla.
+	function irAFoto( hueco ) {
+		var id = hueco.getAttribute( 'data-entrada' );
+		var foto = id ? form.querySelector( '.pc-foto--podio[data-entrada="' + id + '"]' ) : null;
+		if ( ! foto ) {
+			return;
+		}
+		var quieta = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+		foto.scrollIntoView( { block: 'center', behavior: quieta ? 'auto' : 'smooth' } );
+		foto.classList.add( 'is-resaltada' );
+		window.setTimeout( function () {
+			foto.classList.remove( 'is-resaltada' );
+		}, 1600 );
+	}
+
+	form.addEventListener( 'click', function ( event ) {
+		var hueco = event.target.closest( '.pc-barra-podio__hueco' );
+		if ( hueco ) {
+			irAFoto( hueco );
+		}
+	} );
+	form.addEventListener( 'keydown', function ( event ) {
+		var hueco = event.target.closest && event.target.closest( '.pc-barra-podio__hueco' );
+		if ( hueco && ( event.key === 'Enter' || event.key === ' ' ) ) {
+			event.preventDefault();
+			irAFoto( hueco );
+		}
+	} );
 
 	/*
 	 * La barra es «sticky», pero algunos temas ponen overflow:hidden en un contenedor de la
