@@ -1565,6 +1565,16 @@
 	box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
 }
 
+.pc .pc-barra-podio.is-flotante {
+	position: fixed;
+	box-sizing: border-box;
+	margin-top: 0;
+}
+
+.pc .pc-barra-podio__reserva {
+	margin-top: 8px;
+}
+
 .pc .pc-barra-podio__huecos {
 	display: flex;
 	flex-wrap: wrap;
@@ -2311,6 +2321,7 @@
 }
 
 .pc .concursos-modal__marco {
+	position: relative;
 	display: flex;
 	flex: 1 1 auto;
 	align-items: center;
@@ -2366,6 +2377,76 @@
 	font-size: 24px;
 	line-height: 1;
 	cursor: pointer;
+}
+
+.pc .concursos-modal__flecha {
+	position: absolute;
+	top: 50%;
+	z-index: 1;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	padding: 0 0 4px;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(17, 17, 17, 0.6);
+	color: #fff;
+	font-size: 32px;
+	line-height: 1;
+	cursor: pointer;
+	transform: translateY(-50%);
+}
+
+.pc .concursos-modal__flecha:hover {
+	background: rgba(17, 17, 17, 0.85);
+}
+
+.pc .concursos-modal__flecha:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
+}
+
+.pc .concursos-modal__flecha[hidden] {
+	display: none;
+}
+
+.pc .concursos-modal__flecha--anterior {
+	left: 12px;
+}
+
+.pc .concursos-modal__flecha--siguiente {
+	right: 12px;
+}
+
+/* Votar desde la foto ampliada: sus puestos bajo la foto y la barra con tu elección al pie. */
+.pc .concursos-modal__votar {
+	display: flex;
+	flex: none;
+	justify-content: center;
+	padding: 12px 24px 0;
+}
+
+.pc .concursos-modal__votar[hidden],
+.pc .concursos-modal__barra[hidden] {
+	display: none;
+}
+
+.pc .concursos-modal__votar .pc-puestos {
+	position: static;
+}
+
+.pc .concursos-modal .pc-barra-podio {
+	position: static;
+	flex: none;
+	margin: 0;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.pc .concursos-modal.is-votando .concursos-modal__marco img {
+	max-height: calc(100dvh - 340px);
 }
 
 .pc .concursos-modal__pie {
@@ -2546,6 +2627,15 @@
 
 	.pc .concursos-modal__reto {
 		text-align: left;
+	}
+
+	.pc .concursos-modal.is-votando .concursos-modal__marco img {
+		max-height: calc(100dvh - 430px);
+	}
+
+	.pc .concursos-modal__flecha {
+		width: 40px;
+		height: 40px;
 	}
 
 	.pc .pc-destacado__media {

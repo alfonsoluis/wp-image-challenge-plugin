@@ -4,7 +4,7 @@ Tags: contest, photo contest, voting, gallery, challenges
 Requires at least: 7.1
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,11 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 
 == Changelog ==
 
+= 1.3.3 =
+* Fix: the voting bar with your chosen places now stays at the bottom of the screen while you scroll, also in themes that clip the page content.
+* New: in the enlarged photo you can give it 1st, 2nd or 3rd place and see your voting bar at the bottom, and arrows (or the left and right keys) go to the previous or next photo.
+* Change: with anonymous voting, the photo description is also hidden in the enlarged view.
+
 = 1.3.2 =
 * Change: ranking tables (challenge and general) only list photos and people with points. The rest appear below the table under "Also took part", without a 0 next to them.
 * New: "Copy link" in the participant list. It creates a new personal link and shows it once in the admin, ready to copy and send another way (for example, when the email does not arrive). The previous link stops working.
@@ -131,6 +136,9 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 * First public release.
 
 == Upgrade Notice ==
+
+= 1.3.3 =
+Voting bar always visible, and vote from the enlarged photo with previous/next arrows.
 
 = 1.3.2 =
 Copy a participant's personal link from the participant list.

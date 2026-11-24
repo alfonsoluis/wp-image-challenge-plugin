@@ -1,20 +1,28 @@
-/* Concursos – abre una foto en grande con los datos de su autor y su reto. */
+/* Concursos – abre una foto en grande con los datos de su autor y su reto, con flechas
+   para pasar a la anterior o la siguiente y, en una votación, con sus puestos y la barra. */
 ( function () {
 	'use strict';
 
 	var textos = window.concursosModal || {};
-	var modal, imagen, descripcion, avatar, titulo, autor, reto;
+	var modal, imagen, descripcion, avatar, titulo, autor, reto, votar, barraModal, anterior, siguiente;
+	var actual = null;
 
 	function crear() {
 		modal = document.createElement( 'dialog' );
 		modal.className = 'concursos-modal';
 		modal.innerHTML =
 			'<button type="button" class="concursos-modal__cerrar">&times;</button>' +
-			'<div class="concursos-modal__marco"><div class="concursos-modal__foto"><img alt=""><p class="concursos-modal__descripcion concursos-sm" hidden></p></div></div>' +
+			'<div class="concursos-modal__marco">' +
+				'<button type="button" class="concursos-modal__flecha concursos-modal__flecha--anterior">&#8249;</button>' +
+				'<div class="concursos-modal__foto"><img alt=""><p class="concursos-modal__descripcion concursos-sm" hidden></p></div>' +
+				'<button type="button" class="concursos-modal__flecha concursos-modal__flecha--siguiente">&#8250;</button>' +
+			'</div>' +
+			'<div class="concursos-modal__votar" hidden></div>' +
 			'<div class="concursos-modal__pie">' +
 				'<div class="concursos-modal__autor"><img alt=""><div><strong></strong><a></a></div></div>' +
 				'<div class="concursos-modal__reto"><small></small><a></a></div>' +
-			'</div>';
+			'</div>' +
+			'<div class="pc-barra-podio concursos-modal__barra" hidden></div>';
 
 		imagen = modal.querySelector( '.concursos-modal__marco img' );
 		descripcion = modal.querySelector( '.concursos-modal__descripcion' );
@@ -22,6 +30,35 @@
 		titulo = modal.querySelector( '.concursos-modal__autor strong' );
 		autor = modal.querySelector( '.concursos-modal__autor a' );
 		reto = modal.querySelector( '.concursos-modal__reto a' );
+		votar = modal.querySelector( '.concursos-modal__votar' );
+		barraModal = modal.querySelector( '.concursos-modal__barra' );
+		anterior = modal.querySelector( '.concursos-modal__flecha--anterior' );
+		siguiente = modal.querySelector( '.concursos-modal__flecha--siguiente' );
+		anterior.setAttribute( 'aria-label', textos.anterior || 'Previous photo' );
+		siguiente.setAttribute( 'aria-label', textos.siguiente || 'Next photo' );
+		anterior.addEventListener( 'click', function () {
+			ir( -1 );
+		} );
+		siguiente.addEventListener( 'click', function () {
+			ir( 1 );
+		} );
+
+		// Votar desde la foto ampliada: se pulsa el botón real de la rejilla, que ya guarda el puesto.
+		votar.addEventListener( 'click', function ( event ) {
+			var boton = event.target.closest( '.pc-puesto' );
+			var real = boton && document.querySelector( '#concursos-podio .pc-puesto[value="' + boton.value + '"]' );
+			if ( real ) {
+				event.preventDefault();
+				real.click();
+			}
+		} );
+		modal.addEventListener( 'keydown', function ( event ) {
+			if ( event.key === 'ArrowLeft' ) {
+				ir( -1 );
+			} else if ( event.key === 'ArrowRight' ) {
+				ir( 1 );
+			}
+		} );
 
 		var cerrar = modal.querySelector( '.concursos-modal__cerrar' );
 		cerrar.setAttribute( 'aria-label', textos.cerrar || 'Close' );
@@ -38,15 +75,84 @@
 		} );
 		modal.addEventListener( 'close', function () {
 			imagen.removeAttribute( 'src' );
+			actual = null;
 		} );
 	}
+
+	// Las fotos entre las que se puede pasar: las de la misma lista que la abierta.
+	function fotos() {
+		var lista = actual.closest( 'ul, ol' ) || actual.parentNode;
+		return Array.prototype.slice.call( lista.querySelectorAll( '.concursos-foto' ) );
+	}
+
+	function ir( paso ) {
+		if ( ! actual ) {
+			return;
+		}
+		var todas = fotos();
+		if ( todas.length > 1 ) {
+			mostrar( todas[ ( todas.indexOf( actual ) + paso + todas.length ) % todas.length ] );
+		}
+	}
+
+	// Puestos de esta foto y barra con la elección actual, copiados de la rejilla de votación.
+	function sincronizarVoto() {
+		if ( ! modal ) {
+			return;
+		}
+		var li = actual ? actual.closest( '.pc-foto--podio' ) : null;
+		var form = li ? document.getElementById( 'concursos-podio' ) : null;
+		var grupo = li ? li.querySelector( '.pc-puestos' ) : null;
+		var barra = form ? form.querySelector( '.pc-barra-podio' ) : null;
+
+		if ( ! grupo || ! barra ) {
+			votar.hidden = true;
+			barraModal.hidden = true;
+			modal.classList.remove( 'is-votando' );
+			return;
+		}
+
+		if ( votar.getAttribute( 'data-entrada' ) !== li.getAttribute( 'data-entrada' ) ) {
+			votar.innerHTML = grupo.outerHTML;
+			votar.setAttribute( 'data-entrada', li.getAttribute( 'data-entrada' ) );
+		}
+		votar.querySelectorAll( '.pc-puesto' ).forEach( function ( boton ) {
+			var real = grupo.querySelector( '.pc-puesto[value="' + boton.value + '"]' );
+			boton.setAttribute( 'aria-pressed', real ? real.getAttribute( 'aria-pressed' ) : 'false' );
+		} );
+
+		barraModal.innerHTML = barra.innerHTML;
+		var confirmar = barraModal.querySelector( '.pc-barra-podio__confirmar' );
+		if ( confirmar ) {
+			confirmar.setAttribute( 'form', 'concursos-podio' );
+		}
+
+		votar.hidden = false;
+		barraModal.hidden = false;
+		modal.classList.add( 'is-votando' );
+	}
+
+	document.addEventListener( 'concursos:podio', sincronizarVoto );
 
 	function abrir( boton ) {
 		if ( ! modal ) {
 			crear();
 		}
+		mostrar( boton );
 
+		// Dentro del contenedor .pc, para heredar sus estilos y colores.
+		( boton.closest( '.pc' ) || document.body ).appendChild( modal );
+		if ( ! modal.open ) {
+			modal.showModal();
+		}
+	}
+
+	function mostrar( boton ) {
+		actual = boton;
 		var datos = boton.dataset;
+		var hayVarias = fotos().length > 1;
+		anterior.hidden = ! hayVarias;
+		siguiente.hidden = ! hayVarias;
 
 		imagen.src = datos.grande;
 		imagen.alt = datos.titulo;
@@ -68,9 +174,7 @@
 			avatar.src = datos.avatar;
 		}
 
-		// Dentro del contenedor .pc, para heredar sus estilos y colores.
-		( boton.closest( '.pc' ) || document.body ).appendChild( modal );
-		modal.showModal();
+		sincronizarVoto();
 	}
 
 	// Pide confirmación antes de enviar los formularios que la necesitan.
@@ -156,6 +260,8 @@
 		} );
 		confirmar.disabled = ! hayCambios;
 		estado.textContent = hayCambios ? form.getAttribute( 'data-cambios' ) : ( hayVotos ? form.getAttribute( 'data-guardado' ) : '' );
+
+		document.dispatchEvent( new CustomEvent( 'concursos:podio' ) );
 	}
 
 	form.addEventListener( 'click', function ( event ) {
@@ -182,4 +288,54 @@
 	} );
 
 	pintar();
+
+	/*
+	 * La barra es «sticky», pero algunos temas ponen overflow:hidden en un contenedor de la
+	 * página y entonces no se queda pegada abajo. En ese caso se flota con position:fixed
+	 * mientras su sitio natural quede por debajo de la ventana.
+	 */
+	var barra = form.querySelector( '.pc-barra-podio' );
+	if ( ! barra ) {
+		return;
+	}
+	var hueco = document.createElement( 'div' );
+	hueco.className = 'pc-barra-podio__reserva';
+	hueco.hidden = true;
+	barra.parentNode.insertBefore( hueco, barra );
+	var pendiente = false;
+
+	function colocar() {
+		pendiente = false;
+		var flota = barra.classList.contains( 'is-flotante' );
+		var natural = ( flota ? hueco : barra ).getBoundingClientRect();
+		var margen = parseFloat( window.getComputedStyle( barra ).bottom ) || 0;
+		var marco = form.getBoundingClientRect();
+		var debeFlotar = natural.bottom > window.innerHeight - margen && marco.top < window.innerHeight - barra.offsetHeight;
+
+		if ( debeFlotar ) {
+			if ( ! flota ) {
+				hueco.style.height = barra.offsetHeight + 'px';
+				hueco.hidden = false;
+				barra.classList.add( 'is-flotante' );
+			}
+			barra.style.left = marco.left + 'px';
+			barra.style.width = marco.width + 'px';
+		} else if ( flota ) {
+			barra.classList.remove( 'is-flotante' );
+			barra.style.left = '';
+			barra.style.width = '';
+			hueco.hidden = true;
+		}
+	}
+
+	function pedir() {
+		if ( ! pendiente ) {
+			pendiente = true;
+			window.requestAnimationFrame( colocar );
+		}
+	}
+
+	window.addEventListener( 'scroll', pedir, { passive: true } );
+	window.addEventListener( 'resize', pedir );
+	colocar();
 } )();

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-20T08:44:08+00:00\n"
+"POT-Creation-Date: 2026-11-24T23:32:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: foncholuis-art-challenge-manager\n"
@@ -1472,13 +1472,21 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+#: includes/class-concursos-entrada.php:161
+msgid "Previous photo"
+msgstr ""
+
+#: includes/class-concursos-entrada.php:162
+msgid "Next photo"
+msgstr ""
+
 #. translators: %s: photo title.
-#: includes/class-concursos-entrada.php:173
+#: includes/class-concursos-entrada.php:175
 msgid "View larger photo"
 msgstr ""
 
 #. translators: %s: photo title.
-#: includes/class-concursos-entrada.php:173
+#: includes/class-concursos-entrada.php:175
 #, php-format
 msgid "View larger photo: %s"
 msgstr ""

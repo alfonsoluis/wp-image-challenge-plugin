@@ -156,8 +156,10 @@ class Concursos_Entrada {
 				'concursos-public',
 				'concursosModal',
 				array(
-					'cerrar' => __( 'Close', 'foncholuis-art-challenge-manager' ),
-					'reto'   => __( 'Challenge', 'foncholuis-art-challenge-manager' ),
+					'cerrar'    => __( 'Close', 'foncholuis-art-challenge-manager' ),
+					'reto'      => __( 'Challenge', 'foncholuis-art-challenge-manager' ),
+					'anterior'  => __( 'Previous photo', 'foncholuis-art-challenge-manager' ),
+					'siguiente' => __( 'Next photo', 'foncholuis-art-challenge-manager' ),
 				)
 			);
 		}
@@ -179,7 +181,7 @@ class Concursos_Entrada {
 			esc_attr( get_the_title( $reto_id ) ),
 			esc_url( get_permalink( $reto_id ) ),
 			get_the_post_thumbnail( $foto, $tamano, array( 'loading' => 'lazy' ) ),
-			esc_attr( $foto->post_excerpt )
+			esc_attr( $anonima ? '' : $foto->post_excerpt )
 		);
 	}
 

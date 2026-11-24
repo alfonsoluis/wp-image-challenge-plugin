@@ -1474,13 +1474,21 @@ msgstr "Foto de %s"
 msgid "Close"
 msgstr "Cerrar"
 
+#: includes/class-concursos-entrada.php:161
+msgid "Previous photo"
+msgstr "Foto anterior"
+
+#: includes/class-concursos-entrada.php:162
+msgid "Next photo"
+msgstr "Foto siguiente"
+
 #. translators: %s: photo title.
-#: includes/class-concursos-entrada.php:173
+#: includes/class-concursos-entrada.php:175
 msgid "View larger photo"
 msgstr "Ver la foto en grande"
 
 #. translators: %s: photo title.
-#: includes/class-concursos-entrada.php:173
+#: includes/class-concursos-entrada.php:175
 #, php-format
 msgid "View larger photo: %s"
 msgstr "Ver la foto en grande: %s"
