@@ -42,7 +42,7 @@ Create a challenge, open registration, approve participants, collect their photo
 * A horizontal challenges banner for any page, as a block or with the `[concursos_banner]` shortcode: it invites people to take part in the open challenge, vote in the one in voting, or see past winners, either fixed or a random one on each visit.
 * Results with prizes and ties shown with equal prominence, a vote summary and an annual general ranking.
 * Participant profiles with their photos and places, which you can turn off in the plugin settings.
-* Enlarged photos with their description, author and challenge.
+* Enlarged photos with their description, author and challenge, with arrows to move to the previous or next photo. While voting, you can give a place to the photo and see your voting bar without leaving the enlarged view.
 * Each challenge can use your theme colors or an editorial style, one of 6 accent colors and 3 text sizes. Typography always comes from your theme.
 * The public pages use their own isolated design system, so your theme's styles do not break them.
 * Ready for translation through translate.wordpress.org.
@@ -54,8 +54,27 @@ The plugin stores the names, email addresses, social network names and photos th
 == Installation ==
 
 1. In WordPress, go to Plugins > Add New, search for "Foncholuis Art Challenge Manager", then install and activate it.
-2. Create a challenge in Challenges > Create new challenge.
-3. Add the Challenges and Challenge registration pages, which the plugin creates for you, to your site menu.
+2. Create a challenge in Challenges > Create new challenge: set its dates, how many places it has and, if you want, its prizes. Publish it when it is ready.
+3. Add the two pages the plugin creates when you activate it, Challenges and Challenge registration, to your site menu:
+   * Block themes (such as Twenty Twenty-Five): go to Appearance > Editor > Navigation, open your menu, click "+" and add each page.
+   * Classic themes: go to Appearance > Menus, tick both pages under "Pages" and click "Add to Menu".
+4. Optional: show the challenges banner on any page. See "Showing the challenges banner on a page" below.
+
+If you cannot find the two pages, look in Pages: they are normal pages named Challenges (or Retos) and Challenge registration. If you deleted one, the plugin does not create it again: create a page with the `[concursos_inscripcion]` shortcode for the registration form.
+
+= Showing the challenges banner on a page =
+
+The banner is a horizontal strip that invites people to take part in the open challenge, vote in the one in voting, or see past winners. Add it to any page or post in one of two ways:
+
+* Block editor: add the "Challenges banner" block. Its options are in the block sidebar.
+* Shortcode: add a Shortcode block (or your page builder's shortcode widget) and write `[concursos_banner]`.
+
+Shortcode options:
+
+* `modo`: which message to show. `participar` (take part), `votar` (vote) or `pasados` (past winners) always show that one; `aleatorio`, the default, shows a random one on each visit and also works with page caching. If the chosen message has nothing to show, another available one is used.
+* `estilo`: `reto` (the default) uses the style set on the challenge it shows, `tema` uses your theme colors and `editorial` uses the plugin's editorial style.
+
+Examples: `[concursos_banner]`, `[concursos_banner modo="votar"]`, `[concursos_banner modo="participar" estilo="editorial"]`.
 
 == Frequently Asked Questions ==
 
@@ -99,11 +118,14 @@ Deleting the plugin from WordPress removes its challenges, participants, submitt
 
 1. The challenges page, with the current challenge featured.
 2. A challenge open for voting.
-3. Results with prizes and ties.
-4. A participant profile.
-5. The challenges dashboard.
-6. Challenge settings: participation, prizes and design.
-7. Vote summary and annual general ranking.
+3. Voting: each voter picks a 1st, 2nd and 3rd place on the photos and confirms them from the sticky bar.
+4. Results with prizes and ties.
+5. A participant profile.
+6. The challenges banner on a page, inviting people to take part in the open challenge.
+7. The challenges banner block in the editor, with its options in the sidebar.
+8. Challenge settings: participation, prizes and design.
+9. The challenges dashboard.
+10. The Stats screen with the activity of the challenges.
 
 == Changelog ==
 
